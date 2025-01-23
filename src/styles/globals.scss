@@ -19,6 +19,13 @@
   src: url("/font/Pretendard-SemiBold.woff2") format("woff2");
 }
 
+@font-face {
+  font-family: "Pretendard";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/font/Pretendard-Bold.woff2") format("woff2");
+}
+
 // font family + weight
 @mixin REGULAR {
   font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue",
@@ -41,156 +48,188 @@
   font-weight: 600;
 }
 
+@mixin BOLD {
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue",
+    "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  font-weight: 700;
+}
+
+@mixin LetterSpacing {
+  letter-spacing: -0.3px;
+}
+
 // Typography
-@mixin H0SB {
-  @include SEMIBOLD;
+@mixin Display1 {
+  @include BOLD;
+  @include LetterSpacing;
+  font-size: 56px;
+  line-height: 78.4px;
+}
+
+@mixin Display2 {
+  @include BOLD;
+  @include LetterSpacing;
+  font-size: 40px;
+  line-height: 56px;
+}
+
+@mixin Title1 {
+  @include BOLD;
+  @include LetterSpacing;
+  font-size: 36px;
+  line-height: 50.4px;
+}
+
+@mixin Title2 {
+  @include BOLD;
+  @include LetterSpacing;
+  font-size: 28px;
+  line-height: 39.2px;
+}
+
+@mixin Title3 {
+  @include BOLD;
+  @include LetterSpacing;
   font-size: 24px;
-  letter-spacing: -0.24px;
-  line-height: 36px;
+  line-height: 33.6px;
 }
 
-@mixin H1SB {
-  @include SEMIBOLD;
+@mixin Title4 {
+  @include BOLD;
+  @include LetterSpacing;
   font-size: 20px;
-  letter-spacing: -0.2px;
-  line-height: 30px;
+  line-height: 28px;
 }
 
-@mixin H2SB {
+@mixin Title5 {
   @include SEMIBOLD;
-  font-size: 18px;
-  letter-spacing: -0.18px;
-  line-height: 27px;
+  @include LetterSpacing;
+  font-size: 20px;
+  line-height: 28px;
 }
 
-@mixin H2MD {
-  @include MEDIUM;
-  font-size: 18px;
-  letter-spacing: -0.18px;
-  line-height: 27px;
+@mixin Sub1 {
+  @include BOLD;
+  @include LetterSpacing;
+  font-size: 20px;
+  line-height: 25.2px;
 }
 
-@mixin H3SB {
+@mixin Sub2 {
+  @include SEMIBOLD;
+  @include LetterSpacing;
+  font-size: 20px;
+  line-height: 25.2px;
+}
+
+@mixin Sub3 {
+  @include BOLD;
+  font-size: 16px;
+  line-height: 22.4px;
+}
+
+@mixin Sub4 {
   @include SEMIBOLD;
   font-size: 16px;
-  letter-spacing: -0.16px;
-  line-height: 24px;
+  line-height: 22.4px;
 }
 
-@mixin H3MD {
+@mixin Body1 {
   @include MEDIUM;
   font-size: 16px;
-  letter-spacing: -0.16px;
-  line-height: 24px;
+  line-height: 22.4px;
 }
 
-@mixin H4SB {
-  @include SEMIBOLD;
-  font-size: 15px;
-  letter-spacing: -0.16px;
-  line-height: 22.5px;
-}
-
-@mixin H4MD {
-  @include MEDIUM;
-  font-size: 15px;
-  letter-spacing: -0.15px;
-  line-height: 22.5px;
-}
-
-@mixin H4RG {
+@mixin Body2 {
   @include REGULAR;
-  font-size: 15px;
-  letter-spacing: -0.15px;
-  line-height: 22.5px;
+  font-size: 16px;
+  line-height: 22.4px;
 }
 
-@mixin H5SB {
+@mixin Label1 {
   @include SEMIBOLD;
   font-size: 14px;
-  letter-spacing: -0.14px;
-  line-height: 21px;
+  line-height: 19.6px;
 }
 
-@mixin H5MD {
+@mixin Label2 {
   @include MEDIUM;
   font-size: 14px;
-  letter-spacing: -0.14px;
-  line-height: 21px;
+  line-height: 19.6px;
 }
 
-@mixin H6SB {
-  @include SEMIBOLD;
-  font-size: 13px;
-  letter-spacing: -0.13px;
-  line-height: 19.5px;
+@mixin Label3 {
+  @include REGULAR;
+  font-size: 14px;
+  line-height: 19.6px;
 }
 
-@mixin H6MD {
-  @include MEDIUM;
-  font-size: 13px;
-  letter-spacing: -0.13px;
-  line-height: 19.5px;
-}
-
-@mixin H7SB {
+@mixin Cap1 {
   @include SEMIBOLD;
   font-size: 12px;
-  letter-spacing: -0.12px;
-  line-height: 18px;
+  line-height: 16.8px;
 }
 
-@mixin H7MD {
+@mixin Cap2 {
   @include MEDIUM;
   font-size: 12px;
-  letter-spacing: -0.12px;
-  line-height: 18px;
+  line-height: 16.8px;
 }
 
-@mixin H8SB {
+@mixin Cap3 {
   @include SEMIBOLD;
-  font-size: 10px;
-  letter-spacing: -0.1px;
-  line-height: 15px;
+  font-size: 11px;
+  line-height: 15.4px;
 }
 
-@mixin H8MD {
+@mixin Cap4 {
   @include MEDIUM;
-  font-size: 10px;
-  letter-spacing: -0.1px;
-  line-height: 15px;
+  font-size: 11px;
+  line-height: 15.4px;
+}
+
+@mixin Btn1 {
+  @include BOLD;
+  font-size: 20px;
+  line-height: 20px;
+}
+
+@mixin Btn2 {
+  @include SEMIBOLD;
+  font-size: 14px;
+  line-height: 14px;
+}
+
+@mixin Btn3 {
+  @include SEMIBOLD;
+  font-size: 12px;
+  line-height: 12px;
 }
 
 // Color
-$green20: #ecfbf2;
-$green30: #e3f9ec;
-$green40: #c5f3d7;
-$green50: #45d87e;
-$green60: #37ad65;
-$green70: #29824c;
+$gray0: #ffffff;
+$gray10: #f5f7fa;
+$gray20: #f0f0f5;
+$gray30: #e1e1e8;
+$gray40: #caccd8;
+$gray50: #adafbb;
+$gray60: #858898;
+$gray70: #35363f;
+$gray80: #23252b;
 
-$white: #ffffff;
-$gray5: #f8f8f9;
-$gray10: #f5f5f6;
-$gray15: #eff0f1;
-$gray20: #e2e3e6;
-$gray30: #c5c8cd;
-$gray40: #a8acb3;
-$gray50: #787d87;
-$gray60: #60636c;
-$gray70: #484b51;
-$gray80: #303237;
-$gray90: #18191c;
+$primary1: #ededf9;
+$primary2: #8989a6;
+$primary3: #404054;
+$primary4: #232332;
+$primary5: #000000;
 
-$error: #ff5757;
+$secandary1: #11d85d;
+$secandary2: #eafff2;
 
-@mixin Opacity50 {
-  background: rgba(0, 0, 0, 0.5);
-}
-
-@mixin Opacity70 {
-  background: rgba(0, 0, 0, 0.7);
-}
+$positive: #00bf40;
+$cautionary: #ff9200;
+$negative: #ff4242;
 
 $mobile: 768px;
 
