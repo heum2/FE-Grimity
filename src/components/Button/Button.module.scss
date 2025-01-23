@@ -1,0 +1,128 @@
+@import "@/styles/globals.scss";
+
+.button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+.filled-primary {
+  background-color: $primary4;
+  color: $gray0;
+
+  &:hover {
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.1) 100%), $primary4;
+    color: $gray30;
+  }
+
+  &:active {
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%), $primary4;
+    color: $gray40;
+  }
+}
+
+.filled-primary.disabled {
+  background-color: $gray30;
+  color: $gray0;
+}
+
+.outlined-primary {
+  border: 1px solid $primary4;
+  color: $primary4;
+  background-color: $gray0;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
+
+  &:active {
+    background: rgba(0, 0, 0, 0.08);
+  }
+}
+
+.outlined-primary.disabled {
+  border: 1px solid $gray30;
+  color: $gray30;
+}
+
+.outlined-secondary {
+  border: 1px solid $secandary1;
+  color: $secandary1;
+  background-color: $gray0;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
+
+  &:active {
+    background: rgba(0, 0, 0, 0.08);
+  }
+}
+
+.outlined-secondary.disabled {
+  border: 1px solid $gray30;
+  color: $gray30;
+}
+
+.outlined-assistive {
+  border: 1px solid $gray30;
+  color: $gray70;
+  background-color: $gray0;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
+
+  &:active {
+    background: rgba(0, 0, 0, 0.08);
+  }
+}
+
+.outlined-assistive.disabled {
+  border: 1px solid $gray30;
+  color: $gray30;
+}
+
+.text-primary {
+  color: $gray70;
+  background-color: $gray0;
+}
+
+.text-primary .disabled {
+  color: $gray30;
+}
+
+.text-assistive {
+  color: $primary4;
+  background-color: $gray0;
+}
+
+.text-assistive .disabled {
+  color: $gray30;
+}
+
+.l {
+  padding: 16px 24px;
+  border-radius: 12px;
+  @include Btn1;
+}
+
+.m {
+  padding: 11px 20px;
+  border-radius: 10px;
+  @include Btn2;
+}
+
+.s {
+  padding: 7px 14px;
+  border-radius: 8px;
+  @include Btn3;
+}
+
+.icon {
+  margin: 0 0.5rem;
+}
