@@ -1,0 +1,222 @@
+@font-face {
+  font-family: "Pretendard";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/font/Pretendard-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Pretendard";
+  font-style: normal;
+  font-weight: 500;
+  src: url("/font/Pretendard-Medium.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Pretendard";
+  font-style: normal;
+  font-weight: 600;
+  src: url("/font/Pretendard-SemiBold.woff2") format("woff2");
+}
+
+// font family + weight
+@mixin REGULAR {
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue",
+    "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  font-weight: 400;
+}
+
+@mixin MEDIUM {
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue",
+    "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  font-weight: 500;
+}
+
+@mixin SEMIBOLD {
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue",
+    "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  font-weight: 600;
+}
+
+// Typography
+@mixin H0SB {
+  @include SEMIBOLD;
+  font-size: 24px;
+  letter-spacing: -0.24px;
+  line-height: 36px;
+}
+
+@mixin H1SB {
+  @include SEMIBOLD;
+  font-size: 20px;
+  letter-spacing: -0.2px;
+  line-height: 30px;
+}
+
+@mixin H2SB {
+  @include SEMIBOLD;
+  font-size: 18px;
+  letter-spacing: -0.18px;
+  line-height: 27px;
+}
+
+@mixin H2MD {
+  @include MEDIUM;
+  font-size: 18px;
+  letter-spacing: -0.18px;
+  line-height: 27px;
+}
+
+@mixin H3SB {
+  @include SEMIBOLD;
+  font-size: 16px;
+  letter-spacing: -0.16px;
+  line-height: 24px;
+}
+
+@mixin H3MD {
+  @include MEDIUM;
+  font-size: 16px;
+  letter-spacing: -0.16px;
+  line-height: 24px;
+}
+
+@mixin H4SB {
+  @include SEMIBOLD;
+  font-size: 15px;
+  letter-spacing: -0.16px;
+  line-height: 22.5px;
+}
+
+@mixin H4MD {
+  @include MEDIUM;
+  font-size: 15px;
+  letter-spacing: -0.15px;
+  line-height: 22.5px;
+}
+
+@mixin H4RG {
+  @include REGULAR;
+  font-size: 15px;
+  letter-spacing: -0.15px;
+  line-height: 22.5px;
+}
+
+@mixin H5SB {
+  @include SEMIBOLD;
+  font-size: 14px;
+  letter-spacing: -0.14px;
+  line-height: 21px;
+}
+
+@mixin H5MD {
+  @include MEDIUM;
+  font-size: 14px;
+  letter-spacing: -0.14px;
+  line-height: 21px;
+}
+
+@mixin H6SB {
+  @include SEMIBOLD;
+  font-size: 13px;
+  letter-spacing: -0.13px;
+  line-height: 19.5px;
+}
+
+@mixin H6MD {
+  @include MEDIUM;
+  font-size: 13px;
+  letter-spacing: -0.13px;
+  line-height: 19.5px;
+}
+
+@mixin H7SB {
+  @include SEMIBOLD;
+  font-size: 12px;
+  letter-spacing: -0.12px;
+  line-height: 18px;
+}
+
+@mixin H7MD {
+  @include MEDIUM;
+  font-size: 12px;
+  letter-spacing: -0.12px;
+  line-height: 18px;
+}
+
+@mixin H8SB {
+  @include SEMIBOLD;
+  font-size: 10px;
+  letter-spacing: -0.1px;
+  line-height: 15px;
+}
+
+@mixin H8MD {
+  @include MEDIUM;
+  font-size: 10px;
+  letter-spacing: -0.1px;
+  line-height: 15px;
+}
+
+// Color
+$green20: #ecfbf2;
+$green30: #e3f9ec;
+$green40: #c5f3d7;
+$green50: #45d87e;
+$green60: #37ad65;
+$green70: #29824c;
+
+$white: #ffffff;
+$gray5: #f8f8f9;
+$gray10: #f5f5f6;
+$gray15: #eff0f1;
+$gray20: #e2e3e6;
+$gray30: #c5c8cd;
+$gray40: #a8acb3;
+$gray50: #787d87;
+$gray60: #60636c;
+$gray70: #484b51;
+$gray80: #303237;
+$gray90: #18191c;
+
+$error: #ff5757;
+
+@mixin Opacity50 {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+@mixin Opacity70 {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+$mobile: 768px;
+
+@mixin Drag {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.body {
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
