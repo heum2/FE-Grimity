@@ -1,0 +1,56 @@
+@import "@/styles/globals.scss";
+
+.chip {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  border-radius: 50px;
+  outline: none;
+  border: none;
+}
+
+@mixin chip-styles($bg-color, $color, $border-color: transparent) {
+  background-color: $bg-color;
+  color: $color;
+  border: 1px solid $border-color;
+
+  &.unselected {
+    background-color: $gray10;
+    color: $gray40;
+  }
+}
+
+.filled-primary {
+  @include chip-styles($primary4, $gray0);
+}
+
+.filled-secondary {
+  @include chip-styles($secandary2, $secandary1);
+}
+
+.filled-assistive {
+  @include chip-styles($gray10, $gray70);
+}
+
+.outlined-primary {
+  @include chip-styles($gray0, $primary4, $primary4);
+}
+
+.outlined-secondary {
+  @include chip-styles($gray0, $secandary1, $secandary1);
+}
+
+.outlined-assistive {
+  @include chip-styles($gray0, $gray70, $gray30);
+}
+
+.m {
+  padding: 10px 16px;
+  @include Btn2;
+}
+
+.s {
+  padding: 6px 12px;
+  @include Btn3;
+}
