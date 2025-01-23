@@ -9,5 +9,7 @@ export const ICONS = {
   boardComment: "/icon/board-comment.svg",
   cardLike: "/icon/card-like.svg",
   cardComment: "/icon/card-comment.svg",
+  cardSave: "/icon/card-save.svg",
+  cardDot: "/icon/card-dot.svg",
   cardArrowRight: "/icon/card-arrow-right.svg",
 };

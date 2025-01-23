@@ -1,0 +1,76 @@
+@import "@/styles/globals.scss";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+
+  .imageContainer {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    object-fit: cover;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+
+    .image {
+      object-fit: cover;
+    }
+
+    .saveBtn {
+      position: absolute;
+      top: 8px;
+      left: 12px;
+      cursor: pointer;
+      z-index: 1;
+
+      &:hover {
+        animation: pulse 0.5s ease-in-out;
+      }
+    }
+
+    .infoContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      .title {
+        overflow: hidden;
+        color: $gray80;
+        text-overflow: ellipsis;
+        @include Sub4;
+      }
+
+      .profileContainer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .author {
+          @include Label1;
+          color: $gray50;
+        }
+      }
+
+      .countContainer {
+        display: flex;
+        gap: 6px;
+      }
+
+      .likeContainer {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+
+        .count {
+          @include MEDIUM;
+          font-size: 12px;
+          line-height: 12px;
+          color: $gray50;
+        }
+      }
+    }
+  }
+}
