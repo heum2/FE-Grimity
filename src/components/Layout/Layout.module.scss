@@ -1,0 +1,42 @@
+@import "@/styles/globals.scss";
+
+.layout {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  height: 100%;
+  padding: 8px 80px 80px 80px;
+
+  .children {
+    max-width: 1280px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .topButton {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    background-color: $gray80;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: opacity 0.3s;
+    opacity: 0;
+    z-index: 1000;
+  }
+
+  .topButton.show {
+    opacity: 1;
+  }
+
+  .topButton:hover {
+    background-color: darken($gray80, 10%);
+  }
+}
