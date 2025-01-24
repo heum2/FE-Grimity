@@ -112,14 +112,14 @@
 @mixin Sub1 {
   @include BOLD;
   @include LetterSpacing;
-  font-size: 20px;
+  font-size: 18px;
   line-height: 25.2px;
 }
 
 @mixin Sub2 {
   @include SEMIBOLD;
   @include LetterSpacing;
-  font-size: 20px;
+  font-size: 18px;
   line-height: 25.2px;
 }
 
@@ -190,9 +190,9 @@
 }
 
 @mixin Btn1 {
-  @include BOLD;
-  font-size: 20px;
-  line-height: 20px;
+  @include SEMIBOLD;
+  font-size: 16px;
+  line-height: 16px;
 }
 
 @mixin Btn2 {
