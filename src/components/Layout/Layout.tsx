@@ -40,7 +40,7 @@ export default function Layout({ children }: LayoutProps) {
           role="button"
           tabIndex={0}
         >
-          <IconComponent name="up" width={28} height={28} />
+          <IconComponent name="up" width={28} height={28} isBtn />
         </div>
       </div>
     </div>
