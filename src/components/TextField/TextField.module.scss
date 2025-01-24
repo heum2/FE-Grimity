@@ -1,0 +1,67 @@
+@import "@/styles/globals.scss";
+
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.inputContainer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background-color: $gray0;
+  border-radius: 12px;
+  border: 1px solid $gray30;
+  @include Label2;
+
+  &:focus-within {
+    border: 1px solid $secandary1;
+  }
+}
+
+.inputContainer.error {
+  border: 1px solid $negative;
+}
+
+.labelContainer {
+  display: flex;
+}
+
+.required {
+  color: $secandary1;
+  @include Cap2;
+}
+
+.label {
+  // @include H5SB;
+  align-self: stretch;
+  // color: $gray80;
+}
+
+.input {
+  width: 100%;
+  @include Label2;
+  color: $gray80;
+  border: none;
+  outline: none;
+  padding: 0;
+}
+
+.countTotal {
+  display: flex;
+  @include Label1;
+  color: $gray60;
+}
+
+.count {
+  color: $gray80;
+}
+
+.error {
+  color: $negative;
+  @include Cap2;
+}
