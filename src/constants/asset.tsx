@@ -16,4 +16,9 @@ export const ICONS = {
   cardArrowRight: "/icon/card-arrow-right.svg",
   cardArrowLeft: "/icon/card-arrow-left.svg",
   up: "/icon/up.svg",
+  x: "/icon/x.svg",
+  checkbox: "/icon/checkbox.svg",
+  checkedbox: "/icon/checkedbox.svg",
+  kakao: "/icon/kakao.svg",
+  google: "/icon/google.svg",
 };
