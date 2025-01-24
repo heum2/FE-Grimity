@@ -79,107 +79,116 @@ export default function Header() {
 
   return (
     <header className={styles.header}>
-      <div className={styles.leftSection}>
-        <Link href="/">
-          <div className={styles.cursor}>
-            <Image src="/image/logo.svg" width={100} height={29} alt="logo" />
-          </div>
-        </Link>
-        <nav className={styles.nav}>
-          {navItems.map((item, index) => (
-            <div key={index} className={styles.navItem} onClick={() => handleNavClick(item)}>
-              <p
-                className={`${styles.item} ${activeNav === item.name ? styles.active : ""}`}
-                ref={item.name === activeNav ? activeItemRef : null}
-              >
-                {item.name}
-              </p>
-              {index < navItems.length - 1 && <div className={styles.bar} />}
+      <div className={styles.container}>
+        <div className={styles.leftSection}>
+          <Link href="/">
+            <div className={styles.cursor}>
+              <Image src="/image/logo.svg" width={100} height={29} alt="logo" />
             </div>
-          ))}
-          <div ref={indicatorRef} className={styles.indicator} />
-        </nav>
-      </div>
-      <div className={styles.wrapper}>
-        <div className={styles.icons}>
-          <IconComponent name="search" width={24} height={24} padding={8} isBtn alt="검색" />
-          {isLoggedIn && (
-            <IconComponent name="bellActive" width={40} height={40} padding={0} isBtn alt="알림" />
+          </Link>
+          <nav className={styles.nav}>
+            {navItems.map((item, index) => (
+              <div key={index} className={styles.navItem} onClick={() => handleNavClick(item)}>
+                <p
+                  className={`${styles.item} ${activeNav === item.name ? styles.active : ""}`}
+                  ref={item.name === activeNav ? activeItemRef : null}
+                >
+                  {item.name}
+                </p>
+                {index < navItems.length - 1 && <div className={styles.bar} />}
+              </div>
+            ))}
+            <div ref={indicatorRef} className={styles.indicator} />
+          </nav>
+        </div>
+        <div className={styles.wrapper}>
+          <div className={styles.icons}>
+            <IconComponent name="search" width={24} height={24} padding={8} isBtn alt="검색" />
+            {isLoggedIn && (
+              <IconComponent
+                name="bellActive"
+                width={40}
+                height={40}
+                padding={0}
+                isBtn
+                alt="알림"
+              />
+            )}
+          </div>
+          {isLoggedIn && myData ? (
+            <div className={styles.profileSection}>
+              <div
+                className={styles.profileContainer}
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              >
+                {myData.image !== "https://image.grimity.com/null" ? (
+                  <Image
+                    src={myData.image}
+                    width={28}
+                    height={28}
+                    alt="프로필 이미지"
+                    className={styles.profileImage}
+                  />
+                ) : (
+                  <Image
+                    src="/image/default.svg"
+                    width={28}
+                    height={28}
+                    alt="프로필 이미지"
+                    className={styles.profileImage}
+                  />
+                )}
+              </div>
+              {isDropdownOpen && (
+                <div className={styles.dropdown} ref={dropdownRef}>
+                  <div className={styles.dropdownItem}>
+                    {myData.image !== "https://image.grimity.com/null" ? (
+                      <Image
+                        src={myData.image}
+                        width={28}
+                        height={28}
+                        alt="프로필 이미지"
+                        className={styles.dropdownProfileImage}
+                      />
+                    ) : (
+                      <Image
+                        src="/image/default.svg"
+                        width={28}
+                        height={28}
+                        alt="프로필 이미지"
+                        className={styles.dropdownProfileImage}
+                      />
+                    )}
+                    <span>내 프로필</span>
+                  </div>
+                  <div className={styles.divider} />
+                  <div className={styles.dropdownItem}>좋아요한 그림</div>
+                  <div className={styles.dropdownItem}>저장한 그림</div>
+                  <div className={styles.divider} />
+                  <div className={styles.dropdownItem}>전체 글</div>
+                  <div className={styles.dropdownItem}>좋아요한 글</div>
+                  <div className={styles.dropdownItem}>내가 쓴 댓글</div>
+                  <div className={styles.divider} />
+                  <div className={`${styles.dropdownItem} ${styles.logout}`} onClick={handleLogout}>
+                    로그아웃
+                  </div>
+                </div>
+              )}
+              <Button size="m" type="filled-primary">
+                그림 업로드
+              </Button>
+            </div>
+          ) : (
+            <div
+              className={styles.uploadBtn}
+              onClick={() => setModal({ isOpen: true, type: "LOGIN" })}
+            >
+              <Button size="m" type="filled-primary">
+                로그인
+              </Button>
+            </div>
           )}
         </div>
-        {isLoggedIn && myData ? (
-          <div className={styles.profileSection}>
-            <div
-              className={styles.profileContainer}
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            >
-              {myData.image !== "https://image.grimity.com/null" ? (
-                <Image
-                  src={myData.image}
-                  width={28}
-                  height={28}
-                  alt="프로필 이미지"
-                  className={styles.profileImage}
-                />
-              ) : (
-                <Image
-                  src="/image/default.svg"
-                  width={28}
-                  height={28}
-                  alt="프로필 이미지"
-                  className={styles.profileImage}
-                />
-              )}
-            </div>
-            {isDropdownOpen && (
-              <div className={styles.dropdown} ref={dropdownRef}>
-                <div className={styles.dropdownItem}>
-                  {myData.image !== "https://image.grimity.com/null" ? (
-                    <Image
-                      src={myData.image}
-                      width={28}
-                      height={28}
-                      alt="프로필 이미지"
-                      className={styles.dropdownProfileImage}
-                    />
-                  ) : (
-                    <Image
-                      src="/image/default.svg"
-                      width={28}
-                      height={28}
-                      alt="프로필 이미지"
-                      className={styles.dropdownProfileImage}
-                    />
-                  )}
-                  <span>내 프로필</span>
-                </div>
-                <div className={styles.divider} />
-                <div className={styles.dropdownItem}>좋아요한 그림</div>
-                <div className={styles.dropdownItem}>저장한 그림</div>
-                <div className={styles.divider} />
-                <div className={styles.dropdownItem}>전체 글</div>
-                <div className={styles.dropdownItem}>좋아요한 글</div>
-                <div className={styles.dropdownItem}>내가 쓴 댓글</div>
-                <div className={styles.divider} />
-                <div className={`${styles.dropdownItem} ${styles.logout}`} onClick={handleLogout}>
-                  로그아웃
-                </div>
-              </div>
-            )}
-            <Button size="m" type="filled-primary">
-              그림 업로드
-            </Button>
-          </div>
-        ) : (
-          <div
-            className={styles.uploadBtn}
-            onClick={() => setModal({ isOpen: true, type: "LOGIN" })}
-          >
-            <Button size="m" type="filled-primary">
-              로그인
-            </Button>
-          </div>
-        )}
       </div>
     </header>
   );

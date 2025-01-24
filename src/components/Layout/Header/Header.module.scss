@@ -1,16 +1,24 @@
 @import "@/styles/globals.scss";
 
 .header {
-  max-width: 1280px;
   width: 100%;
   position: fixed;
   top: 0px;
+  left: 0;
   background-color: $gray0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 0;
+  padding: 12px 80px;
   z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .container {
+    max-width: 1280px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 
   .leftSection {
     display: flex;
