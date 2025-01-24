@@ -8,7 +8,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { modalState } from "@/states/modalState";
 import { authState } from "@/states/authState";
 import { useMyData } from "@/api/users/getMe";
-import router from "next/router";
+import { useRouter } from "next/router";
 
 export default function Header() {
   const [, setModal] = useRecoilState(modalState);
@@ -20,6 +20,8 @@ export default function Header() {
   const indicatorRef = useRef<HTMLDivElement>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const router = useRouter();
 
   const navItems = [
     { name: "홈", path: "/" },
