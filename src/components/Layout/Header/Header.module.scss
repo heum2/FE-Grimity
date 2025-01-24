@@ -61,8 +61,68 @@
   .wrapper {
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: 20px;
     flex-shrink: 0;
+  }
+
+  .profileSection {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    position: relative;
+  }
+
+  .profileImage {
+    object-fit: cover;
+    border-radius: 50px;
+    overflow: hidden;
+    border: 1px solid $gray20;
+    cursor: pointer;
+  }
+
+  .dropdown {
+    position: absolute;
+    padding: 8px 0;
+    top: 40px;
+    left: 0;
+    background: $gray0;
+    box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+    z-index: 10;
+    width: 150px;
+    overflow: hidden;
+
+    .dropdownItem {
+      display: flex;
+      align-items: center;
+      padding: 10px 16px;
+      cursor: pointer;
+      @include Sub4;
+      color: $gray80;
+
+      &:hover {
+        background: $gray10;
+      }
+
+      &.logout {
+        color: $gray60;
+        @include Sub4;
+      }
+
+      .dropdownProfileImage {
+        margin-right: 8px;
+        border: 1px solid $gray20;
+        object-fit: cover;
+        border-radius: 50px;
+        overflow: hidden;
+      }
+    }
+
+    .divider {
+      height: 1px;
+      background: #e0e0e0;
+      margin: 4px 0;
+    }
   }
 
   .icons {

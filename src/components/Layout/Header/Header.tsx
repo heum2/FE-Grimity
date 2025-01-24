@@ -1,14 +1,25 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import styles from "./Header.module.scss";
 import Button from "@/components/Button/Button";
 import Link from "next/link";
 import IconComponent from "@/components/Asset/Icon";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { modalState } from "@/states/modalState";
+import { authState } from "@/states/authState";
+import { useMyData } from "@/api/users/getMe";
+import router from "next/router";
 
 export default function Header() {
+  const [, setModal] = useRecoilState(modalState);
+  const [, setAuth] = useRecoilState(authState);
+  const { isLoggedIn } = useRecoilValue(authState);
+  const { data: myData } = useMyData();
   const [activeNav, setActiveNav] = useState("홈");
   const activeItemRef = useRef<HTMLDivElement>(null);
   const indicatorRef = useRef<HTMLDivElement>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const navItems = [
     { name: "홈", path: "/" },
@@ -22,6 +33,21 @@ export default function Header() {
     setActiveNav(item);
   };
 
+  const handleLogout = () => {
+    setAuth({
+      access_token: "",
+      isLoggedIn: false,
+      user_id: "",
+    });
+    router.push("/");
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("user_id");
+  };
+
+  useEffect(() => {
+    setIsDropdownOpen(false);
+  }, [isLoggedIn]);
+
   useEffect(() => {
     if (activeItemRef.current && indicatorRef.current) {
       const { offsetLeft, offsetWidth } = activeItemRef.current;
@@ -29,6 +55,16 @@ export default function Header() {
       indicatorRef.current.style.width = `${offsetWidth}px`;
     }
   }, [activeNav]);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <header className={styles.header}>
@@ -58,16 +94,83 @@ export default function Header() {
       <div className={styles.wrapper}>
         <div className={styles.icons}>
           <IconComponent name="search" width={24} height={24} padding={8} isBtn alt="검색" />
-          <IconComponent name="bell" width={24} height={24} padding={8} isBtn alt="알림" />
-          <IconComponent name="bellActive" width={40} height={40} padding={0} isBtn alt="알림" />
+          {isLoggedIn && (
+            <IconComponent name="bellActive" width={40} height={40} padding={0} isBtn alt="알림" />
+          )}
         </div>
-        <Link href="/write">
-          <div className={styles.uploadBtn}>
+        {isLoggedIn && myData ? (
+          <div className={styles.profileSection}>
+            <div
+              className={styles.profileContainer}
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            >
+              {myData.image !== "https://image.grimity.com/null" ? (
+                <Image
+                  src={myData.image}
+                  width={28}
+                  height={28}
+                  alt="프로필 이미지"
+                  className={styles.profileImage}
+                />
+              ) : (
+                <Image
+                  src="/image/default.svg"
+                  width={28}
+                  height={28}
+                  alt="프로필 이미지"
+                  className={styles.profileImage}
+                />
+              )}
+            </div>
+            {isDropdownOpen && (
+              <div className={styles.dropdown} ref={dropdownRef}>
+                <div className={styles.dropdownItem}>
+                  {myData.image !== "https://image.grimity.com/null" ? (
+                    <Image
+                      src={myData.image}
+                      width={28}
+                      height={28}
+                      alt="프로필 이미지"
+                      className={styles.dropdownProfileImage}
+                    />
+                  ) : (
+                    <Image
+                      src="/image/default.svg"
+                      width={28}
+                      height={28}
+                      alt="프로필 이미지"
+                      className={styles.dropdownProfileImage}
+                    />
+                  )}
+                  <span>내 프로필</span>
+                </div>
+                <div className={styles.divider} />
+                <div className={styles.dropdownItem}>좋아요한 그림</div>
+                <div className={styles.dropdownItem}>저장한 그림</div>
+                <div className={styles.divider} />
+                <div className={styles.dropdownItem}>전체 글</div>
+                <div className={styles.dropdownItem}>좋아요한 글</div>
+                <div className={styles.dropdownItem}>내가 쓴 댓글</div>
+                <div className={styles.divider} />
+                <div className={`${styles.dropdownItem} ${styles.logout}`} onClick={handleLogout}>
+                  로그아웃
+                </div>
+              </div>
+            )}
             <Button size="m" type="filled-primary">
-              작품 업로드
+              그림 업로드
             </Button>
           </div>
-        </Link>
+        ) : (
+          <div
+            className={styles.uploadBtn}
+            onClick={() => setModal({ isOpen: true, type: "LOGIN" })}
+          >
+            <Button size="m" type="filled-primary">
+              로그인
+            </Button>
+          </div>
+        )}
       </div>
     </header>
   );
