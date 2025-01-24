@@ -59,6 +59,7 @@ export default function Header() {
         <div className={styles.icons}>
           <IconComponent name="search" width={24} height={24} padding={8} isBtn alt="검색" />
           <IconComponent name="bell" width={24} height={24} padding={8} isBtn alt="알림" />
+          <IconComponent name="bellActive" width={40} height={40} padding={0} isBtn alt="알림" />
         </div>
         <Link href="/write">
           <div className={styles.uploadBtn}>

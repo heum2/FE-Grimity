@@ -40,7 +40,7 @@ export default function RectangleCard({
       <div className={styles.imageContainer}>
         {/* {isLoggedIn && (
           <div className={styles.saveBtn} onClick={handleLikeClick}>
-            <IconComponent name={isLiked ? "cardSave" : "cardSave"} width={48} height={48} />
+            <IconComponent name={isLiked ? "cardSaveOn" : "cardSaveOff"} width={48} height={48} />
           </div>
         )} */}
         <Link href={`/feeds/${id}`}>
