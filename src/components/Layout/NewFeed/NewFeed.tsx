@@ -50,6 +50,7 @@ export default function NewFeed() {
           ))
         )}
       </div>
+      <div ref={observerRef} className={styles.loader} />
     </div>
   );
 }
