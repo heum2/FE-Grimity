@@ -1,6 +1,5 @@
-import { useState } from "react";
 import IconComponent from "@/components/Asset/Icon";
-import styles from "./RectangleCard.module.scss";
+import styles from "./BoardCard.module.scss";
 import { formatCurrency } from "@/utils/formatCurrency";
 import Image from "next/image";
 import { BoardCardProps } from "./BoardCard.types";
@@ -16,23 +15,6 @@ export default function BoardCard({
   commentCount,
   createdAt,
 }: BoardCardProps) {
-  // const [isSaved, setIsSaved] = useState(isSave);
-  const [currentLikeCount, setCurrentLikeCount] = useState(likeCount);
-
-  const hasMultipleImages = cards && cards.length > 1;
-
-  // const handleLikeClick = async (e: React.MouseEvent) => {
-  //   e.stopPropagation();
-  //   if (isSaved) {
-  //     await deleteLike(id);
-  //     setCurrentLikeCount((prev) => prev - 1);
-  //   } else {
-  //     await putLike(id);
-  //     setCurrentLikeCount((prev) => prev + 1);
-  //   }
-  //   setIsSaved(!isSaved);
-  // };
-
   return (
     <div className={styles.container}>
       <div className={styles.infoContainer}>
@@ -66,19 +48,19 @@ export default function BoardCard({
         )}
         <h3 className={styles.title}>{title}</h3>
         <div className={styles.profileContainer}>
-          <div>
+          <div className={styles.bottomContainer}>
             <div className={styles.countContainer}>
               <div className={styles.likeContainer}>
                 <IconComponent name="boardLike" width={12} height={12} />
-                <p className={styles.count}>{formatCurrency(currentLikeCount)}</p>
+                <p className={styles.count}>{formatCurrency(likeCount)}</p>
               </div>
               <div className={styles.likeContainer}>
                 <IconComponent name="boardComment" width={12} height={12} />
                 <p className={styles.count}>{formatCurrency(commentCount)}</p>
               </div>
             </div>
-            <IconComponent name="cardDot" width={12} height={12} />
-            <p>{timeAgo(createdAt)}</p>
+            <Image src="/icon/card-dot.svg" width={2} height={2} alt="dot" />
+            <p className={styles.createdAt}>{timeAgo(createdAt)}</p>
           </div>
         </div>
       </div>
@@ -87,7 +69,8 @@ export default function BoardCard({
           <Image
             src={cards[0]}
             alt={title}
-            layout="fill"
+            width={90}
+            height={90}
             objectFit="cover"
             className={styles.image}
           />
