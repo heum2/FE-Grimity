@@ -29,8 +29,9 @@ export default function Header() {
     { name: "팔로잉", path: "/following" },
   ];
 
-  const handleNavClick = (item: string) => {
-    setActiveNav(item);
+  const handleNavClick = (item: { name: string; path: string }) => {
+    setActiveNav(item.name);
+    router.push(item.path);
   };
 
   const handleLogout = () => {
@@ -47,6 +48,14 @@ export default function Header() {
   useEffect(() => {
     setIsDropdownOpen(false);
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    const currentPath = router.pathname;
+    const activeItem = navItems.find((item) => item.path === currentPath);
+    if (activeItem) {
+      setActiveNav(activeItem.name);
+    }
+  }, [router.pathname]);
 
   useEffect(() => {
     if (activeItemRef.current && indicatorRef.current) {
@@ -76,17 +85,15 @@ export default function Header() {
         </Link>
         <nav className={styles.nav}>
           {navItems.map((item, index) => (
-            <Link key={index} href={item.path} passHref>
-              <div className={styles.navItem} onClick={() => handleNavClick(item.name)}>
-                <p
-                  className={`${styles.item} ${activeNav === item.name ? styles.active : ""}`}
-                  ref={item.name === activeNav ? activeItemRef : null}
-                >
-                  {item.name}
-                </p>
-                {index < navItems.length - 1 && <div className={styles.bar} />}
-              </div>
-            </Link>
+            <div key={index} className={styles.navItem} onClick={() => handleNavClick(item)}>
+              <p
+                className={`${styles.item} ${activeNav === item.name ? styles.active : ""}`}
+                ref={item.name === activeNav ? activeItemRef : null}
+              >
+                {item.name}
+              </p>
+              {index < navItems.length - 1 && <div className={styles.bar} />}
+            </div>
           ))}
           <div ref={indicatorRef} className={styles.indicator} />
         </nav>
