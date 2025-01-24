@@ -8,18 +8,19 @@
 
   .imageContainer {
     width: 100%;
-    height: 100%;
+    aspect-ratio: 1 / 1;
     border-radius: 12px;
-    object-fit: cover;
     overflow: hidden;
     position: relative;
     cursor: pointer;
 
     .image {
       object-fit: cover;
+      width: 100%;
+      height: 100%;
     }
 
-    .saveBtn {
+    .likeBtn {
       position: absolute;
       top: 8px;
       left: 12px;
@@ -30,45 +31,45 @@
         animation: pulse 0.5s ease-in-out;
       }
     }
+  }
 
-    .infoContainer {
+  .infoContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .title {
+      overflow: hidden;
+      color: $gray80;
+      text-overflow: ellipsis;
+      @include Sub4;
+    }
+
+    .profileContainer {
       display: flex;
-      flex-direction: column;
-      gap: 4px;
+      align-items: center;
+      justify-content: space-between;
 
-      .title {
-        overflow: hidden;
-        color: $gray80;
-        text-overflow: ellipsis;
-        @include Sub4;
-      }
-
-      .profileContainer {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        .author {
-          @include Label1;
-          color: $gray50;
-        }
+      .author {
+        @include Label1;
+        color: $gray50;
       }
 
       .countContainer {
         display: flex;
         gap: 6px;
-      }
 
-      .likeContainer {
-        display: flex;
-        align-items: center;
-        gap: 2px;
+        .likeContainer {
+          display: flex;
+          align-items: center;
+          gap: 2px;
 
-        .count {
-          @include MEDIUM;
-          font-size: 12px;
-          line-height: 12px;
-          color: $gray50;
+          .count {
+            @include MEDIUM;
+            font-size: 12px;
+            line-height: 12px;
+            color: $gray50;
+          }
         }
       }
     }

@@ -14,4 +14,6 @@ export const ICONS = {
   cardSaveOn: "/icon/card-save-on.svg",
   cardDot: "/icon/card-dot.svg",
   cardArrowRight: "/icon/card-arrow-right.svg",
+  cardArrowLeft: "/icon/card-arrow-left.svg",
+  up: "/icon/up.svg",
 };

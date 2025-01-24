@@ -15,5 +15,6 @@
   .btn {
     @include Sub2;
     color: $gray60;
+    cursor: pointer;
   }
 }

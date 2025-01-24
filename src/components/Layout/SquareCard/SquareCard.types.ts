@@ -8,5 +8,5 @@ export interface SquareCardProps {
   };
   likeCount: number;
   commentCount: number;
-  isSave?: boolean;
+  isLike?: boolean;
 }

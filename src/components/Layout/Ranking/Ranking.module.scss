@@ -1,0 +1,51 @@
+@import "@/styles/globals.scss";
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.rankingContainer {
+  position: relative;
+  width: 100%;
+}
+
+.navButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.3;
+  }
+}
+.navButton.left {
+  left: -30px;
+}
+.navButton.right {
+  right: -30px;
+}
+
+.cardsContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(283px, 1fr));
+  gap: 16px;
+  justify-content: center;
+
+  .cardWrapper {
+    display: grid;
+    position: relative;
+  }
+
+  .rankingIconWrapper {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 1;
+  }
+}

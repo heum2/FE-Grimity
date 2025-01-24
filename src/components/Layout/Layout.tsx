@@ -3,6 +3,7 @@ import styles from "./Layout.module.scss";
 import Header from "./Header/Header";
 import { useRouter } from "next/router";
 import { LayoutProps } from "./Layout.types";
+import IconComponent from "../Asset/Icon";
 
 export default function Layout({ children }: LayoutProps) {
   const [isScrollAbove, setIsScrollAbove] = useState(false);
@@ -38,7 +39,9 @@ export default function Layout({ children }: LayoutProps) {
           onClick={scrollToTop}
           role="button"
           tabIndex={0}
-        />
+        >
+          <IconComponent name="up" width={28} height={28} />
+        </div>
       </div>
     </div>
   );

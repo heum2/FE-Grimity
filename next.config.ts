@@ -5,4 +5,10 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
 };
 
+module.exports = {
+  images: {
+    domains: ["image.grimity.com"],
+  },
+};
+
 export default nextConfig;

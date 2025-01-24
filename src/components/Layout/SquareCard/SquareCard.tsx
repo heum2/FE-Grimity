@@ -13,30 +13,28 @@ export default function SquareCard({
   likeCount,
   commentCount,
   id,
-  isSave,
+  isLike,
 }: SquareCardProps) {
-  // const [isSaved, setIsSaved] = useState(isSave);
+  // const [isLiked, setIsLiked] = useState(isSave);
   const [currentLikeCount, setCurrentLikeCount] = useState(likeCount);
-
-  const hasMultipleImages = cards && cards.length > 1;
 
   // const handleLikeClick = async (e: React.MouseEvent) => {
   //   e.stopPropagation();
-  //   if (isSaved) {
+  //   if (isLiked) {
   //     await deleteLike(id);
   //     setCurrentLikeCount((prev) => prev - 1);
   //   } else {
   //     await putLike(id);
   //     setCurrentLikeCount((prev) => prev + 1);
   //   }
-  //   setIsSaved(!isSaved);
+  //   setIsLiked(!isLiked);
   // };
 
   return (
     <div className={styles.container}>
       <div className={styles.imageContainer}>
         {/* {isLoggedIn && (
-          <div className={styles.saveBtn} onClick={handleLikeClick}>
+          <div className={styles.likeBtn} onClick={handleLikeClick}>
             <IconComponent name={isLiked ? "cardSaveOn" : "cardSaveOff"} width={48} height={48} />
           </div>
         )} */}
