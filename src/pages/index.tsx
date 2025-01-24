@@ -4,6 +4,7 @@ import { serviceUrl } from "@/constants/serviceurl";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Ranking from "@/components/Layout/Ranking/Ranking";
+import NewFeed from "@/components/Layout/NewFeed/NewFeed";
 
 export default function Home() {
   const router = useRouter();
@@ -19,6 +20,8 @@ export default function Home() {
       <InitialPageMeta title={OGTitle} url={OGUrl} />
       <div className={styles.container}>
         <Ranking />
+        <div className={styles.bar} />
+        <NewFeed />
       </div>
     </>
   );

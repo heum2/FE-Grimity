@@ -1,0 +1,18 @@
+@import "@/styles/globals.scss";
+
+.container {
+  width: 100%;
+  padding-top: 40px;
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-column-gap: 16px;
+    grid-row-gap: 20px;
+  }
+
+  .loader {
+    text-align: center;
+    margin-top: 16px;
+  }
+}

@@ -27,7 +27,7 @@ export default function Ranking() {
 
   return (
     <div className={styles.container}>
-      <Title>오늘의 인기 랭킹</Title>
+      <Title link="/popular">오늘의 인기 랭킹</Title>
       {data && data.feeds && (
         <div className={styles.rankingContainer}>
           <button
