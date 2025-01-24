@@ -26,13 +26,12 @@ export default function Nickname() {
       return response.data;
     },
     onSuccess: (data) => {
-      setModal({ isOpen: false, type: null, data: null });
+      setModal({ isOpen: true, type: "JOIN", data: null });
       setAuth({
         access_token: data.accessToken,
         isLoggedIn: true,
         user_id: data.id,
       });
-      router.push("/");
     },
     onError: (error: any) => {
       if (error?.response?.status === 409) {

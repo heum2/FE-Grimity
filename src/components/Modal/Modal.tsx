@@ -5,6 +5,7 @@ import Login from "./Login/Login";
 import Nickname from "./Nickname/Nickname";
 import { usePreventScroll } from "@/utils/usePreventScroll";
 import IconComponent from "../Asset/Icon";
+import Join from "./Join/Join";
 
 export default function Modal() {
   const [modal, setModal] = useRecoilState(modalState);
@@ -22,6 +23,8 @@ export default function Modal() {
         return <Login />;
       case "NICKNAME":
         return <Nickname />;
+      case "JOIN":
+        return <Join />;
       default:
         return null;
     }
