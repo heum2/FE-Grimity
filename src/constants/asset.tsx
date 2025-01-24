@@ -12,6 +12,8 @@ export const ICONS = {
   cardComment: "/icon/card-comment.svg",
   cardSaveOff: "/icon/card-save-off.svg",
   cardSaveOn: "/icon/card-save-on.svg",
+  cardLikeOff: "/icon/card-like-off.svg",
+  cardLikeOn: "/icon/card-like-on.svg",
   cardDot: "/icon/card-dot.svg",
   cardArrowRight: "/icon/card-arrow-right.svg",
   cardArrowLeft: "/icon/card-arrow-left.svg",

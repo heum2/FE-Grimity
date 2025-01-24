@@ -5,6 +5,10 @@ import { formatCurrency } from "@/utils/formatCurrency";
 import Image from "next/image";
 import { SquareCardProps } from "./SquareCard.types";
 import Link from "next/link";
+import { useRecoilValue } from "recoil";
+import { authState } from "@/states/authState";
+import { deleteLike } from "@/api/feeds/deleteFeedsIdLike";
+import { putLike } from "@/api/feeds/putFeedsIdLike";
 
 export default function SquareCard({
   title,
@@ -15,29 +19,35 @@ export default function SquareCard({
   id,
   isLike,
 }: SquareCardProps) {
-  // const [isLiked, setIsLiked] = useState(isSave);
+  const { isLoggedIn } = useRecoilValue(authState);
+  const [isLiked, setIsLiked] = useState(isLike);
   const [currentLikeCount, setCurrentLikeCount] = useState(likeCount);
 
-  // const handleLikeClick = async (e: React.MouseEvent) => {
-  //   e.stopPropagation();
-  //   if (isLiked) {
-  //     await deleteLike(id);
-  //     setCurrentLikeCount((prev) => prev - 1);
-  //   } else {
-  //     await putLike(id);
-  //     setCurrentLikeCount((prev) => prev + 1);
-  //   }
-  //   setIsLiked(!isLiked);
-  // };
+  const handleLikeClick = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isLiked) {
+      await deleteLike(id);
+      setCurrentLikeCount((prev) => prev - 1);
+    } else {
+      await putLike(id);
+      setCurrentLikeCount((prev) => prev + 1);
+    }
+    setIsLiked(!isLiked);
+  };
 
   return (
     <div className={styles.container}>
       <div className={styles.imageContainer}>
-        {/* {isLoggedIn && (
+        {isLoggedIn && (
           <div className={styles.likeBtn} onClick={handleLikeClick}>
-            <IconComponent name={isLiked ? "cardSaveOn" : "cardSaveOff"} width={48} height={48} />
+            <IconComponent
+              name={isLiked ? "cardLikeOn" : "cardLikeOff"}
+              isBtn
+              width={24}
+              height={24}
+            />
           </div>
-        )} */}
+        )}
         <Link href={`/feeds/${id}`}>
           <Image
             src={cards[0]}
