@@ -5,6 +5,7 @@ import IconComponent from "@/components/Asset/Icon";
 import styles from "./Ranking.module.scss";
 import { useTodayPopular } from "@/api/feeds/getTodayPopular";
 import Loader from "../Loader/Loader";
+import Image from "next/image";
 
 export default function Ranking() {
   const [pageIndex, setPageIndex] = useState(0);
@@ -38,7 +39,13 @@ export default function Ranking() {
               visibility: pageIndex === 0 ? "hidden" : "visible",
             }}
           >
-            <IconComponent name="cardArrowLeft" width={40} height={40} isBtn />
+            <Image
+              src="/icon/card-arrow-left.svg"
+              width={40}
+              height={40}
+              alt="왼쪽 버튼"
+              className={styles.arrowBtn}
+            />
           </button>
           <div className={styles.cardsContainer}>
             {paginatedFeeds.map((feed, idx) => (
@@ -75,7 +82,13 @@ export default function Ranking() {
             onClick={handleNextClick}
             disabled={endIdx >= (data?.feeds?.length || 0)}
           >
-            <IconComponent name="cardArrowRight" width={40} height={40} isBtn />
+            <Image
+              src="/icon/card-arrow-right.svg"
+              width={40}
+              height={40}
+              alt="오른쪽 버튼"
+              className={styles.arrowBtn}
+            />
           </button>
         </div>
       )}
