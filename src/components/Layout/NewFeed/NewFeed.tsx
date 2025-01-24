@@ -50,9 +50,6 @@ export default function NewFeed() {
           ))
         )}
       </div>
-      <div ref={observerRef} className={styles.loader}>
-        {isFetchingNextPage && <p>Loading...</p>}
-      </div>
     </div>
   );
 }
