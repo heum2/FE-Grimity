@@ -1,0 +1,33 @@
+@import "@/styles/globals.scss";
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: $gray0;
+  padding: 40px 32px;
+  border-radius: 12px;
+  width: 404px;
+  height: 394px;
+  position: relative;
+}
+
+.closeButton {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+}

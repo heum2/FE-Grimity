@@ -1,0 +1,19 @@
+@import "@/styles/globals.scss";
+
+.toast {
+  color: $gray0;
+  background: rgba(0, 0, 0, 0.7);
+  display: inline-flex;
+  padding: 12px 24px 12px 20px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 40px;
+  transition: opacity 0.5s ease-in-out;
+  opacity: 1;
+  position: fixed;
+  top: 130px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  gap: 8px;
+}
