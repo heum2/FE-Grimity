@@ -4,7 +4,7 @@ import { useRecoilState } from "recoil";
 export function useToast() {
   const [toast, setToast] = useRecoilState(toastState);
 
-  const showToast = (message: string, type: "success" | "error") => {
+  const showToast = (message: string, type: "success" | "error" | "warning" | "information") => {
     setToast({ message, type, isShow: true });
     setTimeout(() => {
       setToast((prev) => ({ ...prev, isShow: false }));

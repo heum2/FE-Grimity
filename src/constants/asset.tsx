@@ -21,4 +21,8 @@ export const ICONS = {
   checkedbox: "/icon/checkedbox.svg",
   kakao: "/icon/kakao.svg",
   google: "/icon/google.svg",
+  success: "/icon/toast-success.svg",
+  error: "/icon/toast-error.svg",
+  warning: "/icon/toast-warning.svg",
+  information: "/icon/toast-information.svg",
 };
