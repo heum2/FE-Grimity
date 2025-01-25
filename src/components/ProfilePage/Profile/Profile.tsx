@@ -21,12 +21,12 @@ import { AxiosError } from "axios";
 import { deleteMyBackgroundImage } from "@/api/users/deleteMeImage";
 
 export default function Profile({ isMyProfile, id }: ProfileProps) {
-  const { isLoggedIn } = useRecoilValue(authState);
+  const { isLoggedIn, user_id } = useRecoilValue(authState);
   const [, setModal] = useRecoilState(modalState);
   const { data: myData } = useMyData();
   const { data: userData, refetch: refetchUserData } = useUserData(id);
-  const [profileImage, setProfileImage] = useState<string>("");
-  const [coverImage, setCoverImage] = useState<string>("");
+  const [, setProfileImage] = useState<string>("");
+  const [, setCoverImage] = useState<string>("");
   const { showToast } = useToast();
 
   useEffect(() => {
@@ -184,7 +184,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
           {userData.backgroundImage !== "https://image.grimity.com/null" ? (
             <div className={styles.backgroundImage}>
               <Image
-                src={coverImage}
+                src={userData.backgroundImage}
                 alt="backgroundImage"
                 width={1400} // 임의 지정
                 height={600}
@@ -194,30 +194,32 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                   objectFit: "cover",
                 }}
               />
-              <div className={styles.coverBtns}>
-                <label htmlFor="edit-cover">
-                  <div className={styles.coverEditBtn}>
-                    <IconComponent name="editCover" width={20} height={20} isBtn />
-                    커버 수정하기
+              {userData.id === user_id && (
+                <div className={styles.coverBtns}>
+                  <label htmlFor="edit-cover">
+                    <div className={styles.coverEditBtn}>
+                      <IconComponent name="editCover" width={20} height={20} isBtn />
+                      커버 수정하기
+                    </div>
+                  </label>
+                  <input
+                    id="edit-cover"
+                    type="file"
+                    accept="image/*"
+                    className={styles.hidden}
+                    onChange={handleAddCover}
+                  />
+                  <div onClick={handleDeleteImage}>
+                    <Button
+                      type="outlined-assistive"
+                      size="m"
+                      leftIcon={<IconComponent name="deleteCover" width={20} height={20} isBtn />}
+                    >
+                      커버 삭제
+                    </Button>
                   </div>
-                </label>
-                <input
-                  id="edit-cover"
-                  type="file"
-                  accept="image/*"
-                  className={styles.hidden}
-                  onChange={handleAddCover}
-                />
-                <div onClick={handleDeleteImage}>
-                  <Button
-                    type="outlined-assistive"
-                    size="m"
-                    leftIcon={<IconComponent name="deleteCover" width={20} height={20} isBtn />}
-                  >
-                    커버 삭제
-                  </Button>
                 </div>
-              </div>
+              )}
             </div>
           ) : (
             <div className={styles.backgroundDefaultImageContainer}>
@@ -232,17 +234,21 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                   objectFit: "cover",
                 }}
               />
-              <label htmlFor="upload-cover" className={styles.backgroundAddMessage}>
-                <IconComponent name="addCover" width={20} height={20} isBtn />
-                커버 추가하기
-              </label>
-              <input
-                id="upload-cover"
-                type="file"
-                accept="image/*"
-                className={styles.hidden}
-                onChange={handleAddCover}
-              />
+              {userData.id === user_id && (
+                <>
+                  <label htmlFor="upload-cover" className={styles.backgroundAddMessage}>
+                    <IconComponent name="addCover" width={20} height={20} isBtn />
+                    커버 추가하기
+                  </label>
+                  <input
+                    id="upload-cover"
+                    type="file"
+                    accept="image/*"
+                    className={styles.hidden}
+                    onChange={handleAddCover}
+                  />
+                </>
+              )}
             </div>
           )}
           <section
@@ -255,28 +261,32 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
             {userData.image !== "https://image.grimity.com/null" ? (
               <div className={styles.profileImageContainer}>
                 <Image
-                  src={profileImage}
+                  src={userData.image}
                   width={96}
                   height={96}
                   alt="프로필 이미지"
                   className={styles.profileImage}
                 />
-                <label htmlFor="upload-image">
-                  <Image
-                    src="/icon/edit-profile-image.svg"
-                    width={36}
-                    height={36}
-                    alt="프로필 이미지 수정"
-                    className={styles.addProfileImage}
-                  />
-                </label>
-                <input
-                  id="upload-image"
-                  type="file"
-                  accept="image/*"
-                  className={styles.hidden}
-                  onChange={handleFileChange}
-                />
+                {userData.id === user_id && (
+                  <>
+                    <label htmlFor="upload-image">
+                      <Image
+                        src="/icon/edit-profile-image.svg"
+                        width={36}
+                        height={36}
+                        alt="프로필 이미지 수정"
+                        className={styles.addProfileImage}
+                      />
+                    </label>
+                    <input
+                      id="upload-image"
+                      type="file"
+                      accept="image/*"
+                      className={styles.hidden}
+                      onChange={handleFileChange}
+                    />
+                  </>
+                )}
               </div>
             ) : (
               <div className={styles.profileImageContainer}>
@@ -287,22 +297,26 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                   alt="프로필 이미지"
                   className={styles.profileImage}
                 />
-                <label htmlFor="upload-image">
-                  <Image
-                    src="/icon/add-profile-image.svg"
-                    width={36}
-                    height={36}
-                    alt="프로필 이미지 추가"
-                    className={styles.addProfileImage}
-                  />
-                </label>
-                <input
-                  id="upload-image"
-                  type="file"
-                  accept="image/*"
-                  className={styles.hidden}
-                  onChange={handleFileChange}
-                />
+                {userData.id === user_id && (
+                  <>
+                    <label htmlFor="upload-image">
+                      <Image
+                        src="/icon/add-profile-image.svg"
+                        width={36}
+                        height={36}
+                        alt="프로필 이미지 추가"
+                        className={styles.addProfileImage}
+                      />
+                    </label>
+                    <input
+                      id="upload-image"
+                      type="file"
+                      accept="image/*"
+                      className={styles.hidden}
+                      onChange={handleFileChange}
+                    />
+                  </>
+                )}
               </div>
             )}
             <div className={styles.spaceBetween}>
