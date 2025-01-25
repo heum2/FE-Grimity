@@ -60,22 +60,22 @@
         @include Label1;
         color: $gray50;
       }
+    }
 
-      .countContainer {
+    .countContainer {
+      display: flex;
+      gap: 6px;
+
+      .likeContainer {
         display: flex;
-        gap: 6px;
+        align-items: center;
+        gap: 2px;
 
-        .likeContainer {
-          display: flex;
-          align-items: center;
-          gap: 2px;
-
-          .count {
-            @include MEDIUM;
-            font-size: 12px;
-            line-height: 12px;
-            color: $gray50;
-          }
+        .count {
+          @include MEDIUM;
+          font-size: 12px;
+          line-height: 12px;
+          color: $gray50;
         }
       }
     }

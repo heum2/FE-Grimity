@@ -11,6 +11,7 @@ import { useMyData } from "@/api/users/getMe";
 import { MyInfoRequest, putMyInfo } from "@/api/users/putMe";
 import { AxiosError } from "axios";
 import Loader from "@/components/Layout/Loader/Loader";
+import router from "next/router";
 
 export default function ProfileEdit() {
   const { data: myData, isLoading, refetch } = useMyData();
@@ -37,6 +38,7 @@ export default function ProfileEdit() {
       showToast("프로필 정보가 변경되었습니다!", "success");
       setModal({ isOpen: false, type: null, data: null });
       refetch();
+      router.reload();
       setNameError("");
     },
     onError: (error: AxiosError) => {

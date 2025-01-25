@@ -1,4 +1,3 @@
-import { useState } from "react";
 import IconComponent from "@/components/Asset/Icon";
 import styles from "./ProfileCard.module.scss";
 import { formatCurrency } from "@/utils/formatCurrency";
@@ -10,7 +9,6 @@ import { formattedDate } from "@/utils/formatDate";
 export default function ProfileCard({
   title,
   cards = [],
-  author,
   likeCount,
   commentCount,
   id,
@@ -39,21 +37,17 @@ export default function ProfileCard({
       <div className={styles.infoContainer}>
         <h3 className={styles.title}>{title}</h3>
         <div className={styles.profileContainer}>
-          {author && (
-            <>
-              <p className={styles.author}>{formattedDate(createdAt)}</p>
-              <div className={styles.countContainer}>
-                <div className={styles.likeContainer}>
-                  <IconComponent name="cardLike" width={12} height={12} />
-                  <p className={styles.count}>{formatCurrency(likeCount)}</p>
-                </div>
-                <div className={styles.likeContainer}>
-                  <IconComponent name="cardComment" width={12} height={12} />
-                  <p className={styles.count}>{formatCurrency(commentCount)}</p>
-                </div>
-              </div>
-            </>
-          )}
+          <p className={styles.author}>{formattedDate(createdAt)}</p>
+          <div className={styles.countContainer}>
+            <div className={styles.likeContainer}>
+              <IconComponent name="cardLike" width={12} height={12} />
+              <p className={styles.count}>{formatCurrency(likeCount)}</p>
+            </div>
+            <div className={styles.likeContainer}>
+              <IconComponent name="cardComment" width={12} height={12} />
+              <p className={styles.count}>{formatCurrency(commentCount)}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
