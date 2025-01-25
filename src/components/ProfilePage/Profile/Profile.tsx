@@ -363,10 +363,10 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                     </Button>
                   ) : userData.isFollowing ? (
                     <Button size="l" type="outlined-assistive" onClick={handleUnfollowClick}>
-                      언 팔로우
+                      팔로잉
                     </Button>
                   ) : (
-                    <Button size="l" type="outlined-assistive" onClick={handleFollowClick}>
+                    <Button size="l" type="filled-primary" onClick={handleFollowClick}>
                       팔로우
                     </Button>
                   )
