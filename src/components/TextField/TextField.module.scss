@@ -4,7 +4,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 12px;
 }
 
 .inputContainer {
@@ -20,6 +20,7 @@
 
   &:focus-within {
     border: 1px solid $secandary1;
+    background-color: $gray0;
   }
 }
 
@@ -37,9 +38,9 @@
 }
 
 .label {
-  // @include H5SB;
+  @include Sub3;
   align-self: stretch;
-  // color: $gray80;
+  color: $gray80;
 }
 
 .input {
@@ -49,6 +50,11 @@
   border: none;
   outline: none;
   padding: 0;
+  background-color: $gray10;
+
+  &:focus-within {
+    background-color: $gray0;
+  }
 }
 
 .countTotal {
