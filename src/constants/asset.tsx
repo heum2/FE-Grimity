@@ -33,4 +33,6 @@ export const ICONS = {
   link: "/icon/link.svg",
   overlap: "/icon/overlap.svg",
   addCover: "/icon/add-cover.svg",
+  deleteLink: "/icon/delete-link.svg",
+  addLink: "/icon/add-link.svg",
 };

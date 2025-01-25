@@ -22,6 +22,11 @@
   position: relative;
 }
 
+.profileEditModal {
+  @extend .modal;
+  width: 500px;
+}
+
 .closeButton {
   position: absolute;
   top: 25px;

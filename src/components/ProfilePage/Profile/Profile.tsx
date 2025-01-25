@@ -4,7 +4,7 @@ import Button from "../../Button/Button";
 import { useMyData } from "@/api/users/getMe";
 import Image from "next/image";
 import { formatCurrency } from "@/utils/formatCurrency";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { ProfileProps } from "./Profile.types";
 import { useUserData } from "@/api/users/getId";
 import { deleteFollow } from "@/api/users/deleteIdFollow";
@@ -12,10 +12,11 @@ import { putFollow } from "@/api/users/putIdFollow";
 import { useToast } from "@/utils/useToast";
 import { authState } from "@/states/authState";
 import IconComponent from "@/components/Asset/Icon";
+import { modalState } from "@/states/modalState";
 
 export default function Profile({ isMyProfile, id }: ProfileProps) {
   const { isLoggedIn } = useRecoilValue(authState);
-  const { data: myData } = useMyData();
+  const [, setModal] = useRecoilState(modalState);
   const { data: userData, refetch: refetchUserData } = useUserData(id);
   const { showToast } = useToast();
 
@@ -35,6 +36,10 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
     } catch (error) {
       showToast("오류가 발생했습니다. 다시 시도해주세요.", "error");
     }
+  };
+
+  const handleOpenEditModal = () => {
+    setModal({ isOpen: true, type: "PROFILE-EDIT", data: null });
   };
 
   return (
@@ -120,11 +125,9 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
               <div className={styles.followEdit}>
                 {isLoggedIn ? (
                   isMyProfile ? (
-                    <Link href="/profile-edit">
-                      <Button size="l" type="outlined-assistive">
-                        프로필 편집
-                      </Button>
-                    </Link>
+                    <Button size="l" type="outlined-assistive" onClick={handleOpenEditModal}>
+                      프로필 편집
+                    </Button>
                   ) : userData.isFollowing ? (
                     <Button size="l" type="outlined-assistive" onClick={handleUnfollowClick}>
                       언 팔로우
