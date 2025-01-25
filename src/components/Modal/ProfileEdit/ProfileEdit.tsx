@@ -127,11 +127,12 @@ export default function ProfileEdit() {
                 placeholder="자유롭게 소개해주세요."
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
+                maxLength={200}
               />
               {description && (
                 <p className={styles.countTotal}>
                   <p className={styles.count}>{description.length}</p>
-                  /50
+                  /200
                 </p>
               )}
             </div>
