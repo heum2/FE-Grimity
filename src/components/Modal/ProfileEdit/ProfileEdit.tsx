@@ -162,7 +162,7 @@ export default function ProfileEdit() {
                 <Button
                   type="outlined-assistive"
                   size="m"
-                  leftIcon=<IconComponent name="addLink" width={16} height={16} isBtn />
+                  leftIcon={<IconComponent name="addLink" width={16} height={16} isBtn />}
                   onClick={handleAddLink}
                 >
                   링크 추가

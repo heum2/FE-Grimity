@@ -1,4 +1,3 @@
-import Link from "next/link";
 import styles from "./Profile.module.scss";
 import Button from "../../Button/Button";
 import { useMyData } from "@/api/users/getMe";
@@ -17,7 +16,9 @@ import { useEffect, useState } from "react";
 import router from "next/router";
 import { postPresignedUrl } from "@/api/aws/postPresigned";
 import { useMutation } from "react-query";
-import { putProfileImage } from "@/api/users/putMeImage";
+import { putBackgroundImage, putProfileImage } from "@/api/users/putMeImage";
+import { AxiosError } from "axios";
+import { deleteMyBackgroundImage } from "@/api/users/deleteMeImage";
 
 export default function Profile({ isMyProfile, id }: ProfileProps) {
   const { isLoggedIn } = useRecoilValue(authState);
@@ -25,11 +26,13 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
   const { data: myData } = useMyData();
   const { data: userData, refetch: refetchUserData } = useUserData(id);
   const [profileImage, setProfileImage] = useState<string>("");
+  const [coverImage, setCoverImage] = useState<string>("");
   const { showToast } = useToast();
 
   useEffect(() => {
     if (myData) {
       setProfileImage(myData.image || "/image/default.svg");
+      setCoverImage(myData.backgroundImage || "/image/default-cover.png");
     }
   }, [myData]);
 
@@ -56,6 +59,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
   };
 
   const ImageMutation = useMutation((imageName: string) => putProfileImage(imageName));
+  const CoverImageMutation = useMutation((imageName: string) => putBackgroundImage(imageName));
 
   const uploadImageToServer = async (file: File) => {
     try {
@@ -92,6 +96,42 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
     }
   };
 
+  const uploadCoverImageToServer = async (file: File) => {
+    try {
+      const fileExt = file.name.split(".").pop()?.toLowerCase();
+
+      if (!fileExt || !["jpg", "jpeg", "png"].includes(fileExt)) {
+        showToast("JPG, JPEG, PNG 파일만 업로드 가능합니다.", "error");
+        return;
+      }
+      const ext = fileExt as "jpg" | "jpeg" | "png";
+
+      const data = await postPresignedUrl({
+        type: "background",
+        ext,
+      });
+
+      CoverImageMutation.mutate(data.imageName);
+
+      const uploadResponse = await fetch(data.url, {
+        method: "PUT",
+        body: file,
+        headers: {
+          "Content-Type": file.type,
+        },
+      });
+
+      if (!uploadResponse.ok) {
+        throw new Error(`${uploadResponse.status}`);
+      }
+
+      showToast("커버 이미지가 변경되었습니다!", "success");
+      router.reload();
+    } catch (error) {
+      showToast("커버 이미지 업로드에 실패했습니다.", "error");
+    }
+  };
+
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -107,24 +147,102 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
     }
   };
 
+  const handleAddCover = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const imageUrl = URL.createObjectURL(file);
+      setCoverImage(imageUrl);
+
+      await uploadCoverImageToServer(file);
+    } catch (error) {
+      setCoverImage(myData?.backgroundImage || "/image/default-cover.png");
+      console.error("File change error:", error);
+    }
+  };
+
+  const deleteImageMutation = useMutation(deleteMyBackgroundImage, {
+    onSuccess: () => {
+      showToast("커버 이미지가 삭제되었습니다.", "success");
+      router.reload();
+    },
+    onError: (error: AxiosError) => {
+      showToast("커버 이미지 삭제에 실패했습니다.", "error");
+      console.error("Image delete error:", error);
+    },
+  });
+
+  const handleDeleteImage = () => {
+    deleteImageMutation.mutate();
+  };
+
   return (
     <div className={styles.container}>
       {userData && (
         <>
           {userData.backgroundImage !== "https://image.grimity.com/null" ? (
-            <Image
-              src={userData.backgroundImage}
-              width={70}
-              height={70}
-              alt="backgroundImage"
-              className={styles.backgroundImage}
-            />
+            <div className={styles.backgroundImage}>
+              <Image
+                src={coverImage}
+                alt="backgroundImage"
+                width={1400} // 임의 지정
+                height={600}
+                style={{
+                  width: "100%",
+                  height: "600px",
+                  objectFit: "cover",
+                }}
+              />
+              <div className={styles.coverBtns}>
+                <label htmlFor="edit-cover">
+                  <div className={styles.coverEditBtn}>
+                    <IconComponent name="editCover" width={20} height={20} isBtn />
+                    커버 수정하기
+                  </div>
+                </label>
+                <input
+                  id="edit-cover"
+                  type="file"
+                  accept="image/*"
+                  className={styles.hidden}
+                  onChange={handleAddCover}
+                />
+                <div onClick={handleDeleteImage}>
+                  <Button
+                    type="outlined-assistive"
+                    size="m"
+                    leftIcon={<IconComponent name="deleteCover" width={20} height={20} isBtn />}
+                  >
+                    커버 삭제
+                  </Button>
+                </div>
+              </div>
+            </div>
           ) : (
-            <div className={styles.backgroundDefaultImage}>
-              <div className={styles.backgroundAddMessage}>
+            <div className={styles.backgroundDefaultImageContainer}>
+              <Image
+                src="/image/default-cover.png"
+                width={1400} // 임의 지정
+                height={264}
+                alt="backgroundImage"
+                style={{
+                  width: "100%",
+                  height: "264px",
+                  objectFit: "cover",
+                }}
+              />
+              <label htmlFor="upload-cover" className={styles.backgroundAddMessage}>
                 <IconComponent name="addCover" width={20} height={20} isBtn />
                 커버 추가하기
-              </div>
+              </label>
+              <input
+                id="upload-cover"
+                type="file"
+                accept="image/*"
+                className={styles.hidden}
+                onChange={handleAddCover}
+              />
             </div>
           )}
           <section

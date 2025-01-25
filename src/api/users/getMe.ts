@@ -7,6 +7,7 @@ export interface MyInfoResponse {
   email: string;
   name: string;
   image: string;
+  backgroundImage: string;
   description: string;
   links: { linkName: string; link: string }[];
   createdAt: string;
@@ -21,6 +22,7 @@ export async function getMyInfo(): Promise<MyInfoResponse> {
 
     const updatedData = response.data;
     updatedData.image = `https://image.grimity.com/${updatedData.image}`;
+    updatedData.backgroundImage = `https://image.grimity.com/${updatedData.backgroundImage}`;
 
     return updatedData;
   } catch (error) {

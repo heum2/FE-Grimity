@@ -8,24 +8,77 @@
   background-color: $gray0;
   padding-top: calc(40px - 24px);
 
-  .backgroundDefaultImage {
+  .backgroundImage {
     width: 100%;
-    height: 200px;
-    background-color: $primary4;
     position: absolute;
     top: 0;
     left: 0;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+  }
 
-    .backgroundAddMessage {
-      margin-top: 64px;
+  .backgroundDefaultImageContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .backgroundDefaultImage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .backgroundAddMessage {
+    position: absolute;
+    top: calc(50% + 32px);
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: $gray0;
+    cursor: pointer;
+    z-index: 2;
+    padding: 8px 12px;
+    border-radius: 8px;
+  }
+
+  .coverBtns {
+    position: absolute;
+    right: 70px;
+    bottom: 40px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .coverEditBtn {
+      border: 1px solid $gray30;
+      color: $gray70;
+      background-color: $gray0;
+      padding: 11px 20px;
+      border-radius: 10px;
+      @include Btn2;
       display: flex;
+      align-items: center;
+      justify-content: center;
       gap: 8px;
-      @include Sub4;
-      color: $gray0;
       cursor: pointer;
+
+      &:hover {
+        background-color: darken($gray0, 4%);
+      }
+
+      &:active {
+        background-color: darken($gray0, 8%);
+      }
     }
   }
 
@@ -40,7 +93,7 @@
 
   .infoContainerDefault {
     @extend .infoContainer;
-    margin-top: 65px; //커버 200px -> 마진 65px
+    margin-top: 130px; //커버 200px+ 헤더 64px -> 마진 130px
   }
 
   .topContainer {
@@ -138,8 +191,7 @@
     right: 0;
     cursor: pointer;
   }
-
-  .hidden {
-    display: none;
-  }
+}
+.hidden {
+  display: none;
 }
