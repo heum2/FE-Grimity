@@ -22,6 +22,7 @@ export default function Header() {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
+  const isUserPage = router.pathname.startsWith("/users/[id]");
 
   const navItems = [
     { name: "홈", path: "/" },
@@ -60,12 +61,15 @@ export default function Header() {
   }, [router.pathname]);
 
   useEffect(() => {
-    if (activeItemRef.current && indicatorRef.current) {
+    if (!isUserPage && activeItemRef.current && indicatorRef.current) {
       const { offsetLeft, offsetWidth } = activeItemRef.current;
       indicatorRef.current.style.transform = `translateX(${offsetLeft}px)`;
       indicatorRef.current.style.width = `${offsetWidth}px`;
+    } else if (isUserPage && indicatorRef.current) {
+      indicatorRef.current.style.transform = "none";
+      indicatorRef.current.style.width = "0px";
     }
-  }, [activeNav]);
+  }, [activeNav, isUserPage]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -78,19 +82,26 @@ export default function Header() {
   }, []);
 
   return (
-    <header className={styles.header}>
+    <header className={isUserPage ? styles.userPageHeader : styles.header}>
       <div className={styles.container}>
         <div className={styles.leftSection}>
           <Link href="/">
             <div className={styles.cursor}>
-              <Image src="/image/logo.svg" width={100} height={29} alt="logo" />
+              <Image
+                src={isUserPage ? "/image/logo-white.svg" : "/image/logo.svg"}
+                width={100}
+                height={29}
+                alt="logo"
+              />
             </div>
           </Link>
           <nav className={styles.nav}>
             {navItems.map((item, index) => (
               <div key={index} className={styles.navItem} onClick={() => handleNavClick(item)}>
                 <p
-                  className={`${styles.item} ${activeNav === item.name ? styles.active : ""}`}
+                  className={`${isUserPage ? styles.userPageitem : styles.item} ${
+                    !isUserPage && (activeNav === item.name ? styles.active : "")
+                  }`}
                   ref={item.name === activeNav ? activeItemRef : null}
                 >
                   {item.name}
@@ -103,10 +114,17 @@ export default function Header() {
         </div>
         <div className={styles.wrapper}>
           <div className={styles.icons}>
-            <IconComponent name="search" width={24} height={24} padding={8} isBtn alt="검색" />
+            <IconComponent
+              name={isUserPage ? "searchWhite" : "search"}
+              width={24}
+              height={24}
+              padding={8}
+              isBtn
+              alt="검색"
+            />
             {isLoggedIn && (
               <IconComponent
-                name="bellActive"
+                name={isUserPage ? "bellWhiteActive" : "bellActive"}
                 width={40}
                 height={40}
                 padding={0}

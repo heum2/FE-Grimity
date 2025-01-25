@@ -2,7 +2,10 @@ export const ICONS = {
   /* Icon */
   bell: "/icon/bell.svg",
   bellActive: "/icon/bell-active.svg",
+  bellWhite: "/icon/bell-white.svg",
+  bellWhiteActive: "/icon/bell-white-active.svg",
   search: "/icon/search.svg",
+  searchWhite: "/icon/search-white.svg",
   ranking1: "/icon/ranking1.svg",
   ranking2: "/icon/ranking2.svg",
   ranking3: "/icon/ranking3.svg",
