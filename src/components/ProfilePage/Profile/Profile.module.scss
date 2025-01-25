@@ -10,121 +10,118 @@
 
   .backgroundDefaultImage {
     width: 100%;
-    height: 600px;
+    height: 200px;
     background-color: $primary4;
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
-  }
-
-  .infoContainer {
-    margin-top: 475px;
-    width: 100%;
     display: flex;
-    justify-content: space-between;
-    z-index: 5;
+    align-items: center;
+    justify-content: center;
 
-    .topContainer {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-
-      .name {
-        @include Title2;
-        color: $gray80;
-        margin-bottom: 2px;
-      }
-    }
-
-    .leftContainer {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-
-      .description {
-        @include Body1;
-        color: $gray70;
-      }
-    }
-
-    .rightContainer {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 32px;
-    }
-
-    .followEdit {
-      display: flex;
-      align-items: center;
-      gap: 40px;
-    }
-
-    .follow {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .follower {
+    .backgroundAddMessage {
+      margin-top: 64px;
       display: flex;
       gap: 8px;
       @include Sub4;
-      color: $gray60;
+      color: $gray0;
       cursor: pointer;
     }
+  }
 
-    .followerColor {
-      color: $gray70;
+  .infoContainer {
+    margin-top: 465px; //커버 600px -> 마진 465px
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    z-index: 5;
+  }
+
+  .infoContainerDefault {
+    @extend .infoContainer;
+    margin-top: 65px; //커버 200px -> 마진 65px
+  }
+
+  .topContainer {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .name {
+      @include Title2;
+      color: $gray80;
+      margin-bottom: 8px;
     }
+  }
 
-    .linkContainer {
+  .spaceBetween {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .leftContainer {
+    display: flex;
+    flex-direction: column;
+
+    .descriptionContainer {
       display: flex;
-      gap: 16px;
-
-      .link {
-        @include Label1;
-        color: $gray60;
-      }
+      flex-direction: column;
+      gap: 20px;
     }
 
-    // .unfollowBtn {
-    //   display: inline-flex;
-    //   padding: 10px 20px;
-    //   justify-content: center;
-    //   align-items: center;
-    //   @include H5SB;
-    //   color: $white;
-    //   background-color: $gray30;
-    //   border-radius: 40px;
-    //   border: none;
-    //   outline: none;
-    //   cursor: pointer;
-
-    //   &:hover {
-    //     background-color: darken($gray30, 10%);
-    //   }
-    // }
-
-    // .followBtn {
-    //   @extend .unfollowBtn;
-    //   background-color: $green50;
-
-    //   &:hover {
-    //     background-color: darken($green50, 10%);
-    //     animation: pulse 0.6s ease-in-out;
-    //   }
-
-    //   &:active {
-    //     animation: pulse 0.6s ease-in-out;
-    //   }
-    // }
+    .description {
+      @include Body1;
+      color: $gray70;
+      margin-top: 12px;
+    }
   }
 
-  .profileImage {
-    object-fit: cover;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 4px solid $gray0;
+  .followEdit {
+    display: flex;
+    align-items: center;
+    gap: 40px;
   }
+
+  .follow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .follower {
+    display: flex;
+    gap: 8px;
+    @include Sub4;
+    color: $gray60;
+    cursor: pointer;
+  }
+
+  .followerColor {
+    color: $gray70;
+  }
+
+  .linkContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .linkWrapper {
+      display: flex;
+      gap: 4px;
+    }
+
+    .link {
+      @include Label1;
+      color: $gray60;
+    }
+  }
+}
+
+.profileImage {
+  object-fit: cover;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid $gray0;
 }

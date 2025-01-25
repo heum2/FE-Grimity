@@ -32,4 +32,5 @@ export const ICONS = {
   information: "/icon/toast-information.svg",
   link: "/icon/link.svg",
   overlap: "/icon/overlap.svg",
+  addCover: "/icon/add-cover.svg",
 };
