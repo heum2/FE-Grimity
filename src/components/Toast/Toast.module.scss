@@ -4,10 +4,11 @@
   color: $gray70;
   @include Title5;
   background: $gray0;
-  display: inline-flex;
-  padding: 24px;
+  display: flex;
   justify-content: center;
   align-items: center;
+  gap: 16px;
+  padding: 16px 24px;
   border-radius: 12px;
   transition: opacity 0.5s ease-in-out;
   opacity: 1;
@@ -16,7 +17,6 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1000;
-  gap: 16px;
 
   &.success {
     border: 1px solid $secandary1;
