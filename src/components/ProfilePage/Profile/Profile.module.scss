@@ -119,9 +119,26 @@
   }
 }
 
-.profileImage {
-  object-fit: cover;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 4px solid $gray0;
+.profileImageContainer {
+  width: 96px;
+  height: 96px;
+  position: relative;
+
+  .profileImage {
+    object-fit: cover;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid $gray0;
+  }
+
+  .addProfileImage {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    cursor: pointer;
+  }
+
+  .hidden {
+    display: none;
+  }
 }
