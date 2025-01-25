@@ -1,0 +1,130 @@
+@import "@/styles/globals.scss";
+
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: $gray0;
+  padding-top: calc(40px - 24px);
+
+  .backgroundDefaultImage {
+    width: 100%;
+    height: 600px;
+    background-color: $primary4;
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+
+  .infoContainer {
+    margin-top: 475px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    z-index: 5;
+
+    .topContainer {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+
+      .name {
+        @include Title2;
+        color: $gray80;
+        margin-bottom: 2px;
+      }
+    }
+
+    .leftContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+
+      .description {
+        @include Body1;
+        color: $gray70;
+      }
+    }
+
+    .rightContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 32px;
+    }
+
+    .followEdit {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .follow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .follower {
+      display: flex;
+      gap: 8px;
+      @include Sub4;
+      color: $gray60;
+      cursor: pointer;
+    }
+
+    .followerColor {
+      color: $gray70;
+    }
+
+    .linkContainer {
+      display: flex;
+      gap: 16px;
+
+      .link {
+        @include Label1;
+        color: $gray60;
+      }
+    }
+
+    // .unfollowBtn {
+    //   display: inline-flex;
+    //   padding: 10px 20px;
+    //   justify-content: center;
+    //   align-items: center;
+    //   @include H5SB;
+    //   color: $white;
+    //   background-color: $gray30;
+    //   border-radius: 40px;
+    //   border: none;
+    //   outline: none;
+    //   cursor: pointer;
+
+    //   &:hover {
+    //     background-color: darken($gray30, 10%);
+    //   }
+    // }
+
+    // .followBtn {
+    //   @extend .unfollowBtn;
+    //   background-color: $green50;
+
+    //   &:hover {
+    //     background-color: darken($green50, 10%);
+    //     animation: pulse 0.6s ease-in-out;
+    //   }
+
+    //   &:active {
+    //     animation: pulse 0.6s ease-in-out;
+    //   }
+    // }
+  }
+
+  .profileImage {
+    object-fit: cover;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid $gray0;
+  }
+}

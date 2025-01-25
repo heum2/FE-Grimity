@@ -14,6 +14,6 @@ export interface ButtonProps {
   size: ButtonSize;
   disabled?: boolean;
   onClick?: () => void;
-  leftIcon?: React.ReactNode;
-  rightIcon?: React.ReactNode;
+  leftIcon?: string;
+  rightIcon?: string;
 }

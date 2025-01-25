@@ -141,26 +141,28 @@ export default function Header() {
               </div>
               {isDropdownOpen && (
                 <div className={styles.dropdown} ref={dropdownRef}>
-                  <div className={styles.dropdownItem}>
-                    {myData.image !== "https://image.grimity.com/null" ? (
-                      <Image
-                        src={myData.image}
-                        width={28}
-                        height={28}
-                        alt="프로필 이미지"
-                        className={styles.dropdownProfileImage}
-                      />
-                    ) : (
-                      <Image
-                        src="/image/default.svg"
-                        width={28}
-                        height={28}
-                        alt="프로필 이미지"
-                        className={styles.dropdownProfileImage}
-                      />
-                    )}
-                    <span>내 프로필</span>
-                  </div>
+                  <Link href={`/users/${myData.id}`}>
+                    <div className={styles.dropdownItem}>
+                      {myData.image !== "https://image.grimity.com/null" ? (
+                        <Image
+                          src={myData.image}
+                          width={28}
+                          height={28}
+                          alt="프로필 이미지"
+                          className={styles.dropdownProfileImage}
+                        />
+                      ) : (
+                        <Image
+                          src="/image/default.svg"
+                          width={28}
+                          height={28}
+                          alt="프로필 이미지"
+                          className={styles.dropdownProfileImage}
+                        />
+                      )}
+                      <span>내 프로필</span>
+                    </div>
+                  </Link>
                   <div className={styles.divider} />
                   <div className={styles.dropdownItem}>좋아요한 그림</div>
                   <div className={styles.dropdownItem}>저장한 그림</div>

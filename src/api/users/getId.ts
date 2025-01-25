@@ -9,6 +9,7 @@ export interface UserInfoResponse {
   id: string;
   name: string;
   image: string;
+  backgroundImage: string;
   description: string;
   links: { linkName: string; link: string }[];
   followerCount: number;
@@ -24,6 +25,7 @@ export async function getUserInfo({ id }: UserInfoRequest): Promise<UserInfoResp
 
     const updatedData = response.data;
     updatedData.image = `https://image.grimity.com/${updatedData.image}`;
+    updatedData.backgroundImage = `https://image.grimity.com/${updatedData.backgroundImage}`;
 
     return updatedData;
   } catch (error) {

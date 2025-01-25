@@ -18,7 +18,9 @@ export default function Dropdown({ menuItems, trigger }: DropdownProps) {
 
   return (
     <div className={styles.container} ref={dropdownRef}>
-      <div onClick={() => setIsOpen(!isOpen)}>{trigger}</div>
+      <div onClick={() => setIsOpen(!isOpen)} className={styles.trigger}>
+        {trigger}
+      </div>
       {isOpen && (
         <ul className={styles.menu}>
           {menuItems.map((item, index) => (

@@ -125,5 +125,8 @@
 }
 
 .icon {
-  margin: 0 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
 }

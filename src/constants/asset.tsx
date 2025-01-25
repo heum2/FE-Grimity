@@ -27,4 +27,6 @@ export const ICONS = {
   error: "/icon/toast-error.svg",
   warning: "/icon/toast-warning.svg",
   information: "/icon/toast-information.svg",
+  link: "/icon/link.svg",
+  overlap: "/icon/overlap.svg",
 };
