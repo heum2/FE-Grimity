@@ -153,11 +153,12 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
 
     try {
       const imageUrl = URL.createObjectURL(file);
-      setCoverImage(imageUrl);
-
-      await uploadCoverImageToServer(file);
+      setModal({
+        isOpen: true,
+        type: "BACKGROUND",
+        data: { imageSrc: imageUrl },
+      });
     } catch (error) {
-      setCoverImage(myData?.backgroundImage || "/image/default-cover.png");
       console.error("File change error:", error);
     }
   };
@@ -187,10 +188,10 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                 src={userData.backgroundImage}
                 alt="backgroundImage"
                 width={1400} // 임의 지정
-                height={600}
+                height={500}
                 style={{
                   width: "100%",
-                  height: "600px",
+                  height: "500px",
                   objectFit: "cover",
                 }}
               />
