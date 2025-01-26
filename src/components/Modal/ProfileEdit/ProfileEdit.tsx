@@ -130,10 +130,10 @@ export default function ProfileEdit() {
                 maxLength={200}
               />
               {description && (
-                <p className={styles.countTotal}>
+                <div className={styles.countTotal}>
                   <p className={styles.count}>{description.length}</p>
                   /200
-                </p>
+                </div>
               )}
             </div>
           </div>
