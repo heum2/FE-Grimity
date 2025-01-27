@@ -26,7 +26,6 @@ export default function Header() {
 
   const navItems = [
     { name: "홈", path: "/" },
-    { name: "최신그림", path: "/new" },
     { name: "인기그림", path: "/popular" },
     { name: "자유게시판", path: "/board" },
     { name: "팔로잉", path: "/following" },
