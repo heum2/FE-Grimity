@@ -8,36 +8,23 @@
   align-items: center;
 
   .center {
-    max-width: 880px;
+    max-width: 1280px;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 40px;
   }
 
   .feedContainer {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 16px;
 
     .header {
       width: 100%;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-
-      .title {
-        display: flex;
-        gap: 6px;
-        @include Sub2;
-        color: $gray70;
-
-        .feedCount {
-          color: $gray50;
-        }
-      }
+      justify-content: flex-end;
 
       .sortWrapper {
         position: relative;
@@ -120,9 +107,38 @@
     }
   }
 }
-
 .bar {
+  position: relative;
   width: 100%;
   height: 1px;
   background: $gray30;
+  display: flex;
+  gap: 20px;
+  margin-top: 80px;
+  margin-bottom: 12px;
+
+  .indicator {
+    position: absolute;
+    bottom: -1px;
+    height: 2px;
+    background: #000;
+    transition: width 0.3s ease, left 0.3s ease;
+    z-index: 1;
+  }
+}
+
+.tab {
+  position: relative;
+  margin-top: -40px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  color: $gray70;
+  @include Sub2;
+
+  .feedCount {
+    color: $gray50;
+  }
 }

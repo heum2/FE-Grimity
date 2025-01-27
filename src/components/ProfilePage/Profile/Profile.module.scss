@@ -6,7 +6,7 @@
   flex-direction: column;
   align-items: center;
   background-color: $gray0;
-  padding-top: calc(40px - 24px);
+  padding-top: 40px;
 
   .backgroundImage {
     width: 100%;
@@ -83,17 +83,15 @@
   }
 
   .infoContainer {
-    margin-top: 365px; //커버 500px -> 마진 365px
+    margin-top: calc(400px - 73px);
     width: 100%;
     display: flex;
-    flex-direction: column;
-    gap: 16px;
-    z-index: 5;
+    gap: 30px;
   }
 
   .infoContainerDefault {
     @extend .infoContainer;
-    margin-top: 130px; //커버 200px+ 헤더 64px -> 마진 130px
+    margin-top: calc(264px - 73px);
   }
 
   .topContainer {
@@ -108,15 +106,10 @@
     }
   }
 
-  .spaceBetween {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-  }
-
   .leftContainer {
     display: flex;
     flex-direction: column;
+    min-width: 785px;
 
     .descriptionContainer {
       display: flex;
@@ -173,16 +166,20 @@
   }
 }
 
+.followEdit {
+  margin-top: 24px;
+  width: 125px;
+}
+
 .profileImageContainer {
-  width: 96px;
-  height: 96px;
+  width: 140px;
+  height: 140px;
   position: relative;
 
   .profileImage {
     object-fit: cover;
     border-radius: 50%;
     overflow: hidden;
-    border: 4px solid $gray0;
   }
 
   .addProfileImage {

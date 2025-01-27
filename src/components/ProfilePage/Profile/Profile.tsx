@@ -188,10 +188,10 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                 src={userData.backgroundImage}
                 alt="backgroundImage"
                 width={1400} // 임의 지정
-                height={500}
+                height={400}
                 style={{
                   width: "100%",
-                  height: "500px",
+                  height: "400px",
                   objectFit: "cover",
                 }}
               />
@@ -263,8 +263,8 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
               <div className={styles.profileImageContainer}>
                 <Image
                   src={userData.image}
-                  width={96}
-                  height={96}
+                  width={140}
+                  height={140}
                   alt="프로필 이미지"
                   className={styles.profileImage}
                 />
@@ -273,8 +273,8 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                     <label htmlFor="upload-image">
                       <Image
                         src="/icon/edit-profile-image.svg"
-                        width={36}
-                        height={36}
+                        width={40}
+                        height={40}
                         alt="프로필 이미지 수정"
                         className={styles.addProfileImage}
                       />
@@ -293,8 +293,8 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
               <div className={styles.profileImageContainer}>
                 <Image
                   src="/image/default.svg"
-                  width={96}
-                  height={96}
+                  width={140}
+                  height={140}
                   alt="프로필 이미지"
                   className={styles.profileImage}
                 />
@@ -303,8 +303,8 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                     <label htmlFor="upload-image">
                       <Image
                         src="/icon/add-profile-image.svg"
-                        width={36}
-                        height={36}
+                        width={40}
+                        height={40}
                         alt="프로필 이미지 추가"
                         className={styles.addProfileImage}
                       />
@@ -320,40 +320,38 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                 )}
               </div>
             )}
-            <div className={styles.spaceBetween}>
-              <div className={styles.leftContainer}>
-                <div className={styles.topContainer}>
-                  <h2 className={styles.name}>{userData.name}</h2>
+            <div className={styles.leftContainer}>
+              <div className={styles.topContainer}>
+                <h2 className={styles.name}>{userData.name}</h2>
+              </div>
+              <div className={styles.follow}>
+                <div className={styles.follower}>
+                  팔로워
+                  <p className={styles.followerColor}>{formatCurrency(userData.followerCount)}</p>
                 </div>
-                <div className={styles.follow}>
-                  <div className={styles.follower}>
-                    팔로워
-                    <p className={styles.followerColor}>{formatCurrency(userData.followerCount)}</p>
-                  </div>
-                  <div className={styles.follower}>
-                    팔로잉
-                    <p className={styles.followerColor}>
-                      {formatCurrency(userData.followingCount)}
-                    </p>
-                  </div>
+                <div className={styles.follower}>
+                  팔로잉
+                  <p className={styles.followerColor}>{formatCurrency(userData.followingCount)}</p>
                 </div>
-                <div className={styles.descriptionContainer}>
+              </div>
+              <div className={styles.descriptionContainer}>
+                {userData.description !== "" && (
                   <p className={styles.description}>{userData.description}</p>
-                  <div className={styles.linkContainer}>
-                    {userData.links.map(({ linkName, link }, index) => (
-                      <div key={index} className={styles.linkWrapper}>
-                        <IconComponent name="link" width={20} height={20} />
-                        <a
-                          href={link}
-                          className={styles.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {linkName}
-                        </a>
-                      </div>
-                    ))}
-                  </div>
+                )}
+                <div className={styles.linkContainer}>
+                  {userData.links.map(({ linkName, link }, index) => (
+                    <div key={index} className={styles.linkWrapper}>
+                      <IconComponent name="link" width={20} height={20} />
+                      <a
+                        href={link}
+                        className={styles.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {linkName}
+                      </a>
+                    </div>
+                  ))}
                 </div>
               </div>
               <div className={styles.followEdit}>

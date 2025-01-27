@@ -103,9 +103,8 @@
 
 .profileImage {
   object-fit: cover;
-  border-radius: 50px;
+  border-radius: 50%;
   overflow: hidden;
-  border: 1px solid $gray20;
   cursor: pointer;
 }
 

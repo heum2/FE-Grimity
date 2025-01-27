@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { useInfiniteQuery, useQueryClient } from "react-query";
 import { useUserData } from "@/api/users/getId";
@@ -22,6 +22,10 @@ const PAGE_SIZE = 12;
 
 export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
   const [sortBy, setSortBy] = useState<SortOption>("latest");
+  const [activeTab, setActiveTab] = useState<"images" | "texts">("images");
+  const [indicatorStyle, setIndicatorStyle] = useState({ width: 0, left: 0 });
+  const imagesTabRef = useRef<HTMLDivElement>(null);
+  const textsTabRef = useRef<HTMLDivElement>(null);
   const { data: userData } = useUserData(id);
   const { ref, inView } = useInView();
   const [feeds, setFeeds] = useState<any[]>([]);
@@ -69,9 +73,23 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
   useEffect(() => {
     if (feedsData?.pages) {
       const newFeeds = feedsData.pages.flatMap((page) => page.items);
-      setFeeds((prevFeeds) => [...prevFeeds, ...newFeeds]);
+      setFeeds((prevFeeds) => {
+        const uniqueFeeds = new Map();
+        [...prevFeeds, ...newFeeds].forEach((feed) => {
+          uniqueFeeds.set(feed.id, feed);
+        });
+        return Array.from(uniqueFeeds.values());
+      });
     }
   }, [feedsData]);
+
+  useEffect(() => {
+    const activeTabRef = activeTab === "images" ? imagesTabRef : textsTabRef;
+    if (activeTabRef.current) {
+      const { offsetWidth, offsetLeft } = activeTabRef.current;
+      setIndicatorStyle({ width: offsetWidth, left: offsetLeft });
+    }
+  }, [activeTab]);
 
   const handleSortChange = (option: SortOption) => {
     setSortBy(option);
@@ -83,13 +101,32 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
     <div className={styles.container}>
       <div className={styles.center}>
         <Profile isMyProfile={isMyProfile} id={id} />
-        <div className={styles.bar} />
+        <div className={styles.bar}>
+          <div
+            ref={imagesTabRef}
+            className={`${styles.tab} ${activeTab === "images" ? styles.active : ""}`}
+            onClick={() => setActiveTab("images")}
+          >
+            그림<p className={styles.feedCount}>{userData?.feedCount}</p>
+          </div>
+          <div
+            ref={textsTabRef}
+            className={`${styles.tab} ${activeTab === "texts" ? styles.active : ""}`}
+            onClick={() => setActiveTab("texts")}
+          >
+            글<p className={styles.feedCount}>0</p>
+          </div>
+          <div
+            className={styles.indicator}
+            style={{
+              width: `${indicatorStyle.width}px`,
+              left: `${indicatorStyle.left}px`,
+              padding: "0 12px",
+            }}
+          />
+        </div>
         <div className={styles.feedContainer}>
           <section className={styles.header}>
-            <div className={styles.title}>
-              그림
-              <p className={styles.feedCount}>{userData?.feedCount}</p>
-            </div>
             <div className={styles.sortWrapper}>
               <Dropdown
                 menuItems={sortOptions.map((option) => ({
@@ -105,21 +142,25 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
               />
             </div>
           </section>
-          <section className={styles.cardContainer}>
-            {allFeeds.map((feed, index) => (
-              <div key={`${feed.id}-${index}`}>
-                <ProfileCard
-                  title={feed.title}
-                  cards={feed.cards}
-                  likeCount={feed.likeCount}
-                  commentCount={feed.commentCount}
-                  createdAt={feed.createdAt}
-                  id={feed.id}
-                />
-              </div>
-            ))}
-            <div ref={ref} />
-          </section>
+          {activeTab === "images" ? (
+            <section className={styles.cardContainer}>
+              {allFeeds.map((feed, index) => (
+                <div key={`${feed.id}-${index}`}>
+                  <ProfileCard
+                    title={feed.title}
+                    cards={feed.cards}
+                    likeCount={feed.likeCount}
+                    commentCount={feed.commentCount}
+                    createdAt={feed.createdAt}
+                    id={feed.id}
+                  />
+                </div>
+              ))}
+              <div ref={ref} />
+            </section>
+          ) : (
+            <p>준비 중...</p>
+          )}
         </div>
       </div>
     </div>
