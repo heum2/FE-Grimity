@@ -12,6 +12,8 @@
     "@react-oauth/google": "^0.12.1",
     "@tanstack/react-query": "^5.64.1",
     "@types/react-beautiful-dnd": "^13.1.8",
+    "@types/react-easy-crop": "^2.0.0",
+    "@types/react-image-crop": "^9.0.2",
     "axios": "^1.7.9",
     "next": "15.1.4",
     "react": "^18.2.0",
