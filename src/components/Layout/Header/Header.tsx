@@ -23,6 +23,7 @@ export default function Header() {
 
   const router = useRouter();
   const isUserPage = router.pathname.startsWith("/users/[id]");
+  const isNavPage = ["/", "/popular", "/board", "/following"].includes(router.pathname);
 
   const navItems = [
     { name: "홈", path: "/" },
@@ -60,11 +61,11 @@ export default function Header() {
   }, [router.pathname]);
 
   useEffect(() => {
-    if (!isUserPage && activeItemRef.current && indicatorRef.current) {
+    if (isNavPage && activeItemRef.current && indicatorRef.current) {
       const { offsetLeft, offsetWidth } = activeItemRef.current;
       indicatorRef.current.style.transform = `translateX(${offsetLeft}px)`;
       indicatorRef.current.style.width = `${offsetWidth}px`;
-    } else if (isUserPage && indicatorRef.current) {
+    } else if (!isNavPage && indicatorRef.current) {
       indicatorRef.current.style.transform = "none";
       indicatorRef.current.style.width = "0px";
     }
@@ -80,26 +81,28 @@ export default function Header() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const handleClickLogo = () => {
+    router.push("/");
+  };
+
   return (
     <header className={isUserPage ? styles.userPageHeader : styles.header}>
       <div className={styles.container}>
         <div className={styles.leftSection}>
-          <Link href="/">
-            <div className={styles.cursor}>
-              <Image
-                src={isUserPage ? "/image/logo-white.svg" : "/image/logo.svg"}
-                width={100}
-                height={29}
-                alt="logo"
-              />
-            </div>
-          </Link>
+          <div className={styles.cursor} onClick={handleClickLogo}>
+            <Image
+              src={isUserPage ? "/image/logo-white.svg" : "/image/logo.svg"}
+              width={100}
+              height={29}
+              alt="logo"
+            />
+          </div>
           <nav className={styles.nav}>
             {navItems.map((item, index) => (
               <div key={index} className={styles.navItem} onClick={() => handleNavClick(item)}>
                 <p
                   className={`${isUserPage ? styles.userPageitem : styles.item} ${
-                    !isUserPage && (activeNav === item.name ? styles.active : "")
+                    isNavPage && (activeNav === item.name ? styles.active : "")
                   }`}
                   ref={item.name === activeNav ? activeItemRef : null}
                 >
@@ -181,12 +184,19 @@ export default function Header() {
                     </div>
                   </Link>
                   <div className={styles.divider} />
-                  <div className={styles.dropdownItem}>좋아요한 그림</div>
-                  <div className={styles.dropdownItem}>저장한 그림</div>
+                  <Link href="/mypage?tab=liked-feeds">
+                    <div className={styles.dropdownItem}>좋아요한 그림</div>
+                  </Link>
+                  <Link href="/mypage?tab=saved-feeds">
+                    <div className={styles.dropdownItem}>저장한 그림</div>
+                  </Link>
                   <div className={styles.divider} />
-                  <div className={styles.dropdownItem}>전체 글</div>
-                  <div className={styles.dropdownItem}>좋아요한 글</div>
-                  <div className={styles.dropdownItem}>내가 쓴 댓글</div>
+                  <Link href="/mypage?tab=liked-posts">
+                    <div className={styles.dropdownItem}>좋아요한 글</div>
+                  </Link>
+                  <Link href="/mypage?tab=my-comments">
+                    <div className={styles.dropdownItem}>내가 쓴 댓글</div>
+                  </Link>
                   <div className={styles.divider} />
                   <div className={`${styles.dropdownItem} ${styles.logout}`} onClick={handleLogout}>
                     로그아웃
