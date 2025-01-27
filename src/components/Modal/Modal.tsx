@@ -7,6 +7,7 @@ import { usePreventScroll } from "@/utils/usePreventScroll";
 import IconComponent from "../Asset/Icon";
 import Join from "./Join/Join";
 import ProfileEdit from "./ProfileEdit/ProfileEdit";
+import Background from "./Background/Background";
 
 export default function Modal() {
   const [modal, setModal] = useRecoilState(modalState);
@@ -28,6 +29,8 @@ export default function Modal() {
         return <Join />;
       case "PROFILE-EDIT":
         return <ProfileEdit />;
+      case "BACKGROUND":
+        return <Background imageSrc={modal.data.imageSrc} />;
       default:
         return null;
     }

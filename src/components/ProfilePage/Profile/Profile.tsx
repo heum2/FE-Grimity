@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 import router from "next/router";
 import { postPresignedUrl } from "@/api/aws/postPresigned";
 import { useMutation } from "react-query";
-import { putBackgroundImage, putProfileImage } from "@/api/users/putMeImage";
+import { putProfileImage } from "@/api/users/putMeImage";
 import { AxiosError } from "axios";
 import { deleteMyBackgroundImage } from "@/api/users/deleteMeImage";
 
@@ -59,7 +59,6 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
   };
 
   const ImageMutation = useMutation((imageName: string) => putProfileImage(imageName));
-  const CoverImageMutation = useMutation((imageName: string) => putBackgroundImage(imageName));
 
   const uploadImageToServer = async (file: File) => {
     try {
@@ -93,42 +92,6 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
       showToast("프로필 사진이 변경되었습니다!", "success");
     } catch (error) {
       showToast("프로필 사진 업로드에 실패했습니다.", "error");
-    }
-  };
-
-  const uploadCoverImageToServer = async (file: File) => {
-    try {
-      const fileExt = file.name.split(".").pop()?.toLowerCase();
-
-      if (!fileExt || !["jpg", "jpeg", "png"].includes(fileExt)) {
-        showToast("JPG, JPEG, PNG 파일만 업로드 가능합니다.", "error");
-        return;
-      }
-      const ext = fileExt as "jpg" | "jpeg" | "png";
-
-      const data = await postPresignedUrl({
-        type: "background",
-        ext,
-      });
-
-      CoverImageMutation.mutate(data.imageName);
-
-      const uploadResponse = await fetch(data.url, {
-        method: "PUT",
-        body: file,
-        headers: {
-          "Content-Type": file.type,
-        },
-      });
-
-      if (!uploadResponse.ok) {
-        throw new Error(`${uploadResponse.status}`);
-      }
-
-      showToast("커버 이미지가 변경되었습니다!", "success");
-      router.reload();
-    } catch (error) {
-      showToast("커버 이미지 업로드에 실패했습니다.", "error");
     }
   };
 
