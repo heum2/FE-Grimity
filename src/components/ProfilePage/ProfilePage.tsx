@@ -9,6 +9,7 @@ import { ProfilePageProps } from "./ProfilePage.types";
 import ProfileCard from "../Layout/ProfileCard/ProfileCard";
 import Dropdown from "../Dropdown/Dropdown";
 import Button from "../Button/Button";
+import IconComponent from "../Asset/Icon";
 
 type SortOption = "latest" | "like" | "oldest";
 
@@ -29,7 +30,12 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
   const { data: userData } = useUserData(id);
   const { ref, inView } = useInView();
   const [feeds, setFeeds] = useState<any[]>([]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const queryClient = useQueryClient();
+
+  const handleDropdownToggle = (isOpen: boolean) => {
+    setIsDropdownOpen(isOpen);
+  };
 
   const {
     data: feedsData,
@@ -134,8 +140,19 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
                   value: option.value,
                   onClick: () => handleSortChange(option.value),
                 }))}
+                onOpenChange={handleDropdownToggle}
                 trigger={
-                  <Button type="text-assistive" size="l" rightIcon="/icon/arrow-down.svg">
+                  <Button
+                    type="text-assistive"
+                    size="l"
+                    rightIcon={
+                      isDropdownOpen ? (
+                        <IconComponent name="arrowUp" width={20} height={20} />
+                      ) : (
+                        <IconComponent name="arrowDown" width={20} height={20} />
+                      )
+                    }
+                  >
                     {sortOptions.find((option) => option.value === sortBy)?.label || "최신 순"}
                   </Button>
                 }

@@ -22,6 +22,8 @@ export const ICONS = {
   cardArrowLeft: "/icon/card-arrow-left.svg",
   up: "/icon/up.svg",
   x: "/icon/x.svg",
+  arrowDown: "/icon/arrow-down.svg",
+  arrowUp: "/icon/arrow-up.svg",
   checkbox: "/icon/checkbox.svg",
   checkedbox: "/icon/checkedbox.svg",
   kakao: "/icon/kakao.svg",

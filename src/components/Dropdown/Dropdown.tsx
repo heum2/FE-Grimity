@@ -2,14 +2,21 @@ import { useState, useRef, useEffect } from "react";
 import styles from "./Dropdown.module.scss";
 import { DropdownProps } from "./Dropdown.types";
 
-export default function Dropdown({ menuItems, trigger }: DropdownProps) {
+export default function Dropdown({ menuItems, trigger, onOpenChange }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const toggleDropdown = (newState: boolean) => {
+    setIsOpen(newState);
+    if (onOpenChange) {
+      onOpenChange(newState);
+    }
+  };
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
+        toggleDropdown(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -18,7 +25,7 @@ export default function Dropdown({ menuItems, trigger }: DropdownProps) {
 
   return (
     <div className={styles.container} ref={dropdownRef}>
-      <div onClick={() => setIsOpen(!isOpen)} className={styles.trigger}>
+      <div onClick={() => toggleDropdown(!isOpen)} className={styles.trigger}>
         {trigger}
       </div>
       {isOpen && (
@@ -29,7 +36,7 @@ export default function Dropdown({ menuItems, trigger }: DropdownProps) {
               className={item.isDelete ? styles.deleteItem : styles.menuItem}
               onClick={() => {
                 item.onClick();
-                setIsOpen(false);
+                toggleDropdown(false);
               }}
             >
               {item.label}
