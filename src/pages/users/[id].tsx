@@ -5,7 +5,7 @@ import { serviceUrl } from "@/constants/serviceurl";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-export default function MyPage() {
+export default function Profile() {
   const router = useRouter();
   const { data: myData } = useMyData();
   const [OGTitle] = useState("프로필 조회 - 그리미티");
