@@ -201,7 +201,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
               {userData.id === user_id && (
                 <>
                   <label htmlFor="upload-cover" className={styles.backgroundAddMessage}>
-                    <IconComponent name="addCover" width={20} height={20} isBtn />
+                    <Image src="/icon/add-cover.svg" width={20} height={20} alt="커버 추가하기" />
                     커버 추가하기
                   </label>
                   <input
