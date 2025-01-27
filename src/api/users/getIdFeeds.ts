@@ -16,7 +16,7 @@ export interface UserFeedsResponse {
 
 export async function getUserFeeds({
   id,
-  size = 20,
+  size,
   sort = "latest",
   cursor,
 }: UserFeedsRequest): Promise<UserFeedsResponse> {
