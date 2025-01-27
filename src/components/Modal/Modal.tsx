@@ -8,6 +8,7 @@ import IconComponent from "../Asset/Icon";
 import Join from "./Join/Join";
 import ProfileEdit from "./ProfileEdit/ProfileEdit";
 import Background from "./Background/Background";
+import Follow from "./Follow/Follow";
 
 export default function Modal() {
   const [modal, setModal] = useRecoilState(modalState);
@@ -31,6 +32,10 @@ export default function Modal() {
         return <ProfileEdit />;
       case "BACKGROUND":
         return <Background imageSrc={modal.data.imageSrc} />;
+      case "FOLLOWER":
+        return <Follow initialTab="follower" />;
+      case "FOLLOWING":
+        return <Follow initialTab="following" />;
       default:
         return null;
     }
@@ -39,7 +44,13 @@ export default function Modal() {
   return (
     <div className={styles.overlay} onClick={closeModal}>
       <div
-        className={modal.type === "PROFILE-EDIT" ? styles.profileEditModal : styles.modal}
+        className={
+          modal.type === "PROFILE-EDIT"
+            ? styles.profileEditModal
+            : modal.type === "FOLLOWER" || "FOLLOWING"
+            ? styles.followModal
+            : styles.modal
+        }
         onClick={(e) => e.stopPropagation()}
       >
         {renderModalContent()}

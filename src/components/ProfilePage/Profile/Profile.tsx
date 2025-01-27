@@ -141,6 +141,22 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
     deleteImageMutation.mutate();
   };
 
+  const handleOpenFollowerModal = () => {
+    setModal({
+      isOpen: true,
+      type: "FOLLOWER",
+      data: null,
+    });
+  };
+
+  const handleOpenFollowingModal = () => {
+    setModal({
+      isOpen: true,
+      type: "FOLLOWING",
+      data: null,
+    });
+  };
+
   return (
     <div className={styles.container}>
       {userData && (
@@ -287,16 +303,33 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
               <div className={styles.topContainer}>
                 <h2 className={styles.name}>{userData.name}</h2>
               </div>
-              <div className={styles.follow}>
-                <div className={styles.follower}>
-                  팔로워
-                  <p className={styles.followerColor}>{formatCurrency(userData.followerCount)}</p>
+              {userData.id === user_id ? (
+                <div className={styles.follow}>
+                  <div className={styles.myfollower} onClick={handleOpenFollowerModal}>
+                    팔로워
+                    <p className={styles.followerColor}>{formatCurrency(userData.followerCount)}</p>
+                  </div>
+                  <div className={styles.myfollower} onClick={handleOpenFollowingModal}>
+                    팔로잉
+                    <p className={styles.followerColor}>
+                      {formatCurrency(userData.followingCount)}
+                    </p>
+                  </div>
                 </div>
-                <div className={styles.follower}>
-                  팔로잉
-                  <p className={styles.followerColor}>{formatCurrency(userData.followingCount)}</p>
+              ) : (
+                <div className={styles.follow}>
+                  <div className={styles.follower}>
+                    팔로워
+                    <p className={styles.followerColor}>{formatCurrency(userData.followerCount)}</p>
+                  </div>
+                  <div className={styles.follower}>
+                    팔로잉
+                    <p className={styles.followerColor}>
+                      {formatCurrency(userData.followingCount)}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
               <div className={styles.descriptionContainer}>
                 {userData.description !== "" && (
                   <p className={styles.description}>{userData.description}</p>

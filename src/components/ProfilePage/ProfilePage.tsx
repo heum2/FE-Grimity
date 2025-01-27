@@ -127,7 +127,6 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
             style={{
               width: `${indicatorStyle.width}px`,
               left: `${indicatorStyle.left}px`,
-              padding: "0 12px",
             }}
           />
         </div>

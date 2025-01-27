@@ -1,6 +1,13 @@
 import { atom } from "recoil";
 
-export type ModalType = "LOGIN" | "NICKNAME" | "JOIN" | "PROFILE-EDIT" | "BACKGROUND";
+export type ModalType =
+  | "LOGIN"
+  | "NICKNAME"
+  | "JOIN"
+  | "PROFILE-EDIT"
+  | "BACKGROUND"
+  | "FOLLOWER"
+  | "FOLLOWING";
 
 export interface ModalState {
   isOpen: boolean;
