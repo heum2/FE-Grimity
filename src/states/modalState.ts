@@ -13,9 +13,10 @@ export interface ModalState {
   isOpen: boolean;
   type: ModalType | null;
   data?: any;
+  isComfirm?: boolean;
 }
 
 export const modalState = atom<ModalState>({
   key: "modalState",
-  default: { isOpen: false, type: null, data: null },
+  default: { isOpen: false, type: null, data: null, isComfirm: false },
 });
