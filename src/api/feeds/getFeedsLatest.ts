@@ -26,6 +26,7 @@ export async function getFeedsLatest({
       feeds: response.data.feeds.map((feed: Feed) => ({
         ...feed,
         cards: feed.cards.map((card) => `https://image.grimity.com/${card}`),
+        thumbnail: `https://image.grimity.com/${feed.thumbnail}`,
         author: {
           ...feed.author,
           image: `https://image.grimity.com/${feed.author.image}`,

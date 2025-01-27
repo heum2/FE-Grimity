@@ -5,11 +5,12 @@ export interface Feed {
   id: string;
   title: string;
   cards: string[];
-  createdAt: string;
-  viewCount: number;
+  thumbnail: string;
   likeCount: number;
+  viewCount: number;
   commentCount: number;
-  isLike: boolean;
+  createdAt: string;
+  isLike?: boolean;
   author: {
     id: string;
     name: string;
@@ -39,6 +40,7 @@ export async function getTodayPopular(
       feeds: response.data.feeds.map((feed: Feed) => ({
         ...feed,
         cards: feed.cards.map((card) => `https://image.grimity.com/${card}`),
+        thumbnail: `https://image.grimity.com/${feed.thumbnail}`,
         author: {
           ...feed.author,
           image: `https://image.grimity.com/${feed.author.image}`,

@@ -12,6 +12,7 @@ export default function RectangleCard({
   title,
   content,
   cards = [],
+  thumbnail,
   author,
   likeCount,
   commentCount,
@@ -45,7 +46,7 @@ export default function RectangleCard({
         )} */}
         <Link href={`/feeds/${id}`}>
           <Image
-            src={cards[0]}
+            src={thumbnail}
             alt={title}
             layout="fill"
             objectFit="cover"

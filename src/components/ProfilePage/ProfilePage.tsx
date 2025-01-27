@@ -165,6 +165,7 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
                   <ProfileCard
                     title={feed.title}
                     cards={feed.cards}
+                    thumbnail={feed.thumbnail}
                     likeCount={feed.likeCount}
                     commentCount={feed.commentCount}
                     createdAt={feed.createdAt}

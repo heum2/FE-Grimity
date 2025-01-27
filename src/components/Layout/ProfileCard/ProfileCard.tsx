@@ -9,6 +9,7 @@ import { formattedDate } from "@/utils/formatDate";
 export default function ProfileCard({
   title,
   cards = [],
+  thumbnail,
   likeCount,
   commentCount,
   id,
@@ -26,7 +27,7 @@ export default function ProfileCard({
         )}
         <Link href={`/feeds/${id}`}>
           <Image
-            src={cards[0]}
+            src={thumbnail}
             alt={title}
             layout="fill"
             objectFit="cover"

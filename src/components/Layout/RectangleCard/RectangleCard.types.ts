@@ -3,6 +3,7 @@ export interface RectangleCardProps {
   title: string;
   content: string;
   cards: string[];
+  thumbnail: string;
   author?: {
     id: string;
     name: string;
