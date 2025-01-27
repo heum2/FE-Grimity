@@ -16,7 +16,6 @@ export interface UserInfoResponse {
   followingCount: number;
   feedCount: number;
   isFollowing: boolean;
-  email: string;
 }
 
 export async function getUserInfo({ id }: UserInfoRequest): Promise<UserInfoResponse> {
