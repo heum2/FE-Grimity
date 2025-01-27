@@ -79,13 +79,7 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
   useEffect(() => {
     if (feedsData?.pages) {
       const newFeeds = feedsData.pages.flatMap((page) => page.items);
-      setFeeds((prevFeeds) => {
-        const uniqueFeeds = new Map();
-        [...prevFeeds, ...newFeeds].forEach((feed) => {
-          uniqueFeeds.set(feed.id, feed);
-        });
-        return Array.from(uniqueFeeds.values());
-      });
+      setFeeds((prevFeeds) => [...prevFeeds, ...newFeeds]);
     }
   }, [feedsData]);
 
