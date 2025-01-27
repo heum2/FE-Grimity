@@ -32,11 +32,6 @@
   display: flex;
 }
 
-.required {
-  color: $secandary1;
-  @include Cap2;
-}
-
 .label {
   @include Sub3;
   align-self: stretch;

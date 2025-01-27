@@ -4,18 +4,7 @@ import { forwardRef } from "react";
 
 const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
   (
-    {
-      placeholder,
-      label,
-      isError,
-      errorMessage,
-      maxLength,
-      value,
-      onChange,
-      required = false,
-      onKeyDown,
-      onFocus,
-    },
+    { placeholder, label, isError, errorMessage, maxLength, value, onChange, onKeyDown, onFocus },
     ref
   ) => {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +20,6 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
     return (
       <div className={styles.container}>
         <div className={styles.labelContainer}>
-          {required && <p className={styles.required}>*</p>}
           {label && (
             <label className={styles.label} htmlFor="label">
               {label}

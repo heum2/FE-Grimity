@@ -7,7 +7,6 @@ export interface TextFieldProps {
   maxLength?: number;
   value: string;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
-  required?: boolean;
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
 }
