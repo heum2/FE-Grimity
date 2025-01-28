@@ -185,6 +185,18 @@
   position: relative;
   @include Drag;
 
+  .deleteImageBtn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: none;
+    cursor: pointer;
+  }
+
+  &:hover .deleteImageBtn {
+    display: block;
+  }
+
   .profileImage {
     object-fit: cover;
     border-radius: 50%;

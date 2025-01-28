@@ -18,12 +18,12 @@ import { postPresignedUrl } from "@/api/aws/postPresigned";
 import { useMutation } from "react-query";
 import { putProfileImage } from "@/api/users/putMeImage";
 import { AxiosError } from "axios";
-import { deleteMyBackgroundImage } from "@/api/users/deleteMeImage";
+import { deleteMyBackgroundImage, deleteMyProfileImage } from "@/api/users/deleteMeImage";
 
 export default function Profile({ isMyProfile, id }: ProfileProps) {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
   const [, setModal] = useRecoilState(modalState);
-  const { data: myData } = useMyData();
+  const { data: myData, refetch } = useMyData();
   const { data: userData, refetch: refetchUserData } = useUserData(id);
   const [, setProfileImage] = useState<string>("");
   const [, setCoverImage] = useState<string>("");
@@ -90,6 +90,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
       }
 
       showToast("프로필 사진이 변경되었습니다!", "success");
+      refetch();
     } catch (error) {
       showToast("프로필 사진 업로드에 실패했습니다.", "error");
     }
@@ -155,6 +156,17 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
       type: "FOLLOWING",
       data: null,
     });
+  };
+
+  const handleDeleteProfileImage = async () => {
+    try {
+      await deleteMyProfileImage();
+      showToast("프로필 이미지가 삭제되었습니다.", "success");
+      refetch();
+    } catch (error) {
+      showToast("프로필 이미지 삭제에 실패했습니다.", "error");
+      console.error("Image delete error:", error);
+    }
   };
 
   return (
@@ -265,6 +277,9 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                       className={styles.hidden}
                       onChange={handleFileChange}
                     />
+                    <div className={styles.deleteImageBtn} onClick={handleDeleteProfileImage}>
+                      <IconComponent name="deleteProfile" width={40} height={40} isBtn />
+                    </div>
                   </>
                 )}
               </div>

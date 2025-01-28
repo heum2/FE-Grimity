@@ -38,6 +38,7 @@ export const ICONS = {
   editCover: "/icon/edit-cover.svg",
   deleteCover: "/icon/delete-cover.svg",
   deleteLink: "/icon/delete-link.svg",
+  deleteProfile: "/icon/delete-profile.svg",
   addLink: "/icon/add-link.svg",
   zoomIn: "/icon/zoom-in.svg",
   zoomOut: "/icon/zoom-out.svg",
