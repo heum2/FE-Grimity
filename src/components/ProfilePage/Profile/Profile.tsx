@@ -335,19 +335,23 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                   <p className={styles.description}>{userData.description}</p>
                 )}
                 <div className={styles.linkContainer}>
-                  {userData.links.map(({ linkName, link }, index) => (
-                    <div key={index} className={styles.linkWrapper}>
-                      <IconComponent name="link" width={20} height={20} />
-                      <a
-                        href={link}
-                        className={styles.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {linkName}
-                      </a>
-                    </div>
-                  ))}
+                  {userData.links.map(({ linkName, link }, index) => {
+                    const isEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(link);
+
+                    return (
+                      <div key={index} className={styles.linkWrapper}>
+                        <IconComponent name="link" width={20} height={20} />
+                        <a
+                          href={isEmail ? `mailto:${link}` : link}
+                          className={styles.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {linkName}
+                        </a>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
               <div className={styles.followEdit}>
