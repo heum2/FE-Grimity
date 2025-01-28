@@ -1,5 +1,9 @@
 @import "@/styles/globals.scss";
 
+.btnContainer {
+  align-self: flex-end;
+}
+
 .cardContainer {
   width: 100%;
   display: grid;

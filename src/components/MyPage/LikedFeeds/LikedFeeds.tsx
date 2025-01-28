@@ -1,5 +1,7 @@
+import IconComponent from "@/components/Asset/Icon";
 import styles from "./LikedFeeds.module.scss";
 import { useMyLikeList } from "@/api/users/getMeLikeFeeds";
+import Button from "@/components/Button/Button";
 import ProfileCard from "@/components/Layout/ProfileCard/ProfileCard";
 import { useEffect, useRef } from "react";
 
@@ -32,6 +34,15 @@ export default function LikedFeeds() {
 
   return (
     <>
+      <div className={styles.btnContainer}>
+        <Button
+          type="text-assistive"
+          size="l"
+          rightIcon={<IconComponent name="arrowDown" width={20} height={20} isBtn />}
+        >
+          최신순
+        </Button>
+      </div>
       <section className={styles.cardContainer}>
         {data &&
           data.pages.flat().map((page) =>
