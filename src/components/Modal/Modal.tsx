@@ -64,7 +64,7 @@ export default function Modal() {
           className={
             modal.type === "PROFILE-EDIT"
               ? styles.profileEditModal
-              : modal.type === "FOLLOWER" || "FOLLOWING"
+              : modal.type === "FOLLOWER" || modal.type === "FOLLOWING"
               ? styles.followModal
               : styles.modal
           }
