@@ -23,7 +23,9 @@ export default function Header() {
 
   const router = useRouter();
   const isUserPage = router.pathname.startsWith("/users/[id]");
-  const isNavPage = ["/", "/popular", "/board", "/following"].includes(router.pathname);
+  const isNavPage = ["/", "/popular", "/board", "/following", "/board/write"].includes(
+    router.pathname
+  );
   const hideBtn = ["/write"].includes(router.pathname);
 
   const navItems = [
@@ -55,7 +57,10 @@ export default function Header() {
 
   useEffect(() => {
     const currentPath = router.pathname;
-    const activeItem = navItems.find((item) => item.path === currentPath);
+    const activeItem = navItems.find(
+      (item) =>
+        currentPath === item.path || (item.path === "/board" && currentPath.startsWith("/board/"))
+    );
     if (activeItem) {
       setActiveNav(activeItem.name);
     }

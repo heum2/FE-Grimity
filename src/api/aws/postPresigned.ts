@@ -1,7 +1,7 @@
 import BASE_URL from "@/constants/baseurl";
 
 export interface PresignedUrlRequest {
-  type: "profile" | "feed" | "background";
+  type: "profile" | "feed" | "background" | "post";
   ext: "jpg" | "jpeg" | "png" | "gif";
 }
 
