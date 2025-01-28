@@ -54,3 +54,12 @@
   padding: 6px 12px;
   @include Btn3;
 }
+
+.icon {
+  transition: transform 0.3s ease;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
