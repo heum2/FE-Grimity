@@ -112,7 +112,7 @@ export default function Header() {
                 {index < navItems.length - 1 && <div className={styles.bar} />}
               </div>
             ))}
-            <div ref={indicatorRef} className={styles.indicator} />
+            {isNavPage && <div ref={indicatorRef} className={styles.indicator} />}
           </nav>
         </div>
         <div className={styles.wrapper}>
