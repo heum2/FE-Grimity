@@ -1,0 +1,285 @@
+@import "@/styles/globals.scss";
+
+.background {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+
+  .container {
+    width: 100%;
+    max-width: 1080px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding-top: calc(60px - 8px);
+
+    .uploadBtnContainer {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .sectionContainer {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      gap: 40px;
+
+      .imageSection {
+        width: 320px;
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+
+        .uploadBtn {
+          cursor: pointer;
+        }
+
+        .imageContainer {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 16px;
+          // max-height: 480px;
+          // overflow-y: auto;
+
+          // &::-webkit-scrollbar {
+          //   width: 5px;
+          // }
+
+          // &::-webkit-scrollbar-track {
+          //   background: #f1f1f1;
+          //   border-radius: 10px;
+          // }
+
+          // &::-webkit-scrollbar-thumb {
+          //   background: $gray20;
+          //   border-radius: 10px;
+          //   cursor: pointer;
+          // }
+
+          // &::-webkit-scrollbar-thumb:hover {
+          //   background: $gray30;
+          // }
+        }
+
+        .imageWrapper {
+          position: relative;
+          width: fit-content;
+        }
+
+        .removeImage {
+          position: absolute;
+          top: 8px;
+          right: 8px;
+          cursor: pointer;
+        }
+
+        .addBtnContainer {
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          margin-top: 16px;
+
+          .addBtn {
+            width: 100%;
+            padding: 16px 24px;
+            border-radius: 12px;
+            @include Btn1;
+            border: 1px solid $gray30;
+            color: $gray70;
+            background-color: $gray0;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+
+            &:hover {
+              background-color: darken($gray0, 4%);
+            }
+
+            &:active {
+              background-color: darken($gray0, 8%);
+            }
+          }
+        }
+      }
+
+      .writeSection {
+        width: 700px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+
+        .bar {
+          width: 100%;
+          height: 1px;
+          background-color: $gray30;
+          margin: 24px 0;
+        }
+
+        .textField {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+
+          .countTotal {
+            display: flex;
+            @include Body1;
+            color: $gray50;
+          }
+
+          .count {
+            color: $gray70;
+          }
+
+          .inputContainer {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+
+            .input {
+              width: 100%;
+              @include Title2;
+              color: $gray80;
+              border: none;
+              outline: none;
+              padding: 0;
+
+              &::placeholder {
+                color: $gray50;
+              }
+            }
+          }
+
+          .contentContainer {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+
+            .textareaContainer {
+              width: 100%;
+              height: 200px;
+
+              .contentCount {
+                justify-self: flex-end;
+              }
+
+              .textarea {
+                width: 100%;
+                height: 90%;
+                border: none;
+                outline: none;
+                @include Body1;
+                color: $gray70;
+                resize: none;
+
+                &::-webkit-scrollbar {
+                  width: 6px;
+                }
+
+                &::-webkit-scrollbar-thumb {
+                  background: $gray30;
+                  border-radius: 10px;
+                  cursor: pointer;
+                }
+
+                &::-webkit-scrollbar-thumb:hover {
+                  background: $gray40;
+                }
+              }
+            }
+          }
+
+          .label {
+            @include Sub3;
+            color: $gray80;
+            flex-shrink: 0;
+          }
+
+          .tagContainer {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+
+            .tagInputContainer {
+              display: flex;
+              gap: 65px;
+
+              .inputContainer {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                gap: 16px;
+
+                .input {
+                  width: 100%;
+                  @include Body1;
+                  color: $gray80;
+                  border: none;
+                  outline: none;
+                  padding: 0;
+
+                  &::placeholder {
+                    color: $gray50;
+                  }
+                }
+              }
+
+              .tagList {
+                width: 100%;
+                margin-top: 20px;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+
+                .tag {
+                  display: flex;
+                  padding: 10px 16px;
+                  justify-content: center;
+                  align-items: center;
+                  gap: 6px;
+                  border-radius: 50%;
+                  background-color: $gray10;
+
+                  .deleteTag {
+                    height: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    cursor: pointer;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        .optionContainer {
+          display: flex;
+          align-items: center;
+          gap: 36px;
+          margin-top: 50px;
+
+          .options {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            @include Body1;
+            color: $gray70;
+
+            .option {
+              cursor: pointer;
+              transition: opacity 0.3s ease-in-out;
+              line-height: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}

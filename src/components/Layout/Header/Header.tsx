@@ -24,6 +24,7 @@ export default function Header() {
   const router = useRouter();
   const isUserPage = router.pathname.startsWith("/users/[id]");
   const isNavPage = ["/", "/popular", "/board", "/following"].includes(router.pathname);
+  const hideBtn = ["/write"].includes(router.pathname);
 
   const navItems = [
     { name: "홈", path: "/" },
@@ -162,7 +163,7 @@ export default function Header() {
               {isDropdownOpen && (
                 <div className={styles.dropdown} ref={dropdownRef}>
                   <Link href={`/users/${myData.id}`}>
-                    <div className={styles.dropdownItem}>
+                    <div className={styles.dropdownItem} onClick={() => setIsDropdownOpen(false)}>
                       {myData.image !== "https://image.grimity.com/null" ? (
                         <Image
                           src={myData.image}
@@ -185,27 +186,45 @@ export default function Header() {
                   </Link>
                   <div className={styles.divider} />
                   <Link href="/mypage?tab=liked-feeds">
-                    <div className={styles.dropdownItem}>좋아요한 그림</div>
+                    <div className={styles.dropdownItem} onClick={() => setIsDropdownOpen(false)}>
+                      좋아요한 그림
+                    </div>
                   </Link>
                   <Link href="/mypage?tab=saved-feeds">
-                    <div className={styles.dropdownItem}>저장한 그림</div>
+                    <div className={styles.dropdownItem} onClick={() => setIsDropdownOpen(false)}>
+                      저장한 그림
+                    </div>
                   </Link>
                   <div className={styles.divider} />
                   <Link href="/mypage?tab=liked-posts">
-                    <div className={styles.dropdownItem}>좋아요한 글</div>
+                    <div className={styles.dropdownItem} onClick={() => setIsDropdownOpen(false)}>
+                      좋아요한 글
+                    </div>
                   </Link>
                   <Link href="/mypage?tab=my-comments">
-                    <div className={styles.dropdownItem}>내가 쓴 댓글</div>
+                    <div className={styles.dropdownItem} onClick={() => setIsDropdownOpen(false)}>
+                      내가 쓴 댓글
+                    </div>
                   </Link>
                   <div className={styles.divider} />
-                  <div className={`${styles.dropdownItem} ${styles.logout}`} onClick={handleLogout}>
+                  <div
+                    className={`${styles.dropdownItem} ${styles.logout}`}
+                    onClick={() => {
+                      handleLogout();
+                      setIsDropdownOpen(false);
+                    }}
+                  >
                     로그아웃
                   </div>
                 </div>
               )}
-              <Button size="m" type="filled-primary">
-                그림 업로드
-              </Button>
+              {!hideBtn && (
+                <Link href="/write">
+                  <Button size="m" type="filled-primary">
+                    그림 업로드
+                  </Button>
+                </Link>
+              )}
             </div>
           ) : (
             <div

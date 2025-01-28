@@ -48,7 +48,7 @@ export default function Modal() {
         <div className={styles.comfirmModal}>
           <div className={styles.titleContainer}>
             <h2 className={styles.title}>{modal.data.title}</h2>
-            <p className={styles.subtitle}>{modal.data.subtitle}</p>
+            {modal.data.subtitle && <p className={styles.subtitle}>{modal.data.subtitle}</p>}
           </div>
           <div className={styles.btnsContainer}>
             <Button size="l" type="outlined-assistive" onClick={closeModal}>

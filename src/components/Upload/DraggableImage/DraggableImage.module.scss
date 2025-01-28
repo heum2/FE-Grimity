@@ -1,0 +1,44 @@
+.imageWrapper {
+  position: relative;
+  width: fit-content;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+
+  &.dragging {
+    opacity: 0.5;
+    transform: scale(1.05);
+  }
+}
+
+.moveImage {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.thumbnail {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  cursor: pointer;
+}
+
+.image {
+  border-radius: 18px;
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.removeImage {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  cursor: pointer;
+}

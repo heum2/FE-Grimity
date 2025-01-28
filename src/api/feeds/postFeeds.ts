@@ -6,6 +6,7 @@ export interface FeedsRequest {
   isAI: boolean;
   content: string;
   tags: string[];
+  thumbnail: string;
 }
 
 export interface FeedsResponse {
@@ -18,6 +19,7 @@ export async function postFeeds({
   isAI,
   content,
   tags,
+  thumbnail,
 }: FeedsRequest): Promise<FeedsResponse> {
   const response = await BASE_URL.post("/feeds", {
     title,
@@ -25,6 +27,7 @@ export async function postFeeds({
     isAI,
     content,
     tags,
+    thumbnail,
   });
   return response.data;
 }

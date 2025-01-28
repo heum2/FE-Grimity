@@ -14,6 +14,7 @@ export interface ModalState {
   type: ModalType | null;
   data?: any;
   isComfirm?: boolean;
+  onClick?: () => void | Promise<void>;
 }
 
 export const modalState = atom<ModalState>({

@@ -41,4 +41,5 @@ export const ICONS = {
   addLink: "/icon/add-link.svg",
   zoomIn: "/icon/zoom-in.svg",
   zoomOut: "/icon/zoom-out.svg",
+  deleteTag: "/icon/delete-tag.svg",
 };
