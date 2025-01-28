@@ -29,7 +29,7 @@
       gap: 40px;
 
       .imageSection {
-        width: 320px;
+        width: 325px;
         display: flex;
         flex-direction: column;
         gap: 28px;
@@ -42,27 +42,22 @@
           display: flex;
           flex-wrap: wrap;
           gap: 16px;
-          // max-height: 480px;
-          // overflow-y: auto;
+          max-height: 550px;
+          overflow-y: auto;
 
-          // &::-webkit-scrollbar {
-          //   width: 5px;
-          // }
+          &::-webkit-scrollbar {
+            width: 5px;
+          }
 
-          // &::-webkit-scrollbar-track {
-          //   background: #f1f1f1;
-          //   border-radius: 10px;
-          // }
+          &::-webkit-scrollbar-thumb {
+            background: $gray20;
+            border-radius: 10px;
+            cursor: pointer;
+          }
 
-          // &::-webkit-scrollbar-thumb {
-          //   background: $gray20;
-          //   border-radius: 10px;
-          //   cursor: pointer;
-          // }
-
-          // &::-webkit-scrollbar-thumb:hover {
-          //   background: $gray30;
-          // }
+          &::-webkit-scrollbar-thumb:hover {
+            background: $gray30;
+          }
         }
 
         .imageWrapper {
@@ -229,31 +224,20 @@
                   }
                 }
               }
+            }
 
-              .tagList {
-                width: 100%;
-                margin-top: 20px;
+            .tagList {
+              width: 100%;
+              display: flex;
+              flex-wrap: wrap;
+              gap: 8px;
+
+              .deleteTag {
+                height: 100%;
                 display: flex;
-                flex-wrap: wrap;
-                gap: 8px;
-
-                .tag {
-                  display: flex;
-                  padding: 10px 16px;
-                  justify-content: center;
-                  align-items: center;
-                  gap: 6px;
-                  border-radius: 50%;
-                  background-color: $gray10;
-
-                  .deleteTag {
-                    height: 100%;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    cursor: pointer;
-                  }
-                }
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
               }
             }
           }

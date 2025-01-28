@@ -226,6 +226,12 @@ export default function Upload() {
         return;
       }
 
+      if (tags.includes(tag.trim())) {
+        showToast("이미 추가된 태그입니다.", "error");
+        setTag("");
+        return;
+      }
+
       setTags([...tags, tag.trim()]);
       setTag("");
     }
@@ -352,30 +358,29 @@ export default function Upload() {
                 </div>
                 <div className={styles.tagList}>
                   {tags.map((tag, index) => (
-                    <div key={index} className={styles.tag}>
-                      <Chip
-                        size="m"
-                        type="filled-assistive"
-                        rightIcon={
-                          <div
-                            onClick={() => removeTag(index)}
-                            role="button"
-                            tabIndex={0}
-                            className={styles.deleteTag}
-                          >
-                            <IconComponent
-                              name="deleteTag"
-                              width={16}
-                              height={16}
-                              alt="태그 제거"
-                              isBtn
-                            />
-                          </div>
-                        }
-                      >
-                        {tag}
-                      </Chip>
-                    </div>
+                    <Chip
+                      size="m"
+                      type="filled-assistive"
+                      key={index}
+                      rightIcon={
+                        <div
+                          onClick={() => removeTag(index)}
+                          role="button"
+                          tabIndex={0}
+                          className={styles.deleteTag}
+                        >
+                          <IconComponent
+                            name="deleteTag"
+                            width={16}
+                            height={16}
+                            alt="태그 제거"
+                            isBtn
+                          />
+                        </div>
+                      }
+                    >
+                      {tag}
+                    </Chip>
                   ))}
                 </div>
               </div>
