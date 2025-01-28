@@ -162,12 +162,18 @@ export default function Follow({ initialTab }: FollowProps) {
                   alt={`${activeTab === "follower" ? "팔로워" : "팔로잉"} 프로필 이미지`}
                 />
               )}
-              <div className={styles.nameDescription} onClick={() => handleClickUser(follow.id)}>
-                <p className={styles.name}>{follow.name}</p>
-                <p className={styles.description}>{follow.description}</p>
-              </div>
+              {follow.description !== "" ? (
+                <div className={styles.nameDescription} onClick={() => handleClickUser(follow.id)}>
+                  <p className={styles.name}>{follow.name}</p>
+                  <p className={styles.description}>{follow.description}</p>
+                </div>
+              ) : (
+                <div className={styles.nameContainer} onClick={() => handleClickUser(follow.id)}>
+                  <p className={styles.name}>{follow.name}</p>
+                </div>
+              )}
               {activeTab === "follower" ? (
-                <div className={styles.btn}>
+                <div className={follow.description !== "" ? styles.btn : styles.btnCenter}>
                   <Button
                     type="outlined-assistive"
                     size="s"
@@ -177,7 +183,7 @@ export default function Follow({ initialTab }: FollowProps) {
                   </Button>
                 </div>
               ) : (
-                <div className={styles.btn}>
+                <div className={follow.description !== "" ? styles.btn : styles.btnCenter}>
                   <Button
                     type="outlined-assistive"
                     size="s"

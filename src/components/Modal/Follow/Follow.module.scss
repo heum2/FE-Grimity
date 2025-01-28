@@ -82,20 +82,32 @@
       flex-direction: column;
       gap: 4px;
       cursor: pointer;
+    }
 
-      .name {
-        @include Sub4;
-        color: $gray80;
-      }
+    .nameContainer {
+      width: 426px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
 
-      .description {
-        @include Label2;
-        color: $gray60;
-      }
+    .name {
+      @include Sub4;
+      color: $gray80;
+    }
+
+    .description {
+      @include Label2;
+      color: $gray60;
     }
 
     .btn {
       flex-shrink: 0;
+    }
+
+    .btnCenter {
+      flex-shrink: 0;
+      align-self: center;
     }
   }
 }
