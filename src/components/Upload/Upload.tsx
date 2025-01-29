@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
 import Button from "../Button/Button";
-import TextField from "../TextField/TextField";
 import styles from "./Upload.module.scss";
 import Image from "next/image";
 import IconComponent from "../Asset/Icon";
@@ -10,8 +9,7 @@ import router from "next/router";
 import { useMutation } from "react-query";
 import { FeedsRequest, FeedsResponse, postFeeds } from "@/api/feeds/postFeeds";
 import { AxiosError } from "axios";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import DraggableImage from "./DraggableImage/DraggableImage";
 import Chip from "../Chip/Chip";
 import { useRecoilState } from "recoil";
@@ -175,6 +173,21 @@ export default function Upload() {
     });
   }, []);
 
+  const onDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+
+    const sourceIndex = result.source.index;
+    const destinationIndex = result.destination.index;
+
+    setImages((prevImages) => {
+      const newImages = [...prevImages];
+      const draggedImage = newImages[sourceIndex];
+      newImages.splice(sourceIndex, 1);
+      newImages.splice(destinationIndex, 0, draggedImage);
+      return newImages;
+    });
+  };
+
   const removeImage = (index: number) => {
     setImages((prevImages) => {
       const updatedImages = prevImages.filter((_, i) => i !== index);
@@ -270,41 +283,50 @@ export default function Upload() {
         <div className={styles.sectionContainer}>
           <section className={styles.imageSection}>
             <div>
-              <DndProvider backend={HTML5Backend}>
-                <div>
-                  {images.length === 0 && (
-                    <label htmlFor="file-upload" className={styles.uploadBtn}>
-                      <Image src="/image/upload.svg" width={320} height={320} alt="그림 올리기" />
-                    </label>
-                  )}
-                  <div className={styles.imageContainer}>
-                    {images.map((image, index) => (
-                      <DraggableImage
-                        key={image.name}
-                        image={image}
-                        index={index}
-                        moveImage={moveImage}
-                        removeImage={removeImage}
-                        isThumbnail={thumbnailUrl === image.url}
-                        onThumbnailSelect={() => selectThumbnail(image.url)}
-                      />
-                    ))}
-                  </div>
-                  {images.length > 0 && images.length < 10 && (
-                    <label htmlFor="file-upload" className={styles.addBtnContainer}>
-                      <div className={styles.addBtn} tabIndex={0}>
-                        <Image
-                          src="/icon/upload-add-image.svg"
-                          width={20}
-                          height={20}
-                          alt="이미지 추가"
-                        />
-                        이미지 추가
+              <div>
+                {images.length === 0 && (
+                  <label htmlFor="file-upload" className={styles.uploadBtn}>
+                    <Image src="/image/upload.svg" width={320} height={320} alt="그림 올리기" />
+                  </label>
+                )}
+                <DragDropContext onDragEnd={onDragEnd}>
+                  <Droppable droppableId="image-list">
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                        className={styles.imageContainer}
+                      >
+                        {images.map((image, index) => (
+                          <DraggableImage
+                            key={image.name}
+                            image={image}
+                            index={index}
+                            moveImage={moveImage}
+                            removeImage={removeImage}
+                            isThumbnail={thumbnailUrl === image.url}
+                            onThumbnailSelect={() => selectThumbnail(image.url)}
+                          />
+                        ))}
+                        {provided.placeholder}
                       </div>
-                    </label>
-                  )}
-                </div>
-              </DndProvider>
+                    )}
+                  </Droppable>
+                </DragDropContext>
+                {images.length > 0 && images.length < 10 && (
+                  <label htmlFor="file-upload" className={styles.addBtnContainer}>
+                    <div className={styles.addBtn} tabIndex={0}>
+                      <Image
+                        src="/icon/upload-add-image.svg"
+                        width={20}
+                        height={20}
+                        alt="이미지 추가"
+                      />
+                      이미지 추가
+                    </div>
+                  </label>
+                )}
+              </div>
               <input
                 id="file-upload"
                 type="file"
