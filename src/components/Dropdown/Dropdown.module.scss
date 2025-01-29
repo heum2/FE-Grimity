@@ -35,7 +35,8 @@
   color: $gray80;
   @include Sub4;
   transition: background 0.2s;
-  border-bottom: 1px solid var(--Color-Gray-150, #eeeeef);
+  border-bottom: 1px solid $gray30;
+  @include Drag;
 
   &:hover {
     background-color: $gray10;

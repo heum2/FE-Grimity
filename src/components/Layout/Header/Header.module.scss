@@ -11,6 +11,7 @@
   justify-content: center;
   background: $gray0;
   align-items: center;
+  @include Drag;
 }
 
 .cursor {
@@ -29,6 +30,7 @@
   align-items: center;
   background: rgba(152, 152, 152, 0.2);
   backdrop-filter: blur(75px);
+  @include Drag;
 }
 
 .container {

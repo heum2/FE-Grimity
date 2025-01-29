@@ -6,6 +6,7 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 24px;
+  @include Drag;
 
   .title {
     @include Title4;

@@ -13,6 +13,7 @@
     overflow: hidden;
     position: relative;
     cursor: pointer;
+    @include Drag;
 
     .image {
       object-fit: cover;
@@ -57,6 +58,7 @@
       .countContainer {
         display: flex;
         gap: 6px;
+        @include Drag;
 
         .likeContainer {
           display: flex;
