@@ -1,4 +1,4 @@
-import { Draggable } from "react-beautiful-dnd";
+import { Draggable } from "@hello-pangea/dnd";
 import { DraggableImageProps } from "./DraggableImage.types";
 import Image from "next/image";
 import styles from "./DraggableImage.module.scss";

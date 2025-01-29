@@ -9,7 +9,7 @@ import router from "next/router";
 import { useMutation } from "react-query";
 import { FeedsRequest, FeedsResponse, postFeeds } from "@/api/feeds/postFeeds";
 import { AxiosError } from "axios";
-import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
 import DraggableImage from "./DraggableImage/DraggableImage";
 import Chip from "../Chip/Chip";
 import { useRecoilState } from "recoil";
