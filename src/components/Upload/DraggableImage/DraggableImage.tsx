@@ -12,7 +12,7 @@ export default function DraggableImage({
   isThumbnail,
   onThumbnailSelect,
 }: DraggableImageProps) {
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const ref = useRef<HTMLDivElement>(null);
 
   const [{ isDragging }, drag] = useDrag({
@@ -44,15 +44,6 @@ export default function DraggableImage({
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return;
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
 
-      const scrollZoneHeight = 50;
-      const scrollSpeed = 5;
-
-      if (clientOffset.y < hoverBoundingRect.top + scrollZoneHeight) {
-        window.scrollBy(0, -scrollSpeed);
-      } else if (clientOffset.y > hoverBoundingRect.bottom - scrollZoneHeight) {
-        window.scrollBy(0, scrollSpeed);
-      }
-
       moveImage(dragIndex, hoverIndex);
       item.index = hoverIndex;
     },
@@ -60,10 +51,8 @@ export default function DraggableImage({
 
   drag(drop(ref));
 
-  const handleImageLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
-    if (event.currentTarget.complete) {
-      setLoading(false);
-    }
+  const handleImageLoad = () => {
+    setIsLoading(false);
   };
 
   return (
@@ -76,38 +65,37 @@ export default function DraggableImage({
         transition: "transform 0.2s ease",
       }}
     >
-      {/* {loading ? (
+      {isLoading && (
         <div className={styles.loading}>
           <p className={styles.loadingMsg}>이미지를 업로드 중이에요</p>
           <span className={styles.loader}></span>
         </div>
-      ) : (
-        <> */}
-      <div className={styles.moveImage} tabIndex={0}>
-        <Image src="/icon/upload-move-image.svg" width={40} height={40} alt="사진 순서 변경" />
-      </div>
-      <div className={styles.thumbnail} tabIndex={0} onClick={onThumbnailSelect}>
+      )}
+      <div className={`${styles.imageContainer} ${isLoading ? styles.hidden : ""}`}>
+        <div className={styles.moveImage} tabIndex={0}>
+          <Image src="/icon/upload-move-image.svg" width={40} height={40} alt="사진 순서 변경" />
+        </div>
+        <div className={styles.thumbnail} tabIndex={0} onClick={onThumbnailSelect}>
+          <Image
+            src={isThumbnail ? "/icon/thumbnail-on.svg" : "/icon/thumbnail-off.svg"}
+            width={67}
+            height={32}
+            alt="사진 썸네일 지정"
+          />
+        </div>
         <Image
-          src={isThumbnail ? "/icon/thumbnail-on.svg" : "/icon/thumbnail-off.svg"}
-          width={67}
-          height={32}
-          alt="사진 썸네일 지정"
+          src={image.url}
+          width={320}
+          height={240}
+          layout="intrinsic"
+          alt="Uploaded"
+          className={styles.image}
+          onLoad={handleImageLoad}
         />
+        <div className={styles.removeImage} onClick={() => removeImage(index)} tabIndex={0}>
+          <Image src="/icon/upload-delete-image.svg" width={40} height={40} alt="사진 제거" />
+        </div>
       </div>
-      <Image
-        src={image.url}
-        width={320}
-        height={240}
-        layout="intrinsic"
-        alt="Uploaded"
-        className={styles.image}
-        onLoad={handleImageLoad}
-      />
-      <div className={styles.removeImage} onClick={() => removeImage(index)} tabIndex={0}>
-        <Image src="/icon/upload-delete-image.svg" width={40} height={40} alt="사진 제거" />
-      </div>
-      {/* </>
-      )} */}
     </div>
   );
 }
