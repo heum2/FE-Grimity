@@ -5,4 +5,5 @@ export interface DraggableImageProps {
   removeImage: (index: number) => void;
   isThumbnail: boolean;
   onThumbnailSelect: () => void;
+  imageCount: number;
 }

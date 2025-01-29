@@ -325,6 +325,7 @@ export default function Upload() {
                             removeImage={removeImage}
                             isThumbnail={thumbnailUrl === image.url}
                             onThumbnailSelect={() => selectThumbnail(image.url)}
+                            imageCount={images.length}
                           />
                         ))}
                         {provided.placeholder}
