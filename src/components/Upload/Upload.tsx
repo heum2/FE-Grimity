@@ -32,11 +32,14 @@ export default function Upload() {
 
   // 첫 번째 사진을 썸네일 기본값으로
   useEffect(() => {
-    if (images.length > 0 && !thumbnailUrl) {
+    if (images.length > 0) {
       setThumbnailUrl(images[0].url);
       setThumbnailName(images[0].name);
+    } else {
+      setThumbnailUrl("");
+      setThumbnailName("");
     }
-  }, [images, thumbnailUrl]);
+  }, [images]);
 
   // 변경 사항 감지
   useEffect(() => {
@@ -173,7 +176,20 @@ export default function Upload() {
   }, []);
 
   const removeImage = (index: number) => {
-    setImages(images.filter((_, i) => i !== index));
+    setImages((prevImages) => {
+      const updatedImages = prevImages.filter((_, i) => i !== index);
+
+      // 첫 번째 이미지가 삭제되었을 경우 대표 이미지 변경
+      if (index === 0 && updatedImages.length > 0) {
+        setThumbnailUrl(updatedImages[0].url);
+        setThumbnailName(updatedImages[0].name);
+      } else if (updatedImages.length === 0) {
+        setThumbnailUrl("");
+        setThumbnailName("");
+      }
+
+      return updatedImages;
+    });
   };
 
   const handleSubmit = () => {
