@@ -345,7 +345,12 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                   </div>
                 </div>
               )}
-              <div className={styles.descriptionContainer}>
+              <div
+                className={styles.descriptionContainer}
+                style={{
+                  gap: userData.description && userData.links.length > 0 ? "20px" : "0",
+                }}
+              >
                 {userData.description !== "" && (
                   <p className={styles.description}>{userData.description}</p>
                 )}
