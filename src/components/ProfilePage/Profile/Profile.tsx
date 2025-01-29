@@ -25,16 +25,19 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
   const [, setModal] = useRecoilState(modalState);
   const { data: myData, refetch } = useMyData();
   const { data: userData, refetch: refetchUserData } = useUserData(id);
-  const [, setProfileImage] = useState<string>("");
+  const [profileImage, setProfileImage] = useState<string>("");
   const [, setCoverImage] = useState<string>("");
   const { showToast } = useToast();
 
   useEffect(() => {
-    if (myData) {
+    if (id === myData?.id) {
       setProfileImage(myData.image || "/image/default.svg");
       setCoverImage(myData.backgroundImage || "/image/default-cover.png");
+    } else if (id === userData?.id) {
+      setProfileImage(userData.image || "/image/default.svg");
+      setCoverImage(userData.backgroundImage || "/image/default-cover.png");
     }
-  }, [myData]);
+  }, [myData, userData]);
 
   const handleFollowClick = async () => {
     try {
@@ -253,7 +256,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
             {userData.image !== "https://image.grimity.com/null" ? (
               <div className={styles.profileImageContainer}>
                 <Image
-                  src={userData.image}
+                  src={profileImage}
                   width={140}
                   height={140}
                   alt="프로필 이미지"
