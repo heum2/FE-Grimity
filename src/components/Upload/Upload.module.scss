@@ -16,6 +16,11 @@
     gap: 16px;
     padding-top: calc(60px - 8px);
 
+    // 높이가 낮은 노트북
+    @media (max-height: 800px) {
+      padding-top: 0px;
+    }
+
     .uploadBtnContainer {
       width: 100%;
       display: flex;
@@ -46,6 +51,11 @@
           max-height: 550px;
           overflow-y: auto;
           @include Drag;
+
+          // 높이가 낮은 노트북
+          @media (max-height: 800px) {
+            max-height: 470px;
+          }
 
           &::-webkit-scrollbar {
             width: 5px;
