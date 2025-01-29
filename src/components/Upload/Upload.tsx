@@ -188,6 +188,16 @@ export default function Upload() {
     });
   };
 
+  const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    const files = event.dataTransfer.files;
+    await uploadImagesToServer(files);
+  };
+
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+  };
+
   const removeImage = (index: number) => {
     setImages((prevImages) => {
       const updatedImages = prevImages.filter((_, i) => i !== index);
@@ -285,9 +295,18 @@ export default function Upload() {
             <div>
               <div>
                 {images.length === 0 && (
-                  <label htmlFor="file-upload" className={styles.uploadBtn}>
-                    <Image src="/image/upload.svg" width={320} height={320} alt="그림 올리기" />
-                  </label>
+                  <div onDrop={handleDrop} onDragOver={handleDragOver}>
+                    <label htmlFor="file-upload" className={styles.uploadBtn}>
+                      <Image src="/image/upload.svg" width={320} height={320} alt="그림 올리기" />
+                    </label>
+                    <input
+                      id="file-upload"
+                      type="file"
+                      multiple
+                      hidden
+                      onChange={(e) => uploadImagesToServer(e.target.files!)}
+                    />
+                  </div>
                 )}
                 <DragDropContext onDragEnd={onDragEnd}>
                   <Droppable droppableId="image-list">
@@ -315,7 +334,12 @@ export default function Upload() {
                 </DragDropContext>
                 {images.length > 0 && images.length < 10 && (
                   <label htmlFor="file-upload" className={styles.addBtnContainer}>
-                    <div className={styles.addBtn} tabIndex={0}>
+                    <div
+                      className={styles.addBtn}
+                      tabIndex={0}
+                      onDrop={handleDrop}
+                      onDragOver={handleDragOver}
+                    >
                       <Image
                         src="/icon/upload-add-image.svg"
                         width={20}
@@ -323,6 +347,13 @@ export default function Upload() {
                         alt="이미지 추가"
                       />
                       이미지 추가
+                      <input
+                        id="file-upload"
+                        type="file"
+                        multiple
+                        hidden
+                        onChange={(e) => uploadImagesToServer(e.target.files!)}
+                      />
                     </div>
                   </label>
                 )}
