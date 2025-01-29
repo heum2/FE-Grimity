@@ -91,10 +91,25 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
 
   useEffect(() => {
     const activeTabRef = activeTab === "images" ? imagesTabRef : textsTabRef;
-    if (activeTabRef.current) {
-      const { offsetWidth, offsetLeft } = activeTabRef.current;
-      setIndicatorStyle({ width: offsetWidth, left: offsetLeft });
-    }
+    if (!activeTabRef.current) return;
+
+    const { offsetWidth, offsetLeft } = activeTabRef.current;
+    setIndicatorStyle({ width: offsetWidth, left: offsetLeft });
+
+    const observer = new MutationObserver(() => {
+      if (activeTabRef.current) {
+        const { offsetWidth, offsetLeft } = activeTabRef.current;
+        setIndicatorStyle({ width: offsetWidth, left: offsetLeft });
+      }
+    });
+
+    observer.observe(activeTabRef.current, {
+      attributes: true,
+      childList: true,
+      subtree: true,
+    });
+
+    return () => observer.disconnect();
   }, [activeTab]);
 
   const handleSortChange = (option: SortOption) => {
