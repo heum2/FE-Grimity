@@ -150,18 +150,22 @@ export default function Header() {
                 {myData.image !== "https://image.grimity.com/null" ? (
                   <Image
                     src={myData.image}
-                    width={28}
-                    height={28}
+                    width={100}
+                    height={100}
                     alt="프로필 이미지"
                     className={styles.profileImage}
+                    quality={100}
+                    style={{ objectFit: "cover" }}
                   />
                 ) : (
                   <Image
                     src="/image/default.svg"
-                    width={28}
-                    height={28}
+                    width={100}
+                    height={100}
                     alt="프로필 이미지"
                     className={styles.profileImage}
+                    quality={100}
+                    style={{ objectFit: "cover" }}
                   />
                 )}
               </div>
@@ -172,18 +176,22 @@ export default function Header() {
                       {myData.image !== "https://image.grimity.com/null" ? (
                         <Image
                           src={myData.image}
-                          width={28}
-                          height={28}
+                          width={100}
+                          height={100}
                           alt="프로필 이미지"
                           className={styles.dropdownProfileImage}
+                          quality={100}
+                          style={{ objectFit: "cover" }}
                         />
                       ) : (
                         <Image
                           src="/image/default.svg"
-                          width={28}
-                          height={28}
+                          width={100}
+                          height={100}
                           alt="프로필 이미지"
                           className={styles.dropdownProfileImage}
+                          quality={100}
+                          style={{ objectFit: "cover" }}
                         />
                       )}
                       <span>내 프로필</span>
