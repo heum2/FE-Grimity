@@ -8,7 +8,7 @@
 
   .container {
     width: 100%;
-    max-width: 1080px;
+    max-width: 1280px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -21,6 +21,11 @@
       padding-top: 0px;
     }
 
+    // 폭이 좁은 노트북
+    @media (max-width: 1500px) {
+      max-width: 1020px;
+    }
+
     .uploadBtnContainer {
       width: 100%;
       display: flex;
@@ -30,45 +35,59 @@
     .sectionContainer {
       width: 100%;
       display: flex;
+      flex-direction: column;
+      align-items: center;
       justify-content: space-between;
       gap: 40px;
 
       .imageSection {
-        width: 325px;
+        width: 100%;
         display: flex;
-        flex-direction: column;
+        justify-content: center;
         gap: 28px;
 
         .uploadBtn {
+          border-radius: 12px;
           cursor: pointer;
           @include Drag;
         }
 
         .imageContainer {
+          width: 100%;
+          max-width: 1020px;
           display: flex;
-          flex-wrap: wrap;
-          gap: 16px;
-          max-height: 550px;
-          overflow-y: auto;
+          gap: 20px;
+          overflow-x: auto;
+          overflow-y: hidden;
+          white-space: nowrap;
+          padding-bottom: 8px;
           @include Drag;
 
-          // 높이가 낮은 노트북
-          @media (max-height: 800px) {
-            max-height: 470px;
+          &::-webkit-scrollbar {
+            height: 8px;
           }
 
-          &::-webkit-scrollbar {
-            width: 5px;
+          &::-webkit-scrollbar-track {
+            background: $gray20;
+            border-radius: 10px;
           }
 
           &::-webkit-scrollbar-thumb {
-            background: $gray20;
+            background: $secandary1;
             border-radius: 10px;
             cursor: pointer;
           }
 
           &::-webkit-scrollbar-thumb:hover {
-            background: $gray30;
+            background: darken($secandary1, 10%);
+          }
+
+          // 폭이 좁은 노트북
+          @media (max-width: 1500px) {
+            max-width: 760px;
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
           }
         }
 
@@ -85,42 +104,20 @@
         }
 
         .addBtnContainer {
-          width: 100%;
           display: flex;
-          justify-content: center;
-          margin-top: 16px;
-          @include Drag;
-
-          .addBtn {
-            width: 100%;
-            padding: 16px 24px;
-            border-radius: 12px;
-            @include Btn1;
-            border: 1px solid $gray30;
-            color: $gray70;
-            background-color: $gray0;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-
-            &:hover {
-              background-color: darken($gray0, 4%);
-            }
-
-            &:active {
-              background-color: darken($gray0, 8%);
-            }
-          }
+          gap: 20px;
+          flex-shrink: 0;
+          height: 256px;
         }
       }
 
       .writeSection {
-        width: 700px;
+        max-width: 880px;
+        width: 100%;
         display: flex;
         flex-direction: column;
         align-items: flex-end;
+        padding-bottom: 50px;
 
         .bar {
           width: 100%;

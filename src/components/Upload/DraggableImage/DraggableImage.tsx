@@ -10,7 +10,6 @@ export default function DraggableImage({
   removeImage,
   isThumbnail,
   onThumbnailSelect,
-  imageCount,
 }: DraggableImageProps) {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -40,16 +39,6 @@ export default function DraggableImage({
             </div>
           )}
           <div className={`${styles.imageContainer} ${isLoading ? styles.hidden : ""}`}>
-            {imageCount > 1 && (
-              <div className={styles.moveImage} {...provided.dragHandleProps}>
-                <Image
-                  src="/icon/upload-move-image.svg"
-                  width={40}
-                  height={40}
-                  alt="사진 순서 변경"
-                />
-              </div>
-            )}
             <div className={styles.thumbnail} onClick={onThumbnailSelect}>
               <Image
                 src={isThumbnail ? "/icon/thumbnail-on.svg" : "/icon/thumbnail-off.svg"}
@@ -60,12 +49,14 @@ export default function DraggableImage({
             </div>
             <Image
               src={image.url}
-              width={320}
+              width={240}
               height={240}
-              layout="intrinsic"
+              layout="fixed"
+              objectFit="contain"
               alt="Uploaded"
               className={styles.image}
               onLoad={handleImageLoad}
+              {...provided.dragHandleProps}
             />
             <div className={styles.removeImage} onClick={() => removeImage(index)}>
               <Image src="/icon/upload-delete-image.svg" width={40} height={40} alt="사진 제거" />

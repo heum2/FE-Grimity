@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Button from "../Button/Button";
 import styles from "./Upload.module.scss";
 import Image from "next/image";
@@ -291,83 +291,65 @@ export default function Upload() {
           </Button>
         </div>
         <div className={styles.sectionContainer}>
-          <section className={styles.imageSection}>
-            <div>
-              <div>
-                {images.length === 0 && (
-                  <div onDrop={handleDrop} onDragOver={handleDragOver}>
-                    <label htmlFor="file-upload" className={styles.uploadBtn}>
-                      <Image src="/image/upload.svg" width={320} height={320} alt="그림 올리기" />
-                    </label>
-                    <input
-                      id="file-upload"
-                      type="file"
-                      multiple
-                      hidden
-                      onChange={(e) => uploadImagesToServer(e.target.files!)}
-                    />
-                  </div>
-                )}
-                <DragDropContext onDragEnd={onDragEnd}>
-                  <Droppable droppableId="image-list">
-                    {(provided) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.droppableProps}
-                        className={styles.imageContainer}
-                      >
-                        {images.map((image, index) => (
-                          <DraggableImage
-                            key={image.name}
-                            image={image}
-                            index={index}
-                            moveImage={moveImage}
-                            removeImage={removeImage}
-                            isThumbnail={thumbnailUrl === image.url}
-                            onThumbnailSelect={() => selectThumbnail(image.url)}
-                            imageCount={images.length}
-                          />
-                        ))}
-                        {provided.placeholder}
-                      </div>
-                    )}
-                  </Droppable>
-                </DragDropContext>
-                {images.length > 0 && images.length < 10 && (
-                  <label htmlFor="file-upload" className={styles.addBtnContainer}>
+          <section className={styles.imageSection} onDrop={handleDrop} onDragOver={handleDragOver}>
+            <div className={styles.addBtnContainer}>
+              <DragDropContext onDragEnd={onDragEnd}>
+                <Droppable droppableId="images" direction="horizontal">
+                  {(provided) => (
                     <div
-                      className={styles.addBtn}
-                      tabIndex={0}
-                      onDrop={handleDrop}
-                      onDragOver={handleDragOver}
+                      className={styles.imageContainer}
+                      ref={provided.innerRef}
+                      {...provided.droppableProps}
+                      onWheel={(e) => {
+                        const container = e.currentTarget;
+                        const isScrollable = container.scrollWidth > container.clientWidth;
+
+                        if (isScrollable && e.deltaY !== 0) {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          container.scrollLeft += e.deltaY;
+                        } else {
+                          e.preventDefault();
+                        }
+                      }}
                     >
-                      <Image
-                        src="/icon/upload-add-image.svg"
-                        width={20}
-                        height={20}
-                        alt="이미지 추가"
-                      />
-                      이미지 추가
-                      <input
-                        id="file-upload"
-                        type="file"
-                        multiple
-                        hidden
-                        onChange={(e) => uploadImagesToServer(e.target.files!)}
-                      />
+                      {images.map((image, index) => (
+                        <DraggableImage
+                          key={image.name}
+                          image={image}
+                          index={index}
+                          moveImage={moveImage}
+                          removeImage={removeImage}
+                          isThumbnail={thumbnailUrl === image.url}
+                          onThumbnailSelect={() => selectThumbnail(image.url)}
+                        />
+                      ))}
+                      {provided.placeholder}
                     </div>
-                  </label>
-                )}
-              </div>
-              <input
-                id="file-upload"
-                type="file"
-                multiple
-                accept="image/png, image/jpeg, image/jpg, image/gif"
-                style={{ display: "none" }}
-                onChange={(e) => e.target.files && uploadImagesToServer(e.target.files)}
-              />
+                  )}
+                </Droppable>
+              </DragDropContext>
+              <label htmlFor="file-upload" className={styles.uploadBtn}>
+                <div tabIndex={0}>
+                  <Image src="/image/upload.svg" width={240} height={240} alt="그림 추가" />
+                  <input
+                    id="file-upload"
+                    type="file"
+                    multiple
+                    hidden
+                    onChange={(e) => uploadImagesToServer(e.target.files!)}
+                  />
+                </div>
+              </label>
             </div>
+            <input
+              id="file-upload"
+              type="file"
+              multiple
+              accept="image/png, image/jpeg, image/jpg, image/gif"
+              style={{ display: "none" }}
+              onChange={(e) => e.target.files && uploadImagesToServer(e.target.files)}
+            />
           </section>
           <section className={styles.writeSection}>
             <div className={styles.textField}>
