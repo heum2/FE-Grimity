@@ -36,7 +36,9 @@ export default function ProfileCard({
         </Link>
       </div>
       <div className={styles.infoContainer}>
-        <h3 className={styles.title}>{title}</h3>
+        <Link href={`/feeds/${id}`}>
+          <h3 className={styles.title}>{title}</h3>
+        </Link>
         <div className={styles.profileContainer}>
           <p className={styles.author}>{formattedDate(createdAt)}</p>
           <div className={styles.countContainer}>

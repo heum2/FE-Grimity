@@ -9,16 +9,17 @@ import { useRecoilValue } from "recoil";
 import { authState } from "@/states/authState";
 import { deleteLike } from "@/api/feeds/deleteFeedsIdLike";
 import { putLike } from "@/api/feeds/putFeedsIdLike";
+import { timeAgo } from "@/utils/timeAgo";
 
 export default function SquareCard({
   title,
-  cards = [],
   thumbnail,
   author,
   likeCount,
   commentCount,
   id,
   isLike,
+  createdAt,
 }: SquareCardProps) {
   const { isLoggedIn } = useRecoilValue(authState);
   const [isLiked, setIsLiked] = useState(isLike);
@@ -60,25 +61,29 @@ export default function SquareCard({
         </Link>
       </div>
       <div className={styles.infoContainer}>
-        <h3 className={styles.title}>{title}</h3>
+        <Link href={`/feeds/${id}`}>
+          <h3 className={styles.title}>{title}</h3>
+        </Link>
         <div className={styles.profileContainer}>
-          {author && (
-            <>
-              <Link href={`/users/${author.id}`}>
-                <p className={styles.author}>{author.name}</p>
+          <>
+            {createdAt ? (
+              <p className={styles.createdAt}>{timeAgo(createdAt)}</p>
+            ) : (
+              <Link href={`/users/${author?.id}`}>
+                <p className={styles.author}>{author?.name}</p>
               </Link>
-              <div className={styles.countContainer}>
-                <div className={styles.likeContainer}>
-                  <IconComponent name="cardLike" width={12} height={12} />
-                  <p className={styles.count}>{formatCurrency(currentLikeCount)}</p>
-                </div>
-                <div className={styles.likeContainer}>
-                  <IconComponent name="cardComment" width={12} height={12} />
-                  <p className={styles.count}>{formatCurrency(commentCount)}</p>
-                </div>
+            )}
+            <div className={styles.countContainer}>
+              <div className={styles.likeContainer}>
+                <IconComponent name="cardLike" width={12} height={12} />
+                <p className={styles.count}>{formatCurrency(currentLikeCount)}</p>
               </div>
-            </>
-          )}
+              <div className={styles.likeContainer}>
+                <IconComponent name="cardComment" width={12} height={12} />
+                <p className={styles.count}>{formatCurrency(commentCount)}</p>
+              </div>
+            </div>
+          </>
         </div>
       </div>
     </div>

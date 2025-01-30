@@ -1,7 +1,6 @@
 export interface SquareCardProps {
   id: string;
   title: string;
-  cards: string[];
   thumbnail: string;
   author?: {
     id: string;
@@ -10,4 +9,5 @@ export interface SquareCardProps {
   likeCount: number;
   commentCount: number;
   isLike?: boolean;
+  createdAt?: string;
 }

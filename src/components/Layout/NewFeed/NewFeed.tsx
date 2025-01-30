@@ -41,7 +41,6 @@ export default function NewFeed() {
             <SquareCard
               id={feed.id}
               title={feed.title}
-              cards={feed.cards}
               thumbnail={feed.thumbnail}
               author={feed.author}
               likeCount={feed.likeCount}

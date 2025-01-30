@@ -55,6 +55,11 @@
         color: $gray50;
       }
 
+      .createdAt {
+        @include Label1;
+        color: $gray50;
+      }
+
       .countContainer {
         display: flex;
         gap: 6px;
