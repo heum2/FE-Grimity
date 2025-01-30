@@ -43,4 +43,8 @@ export const ICONS = {
   zoomIn: "/icon/zoom-in.svg",
   zoomOut: "/icon/zoom-out.svg",
   deleteTag: "/icon/delete-tag.svg",
+  kebab: "/icon/kebab.svg",
+  meatball: "/icon/meatball.svg",
+  backBtn: "/icon/back-button.svg",
+  share: "/icon/share.svg",
 };

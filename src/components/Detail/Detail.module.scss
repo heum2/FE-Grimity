@@ -1,0 +1,209 @@
+@import "@/styles/globals.scss";
+
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  padding-top: 50px;
+  gap: 50px;
+
+  .boardSection {
+    width: 100%;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+
+    .bar {
+      width: 100%;
+      height: 1px;
+      background-color: $gray30;
+    }
+  }
+
+  .center {
+    width: 100%;
+    max-width: 880px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .bar {
+      width: 100%;
+      height: 1px;
+      background-color: $gray30;
+      margin: 20px 0;
+    }
+
+    .header {
+      width: 100%;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .dropdownContainer {
+        width: fit-content;
+        display: flex;
+        justify-content: flex-end;
+        gap: 16px;
+        position: relative;
+
+        .dropdown {
+          width: 24px;
+          height: 24px;
+          margin: 8px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .imageGallery {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .imageWrapper {
+    width: 100%;
+    margin-bottom: 20px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .imageWrapper2 {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .cardImage {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    cursor: pointer;
+  }
+
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    cursor: pointer;
+  }
+
+  .overlayContent {
+    max-width: 90%;
+    max-height: 90%;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  }
+
+  .btnContainer {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .likeBtn {
+      cursor: pointer;
+
+      &:hover {
+        animation: pulse 0.5s ease-in-out;
+      }
+    }
+
+    .saveBtn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      outline: none;
+      border: none;
+      cursor: pointer;
+      @include Drag;
+      border: 1px solid $gray30;
+      color: $gray70;
+      background-color: $gray0;
+      width: 100%;
+      padding: 16px 16px;
+      border-radius: 12px;
+      @include Btn1;
+
+      &:hover {
+        background-color: darken($gray0, 4%);
+        animation: pulse 0.5s ease-in-out;
+      }
+
+      &:active {
+        background-color: darken($gray0, 8%);
+      }
+    }
+  }
+
+  .stats {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .statIcon {
+      width: 16px;
+      height: 16px;
+      object-fit: cover;
+    }
+
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      color: $gray40;
+    }
+  }
+
+  .contentContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+
+    .title {
+      color: $gray80;
+      @include Title3;
+    }
+
+    .content {
+      @include Body1;
+      color: $gray70;
+      white-space: pre-line;
+    }
+
+    .createdAt {
+      @include Label1;
+      color: $gray50;
+    }
+
+    .aiBtn {
+      display: flex;
+      padding: 6px 14px;
+      justify-content: center;
+      align-items: center;
+      border-radius: 8px;
+    }
+
+    .tags {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+    }
+  }
+}
