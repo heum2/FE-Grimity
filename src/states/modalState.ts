@@ -7,7 +7,8 @@ export type ModalType =
   | "PROFILE-EDIT"
   | "BACKGROUND"
   | "FOLLOWER"
-  | "FOLLOWING";
+  | "FOLLOWING"
+  | "SHARE";
 
 export interface ModalState {
   isOpen: boolean;
