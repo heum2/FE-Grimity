@@ -280,6 +280,18 @@ export default function Upload() {
     setTags(tags.filter((_, i) => i !== index));
   };
 
+  const handleWheel = useCallback((e: React.WheelEvent<HTMLDivElement>) => {
+    const container = e.currentTarget;
+    const isScrollable = container.scrollWidth > container.clientWidth;
+
+    if (!isScrollable) return;
+    e.preventDefault();
+    e.stopPropagation();
+
+    const scrollAmount = e.deltaY;
+    container.scrollLeft += scrollAmount;
+  }, []);
+
   const isDisabled = title.trim() === "" || isAI === null;
 
   return (
@@ -300,18 +312,7 @@ export default function Upload() {
                       className={styles.imageContainer}
                       ref={provided.innerRef}
                       {...provided.droppableProps}
-                      onWheel={(e) => {
-                        const container = e.currentTarget;
-                        const isScrollable = container.scrollWidth > container.clientWidth;
-
-                        if (isScrollable && e.deltaY !== 0) {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          container.scrollLeft += e.deltaY;
-                        } else {
-                          e.preventDefault();
-                        }
-                      }}
+                      onWheel={handleWheel}
                     >
                       {images.map((image, index) => (
                         <DraggableImage
