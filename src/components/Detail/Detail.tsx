@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import Dropdown from "../Dropdown/Dropdown";
 import { authState } from "@/states/authState";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { putFollow } from "@/api/users/putIdFollow";
 import { deleteFollow } from "@/api/users/deleteIdFollow";
 import { useToast } from "@/utils/useToast";
@@ -28,6 +28,7 @@ import BoardPopular from "../Layout/BoardPopular/BoardPopular";
 import ShareBtn from "./ShareBtn/ShareBtn";
 import { timeAgo } from "@/utils/timeAgo";
 import Chip from "../Chip/Chip";
+import { modalState } from "@/states/modalState";
 
 export default function Detail({ id }: DetailProps) {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
@@ -39,6 +40,7 @@ export default function Detail({ id }: DetailProps) {
   const [viewCounted, setViewCounted] = useState(false);
   const [overlayImage, setOverlayImage] = useState<string | null>(null);
   const router = useRouter();
+  const [, setModal] = useRecoilState(modalState);
 
   usePreventScroll(!!overlayImage);
 
@@ -108,8 +110,18 @@ export default function Detail({ id }: DetailProps) {
     setOverlayImage(image);
   };
 
-  const handleRouteBack = () => {
-    router.back();
+  const handleOpenShareModal = () => {
+    if (details) {
+      setModal({
+        isOpen: true,
+        type: "SHARE",
+        data: { id, details },
+      });
+    }
+  };
+
+  const handleShowToast = () => {
+    showToast("신고되었습니다.", "information");
   };
 
   return (
@@ -118,8 +130,71 @@ export default function Detail({ id }: DetailProps) {
         {details && (
           <>
             <section className={styles.header}>
-              <div onClick={handleRouteBack}>
-                <IconComponent name="backBtn" width={24} height={24} padding={8} isBtn />
+              <div className={styles.profileLeft}>
+                <Link href={`/users/${details.author.id}`}>
+                  {details.author.image !== "https://image.grimity.com/null" ? (
+                    <Image
+                      src={details.author.image}
+                      alt={details.author.name}
+                      className={styles.authorImage}
+                      width={100}
+                      height={100}
+                      quality={100}
+                      style={{ objectFit: "cover" }}
+                    />
+                  ) : (
+                    <Image
+                      src="/image/default.svg"
+                      width={100}
+                      height={100}
+                      alt="프로필 이미지"
+                      className={styles.authorImage}
+                      quality={100}
+                      style={{ objectFit: "cover" }}
+                    />
+                  )}
+                </Link>
+                <div className={styles.authorInfo}>
+                  <Link href={`/users/${details.author.id}`}>
+                    <p className={styles.authorName}>{details.author.name}</p>
+                  </Link>
+                  <div className={styles.stats}>
+                    <p className={styles.createdAt}>{timeAgo(details.createdAt)}</p>
+                    <Image src="/icon/dot.svg" width={3} height={3} alt="" />
+                    <div className={styles.stat}>
+                      <Image
+                        src="/icon/like-count.svg"
+                        width={16}
+                        height={0}
+                        alt="좋아요 수"
+                        className={styles.statIcon}
+                      />
+                      {currentLikeCount}
+                    </div>
+                    <div className={styles.stat}>
+                      <Image
+                        src="/icon/bookmark-count.svg"
+                        width={16}
+                        height={0}
+                        layout="intrinsic"
+                        alt="저장수"
+                        className={styles.statIcon}
+                      />
+                      0
+                    </div>
+                    <div className={styles.stat}>
+                      <Image
+                        src="/icon/view-count.svg"
+                        width={16}
+                        height={0}
+                        layout="intrinsic"
+                        alt="조회수"
+                        className={styles.statIcon}
+                      />
+                      {details.viewCount}
+                    </div>
+                  </div>
+                </div>
               </div>
               <div className={styles.dropdownContainer}>
                 {isLoggedIn &&
@@ -151,7 +226,7 @@ export default function Detail({ id }: DetailProps) {
                         menuItems={[
                           {
                             label: "신고하기",
-                            onClick: handleShowMore,
+                            onClick: handleShowToast,
                             isDelete: true,
                           },
                         ]}
@@ -263,7 +338,41 @@ export default function Detail({ id }: DetailProps) {
                 <Image src="/icon/card-save-on.svg" width={20} height={20} alt="북마크" />
               </div>
               <div className={styles.saveBtn}>
-                <Image src="/icon/meatball.svg" width={20} height={20} alt="메뉴 버튼 " />
+                {isLoggedIn &&
+                  (user_id === details.author.id ? (
+                    <div className={styles.dropdown}>
+                      <Dropdown
+                        trigger={
+                          <Image src="/icon/meatball.svg" width={20} height={20} alt="메뉴 버튼 " />
+                        }
+                        menuItems={[
+                          {
+                            label: "공유하기",
+                            onClick: handleOpenShareModal,
+                          },
+                        ]}
+                      />
+                    </div>
+                  ) : (
+                    <div className={styles.dropdown}>
+                      <Dropdown
+                        trigger={
+                          <Image src="/icon/meatball.svg" width={20} height={20} alt="메뉴 버튼 " />
+                        }
+                        menuItems={[
+                          {
+                            label: "공유하기",
+                            onClick: handleOpenShareModal,
+                          },
+                          {
+                            label: "신고하기",
+                            onClick: handleShowToast,
+                            isDelete: true,
+                          },
+                        ]}
+                      />
+                    </div>
+                  ))}
               </div>
             </div>
             <div className={styles.bar} />
@@ -271,11 +380,6 @@ export default function Detail({ id }: DetailProps) {
           </>
         )}
       </div>
-      <section className={styles.boardSection}>
-        <BoardPopular />
-        <div className={styles.bar} />
-        <BoardPopular />
-      </section>
     </div>
   );
 }
