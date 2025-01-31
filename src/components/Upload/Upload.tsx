@@ -27,6 +27,7 @@ export default function Upload() {
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [, setModal] = useRecoilState(modalState);
   const { showToast } = useToast();
+  const hasUnsavedChangesRef = useRef(hasUnsavedChanges);
 
   // 첫 번째 사진을 썸네일 기본값으로
   useEffect(() => {
@@ -62,8 +63,12 @@ export default function Upload() {
 
   // 라우터 이벤트 핸들러
   useEffect(() => {
+    hasUnsavedChangesRef.current = hasUnsavedChanges;
+  }, [hasUnsavedChanges]);
+
+  useEffect(() => {
     const handleRouteChangeStart = (url: string) => {
-      if (!hasUnsavedChanges) return;
+      if (!hasUnsavedChangesRef.current) return;
 
       router.events.emit("routeChangeError");
 
@@ -75,6 +80,7 @@ export default function Upload() {
           subtitle: "작성한 내용들은 모두 초기화돼요",
           confirmBtn: "나가기",
           onClick: () => {
+            hasUnsavedChangesRef.current = false;
             setHasUnsavedChanges(false);
             router.push(url);
           },
@@ -89,11 +95,11 @@ export default function Upload() {
     return () => {
       router.events.off("routeChangeStart", handleRouteChangeStart);
     };
-  }, [hasUnsavedChanges, router, setModal]);
+  }, [router, setModal]);
 
   const { mutate: uploadFeed } = useMutation<FeedsResponse, AxiosError, FeedsRequest>(postFeeds, {
     onSuccess: (response: FeedsResponse) => {
-      setHasUnsavedChanges(false);
+      hasUnsavedChangesRef.current = false;
       showToast("그림이 업로드되었습니다!", "success");
       router.push(`/feeds/${response.id}`);
     },
@@ -221,6 +227,11 @@ export default function Upload() {
       return;
     }
 
+    if (!content.trim()) {
+      showToast("내용을 입력해주세요.", "error");
+      return;
+    }
+
     if (images.length === 0) {
       showToast("최소 1장의 그림을 업로드해야 합니다.", "error");
       return;
@@ -292,7 +303,7 @@ export default function Upload() {
     container.scrollLeft += scrollAmount;
   }, []);
 
-  const isDisabled = title.trim() === "" || isAI === null;
+  const isDisabled = title.trim() === "" || content.trim() === "" || isAI === null;
 
   return (
     <div className={styles.background}>
@@ -364,9 +375,9 @@ export default function Upload() {
                   maxLength={32}
                 />
                 {title && (
-                  <p className={styles.countTotal}>
+                  <div className={styles.countTotal}>
                     <p className={styles.count}>{title.length}</p>/{32}
-                  </p>
+                  </div>
                 )}
               </div>
               <div className={styles.bar} />
