@@ -28,6 +28,7 @@ export default function Upload() {
   const [, setModal] = useRecoilState(modalState);
   const { showToast } = useToast();
   const hasUnsavedChangesRef = useRef(hasUnsavedChanges);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   // 첫 번째 사진을 썸네일 기본값으로
   useEffect(() => {
@@ -291,17 +292,30 @@ export default function Upload() {
     setTags(tags.filter((_, i) => i !== index));
   };
 
-  const handleWheel = useCallback((e: React.WheelEvent<HTMLDivElement>) => {
-    const container = e.currentTarget;
+  // 가로 스크롤 시 세로 스크롤 막기
+  const handleWheel = useCallback((e: WheelEvent) => {
+    if (!containerRef.current) return;
+
+    const container = containerRef.current;
     const isScrollable = container.scrollWidth > container.clientWidth;
 
     if (!isScrollable) return;
-    e.preventDefault();
-    e.stopPropagation();
 
-    const scrollAmount = e.deltaY;
-    container.scrollLeft += scrollAmount;
+    e.preventDefault();
+    container.scrollLeft += e.deltaY;
   }, []);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    containerRef.current.addEventListener("wheel", handleWheel, { passive: false });
+
+    return () => {
+      if (containerRef.current) {
+        containerRef.current.removeEventListener("wheel", handleWheel);
+      }
+    };
+  }, [handleWheel]);
 
   const isDisabled = title.trim() === "" || content.trim() === "" || isAI === null;
 
@@ -321,9 +335,11 @@ export default function Upload() {
                   {(provided) => (
                     <div
                       className={styles.imageContainer}
-                      ref={provided.innerRef}
+                      ref={(el) => {
+                        provided.innerRef(el);
+                        containerRef.current = el;
+                      }}
                       {...provided.droppableProps}
-                      onWheel={handleWheel}
                     >
                       {images.map((image, index) => (
                         <DraggableImage
