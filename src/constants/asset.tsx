@@ -47,4 +47,5 @@ export const ICONS = {
   meatball: "/icon/meatball.svg",
   backBtn: "/icon/back-button.svg",
   share: "/icon/share.svg",
+  dot: "/icon/dot.svg",
 };

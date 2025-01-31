@@ -193,45 +193,46 @@ export default function Detail({ id }: DetailProps) {
                 </div>
               </div>
             )}
-            <div className={styles.stats}>
-              <div className={styles.stat}>
-                <Image
-                  src="/icon/like-count.svg"
-                  width={16}
-                  height={16}
-                  alt="좋아요 수"
-                  className={styles.statIcon}
-                />
-                {currentLikeCount}
-              </div>
-              <div className={styles.stat}>
-                <Image
-                  src="/icon/bookmark-count.svg"
-                  width={16}
-                  height={0}
-                  layout="intrinsic"
-                  alt="저장수"
-                  className={styles.statIcon}
-                />
-                0
-              </div>
-              <div className={styles.stat}>
-                <Image
-                  src="/icon/view-count.svg"
-                  width={16}
-                  height={0}
-                  layout="intrinsic"
-                  alt="조회수"
-                  className={styles.statIcon}
-                />
-                {details.viewCount}
-              </div>
-            </div>
             <section className={styles.contentContainer}>
               <h2 className={styles.title}>{details.title}</h2>
               <div className={styles.bar} />
               <p className={styles.content}>{details.content}</p>
-              <p className={styles.createdAt}>{timeAgo(details.createdAt)}</p>
+              <div className={styles.stats}>
+                <p className={styles.createdAt}>{timeAgo(details.createdAt)}</p>
+                <Image src="/icon/dot.svg" width={3} height={3} alt="" />
+                <div className={styles.stat}>
+                  <Image
+                    src="/icon/like-count.svg"
+                    width={16}
+                    height={0}
+                    alt="좋아요 수"
+                    className={styles.statIcon}
+                  />
+                  {currentLikeCount}
+                </div>
+                <div className={styles.stat}>
+                  <Image
+                    src="/icon/bookmark-count.svg"
+                    width={16}
+                    height={0}
+                    layout="intrinsic"
+                    alt="저장수"
+                    className={styles.statIcon}
+                  />
+                  0
+                </div>
+                <div className={styles.stat}>
+                  <Image
+                    src="/icon/view-count.svg"
+                    width={16}
+                    height={0}
+                    layout="intrinsic"
+                    alt="조회수"
+                    className={styles.statIcon}
+                  />
+                  {details.viewCount}
+                </div>
+              </div>
               <div className={styles.tags}>
                 {details.isAI && <div className={styles.aiBtn}>AI 그림</div>}
                 {details.tags.map((tag, index) => (
