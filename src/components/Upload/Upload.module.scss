@@ -183,6 +183,10 @@
                 color: $gray70;
                 resize: none;
 
+                &::placeholder {
+                  color: $gray50;
+                }
+
                 &::-webkit-scrollbar {
                   width: 6px;
                 }
