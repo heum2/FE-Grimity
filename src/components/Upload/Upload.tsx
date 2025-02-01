@@ -16,7 +16,7 @@ import { useRecoilState } from "recoil";
 import { modalState } from "@/states/modalState";
 
 export default function Upload() {
-  const [images, setImages] = useState<{ name: string; url: string }[]>([]);
+  const [images, setImages] = useState<{ name: string; originalName: string; url: string }[]>([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isAI, setIsAI] = useState(false);
@@ -153,6 +153,7 @@ export default function Upload() {
 
       const newImages = filesToUpload.map((file, index) => ({
         name: presignedUrls[index].imageName,
+        originalName: file.name,
         url: URL.createObjectURL(file),
       }));
 
@@ -346,6 +347,7 @@ export default function Upload() {
                           key={image.name}
                           image={image}
                           index={index}
+                          name={image.originalName}
                           moveImage={moveImage}
                           removeImage={removeImage}
                           isThumbnail={thumbnailUrl === image.url}

@@ -1,7 +1,7 @@
 @import "@/styles/globals.scss";
 
 .imageWrapper {
-  height: 240px;
+  height: 100%;
   position: relative;
   width: fit-content;
   transition: transform 0.2s ease, opacity 0.2s ease;
@@ -30,6 +30,20 @@
 
   &:active {
     cursor: grabbing;
+  }
+}
+
+.imageContainer {
+  height: 100%;
+
+  .fileName {
+    margin-top: 12px;
+    width: 240px;
+    @include Body1;
+    color: $gray70;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
   }
 }
 

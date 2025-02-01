@@ -7,6 +7,7 @@ import { useState } from "react";
 export default function DraggableImage({
   image,
   index,
+  name,
   removeImage,
   isThumbnail,
   onThumbnailSelect,
@@ -61,6 +62,7 @@ export default function DraggableImage({
             <div className={styles.removeImage} onClick={() => removeImage(index)}>
               <Image src="/icon/upload-delete-image.svg" width={40} height={40} alt="사진 제거" />
             </div>
+            <p className={styles.fileName}>{name}</p>
           </div>
         </div>
       )}

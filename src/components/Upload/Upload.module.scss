@@ -96,18 +96,11 @@
           width: fit-content;
         }
 
-        .removeImage {
-          position: absolute;
-          top: 8px;
-          right: 8px;
-          cursor: pointer;
-        }
-
         .addBtnContainer {
           display: flex;
           gap: 20px;
           flex-shrink: 0;
-          height: 256px;
+          height: 290px;
         }
       }
 
