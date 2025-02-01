@@ -236,7 +236,7 @@ export default function Detail({ id }: DetailProps) {
               </div>
             </section>
             <section className={styles.imageGallery}>
-              {details.cards.map((card, index) => (
+              {details.cards.slice(0, 2).map((card, index) => (
                 <div key={index} className={styles.imageWrapper}>
                   <Image
                     src={card}
@@ -247,9 +247,33 @@ export default function Detail({ id }: DetailProps) {
                     className={styles.cardImage}
                     onClick={() => handleImageClick(card)}
                   />
+                  {index === 1 && details.cards.length > 2 && !isExpanded && (
+                    <>
+                      <div className={styles.gradient} />
+                      <div onClick={handleShowMore} className={styles.showMore}>
+                        <Button size="l" type="filled-primary">
+                          전체 보기
+                        </Button>
+                      </div>
+                    </>
+                  )}
                 </div>
               ))}
             </section>
+            {isExpanded &&
+              details.cards.slice(2).map((card, index) => (
+                <div key={index + 2} className={styles.imageWrapper2}>
+                  <Image
+                    src={card}
+                    alt={`Card image ${index + 3}`}
+                    width={600}
+                    height={0}
+                    layout="intrinsic"
+                    className={styles.cardImage}
+                    onClick={() => handleImageClick(card)}
+                  />
+                </div>
+              ))}
             {overlayImage && (
               <div className={styles.overlay} onClick={() => setOverlayImage(null)}>
                 <div className={styles.overlayContent}>
