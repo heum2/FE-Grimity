@@ -7,8 +7,7 @@ import { SquareCardProps } from "./SquareCard.types";
 import Link from "next/link";
 import { useRecoilValue } from "recoil";
 import { authState } from "@/states/authState";
-import { deleteLike } from "@/api/feeds/deleteFeedsIdLike";
-import { putLike } from "@/api/feeds/putFeedsIdLike";
+import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
 import { timeAgo } from "@/utils/timeAgo";
 
 export default function SquareCard({
