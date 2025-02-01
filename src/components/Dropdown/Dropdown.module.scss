@@ -26,6 +26,15 @@
   flex-direction: column;
   z-index: 10;
   overflow: hidden;
+
+  &:has(.menuItem:first-child:last-child) {
+    padding: 0;
+
+    .menuItem {
+      border-radius: 12px;
+      padding: 16px;
+    }
+  }
 }
 
 .menuItem {
