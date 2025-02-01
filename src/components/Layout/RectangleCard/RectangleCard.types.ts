@@ -2,7 +2,6 @@ export interface RectangleCardProps {
   id: string;
   title: string;
   content: string;
-  cards: string[];
   thumbnail: string;
   author?: {
     id: string;
@@ -12,5 +11,5 @@ export interface RectangleCardProps {
   likeCount: number;
   commentCount: number;
   createdAt: string;
-  isSave?: boolean;
+  isLike?: boolean;
 }

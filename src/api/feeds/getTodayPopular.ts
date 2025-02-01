@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 export interface Feed {
   id: string;
   title: string;
+  content?: string;
   cards: string[];
   thumbnail: string;
   likeCount: number;
