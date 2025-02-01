@@ -1,18 +1,14 @@
 import styles from "./Detail.module.scss";
 import { DetailProps } from "./Detail.types";
-import { formatCurrency } from "@/utils/formatCurrency";
 import { useDetails } from "@/api/feeds/getFeedsId";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import Dropdown from "../Dropdown/Dropdown";
 import { authState } from "@/states/authState";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { putFollow } from "@/api/users/putIdFollow";
-import { deleteFollow } from "@/api/users/deleteIdFollow";
 import { useToast } from "@/utils/useToast";
 import IconComponent from "../Asset/Icon";
-import { deleteLike } from "@/api/feeds/deleteFeedsIdLike";
-import { putLike } from "@/api/feeds/putFeedsIdLike";
+import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
 import Button from "../Button/Button";
 import Link from "next/link";
 import { putView } from "@/api/feeds/putIdView";
@@ -22,13 +18,12 @@ import { usePreventScroll } from "@/utils/usePreventScroll";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import Loader from "../Layout/Loader/Loader";
-import { formattedDate } from "@/utils/formatDate";
 import Author from "./Author/Author";
-import BoardPopular from "../Layout/BoardPopular/BoardPopular";
 import ShareBtn from "./ShareBtn/ShareBtn";
 import { timeAgo } from "@/utils/timeAgo";
 import Chip from "../Chip/Chip";
 import { modalState } from "@/states/modalState";
+import { deleteSave, putSave } from "@/api/feeds/putDeleteFeedsIdSave";
 
 export default function Detail({ id }: DetailProps) {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
@@ -36,6 +31,7 @@ export default function Detail({ id }: DetailProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const { showToast } = useToast();
   const [isLiked, setIsLiked] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
   const [currentLikeCount, setCurrentLikeCount] = useState(0);
   const [viewCounted, setViewCounted] = useState(false);
   const [overlayImage, setOverlayImage] = useState<string | null>(null);
@@ -106,6 +102,20 @@ export default function Detail({ id }: DetailProps) {
     setIsLiked(!isLiked);
   };
 
+  const handleSaveClick = async () => {
+    if (!isLoggedIn) {
+      showToast("로그인 후 저장할 수 있어요.", "error");
+      return;
+    }
+
+    if (isSaved) {
+      await deleteSave(id);
+    } else {
+      await putSave(id);
+    }
+    setIsSaved(!isSaved);
+  };
+
   const handleImageClick = (image: string) => {
     setOverlayImage(image);
   };
@@ -170,17 +180,6 @@ export default function Detail({ id }: DetailProps) {
                         className={styles.statIcon}
                       />
                       {currentLikeCount}
-                    </div>
-                    <div className={styles.stat}>
-                      <Image
-                        src="/icon/bookmark-count.svg"
-                        width={16}
-                        height={0}
-                        layout="intrinsic"
-                        alt="저장수"
-                        className={styles.statIcon}
-                      />
-                      0
                     </div>
                     <div className={styles.stat}>
                       <Image
@@ -272,6 +271,12 @@ export default function Detail({ id }: DetailProps) {
               <h2 className={styles.title}>{details.title}</h2>
               <div className={styles.bar} />
               <p className={styles.content}>{details.content}</p>
+              {details.isAI && (
+                <div className={styles.aiBtn}>
+                  <Image src="/icon/ai-message.svg" width={20} height={20} alt="" />
+                  해당 컨텐츠는 AI로 생성되었어요
+                </div>
+              )}
               <div className={styles.stats}>
                 <p className={styles.createdAt}>{timeAgo(details.createdAt)}</p>
                 <Image src="/icon/dot.svg" width={3} height={3} alt="" />
@@ -287,17 +292,6 @@ export default function Detail({ id }: DetailProps) {
                 </div>
                 <div className={styles.stat}>
                   <Image
-                    src="/icon/bookmark-count.svg"
-                    width={16}
-                    height={0}
-                    layout="intrinsic"
-                    alt="저장수"
-                    className={styles.statIcon}
-                  />
-                  0
-                </div>
-                <div className={styles.stat}>
-                  <Image
                     src="/icon/view-count.svg"
                     width={16}
                     height={0}
@@ -308,14 +302,15 @@ export default function Detail({ id }: DetailProps) {
                   {details.viewCount}
                 </div>
               </div>
-              <div className={styles.tags}>
-                {details.isAI && <div className={styles.aiBtn}>AI 그림</div>}
-                {details.tags.map((tag, index) => (
-                  <Chip key={index} size="m" type="filled-assistive">
-                    {tag}
-                  </Chip>
-                ))}
-              </div>
+              {details.tags.length > 1 && (
+                <div className={styles.tags}>
+                  {details.tags.map((tag, index) => (
+                    <Chip key={index} size="m" type="filled-assistive">
+                      {tag}
+                    </Chip>
+                  ))}
+                </div>
+              )}
             </section>
             <div className={styles.btnContainer}>
               <div className={styles.likeBtn} onClick={handleLikeClick}>
@@ -323,19 +318,24 @@ export default function Detail({ id }: DetailProps) {
                   size="l"
                   type="outlined-assistive"
                   leftIcon={
-                    <IconComponent
-                      name={isLiked ? "cardLikeOn" : "cardLikeOff"}
+                    <Image
+                      src={isLiked ? "/icon/detail-like-on.svg" : "/icon/detail-like-off.svg"}
                       width={20}
                       height={20}
-                      isBtn
+                      alt="좋아요"
                     />
                   }
                 >
                   {currentLikeCount}
                 </Button>
               </div>
-              <div className={styles.saveBtn}>
-                <Image src="/icon/card-save-on.svg" width={20} height={20} alt="북마크" />
+              <div className={styles.saveBtn} onClick={handleSaveClick}>
+                <Image
+                  src={isSaved ? "/icon/detail-save-on.svg" : "/icon/detail-save-off.svg"}
+                  width={20}
+                  height={20}
+                  alt="저장"
+                />
               </div>
               <div className={styles.saveBtn}>
                 {isLoggedIn &&

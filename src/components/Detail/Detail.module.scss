@@ -195,6 +195,7 @@
       @include Body1;
       color: $gray70;
       white-space: pre-line;
+      min-height: 120px;
     }
 
     .stats {
@@ -229,10 +230,11 @@
 
     .aiBtn {
       display: flex;
-      padding: 6px 14px;
-      justify-content: center;
+      @include Label2;
+      color: $gray50;
       align-items: center;
-      border-radius: 8px;
+      gap: 6px;
+      margin-bottom: 16px;
     }
 
     .tags {
