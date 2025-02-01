@@ -98,6 +98,7 @@
           height: 24px;
           margin: 8px;
           cursor: pointer;
+          position: relative;
         }
       }
     }
@@ -202,7 +203,6 @@
       padding: 16px 16px;
       border-radius: 12px;
       @include Btn1;
-      position: relative;
 
       &:hover {
         background-color: darken($gray0, 4%);
@@ -211,6 +211,15 @@
       &:active {
         background-color: darken($gray0, 8%);
       }
+    }
+
+    .dropdown {
+      cursor: pointer;
+      position: relative;
+    }
+
+    .menuBtn {
+      @extend .saveBtn;
     }
   }
 

@@ -361,44 +361,46 @@ export default function Detail({ id }: DetailProps) {
                   alt="저장"
                 />
               </div>
-              <div className={styles.saveBtn}>
-                {isLoggedIn &&
-                  (user_id === details.author.id ? (
-                    <div className={styles.dropdown}>
-                      <Dropdown
-                        trigger={
-                          <Image src="/icon/meatball.svg" width={20} height={20} alt="메뉴 버튼 " />
-                        }
-                        menuItems={[
-                          {
-                            label: "공유하기",
-                            onClick: handleOpenShareModal,
-                          },
-                        ]}
-                      />
-                    </div>
-                  ) : (
-                    <div className={styles.dropdown}>
-                      <Dropdown
-                        trigger={
-                          <Image src="/icon/meatball.svg" width={20} height={20} alt="메뉴 버튼 " />
-                        }
-                        menuItems={[
-                          {
-                            label: "공유하기",
-                            onClick: handleOpenShareModal,
-                          },
-                          {
-                            label: "신고하기",
-                            onClick: handleShowToast,
-                            isDelete: true,
-                          },
-                        ]}
-                      />
-                    </div>
-                  ))}
-              </div>
+              {user_id === details.author.id || !isLoggedIn ? (
+                <div className={styles.dropdown}>
+                  <Dropdown
+                    trigger={
+                      <div className={styles.menuBtn}>
+                        <Image src="/icon/meatball.svg" width={20} height={20} alt="메뉴 버튼 " />
+                      </div>
+                    }
+                    menuItems={[
+                      {
+                        label: "공유하기",
+                        onClick: handleOpenShareModal,
+                      },
+                    ]}
+                  />
+                </div>
+              ) : (
+                <div className={styles.dropdown}>
+                  <Dropdown
+                    trigger={
+                      <div className={styles.menuBtn}>
+                        <Image src="/icon/meatball.svg" width={20} height={20} alt="메뉴 버튼 " />
+                      </div>
+                    }
+                    menuItems={[
+                      {
+                        label: "공유하기",
+                        onClick: handleOpenShareModal,
+                      },
+                      {
+                        label: "신고하기",
+                        onClick: handleShowToast,
+                        isDelete: true,
+                      },
+                    ]}
+                  />
+                </div>
+              )}
             </div>
+
             <div className={styles.bar} />
             <Author authorId={details.author.id} />
           </>
