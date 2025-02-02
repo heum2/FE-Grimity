@@ -24,6 +24,7 @@ import { timeAgo } from "@/utils/timeAgo";
 import Chip from "../Chip/Chip";
 import { modalState } from "@/states/modalState";
 import { deleteSave, putSave } from "@/api/feeds/putDeleteFeedsIdSave";
+import Similar from "./Similar/Similar";
 
 export default function Detail({ id }: DetailProps) {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
@@ -403,6 +404,7 @@ export default function Detail({ id }: DetailProps) {
 
             <div className={styles.bar} />
             <Author authorId={details.author.id} />
+            {details.tags.length > 0 && <Similar tagNames={details.tags.join(",")} />}
           </>
         )}
       </div>

@@ -26,7 +26,7 @@ export default function Header() {
   const isNavPage = ["/", "/popular", "/board", "/following", "/board/write"].includes(
     router.pathname
   );
-  const hideBtn = ["/write"].includes(router.pathname);
+  const hideBtn = ["/write", "/feeds/[id]/edit"].includes(router.pathname);
 
   const navItems = [
     { name: "홈", path: "/" },
