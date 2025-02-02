@@ -1,9 +1,10 @@
+import FollowingPage from "@/components/FollowingPage/FollowingPage";
 import { InitialPageMeta } from "@/components/MetaData/MetaData";
 import { serviceUrl } from "@/constants/serviceurl";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-export default function FollowingPage() {
+export default function Following() {
   const router = useRouter();
   const [OGTitle] = useState("그리미티");
   const [OGUrl, setOGUrl] = useState(serviceUrl);
@@ -15,7 +16,7 @@ export default function FollowingPage() {
   return (
     <>
       <InitialPageMeta title={OGTitle} url={OGUrl} />
-      <p>팔로잉 피드</p>
+      <FollowingPage />
     </>
   );
 }

@@ -4,13 +4,13 @@ import styles from "./FollowNewFeed.module.scss";
 import Loader from "../Loader/Loader";
 import Image from "next/image";
 import RectangleCard from "../RectangleCard/RectangleCard";
-import { useFollowingFeeds } from "@/api/feeds/getFeedsFollowing";
+import { useFollowingNew } from "@/api/feeds/getFeedsFollowing";
 
 export default function FollowNewFeed() {
   const [pageIndex, setPageIndex] = useState(0);
   const itemsPerPage = 2;
 
-  const { data, isLoading } = useFollowingFeeds({ size: 10 });
+  const { data, isLoading } = useFollowingNew({ size: 10 });
 
   if (isLoading) return <Loader />;
 

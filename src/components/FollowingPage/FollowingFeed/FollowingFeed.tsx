@@ -1,0 +1,440 @@
+import styles from "./FollowingFeed.module.scss";
+import { useDetails } from "@/api/feeds/getFeedsId";
+import Image from "next/image";
+import { useState, useEffect, useRef } from "react";
+import { authState } from "@/states/authState";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { useToast } from "@/utils/useToast";
+import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
+import Link from "next/link";
+import { putView } from "@/api/feeds/putIdView";
+import { deleteFeeds } from "@/api/feeds/deleteFeedsId";
+import { useRouter } from "next/router";
+import { usePreventScroll } from "@/utils/usePreventScroll";
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
+import { timeAgo } from "@/utils/timeAgo";
+import { modalState } from "@/states/modalState";
+import { deleteSave, putSave } from "@/api/feeds/putDeleteFeedsIdSave";
+import Loader from "@/components/Layout/Loader/Loader";
+import IconComponent from "@/components/Asset/Icon";
+import Dropdown from "@/components/Dropdown/Dropdown";
+import ShareBtn from "@/components/Detail/ShareBtn/ShareBtn";
+import Button from "@/components/Button/Button";
+import Chip from "@/components/Chip/Chip";
+import CommentInput from "@/components/Detail/Comment/CommentInput/CommentInput";
+import Comment from "@/components/Detail/Comment/Comment";
+import { useGetFeedsComments } from "@/api/feeds-comments/getFeedComments";
+import { useMyData } from "@/api/users/getMe";
+
+interface FollowingFeedProps {
+  id: string;
+}
+
+export default function FollowingFeed({ id }: FollowingFeedProps) {
+  const { isLoggedIn, user_id } = useRecoilValue(authState);
+  const { data: myData } = useMyData();
+  const { data: details, isLoading } = useDetails(id);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isContentExpanded, setIsContentExpanded] = useState(false);
+  const [isCommentExpanded, setIsCommentExpanded] = useState(false);
+  const { showToast } = useToast();
+  const [isLiked, setIsLiked] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
+  const [currentLikeCount, setCurrentLikeCount] = useState(0);
+  const [viewCounted, setViewCounted] = useState(false);
+  const [overlayImage, setOverlayImage] = useState<string | null>(null);
+  const router = useRouter();
+  const [, setModal] = useRecoilState(modalState);
+  const { data: comments, refetch: refetchComments } = useGetFeedsComments({ feedId: id });
+  const [isContentTooLong, setIsContentTooLong] = useState(false);
+  const contentRef = useRef<HTMLParagraphElement | null>(null);
+
+  usePreventScroll(!!overlayImage);
+
+  useEffect(() => {
+    if (!details) return;
+    setIsLiked(details.isLike ?? false);
+    setCurrentLikeCount(details.likeCount ?? 0);
+  }, [details]);
+
+  // 새로고침 조회수 증가
+  useEffect(() => {
+    const incrementViewCount = async () => {
+      if (!id || viewCounted) return;
+
+      try {
+        await putView(id);
+        setViewCounted(true);
+      } catch (error) {
+        console.error("조회수 증가 에러", error);
+      }
+    };
+
+    incrementViewCount();
+  }, [id, viewCounted]);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      const isTooLong = contentRef.current.scrollHeight > contentRef.current.clientHeight;
+      setIsContentTooLong(isTooLong);
+    }
+  }, [details?.content]);
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  const handleCommentSubmitSuccess = () => {
+    refetchComments();
+  };
+
+  const handleShowMore = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  const handleCommentShowMore = () => {
+    setIsCommentExpanded(!isCommentExpanded);
+  };
+
+  const handleDelete = async () => {
+    if (!id) return;
+
+    try {
+      await deleteFeeds(id);
+      showToast("삭제가 완료되었습니다.", "success");
+      router.push("/");
+    } catch (error) {
+      showToast("삭제 중 오류가 발생했습니다.", "error");
+    }
+  };
+
+  const handleOpenEditPage = () => {
+    router.push(`/feeds/${id}/edit`);
+  };
+
+  const handleLikeClick = async () => {
+    if (!isLoggedIn) {
+      showToast("로그인 후 좋아요를 누를 수 있어요.", "error");
+      return;
+    }
+
+    if (isLiked) {
+      await deleteLike(id);
+      setCurrentLikeCount((prev) => prev - 1);
+    } else {
+      await putLike(id);
+      setCurrentLikeCount((prev) => prev + 1);
+    }
+    setIsLiked(!isLiked);
+  };
+
+  const handleSaveClick = async () => {
+    if (!isLoggedIn) {
+      showToast("로그인 후 저장할 수 있어요.", "error");
+      return;
+    }
+
+    if (isSaved) {
+      await deleteSave(id);
+    } else {
+      await putSave(id);
+    }
+    setIsSaved(!isSaved);
+  };
+
+  const handleImageClick = (image: string) => {
+    setOverlayImage(image);
+  };
+
+  const handleOpenShareModal = () => {
+    if (details) {
+      setModal({
+        isOpen: true,
+        type: "SHARE",
+        data: { id, details },
+      });
+    }
+  };
+
+  const handleShowToast = () => {
+    showToast("신고되었습니다.", "information");
+  };
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.center}>
+        {details && (
+          <>
+            <section className={styles.header}>
+              <div className={styles.profileLeft}>
+                <Link href={`/users/${details.author.id}`}>
+                  {details.author.image !== "https://image.grimity.com/null" ? (
+                    <Image
+                      src={details.author.image}
+                      alt={details.author.name}
+                      className={styles.authorImage}
+                      width={100}
+                      height={100}
+                      quality={100}
+                      style={{ objectFit: "cover" }}
+                    />
+                  ) : (
+                    <Image
+                      src="/image/default.svg"
+                      width={100}
+                      height={100}
+                      alt="프로필 이미지"
+                      className={styles.authorImage}
+                      quality={100}
+                      style={{ objectFit: "cover" }}
+                    />
+                  )}
+                </Link>
+                <div className={styles.authorInfo}>
+                  <Link href={`/users/${details.author.id}`}>
+                    <p className={styles.authorName}>{details.author.name}</p>
+                  </Link>
+                  <p className={styles.createdAt}>{timeAgo(details.createdAt)}</p>
+                </div>
+              </div>
+              <div className={styles.dropdownContainer}>
+                {isLoggedIn &&
+                  (user_id === details.author.id ? (
+                    <div className={styles.dropdown}>
+                      <Dropdown
+                        trigger={
+                          <IconComponent name="meatball" padding={8} width={24} height={24} isBtn />
+                        }
+                        menuItems={[
+                          {
+                            label: "수정하기",
+                            onClick: handleOpenEditPage,
+                          },
+                          {
+                            label: "삭제하기",
+                            onClick: handleDelete,
+                            isDelete: true,
+                          },
+                        ]}
+                      />
+                    </div>
+                  ) : (
+                    <div className={styles.dropdown}>
+                      <Dropdown
+                        trigger={
+                          <IconComponent name="meatball" padding={8} width={24} height={24} isBtn />
+                        }
+                        menuItems={[
+                          {
+                            label: "신고하기",
+                            onClick: handleShowToast,
+                            isDelete: true,
+                          },
+                        ]}
+                      />
+                    </div>
+                  ))}
+                <ShareBtn feedId={id} title={details.title} image={details.cards[0]} />
+              </div>
+            </section>
+            <section className={styles.imageGallery}>
+              {details.cards.slice(0, 2).map((card, index) => (
+                <div key={index} className={styles.imageWrapper}>
+                  <Image
+                    src={card}
+                    alt={`Card image ${index + 1}`}
+                    width={880}
+                    height={0}
+                    layout="intrinsic"
+                    className={styles.cardImage}
+                    onClick={() => handleImageClick(card)}
+                  />
+                  {index === 1 && details.cards.length > 2 && !isExpanded && (
+                    <>
+                      <div className={styles.gradient} />
+                      <div onClick={handleShowMore} className={styles.showMore}>
+                        <Button size="l" type="filled-primary">
+                          전체 보기
+                        </Button>
+                      </div>
+                    </>
+                  )}
+                </div>
+              ))}
+            </section>
+            {isExpanded &&
+              details.cards.slice(2).map((card, index) => (
+                <div key={index + 2} className={styles.imageWrapper2}>
+                  <Image
+                    src={card}
+                    alt={`Card image ${index + 3}`}
+                    width={600}
+                    height={0}
+                    layout="intrinsic"
+                    className={styles.cardImage}
+                    onClick={() => handleImageClick(card)}
+                  />
+                </div>
+              ))}
+            {overlayImage && (
+              <div className={styles.overlay} onClick={() => setOverlayImage(null)}>
+                <div className={styles.overlayContent}>
+                  <Zoom>
+                    <img
+                      src={overlayImage}
+                      alt="Zoomed Image"
+                      style={{
+                        height: "90vh",
+                        objectFit: "cover",
+                      }}
+                      onClick={(event) => event.stopPropagation()}
+                    />
+                  </Zoom>
+                </div>
+              </div>
+            )}
+            <section className={styles.contentContainer}>
+              <h2 className={styles.title}>{details.title}</h2>
+              <div className={styles.bar} />
+              <p
+                className={`${styles.content} ${isContentExpanded && styles.expanded}`}
+                ref={contentRef}
+              >
+                {details.content}
+              </p>
+              {isContentTooLong && !isContentExpanded && (
+                <button className={styles.readMore} onClick={() => setIsContentExpanded(true)}>
+                  자세히 보기
+                </button>
+              )}
+              {details.isAI && (
+                <div className={styles.aiBtn}>
+                  <Image src="/icon/ai-message.svg" width={20} height={20} alt="" />
+                  해당 컨텐츠는 AI로 생성되었어요
+                </div>
+              )}
+              <div className={styles.stats}>
+                <div className={styles.stat}>
+                  <Image
+                    src="/icon/like-count.svg"
+                    width={16}
+                    height={0}
+                    alt="좋아요 수"
+                    className={styles.statIcon}
+                  />
+                  {currentLikeCount}
+                </div>
+                <div className={styles.stat}>
+                  <Image
+                    src="/icon/view-count.svg"
+                    width={16}
+                    height={0}
+                    layout="intrinsic"
+                    alt="조회수"
+                    className={styles.statIcon}
+                  />
+                  {details.viewCount}
+                </div>
+              </div>
+              {details.tags.length > 0 && (
+                <div className={styles.tags}>
+                  {details.tags.map((tag, index) => (
+                    <Chip key={index} size="m" type="filled-assistive">
+                      {tag}
+                    </Chip>
+                  ))}
+                </div>
+              )}
+            </section>
+            <div className={styles.btnContainer}>
+              <div className={styles.likeBtn} onClick={handleLikeClick}>
+                <Button
+                  size="l"
+                  type="outlined-assistive"
+                  leftIcon={
+                    <Image
+                      src={isLiked ? "/icon/detail-like-on.svg" : "/icon/detail-like-off.svg"}
+                      width={20}
+                      height={20}
+                      alt="좋아요"
+                    />
+                  }
+                >
+                  {currentLikeCount}
+                </Button>
+              </div>
+              <div className={styles.saveBtn} onClick={handleSaveClick}>
+                <Image
+                  src={isSaved ? "/icon/detail-save-on.svg" : "/icon/detail-save-off.svg"}
+                  width={20}
+                  height={20}
+                  alt="저장"
+                />
+              </div>
+              {user_id === details.author.id || !isLoggedIn ? (
+                <div className={styles.dropdown}>
+                  <Dropdown
+                    trigger={
+                      <div className={styles.menuBtn}>
+                        <Image src="/icon/meatball.svg" width={20} height={20} alt="메뉴 버튼 " />
+                      </div>
+                    }
+                    menuItems={[
+                      {
+                        label: "공유하기",
+                        onClick: handleOpenShareModal,
+                      },
+                    ]}
+                  />
+                </div>
+              ) : (
+                <div className={styles.dropdown}>
+                  <Dropdown
+                    trigger={
+                      <div className={styles.menuBtn}>
+                        <Image src="/icon/meatball.svg" width={20} height={20} alt="메뉴 버튼 " />
+                      </div>
+                    }
+                    menuItems={[
+                      {
+                        label: "공유하기",
+                        onClick: handleOpenShareModal,
+                      },
+                      {
+                        label: "신고하기",
+                        onClick: handleShowToast,
+                        isDelete: true,
+                      },
+                    ]}
+                  />
+                </div>
+              )}
+            </div>
+            <CommentInput
+              feedId={details.id}
+              isLoggedIn={isLoggedIn}
+              userData={myData}
+              showToast={showToast}
+              onCommentSubmitSuccess={handleCommentSubmitSuccess}
+            />
+            {comments?.commentCount !== 0 && (
+              <div onClick={handleCommentShowMore} className={styles.commentShowMore}>
+                {isCommentExpanded ? "댓글 숨기기" : `댓글 ${comments?.commentCount}개 보기`}
+                {isCommentExpanded ? (
+                  <IconComponent name="commentUp" width={16} height={16} isBtn />
+                ) : (
+                  <IconComponent name="commentDown" width={16} height={16} isBtn />
+                )}
+              </div>
+            )}
+            {isCommentExpanded && (
+              <Comment feedId={id} feedWriterId={details.author.id} isFollowingPage />
+            )}
+            <div className={styles.bar} />
+          </>
+        )}
+      </div>
+    </div>
+  );
+}

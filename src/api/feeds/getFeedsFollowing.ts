@@ -1,5 +1,5 @@
 import BASE_URL from "@/constants/baseurl";
-import { useQuery } from "react-query";
+import { useInfiniteQuery, useQuery } from "react-query";
 
 export interface FollowingFeedsRequest {
   size?: number;
@@ -9,17 +9,22 @@ export interface FollowingFeedsRequest {
 export interface FollowingFeed {
   id: string;
   title: string;
-  content: string;
+  cards: string[];
   thumbnail: string;
+  content: string;
+  createdAt: string;
+  viewCount: number;
   likeCount: number;
   commentCount: number;
-  createdAt: string;
-  isLike: boolean;
+  isAI: boolean;
   author: {
     id: string;
     name: string;
     image: string;
   };
+  isLike: boolean;
+  isSave: boolean;
+  tags: string;
 }
 
 export interface FollowingFeedsResponse {
@@ -38,6 +43,7 @@ export async function getFollowingFeeds({
       ...response.data,
       feeds: response.data.feeds.map((feed: FollowingFeed) => ({
         ...feed,
+        cards: feed.cards.map((card) => `https://image.grimity.com/${card}`),
         thumbnail: `https://image.grimity.com/${feed.thumbnail}`,
         author: {
           ...feed.author,
@@ -53,8 +59,18 @@ export async function getFollowingFeeds({
   }
 }
 
-export function useFollowingFeeds(params: FollowingFeedsRequest) {
-  return useQuery<FollowingFeedsResponse>(["FollowingFeeds", params.cursor, params.size], () =>
+export function useFollowingNew(params: FollowingFeedsRequest) {
+  return useQuery<FollowingFeedsResponse>(["FollowingFeedsNew", params.cursor, params.size], () =>
     getFollowingFeeds(params)
+  );
+}
+
+export function useFollowingFeeds(params: FollowingFeedsRequest) {
+  return useInfiniteQuery<FollowingFeedsResponse>(
+    ["FollowingFeeds", params.size],
+    ({ pageParam = null }) => getFollowingFeeds({ ...params, cursor: pageParam }),
+    {
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
+    }
   );
 }
