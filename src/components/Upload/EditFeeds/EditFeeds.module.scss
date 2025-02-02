@@ -1,0 +1,278 @@
+@import "@/styles/globals.scss";
+
+.background {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+
+  .container {
+    width: 100%;
+    max-width: 1280px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding-top: calc(60px - 8px);
+
+    // 높이가 낮은 노트북
+    @media (max-height: 800px) {
+      padding-top: 0px;
+    }
+
+    // 폭이 좁은 노트북
+    @media (max-width: 1500px) {
+      max-width: 1020px;
+    }
+
+    .uploadBtnContainer {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .sectionContainer {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+
+      .imageSection {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        gap: 28px;
+
+        .uploadBtn {
+          border-radius: 12px;
+          cursor: pointer;
+          @include Drag;
+        }
+
+        .imageContainer {
+          width: 100%;
+          max-width: 1020px;
+          display: flex;
+          gap: 20px;
+          overflow-x: auto;
+          overflow-y: hidden;
+          white-space: nowrap;
+          padding-bottom: 8px;
+          @include Drag;
+
+          &::-webkit-scrollbar {
+            height: 8px;
+          }
+
+          &::-webkit-scrollbar-track {
+            background: $gray20;
+            border-radius: 10px;
+          }
+
+          &::-webkit-scrollbar-thumb {
+            background: $secandary1;
+            border-radius: 10px;
+            cursor: pointer;
+          }
+
+          &::-webkit-scrollbar-thumb:hover {
+            background: darken($secandary1, 10%);
+          }
+
+          // 폭이 좁은 노트북
+          @media (max-width: 1500px) {
+            max-width: 760px;
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+          }
+        }
+
+        .imageWrapper {
+          position: relative;
+          width: fit-content;
+        }
+
+        .addBtnContainer {
+          display: flex;
+          gap: 20px;
+          flex-shrink: 0;
+          height: 290px;
+        }
+      }
+
+      .writeSection {
+        max-width: 880px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        padding-bottom: 50px;
+
+        .bar {
+          width: 100%;
+          height: 1px;
+          background-color: $gray30;
+          margin: 24px 0;
+        }
+
+        .textField {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+
+          .countTotal {
+            display: flex;
+            @include Body1;
+            color: $gray50;
+          }
+
+          .count {
+            color: $gray70;
+          }
+
+          .inputContainer {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+
+            .input {
+              width: 100%;
+              @include Title2;
+              color: $gray80;
+              border: none;
+              outline: none;
+              padding: 0;
+
+              &::placeholder {
+                color: $gray50;
+              }
+            }
+          }
+
+          .contentContainer {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+
+            .textareaContainer {
+              width: 100%;
+              height: 200px;
+
+              .contentCount {
+                justify-self: flex-end;
+              }
+
+              .textarea {
+                width: 100%;
+                height: 90%;
+                border: none;
+                outline: none;
+                @include Body1;
+                color: $gray70;
+                resize: none;
+
+                &::placeholder {
+                  color: $gray50;
+                }
+
+                &::-webkit-scrollbar {
+                  width: 6px;
+                }
+
+                &::-webkit-scrollbar-thumb {
+                  background: $gray30;
+                  border-radius: 10px;
+                  cursor: pointer;
+                }
+
+                &::-webkit-scrollbar-thumb:hover {
+                  background: $gray40;
+                }
+              }
+            }
+          }
+
+          .label {
+            @include Sub3;
+            color: $gray80;
+            flex-shrink: 0;
+            @include Drag;
+          }
+
+          .tagContainer {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+
+            .tagInputContainer {
+              display: flex;
+              gap: 65px;
+
+              .inputContainer {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                gap: 16px;
+
+                .input {
+                  width: 100%;
+                  @include Body1;
+                  color: $gray80;
+                  border: none;
+                  outline: none;
+                  padding: 0;
+
+                  &::placeholder {
+                    color: $gray50;
+                  }
+                }
+              }
+            }
+
+            .tagList {
+              width: 100%;
+              display: flex;
+              flex-wrap: wrap;
+              gap: 8px;
+
+              .deleteTag {
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+              }
+            }
+          }
+        }
+
+        .optionContainer {
+          display: flex;
+          align-items: center;
+          gap: 36px;
+          margin-top: 50px;
+          @include Drag;
+
+          .options {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            @include Body1;
+            color: $gray70;
+
+            .option {
+              cursor: pointer;
+              transition: opacity 0.3s ease-in-out;
+              line-height: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}

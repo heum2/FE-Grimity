@@ -6,11 +6,12 @@ export interface EditFeedsRequest {
   isAI: boolean;
   content: string;
   tags: string[];
+  thumbnail: string;
 }
 
 export async function putEditFeeds(
   id: string,
-  { title, cards, isAI, content, tags }: EditFeedsRequest
+  { title, cards, isAI, content, tags, thumbnail }: EditFeedsRequest
 ): Promise<Response> {
   const response = await BASE_URL.put(`/feeds/${id}`, {
     title,
@@ -18,6 +19,7 @@ export async function putEditFeeds(
     isAI,
     content,
     tags,
+    thumbnail,
   });
   return response.data;
 }

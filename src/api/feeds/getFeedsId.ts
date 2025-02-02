@@ -5,6 +5,7 @@ export interface DetailsResponse {
   id: string;
   title: string;
   cards: string[];
+  thumbnail: string;
   isAI: boolean;
   createdAt: string;
   viewCount: number;
@@ -19,6 +20,7 @@ export interface DetailsResponse {
     isFollowing: boolean;
   };
   isLike: boolean;
+  isSave: boolean;
 }
 
 export async function getDetails(id: string): Promise<DetailsResponse> {
@@ -31,6 +33,7 @@ export async function getDetails(id: string): Promise<DetailsResponse> {
 
     const updatedData = {
       ...data,
+      thumbnail: `https://image.grimity.com/${data.thumbnail}`,
       cards: data.cards.map((card: string) => `https://image.grimity.com/${card}`),
       author: {
         ...data.author,
