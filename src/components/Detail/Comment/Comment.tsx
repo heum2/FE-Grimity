@@ -79,12 +79,7 @@ export default function Comment({ feedId, feedWriterId }: CommentProps) {
   };
 
   const handleReplyTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    if (mentionedUser && !value.startsWith(`@${mentionedUser.name} `)) {
-      setReplyText(`@${mentionedUser.name} ${value}`);
-    } else {
-      setReplyText(value);
-    }
+    setReplyText(e.target.value);
   };
 
   const handleReply = (commentId: string, writer: { id: string; name: string }) => {
@@ -95,7 +90,7 @@ export default function Comment({ feedId, feedWriterId }: CommentProps) {
     } else {
       setActiveReplyId(commentId);
       setMentionedUser(writer);
-      setReplyText(`@${writer.name} `);
+      setReplyText("");
     }
   };
 
@@ -138,7 +133,7 @@ export default function Comment({ feedId, feedWriterId }: CommentProps) {
   const handleReplySubmit = async () => {
     if (!isLoggedIn || !replyText.trim() || !activeReplyId || !mentionedUser) return;
 
-    const actualReplyContent = replyText.replace(`@${mentionedUser.name} `, "").trim();
+    const actualReplyContent = replyText.trim();
 
     if (!actualReplyContent) {
       showToast("답글 내용을 입력해주세요.", "error");
@@ -177,14 +172,18 @@ export default function Comment({ feedId, feedWriterId }: CommentProps) {
   };
 
   useEffect(() => {
-    if (activeReplyId && replyInputRef.current) {
-      replyInputRef.current.focus();
-      if (mentionedUser) {
-        const cursorPosition = `@${mentionedUser.name} `.length;
-        replyInputRef.current.setSelectionRange(cursorPosition, cursorPosition);
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setActiveReplyId(null);
       }
-    }
-  }, [activeReplyId, mentionedUser]);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   if (isLoading) {
     return <Loader />;
@@ -240,7 +239,10 @@ export default function Comment({ feedId, feedWriterId }: CommentProps) {
                       </Link>
                       <p className={styles.createdAt}>{timeAgo(reply.createdAt)}</p>
                     </div>
-                    <p className={styles.commentText}>{reply.content}</p>
+                    <div className={styles.commentText}>
+                      <p className={styles.mentionedUser}>@{reply.mentionedUser?.name}</p>{" "}
+                      {reply.content}
+                    </div>
                     <div className={styles.likeReplyBtn}>
                       <div
                         className={styles.likeButton}
