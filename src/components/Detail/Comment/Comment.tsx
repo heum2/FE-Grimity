@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import styles from "./Comment.module.scss";
 import Image from "next/image";
 import { authState } from "@/states/authState";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useUserData } from "@/api/users/getId";
 import { usePostFeedsComments } from "@/api/feeds-comments/postFeedComments";
 import {
@@ -23,11 +23,13 @@ import IconComponent from "@/components/Asset/Icon";
 import Button from "@/components/Button/Button";
 import Chip from "@/components/Chip/Chip";
 import { deleteCommentLike, putCommentLike } from "@/api/feeds-comments/putDeleteCommentsLike";
+import { modalState } from "@/states/modalState";
 
 export default function Comment({ feedId, feedWriterId }: CommentProps) {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
   const { data: userData, isLoading } = useUserData(isLoggedIn ? user_id : null);
   const { showToast } = useToast();
+  const [, setModal] = useRecoilState(modalState);
   const queryClient = useQueryClient();
   const [comment, setComment] = useState("");
   const [replyText, setReplyText] = useState("");
@@ -102,7 +104,18 @@ export default function Comment({ feedId, feedWriterId }: CommentProps) {
   };
 
   const handleCommentDelete = async (id: string) => {
-    deleteCommentMutation.mutate(id);
+    setModal({
+      isOpen: true,
+      type: null,
+      data: {
+        title: "댓글을 삭제하시겠어요?",
+        confirmBtn: "삭제",
+        onClick: () => {
+          deleteCommentMutation.mutate(id);
+        },
+      },
+      isComfirm: true,
+    });
   };
 
   const handleCommentSubmit = async () => {
