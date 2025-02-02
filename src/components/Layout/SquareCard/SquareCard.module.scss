@@ -31,6 +31,13 @@
         animation: pulse 0.5s ease-in-out;
       }
     }
+
+    .overlapIcon {
+      position: absolute;
+      bottom: 11px;
+      right: 9px;
+      z-index: 1;
+    }
   }
 
   .infoContainer {

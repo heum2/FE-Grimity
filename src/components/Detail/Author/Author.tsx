@@ -128,10 +128,10 @@ export default function Author({ authorId }: AuthorProps) {
                 id={feed.id}
                 title={feed.title}
                 thumbnail={feed.thumbnail}
+                cards={feed.cards}
                 author={feed.author}
                 likeCount={feed.likeCount}
                 commentCount={feed.commentCount}
-                isLike={feed.isLike}
                 createdAt={feed.createdAt}
               />
             ))}

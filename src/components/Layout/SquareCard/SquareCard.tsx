@@ -13,6 +13,7 @@ import { timeAgo } from "@/utils/timeAgo";
 export default function SquareCard({
   title,
   thumbnail,
+  cards,
   author,
   likeCount,
   commentCount,
@@ -23,6 +24,7 @@ export default function SquareCard({
   const { isLoggedIn } = useRecoilValue(authState);
   const [isLiked, setIsLiked] = useState(isLike);
   const [currentLikeCount, setCurrentLikeCount] = useState(likeCount);
+  const hasMultipleImages = cards && cards.length > 1;
 
   const handleLikeClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -39,7 +41,7 @@ export default function SquareCard({
   return (
     <div className={styles.container}>
       <div className={styles.imageContainer}>
-        {isLoggedIn && (
+        {isLoggedIn && isLike && (
           <div className={styles.likeBtn} onClick={handleLikeClick}>
             <IconComponent
               name={isLiked ? "cardLikeOn" : "cardLikeOff"}
@@ -47,6 +49,11 @@ export default function SquareCard({
               width={24}
               height={24}
             />
+          </div>
+        )}
+        {hasMultipleImages && (
+          <div className={styles.overlapIcon}>
+            <IconComponent name="overlap" width={24} height={24} />
           </div>
         )}
         <Link href={`/feeds/${id}`}>
