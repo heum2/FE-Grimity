@@ -326,7 +326,7 @@ export default function Detail({ id }: DetailProps) {
                   {details.viewCount}
                 </div>
               </div>
-              {details.tags.length > 1 && (
+              {details.tags.length > 0 && (
                 <div className={styles.tags}>
                   {details.tags.map((tag, index) => (
                     <Chip key={index} size="m" type="filled-assistive">
