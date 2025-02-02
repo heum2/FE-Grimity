@@ -1,4 +1,5 @@
 import { InitialPageMeta } from "@/components/MetaData/MetaData";
+import Popular from "@/components/PopularPage/PopularPage";
 import { serviceUrl } from "@/constants/serviceurl";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -15,7 +16,7 @@ export default function PopularPage() {
   return (
     <>
       <InitialPageMeta title={OGTitle} url={OGUrl} />
-      <p>인기그림</p>
+      <Popular />
     </>
   );
 }
