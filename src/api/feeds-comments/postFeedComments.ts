@@ -5,18 +5,21 @@ export interface FeedsCommentsPostRequest {
   feedId: string;
   parentCommentId?: string;
   content: string;
+  mentionedUserId?: {};
 }
 
 export async function postFeedsComments({
   feedId,
   parentCommentId,
   content,
+  mentionedUserId,
 }: FeedsCommentsPostRequest): Promise<void> {
   try {
     await BASE_URL.post("/feed-comments", {
       feedId,
       parentCommentId,
       content,
+      mentionedUserId,
     });
   } catch (error) {
     console.error("Error posting comment:", error);

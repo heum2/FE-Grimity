@@ -1,0 +1,147 @@
+@import "@/styles/globals.scss";
+
+.container {
+  width: 100%;
+
+  .inputContainer {
+    margin-top: 60px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .writerImage {
+      object-fit: cover;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 1px solid $gray30;
+    }
+
+    .submitBtn {
+      flex-shrink: 0;
+    }
+  }
+  .childComments {
+    width: 100%;
+  }
+  .comment {
+    width: 100%;
+    margin-bottom: 24px;
+  }
+  .commentBox {
+    width: 100%;
+    display: flex;
+    gap: 12px;
+  }
+  .writerImage {
+    object-fit: cover;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 1px solid $gray30;
+  }
+
+  .commentBody {
+    width: 100%;
+  }
+  .writerReply {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+  .writerLeft {
+    display: flex;
+    flex-direction: column;
+  }
+  .writerCreatedAt {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .writerName {
+    @include Cap1;
+    color: $gray60;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .createdAt {
+    @include Cap2;
+    color: $gray50;
+  }
+
+  .commentText {
+    @include Label2;
+    color: $gray80;
+    white-space: pre-line;
+    margin-top: 2px;
+    margin-bottom: 6px;
+  }
+
+  .likeReplyBtn {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .likeButton {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    @include Cap1;
+    color: $gray50;
+    cursor: pointer;
+    @include Drag;
+  }
+
+  .replyBtn {
+    @include Cap2;
+    color: $gray60;
+    cursor: pointer;
+    @include Drag;
+  }
+
+  .viewReplies {
+    width: 100%;
+    margin-top: 12px;
+  }
+  .viewRepliesBtn {
+    height: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    @include Btn2;
+    color: $secandary1;
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    @include Drag;
+    margin-bottom: 12px;
+  }
+}
+
+.replyBtnDropdown {
+  position: relative;
+}
+
+.input {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  .writerImage {
+    object-fit: cover;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 1px solid $gray30;
+  }
+
+  .submitBtn {
+    flex-shrink: 0;
+  }
+}

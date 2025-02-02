@@ -1,6 +1,7 @@
 import BASE_URL from "@/constants/baseurl";
 import { useQuery } from "react-query";
 
+/* 댓글 api */
 export interface FeedsCommentsRequest {
   feedId: string;
 }
@@ -9,25 +10,16 @@ export interface FeedsCommentsResponse {
   commentCount: number;
   comments: {
     id: string;
-    parentId: string | null;
     content: string;
     createdAt: string;
+    likeCount: number;
+    isLike: boolean;
+    childCommentCount: number;
     writer: {
       id: string;
       name: string;
       image: string;
     };
-    childComments: {
-      id: string;
-      parentId: string;
-      content: string;
-      createdAt: string;
-      writer: {
-        id: string;
-        name: string;
-        image: string;
-      };
-    }[];
   }[];
 }
 
@@ -40,7 +32,6 @@ export async function getFeedsComments({
     });
 
     const data = response.data;
-
     return {
       ...data,
       comments: data.comments.map((comment) => ({
@@ -49,13 +40,6 @@ export async function getFeedsComments({
           ...comment.writer,
           image: `https://image.grimity.com/${comment.writer.image}`,
         },
-        childComments: comment.childComments.map((child) => ({
-          ...child,
-          writer: {
-            ...child.writer,
-            image: `https://image.grimity.com/${child.writer.image}`,
-          },
-        })),
       })),
     };
   } catch (error) {
@@ -67,5 +51,57 @@ export async function getFeedsComments({
 export function useGetFeedsComments({ feedId }: FeedsCommentsRequest) {
   return useQuery<FeedsCommentsResponse>(["getFeedsComments", feedId], () =>
     getFeedsComments({ feedId })
+  );
+}
+
+/* 답글 api */
+export interface FeedsChildCommentsRequest {
+  feedId: string;
+  parentId: string;
+}
+
+export interface FeedsChildComment {
+  id: string;
+  content: string;
+  createdAt: string;
+  likeCount: number;
+  isLike: boolean;
+  writer: {
+    id: string;
+    name: string;
+    image: string;
+  };
+  mentionedUser?: {
+    id: string;
+    name: string;
+  };
+}
+
+export async function getFeedsChildComments({
+  feedId,
+  parentId,
+}: FeedsChildCommentsRequest): Promise<FeedsChildComment[]> {
+  try {
+    const response = await BASE_URL.get<FeedsChildComment[]>("/feed-comments/child-comments", {
+      params: { feedId, parentId },
+    });
+
+    const data = response.data;
+    return data.map((comment) => ({
+      ...comment,
+      writer: {
+        ...comment.writer,
+        image: `https://image.grimity.com/${comment.writer.image}`,
+      },
+    }));
+  } catch (error) {
+    console.error("Error fetching child comments:", error);
+    throw new Error("Failed to fetch child comments");
+  }
+}
+
+export function useGetFeedsChildComments({ feedId, parentId }: FeedsChildCommentsRequest) {
+  return useQuery<FeedsChildComment[]>(["getFeedsChildComments", feedId, parentId], () =>
+    getFeedsChildComments({ feedId, parentId })
   );
 }

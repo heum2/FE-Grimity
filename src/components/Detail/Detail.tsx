@@ -25,6 +25,7 @@ import Chip from "../Chip/Chip";
 import { modalState } from "@/states/modalState";
 import { deleteSave, putSave } from "@/api/feeds/putDeleteFeedsIdSave";
 import Similar from "./Similar/Similar";
+import Comment from "./Comment/Comment";
 
 export default function Detail({ id }: DetailProps) {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
@@ -401,7 +402,7 @@ export default function Detail({ id }: DetailProps) {
                 </div>
               )}
             </div>
-
+            <Comment feedId={id} feedWriterId={details.author.id} />
             <div className={styles.bar} />
             <Author authorId={details.author.id} />
             {details.tags.length > 0 && <Similar tagNames={details.tags.join(",")} />}

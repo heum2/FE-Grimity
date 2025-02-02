@@ -50,4 +50,6 @@ export const ICONS = {
   backBtn: "/icon/back-button.svg",
   share: "/icon/share.svg",
   dot: "/icon/dot.svg",
+  replySeeMore: "/icon/reply-see-more.svg",
+  replyFold: "/icon/reply-fold.svg",
 };
