@@ -15,7 +15,7 @@ import { useUserFeeds } from "@/api/users/getIdFeeds";
 import SquareCard from "@/components/Layout/SquareCard/SquareCard";
 import Loader from "@/components/Layout/Loader/Loader";
 
-export default function Author({ authorId }: AuthorProps) {
+export default function Author({ authorId, feedId }: AuthorProps) {
   const { data: userData } = useUserData(authorId);
   const { isLoggedIn, user_id } = useRecoilValue(authState);
   const [isFollowing, setIsFollowing] = useState(false);
@@ -133,6 +133,7 @@ export default function Author({ authorId }: AuthorProps) {
                 likeCount={feed.likeCount}
                 commentCount={feed.commentCount}
                 createdAt={feed.createdAt}
+                isSame={feed.id === feedId}
               />
             ))}
           </div>

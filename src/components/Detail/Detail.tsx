@@ -404,7 +404,7 @@ export default function Detail({ id }: DetailProps) {
             </div>
             <Comment feedId={id} feedWriterId={details.author.id} />
             <div className={styles.bar} />
-            <Author authorId={details.author.id} />
+            <Author authorId={details.author.id} feedId={id} />
             {details.tags.length > 0 && <Similar tagNames={details.tags.join(",")} />}
           </>
         )}

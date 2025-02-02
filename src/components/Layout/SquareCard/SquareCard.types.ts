@@ -11,4 +11,5 @@ export interface SquareCardProps {
   commentCount: number;
   isLike?: boolean;
   createdAt?: string;
+  isSame?: boolean;
 }

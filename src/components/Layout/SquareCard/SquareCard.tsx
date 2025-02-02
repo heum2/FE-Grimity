@@ -20,6 +20,7 @@ export default function SquareCard({
   id,
   isLike,
   createdAt,
+  isSame,
 }: SquareCardProps) {
   const { isLoggedIn } = useRecoilValue(authState);
   const [isLiked, setIsLiked] = useState(isLike);
@@ -40,8 +41,8 @@ export default function SquareCard({
 
   return (
     <div className={styles.container}>
-      <div className={styles.imageContainer}>
-        {isLoggedIn && isLike && (
+      <div className={`${styles.imageContainer} ${isSame && styles.isSame}`}>
+        {isLoggedIn && !cards && (
           <div className={styles.likeBtn} onClick={handleLikeClick}>
             <IconComponent
               name={isLiked ? "cardLikeOn" : "cardLikeOff"}
