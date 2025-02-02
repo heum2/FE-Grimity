@@ -24,14 +24,14 @@ import Button from "@/components/Button/Button";
 import Chip from "@/components/Chip/Chip";
 import { deleteCommentLike, putCommentLike } from "@/api/feeds-comments/putDeleteCommentsLike";
 import { modalState } from "@/states/modalState";
+import CommentInput from "./CommentInput/CommentInput";
 
-export default function Comment({ feedId, feedWriterId }: CommentProps) {
+export default function Comment({ feedId, feedWriterId, isFollowingPage }: CommentProps) {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
   const { data: userData, isLoading } = useUserData(isLoggedIn ? user_id : null);
   const { showToast } = useToast();
   const [, setModal] = useRecoilState(modalState);
   const queryClient = useQueryClient();
-  const [comment, setComment] = useState("");
   const [replyText, setReplyText] = useState("");
   const [activeReplyId, setActiveReplyId] = useState<string | null>(null);
   const [mentionedUser, setMentionedUser] = useState<{ id: string; name: string } | null>(null);
@@ -48,6 +48,10 @@ export default function Comment({ feedId, feedWriterId }: CommentProps) {
       showToast("댓글 삭제에 실패했습니다.", "error");
     },
   });
+
+  const handleCommentSubmitSuccess = () => {
+    refetchComments();
+  };
 
   const handleLikeClick = async (commentId: string, currentIsLike: boolean) => {
     if (!isLoggedIn) {
@@ -72,10 +76,6 @@ export default function Comment({ feedId, feedWriterId }: CommentProps) {
     } catch (error) {
       showToast("좋아요 처리 중 오류가 발생했습니다.", "error");
     }
-  };
-
-  const handleCommentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setComment(e.target.value);
   };
 
   const handleReplyTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -111,23 +111,6 @@ export default function Comment({ feedId, feedWriterId }: CommentProps) {
       },
       isComfirm: true,
     });
-  };
-
-  const handleCommentSubmit = async () => {
-    if (!isLoggedIn || !comment.trim()) return;
-
-    postCommentMutation.mutate(
-      {
-        feedId,
-        content: comment,
-      },
-      {
-        onSuccess: () => {
-          setComment("");
-          refetchComments();
-        },
-      }
-    );
   };
 
   const handleReplySubmit = async () => {
@@ -240,7 +223,7 @@ export default function Comment({ feedId, feedWriterId }: CommentProps) {
                       <p className={styles.createdAt}>{timeAgo(reply.createdAt)}</p>
                     </div>
                     <div className={styles.commentText}>
-                      <p className={styles.mentionedUser}>@{reply.mentionedUser?.name}</p>{" "}
+                      <p className={styles.mentionedUser}>@{reply.mentionedUser?.name}</p>
                       {reply.content}
                     </div>
                     <div className={styles.likeReplyBtn}>
@@ -503,49 +486,15 @@ export default function Comment({ feedId, feedWriterId }: CommentProps) {
 
   return (
     <div className={styles.container}>
-      <section className={styles.inputContainer}>
-        {isLoggedIn && userData ? (
-          <Image
-            src={
-              userData.image !== "https://image.grimity.com/null"
-                ? userData.image
-                : "/image/default.svg"
-            }
-            width={40}
-            height={40}
-            alt="프로필 이미지"
-            className={styles.writerImage}
-          />
-        ) : (
-          <Image
-            src="/image/default.svg"
-            width={40}
-            height={40}
-            alt="프로필 이미지"
-            className={styles.writerImage}
-          />
-        )}
-        <TextField
-          placeholder={isLoggedIn ? "댓글 달기" : "회원만 댓글 달 수 있어요!"}
-          value={comment}
-          onChange={handleCommentChange}
-          onFocus={() => {
-            if (!isLoggedIn) {
-              showToast("회원만 댓글 달 수 있어요!", "error");
-            }
-          }}
+      {!isFollowingPage && (
+        <CommentInput
+          feedId={feedId}
+          isLoggedIn={isLoggedIn}
+          userData={userData}
+          showToast={showToast}
+          onCommentSubmitSuccess={handleCommentSubmitSuccess}
         />
-        <div className={styles.submitBtn}>
-          <Button
-            size="l"
-            type="filled-primary"
-            onClick={handleCommentSubmit}
-            disabled={!isLoggedIn}
-          >
-            댓글
-          </Button>
-        </div>
-      </section>
+      )}
       <section>{commentsData?.comments.map((comment) => renderComment(comment))}</section>
     </div>
   );
