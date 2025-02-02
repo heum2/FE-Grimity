@@ -1,0 +1,36 @@
+@import "@/styles/globals.scss";
+
+.container {
+  width: 180px;
+  flex-shrink: 0;
+
+  .imageWrapper {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .gradient {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 40%;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 33.96%, rgba(0, 0, 0, 0.6) 100%);
+  }
+
+  .title {
+    position: absolute;
+    bottom: 16px;
+    left: 12px;
+    color: $gray0;
+    @include Sub4;
+  }
+}
