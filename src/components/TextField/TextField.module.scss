@@ -24,6 +24,11 @@
   }
 }
 
+.inputReplyContainer {
+  @extend .inputContainer;
+  padding: 8px 20px;
+}
+
 .inputContainer.error {
   border: 1px solid $negative;
 }

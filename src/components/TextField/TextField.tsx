@@ -4,7 +4,18 @@ import { forwardRef } from "react";
 
 const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
   (
-    { placeholder, label, isError, errorMessage, maxLength, value, onChange, onKeyDown, onFocus },
+    {
+      placeholder,
+      label,
+      isError,
+      errorMessage,
+      maxLength,
+      value,
+      onChange,
+      onKeyDown,
+      onFocus,
+      isReply,
+    },
     ref
   ) => {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,14 +30,18 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
 
     return (
       <div className={styles.container}>
-        <div className={styles.labelContainer}>
-          {label && (
+        {label && (
+          <div className={styles.labelContainer}>
             <label className={styles.label} htmlFor="label">
               {label}
             </label>
-          )}
-        </div>
-        <div className={`${styles.inputContainer} ${isError && styles.error}`}>
+          </div>
+        )}
+        <div
+          className={`${isReply ? styles.inputReplyContainer : styles.inputContainer} ${
+            isError && styles.error
+          }`}
+        >
           <input
             ref={ref}
             className={styles.input}

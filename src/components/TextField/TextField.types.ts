@@ -9,4 +9,5 @@ export interface TextFieldProps {
   onChange: React.ChangeEventHandler<HTMLInputElement>;
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
+  isReply?: boolean;
 }
