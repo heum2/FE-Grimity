@@ -117,12 +117,14 @@
   padding: 11px 20px;
   border-radius: 10px;
   @include Btn2;
+  line-height: 18px;
 }
 
 .s {
   padding: 7px 14px;
   border-radius: 8px;
   @include Btn3;
+  line-height: 18px;
 }
 
 .icon {
