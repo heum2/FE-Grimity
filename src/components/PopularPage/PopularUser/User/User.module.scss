@@ -1,0 +1,67 @@
+@import "@/styles/globals.scss";
+
+.container {
+  width: 300px;
+  flex-shrink: 0;
+
+  .imageWrapper {
+    width: 100%;
+    display: flex;
+
+    .backgroundLeft {
+      object-fit: cover;
+      border-radius: 12px 0 0 0;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .backgroundRight {
+      @extend .backgroundLeft;
+      border-radius: 0 12px 0 0;
+    }
+  }
+
+  .profileWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: $gray10;
+    padding: 16px;
+    border-radius: 0 0 12px 12px;
+
+    .profileLeft {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .profileImage {
+        width: 24px;
+        height: 24px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 1px solid $gray30;
+      }
+
+      .nameContainer {
+        display: flex;
+        flex-direction: column;
+
+        .name {
+          @include Sub4;
+          color: $gray70;
+        }
+
+        .follower {
+          @include Cap2;
+          color: $gray60;
+          display: flex;
+          gap: 4px;
+
+          .followerCount {
+            color: $gray70;
+          }
+        }
+      }
+    }
+  }
+}

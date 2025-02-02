@@ -6,7 +6,8 @@ export interface PopularResponse {
   name: string;
   image: string;
   followerCount: number;
-  feedCount: number;
+  isFollowing: boolean;
+  thumbnails: string[];
 }
 
 export async function getPopular(): Promise<PopularResponse[]> {
@@ -16,6 +17,9 @@ export async function getPopular(): Promise<PopularResponse[]> {
     const updatedData = response.data.map((data: PopularResponse) => ({
       ...data,
       image: `https://image.grimity.com/${data.image}`,
+      thumbnails: data.thumbnails.map(
+        (thumbnail: string) => `https://image.grimity.com/${thumbnail}`
+      ),
     }));
 
     return updatedData;
