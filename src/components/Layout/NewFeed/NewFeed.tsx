@@ -34,7 +34,7 @@ export default function NewFeed() {
 
   return (
     <div className={styles.container}>
-      <Title link="/new">최신 그림</Title>
+      <Title>최신 그림</Title>
       <div className={styles.grid}>
         {data?.pages.map((page) =>
           page.feeds.map((feed) => (
