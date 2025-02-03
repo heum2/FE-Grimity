@@ -1,5 +1,5 @@
 import BASE_URL from "@/constants/baseurl";
-import { useInfiniteQuery, useQuery } from "react-query";
+import { useInfiniteQuery } from "react-query";
 import { Feed } from "./getTodayPopular";
 
 export interface FeedsLatestRequest {
@@ -25,7 +25,6 @@ export async function getFeedsLatest({
       ...response.data,
       feeds: response.data.feeds.map((feed: Feed) => ({
         ...feed,
-        cards: feed.cards.map((card) => `https://image.grimity.com/${card}`),
         thumbnail: `https://image.grimity.com/${feed.thumbnail}`,
         author: {
           ...feed.author,

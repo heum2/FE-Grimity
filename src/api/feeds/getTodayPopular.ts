@@ -5,17 +5,17 @@ export interface Feed {
   id: string;
   title: string;
   content?: string;
-  cards: string[];
+  cards?: string[];
   thumbnail: string;
   likeCount: number;
   viewCount: number;
-  commentCount: number;
+  commentCount?: number;
   createdAt: string;
   isLike?: boolean;
   author: {
     id: string;
     name: string;
-    image: string;
+    image?: string;
   };
 }
 
@@ -40,7 +40,7 @@ export async function getTodayPopular(
       ...response.data,
       feeds: response.data.feeds.map((feed: Feed) => ({
         ...feed,
-        cards: feed.cards.map((card) => `https://image.grimity.com/${card}`),
+        cards: feed.cards?.map((card) => `https://image.grimity.com/${card}`),
         thumbnail: `https://image.grimity.com/${feed.thumbnail}`,
         author: {
           ...feed.author,
