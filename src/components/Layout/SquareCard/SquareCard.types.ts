@@ -8,7 +8,7 @@ export interface SquareCardProps {
     name: string;
   };
   likeCount: number;
-  commentCount: number;
+  commentCount?: number;
   isLike?: boolean;
   createdAt?: string;
   isSame?: boolean;

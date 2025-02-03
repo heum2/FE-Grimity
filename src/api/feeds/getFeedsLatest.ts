@@ -1,14 +1,27 @@
 import BASE_URL from "@/constants/baseurl";
 import { useInfiniteQuery } from "react-query";
-import { Feed } from "./getTodayPopular";
 
 export interface FeedsLatestRequest {
   size?: number;
   cursor?: string;
 }
 
+export interface FeedsLatest {
+  id: string;
+  title: string;
+  thumbnail: string;
+  createdAt: string;
+  viewCount: number;
+  likeCount: number;
+  isLike: boolean;
+  author: {
+    id: string;
+    name: string;
+  };
+}
+
 export interface FeedsLatestResponse {
-  feeds: Feed[];
+  feeds: FeedsLatest[];
   nextCursor: string | null;
 }
 
@@ -23,12 +36,11 @@ export async function getFeedsLatest({
 
     const updatedData: FeedsLatestResponse = {
       ...response.data,
-      feeds: response.data.feeds.map((feed: Feed) => ({
+      feeds: response.data.feeds.map((feed: FeedsLatest) => ({
         ...feed,
         thumbnail: `https://image.grimity.com/${feed.thumbnail}`,
         author: {
           ...feed.author,
-          image: `https://image.grimity.com/${feed.author.image}`,
         },
       })),
     };
