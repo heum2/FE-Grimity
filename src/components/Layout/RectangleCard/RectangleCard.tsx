@@ -57,7 +57,9 @@ export default function RectangleCard({
         </Link>
       </div>
       <div className={styles.infoContainer}>
-        <h3 className={styles.title}>{title}</h3>
+        <Link href={`/feeds/${id}`}>
+          <h3 className={styles.title}>{title}</h3>
+        </Link>
         <p className={styles.content}>{content}</p>
         <div className={styles.profileContainer}>
           <div className={styles.informationContainer}>
