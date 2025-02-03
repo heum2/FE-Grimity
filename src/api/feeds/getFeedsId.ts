@@ -34,7 +34,7 @@ export async function getDetails(id: string): Promise<DetailsResponse> {
     const updatedData = {
       ...data,
       thumbnail: `https://image.grimity.com/${data.thumbnail}`,
-      cards: data.cards.map((card: string) => `https://image.grimity.com/${card}`),
+      cards: data.cards?.map((card: string) => `https://image.grimity.com/${card}`),
       author: {
         ...data.author,
         image: `https://image.grimity.com/${data.author.image}`,
