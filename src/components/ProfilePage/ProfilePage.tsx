@@ -161,9 +161,9 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
                     size="l"
                     rightIcon={
                       isDropdownOpen ? (
-                        <IconComponent name="arrowUp" width={20} height={20} />
+                        <IconComponent name="arrowUp" width={20} height={20} isBtn />
                       ) : (
-                        <IconComponent name="arrowDown" width={20} height={20} />
+                        <IconComponent name="arrowDown" width={20} height={20} isBtn />
                       )
                     }
                   >
