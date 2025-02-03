@@ -54,4 +54,6 @@ export const ICONS = {
   replyFold: "/icon/reply-fold.svg",
   commentUp: "/icon/feed-comment-up.svg",
   commentDown: "/icon/feed-comment-down.svg",
+  popularView: "/icon/popular-view.svg",
+  popularLike: "/icon/popular-like.svg",
 };
