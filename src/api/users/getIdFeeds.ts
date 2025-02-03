@@ -33,7 +33,7 @@ export async function getUserFeeds({
       nextCursor: response.data.nextCursor,
       feeds: response.data.feeds.map((feed: Feed) => ({
         ...feed,
-        cards: feed.cards.map((card: string) => `https://image.grimity.com/${card}`),
+        cards: feed.cards?.map((card: string) => `https://image.grimity.com/${card}`),
         thumbnail: `https://image.grimity.com/${feed.thumbnail}`,
       })),
     };
