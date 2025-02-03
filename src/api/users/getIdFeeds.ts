@@ -9,9 +9,20 @@ export interface UserFeedsRequest {
   cursor?: string;
 }
 
+export interface UserFeeds {
+  id: string;
+  title: string;
+  cards: string[];
+  thumbnail: string;
+  createdAt: string;
+  viewCount: number;
+  likeCount: number;
+  commentCount: number;
+}
+
 export interface UserFeedsResponse {
   nextCursor: string | null;
-  feeds: Feed[];
+  feeds: UserFeeds[];
 }
 
 export async function getUserFeeds({
@@ -31,9 +42,9 @@ export async function getUserFeeds({
 
     const updatedData: UserFeedsResponse = {
       nextCursor: response.data.nextCursor,
-      feeds: response.data.feeds.map((feed: Feed) => ({
+      feeds: response.data.feeds.map((feed: UserFeeds) => ({
         ...feed,
-        cards: feed.cards?.map((card: string) => `https://image.grimity.com/${card}`),
+        cards: feed.cards.map((card: string) => `https://image.grimity.com/${card}`),
         thumbnail: `https://image.grimity.com/${feed.thumbnail}`,
       })),
     };
