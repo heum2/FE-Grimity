@@ -5,6 +5,7 @@ import styles from "./SearchPage.module.scss";
 import { useTagsPopular } from "@/api/tags/getTagsPopular";
 import Link from "next/link";
 import SearchFeed from "./Feed/SearchFeed/SearchFeed";
+import SearchAuthor from "./User/SearchAuthor/SearchAuthor";
 
 export default function SearchPage() {
   const [searchValue, setSearchValue] = useState<string>("");
@@ -25,8 +26,8 @@ export default function SearchPage() {
     switch (tab) {
       case "feed":
         return <SearchFeed />;
-      // case "author":
-      //   return <SearchAuthor />;
+      case "author":
+        return <SearchAuthor />;
       // case "board":
       //   return <SearchBoard />;
       default:

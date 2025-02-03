@@ -1,0 +1,25 @@
+@import "@/styles/globals.scss";
+
+.results {
+  width: 100%;
+
+  .sortWrapper {
+    position: relative;
+    justify-self: flex-end;
+  }
+
+  .feedContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+  }
+}
+
+.noResult {
+  align-self: center;
+  justify-self: center;
+  @include Sub2;
+  color: $gray50;
+  margin-top: 50px;
+}
