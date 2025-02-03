@@ -40,6 +40,7 @@
           border-radius: 50%;
           border: 1px solid $gray30;
           cursor: pointer;
+          @include Drag;
         }
 
         .authorInfo {
@@ -58,6 +59,7 @@
         .createdAt {
           @include Label1;
           color: $gray50;
+          @include Drag;
         }
       }
 
@@ -107,6 +109,7 @@
     left: 50%;
     transform: translateX(-50%);
     z-index: 1;
+    @include Drag;
   }
 
   .gradient {
@@ -215,6 +218,7 @@
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      margin-bottom: 8px;
     }
 
     .expanded {
@@ -229,7 +233,7 @@
       @include Btn2;
       align-self: flex-start;
       padding: 0;
-      margin-top: 8px;
+      @include Drag;
     }
 
     .stats {
@@ -239,6 +243,7 @@
       gap: 8px;
       line-height: 0;
       margin-bottom: 16px;
+      @include Drag;
 
       .statIcon {
         width: 16px;
@@ -265,6 +270,7 @@
       gap: 6px;
       margin-bottom: 16px;
       margin-top: 20px;
+      @include Drag;
     }
 
     .tags {

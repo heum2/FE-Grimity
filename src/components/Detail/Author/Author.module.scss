@@ -17,6 +17,7 @@
       @include Sub4;
       color: $gray60;
       cursor: pointer;
+      @include Drag;
     }
   }
 
@@ -35,6 +36,7 @@
         object-fit: cover;
         border-radius: 50%;
         border: 1px solid $gray30;
+        @include Drag;
       }
 
       .authorInfo {
@@ -53,6 +55,7 @@
           color: $gray60;
           display: flex;
           gap: 8px;
+          @include Drag;
 
           .followerColor {
             color: $gray70;

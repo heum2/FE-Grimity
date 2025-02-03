@@ -76,6 +76,7 @@
       .createdAt {
         @include Label1;
         color: $gray50;
+        @include Drag;
       }
 
       .countContainer {

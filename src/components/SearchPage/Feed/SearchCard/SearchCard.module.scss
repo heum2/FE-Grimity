@@ -60,6 +60,7 @@
       background-color: $gray10;
       @include Cap1;
       color: $gray60;
+      @include Drag;
     }
 
     .slide {

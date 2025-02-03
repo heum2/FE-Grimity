@@ -7,6 +7,7 @@
   .imageWrapper {
     width: 100%;
     display: flex;
+    @include Drag;
 
     .backgroundLeft {
       object-fit: cover;
@@ -40,6 +41,7 @@
         object-fit: cover;
         border-radius: 50%;
         border: 1px solid $gray30;
+        @include Drag;
       }
 
       .nameContainer {
@@ -56,6 +58,7 @@
           color: $gray60;
           display: flex;
           gap: 4px;
+          @include Drag;
 
           .followerCount {
             color: $gray70;

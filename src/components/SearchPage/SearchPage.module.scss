@@ -31,6 +31,7 @@
           @include Sub2;
           color: $gray70;
           flex-shrink: 0;
+          @include Drag;
         }
 
         .chips {
@@ -48,6 +49,7 @@
             background-color: $gray10;
             @include Label1;
             color: $gray60;
+            @include Drag;
           }
         }
       }
@@ -61,6 +63,7 @@
     width: 100%;
     margin-bottom: 12px;
     border-bottom: 1px solid $gray30;
+    @include Drag;
 
     .button {
       padding: 0 12px 8px;

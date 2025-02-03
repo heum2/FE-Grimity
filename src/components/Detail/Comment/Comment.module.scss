@@ -16,6 +16,7 @@
       overflow: hidden;
       flex-shrink: 0;
       border: 1px solid $gray30;
+      @include Drag;
     }
 
     .submitBtn {
@@ -40,6 +41,7 @@
     overflow: hidden;
     flex-shrink: 0;
     border: 1px solid $gray30;
+    @include Drag;
   }
 
   .commentBody {
@@ -70,6 +72,7 @@
   .createdAt {
     @include Cap2;
     color: $gray50;
+    @include Drag;
   }
 
   .commentText {

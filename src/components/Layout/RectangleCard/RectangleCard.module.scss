@@ -71,6 +71,7 @@
         .createdAt {
           @include Label2;
           color: $gray50;
+          @include Drag;
         }
       }
     }
@@ -105,6 +106,7 @@
         border-radius: 50%;
         overflow: hidden;
         border: 1px solid $gray30;
+        @include Drag;
       }
 
       .author {
