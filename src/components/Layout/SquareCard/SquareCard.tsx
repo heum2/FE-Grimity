@@ -82,11 +82,11 @@ export default function SquareCard({
             )}
             <div className={styles.countContainer}>
               <div className={styles.likeContainer}>
-                <IconComponent name="cardLike" width={12} height={12} />
+                <IconComponent name="likeCount" width={12} height={12} />
                 <p className={styles.count}>{formatCurrency(currentLikeCount)}</p>
               </div>
               <div className={styles.likeContainer}>
-                <IconComponent name="cardComment" width={12} height={12} />
+                <IconComponent name="commentCount" width={12} height={12} />
                 <p className={styles.count}>{formatCurrency(commentCount)}</p>
               </div>
             </div>

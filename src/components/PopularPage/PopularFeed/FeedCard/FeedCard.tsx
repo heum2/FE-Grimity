@@ -69,11 +69,11 @@ export default function FeedCard({
           <Image src="/icon/dot.svg" width={3} height={3} alt="" />
           <div className={styles.countContainer}>
             <div className={styles.likeContainer}>
-              <IconComponent name="popularLike" width={16} height={16} />
+              <IconComponent name="likeCount" width={16} height={16} />
               <p className={styles.count}>{formatCurrency(currentLikeCount)}</p>
             </div>
             <div className={styles.likeContainer}>
-              <IconComponent name="popularView" width={16} height={16} />
+              <IconComponent name="viewCount" width={16} height={16} />
               <p className={styles.count}>{formatCurrency(viewCount)}</p>
             </div>
           </div>
