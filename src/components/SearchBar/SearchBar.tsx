@@ -1,14 +1,26 @@
+import { useRouter } from "next/router";
 import IconComponent from "../Asset/Icon";
 import styles from "./SearchBar.module.scss";
 import { SearchBarProps } from "./SearchBar.types";
 
-export default function SearchBar({ searchValue, setSearchValue }: SearchBarProps) {
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value);
-  };
+export default function SearchBar({ searchValue, setSearchValue, onSearch }: SearchBarProps) {
+  const router = useRouter();
 
   const handleClear = () => {
     setSearchValue("");
+    router.push("");
+    onSearch("");
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      router.push(`?tab=feed&keyword=${searchValue}`, undefined, { shallow: true });
+      onSearch(searchValue);
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
   };
 
   return (
@@ -21,6 +33,7 @@ export default function SearchBar({ searchValue, setSearchValue }: SearchBarProp
           className={styles.input}
           value={searchValue}
           onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
         />
       </div>
       {searchValue && (

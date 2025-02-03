@@ -18,6 +18,8 @@ export default function Header() {
   const [activeNav, setActiveNav] = useState("홈");
   const activeItemRef = useRef<HTMLDivElement>(null);
   const indicatorRef = useRef<HTMLDivElement>(null);
+  const [isSearchBarOpen, setIsSearchBarOpen] = useState(false);
+  const [keyword, setKeyword] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -91,6 +93,19 @@ export default function Header() {
     router.push("/");
   };
 
+  const handleSearchBarOpen = () => {
+    setIsSearchBarOpen((prev) => !prev);
+  };
+
+  const handleSearchKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      if (keyword.trim() === "") return;
+      router.push(`/search?tab=feed&keyword=${encodeURIComponent(keyword)}`);
+      setIsSearchBarOpen(false);
+      setKeyword("");
+    }
+  };
+
   return (
     <header className={isUserPage ? styles.userPageHeader : styles.header}>
       <div className={styles.container}>
@@ -122,14 +137,38 @@ export default function Header() {
         </div>
         <div className={styles.wrapper}>
           <div className={styles.icons}>
-            <IconComponent
-              name={isUserPage ? "searchWhite" : "search"}
-              width={24}
-              height={24}
-              padding={8}
-              isBtn
-              alt="검색"
-            />
+            {isSearchBarOpen ? (
+              <div className={styles.searchbarContainer}>
+                <input
+                  placeholder="그림, 작가, 관련 작품을 검색해보세요"
+                  className={styles.input}
+                  value={keyword}
+                  onChange={(e) => setKeyword(e.target.value)}
+                  onKeyDown={handleSearchKeyDown}
+                />
+                <div onClick={handleSearchBarOpen}>
+                  <IconComponent
+                    name="searchGray"
+                    width={24}
+                    height={24}
+                    padding={8}
+                    isBtn
+                    alt="검색"
+                  />
+                </div>
+              </div>
+            ) : (
+              <div onClick={handleSearchBarOpen}>
+                <IconComponent
+                  name={isUserPage ? "searchWhite" : "search"}
+                  width={24}
+                  height={24}
+                  padding={8}
+                  isBtn
+                  alt="검색"
+                />
+              </div>
+            )}
             {isLoggedIn && (
               <IconComponent
                 name={isUserPage ? "bellWhiteActive" : "bellActive"}

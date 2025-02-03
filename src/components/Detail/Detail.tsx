@@ -331,9 +331,11 @@ export default function Detail({ id }: DetailProps) {
               {details.tags.length > 0 && (
                 <div className={styles.tags}>
                   {details.tags.map((tag, index) => (
-                    <Chip key={index} size="m" type="filled-assistive">
-                      {tag}
-                    </Chip>
+                    <Link href={`/search?tab=feed&keyword=${tag}`}>
+                      <Chip key={index} size="m" type="filled-assistive">
+                        {tag}
+                      </Chip>
+                    </Link>
                   ))}
                 </div>
               )}

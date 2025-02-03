@@ -174,3 +174,29 @@
     animation: pulse 0.6s ease-in-out;
   }
 }
+
+.searchbarContainer {
+  width: 290px;
+  height: 40px;
+  padding-left: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  border-radius: 12px;
+  border: 1px solid $gray30;
+  background-color: $gray10;
+
+  .input {
+    width: 100%;
+    color: $gray70;
+    @include Label2;
+    background: none;
+    border: none;
+    outline: none;
+
+    &::placeholder {
+      color: $gray50;
+    }
+  }
+}

@@ -4,6 +4,7 @@ import Title from "@/components/Layout/Title/Title";
 import Loader from "@/components/Layout/Loader/Loader";
 import Tag from "./Tag/Tag";
 import { Swiper, SwiperSlide } from "swiper/react";
+import Link from "next/link";
 
 export default function PopularTag() {
   const { data, isLoading } = useTagsPopular();
@@ -17,7 +18,9 @@ export default function PopularTag() {
         <Swiper spaceBetween={16} slidesPerView="auto" grabCursor={true} className={styles.swiper}>
           {data?.map((tag) => (
             <SwiperSlide key={tag.tagName} className={styles.slide}>
-              <Tag tagName={tag.tagName} thumbnail={tag.thumbnail} />
+              <Link href={`/search?tab=feed&keyword=${tag.tagName}`}>
+                <Tag tagName={tag.tagName} thumbnail={tag.thumbnail} />
+              </Link>
             </SwiperSlide>
           ))}
         </Swiper>
