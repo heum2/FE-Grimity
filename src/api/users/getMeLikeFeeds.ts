@@ -23,7 +23,7 @@ export async function getMyLikeList({
       ...response.data,
       feeds: response.data.feeds.map((feed: Feed) => ({
         ...feed,
-        cards: feed.cards.map((card) => `https://image.grimity.com/${card}`),
+        cards: feed.cards?.map((card) => `https://image.grimity.com/${card}`),
         thumbnail: `https://image.grimity.com/${feed.thumbnail}`,
         author: {
           ...feed.author,
