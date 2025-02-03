@@ -131,7 +131,6 @@ export default function Author({ authorId, feedId }: AuthorProps) {
                 cards={feed.cards}
                 author={feed.author}
                 likeCount={feed.likeCount}
-                commentCount={feed.commentCount}
                 createdAt={feed.createdAt}
                 isSame={feed.id === feedId}
               />
