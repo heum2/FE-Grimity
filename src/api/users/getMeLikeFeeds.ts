@@ -1,15 +1,30 @@
 import BASE_URL from "@/constants/baseurl";
 import { useInfiniteQuery } from "react-query";
-import { Feed } from "../feeds/getTodayPopular";
 
 export interface MyLikeListRequest {
   size?: number;
   cursor?: string;
 }
 
+export interface MyLikeListFeed {
+  id: string;
+  title: string;
+  cards: string[];
+  thumbnail: string;
+  likeCount: number;
+  viewCount: number;
+  commentCount: number;
+  createdAt: string;
+  author: {
+    id: string;
+    name: string;
+    image: string;
+  };
+}
+
 export interface MyLikeListResponse {
   nextCursor: string | null;
-  feeds: Feed[];
+  feeds: MyLikeListFeed[];
 }
 
 export async function getMyLikeList({
@@ -21,9 +36,9 @@ export async function getMyLikeList({
 
     const updatedData: MyLikeListResponse = {
       ...response.data,
-      feeds: response.data.feeds.map((feed: Feed) => ({
+      feeds: response.data.feeds.map((feed: MyLikeListFeed) => ({
         ...feed,
-        cards: feed.cards?.map((card) => `https://image.grimity.com/${card}`),
+        cards: feed.cards.map((card) => `https://image.grimity.com/${card}`),
         thumbnail: `https://image.grimity.com/${feed.thumbnail}`,
         author: {
           ...feed.author,
