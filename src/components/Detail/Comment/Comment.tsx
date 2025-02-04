@@ -36,6 +36,7 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
   const [activeReplyId, setActiveReplyId] = useState<string | null>(null);
   const [mentionedUser, setMentionedUser] = useState<{ id: string; name: string } | null>(null);
   const [expandedComments, setExpandedComments] = useState<Set<string>>(new Set());
+  const [isReplyToChild, setIsReplyToChild] = useState(false);
   const replyInputRef = useRef<HTMLInputElement>(null);
   const { data: commentsData, refetch: refetchComments } = useGetFeedsComments({ feedId });
   const postCommentMutation = usePostFeedsComments();
@@ -82,15 +83,21 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
     setReplyText(e.target.value);
   };
 
-  const handleReply = (commentId: string, writer: { id: string; name: string }) => {
+  const handleReply = (
+    commentId: string,
+    writer: { id: string; name: string },
+    isChild: boolean = false
+  ) => {
     if (activeReplyId === commentId) {
       setActiveReplyId(null);
       setMentionedUser(null);
       setReplyText("");
+      setIsReplyToChild(false);
     } else {
       setActiveReplyId(commentId);
       setMentionedUser(writer);
       setReplyText("");
+      setIsReplyToChild(isChild);
     }
   };
 
@@ -128,13 +135,14 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
         feedId,
         content: replyText,
         parentCommentId: activeReplyId,
-        mentionedUserId: mentionedUser.id,
+        mentionedUserId: isReplyToChild ? mentionedUser.id : undefined,
       },
       {
         onSuccess: () => {
           setReplyText("");
           setActiveReplyId(null);
           setMentionedUser(null);
+          setIsReplyToChild(false);
           refetchComments();
           queryClient.invalidateQueries(["getFeedsChildComments", feedId, activeReplyId]);
         },
@@ -223,7 +231,9 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
                       <p className={styles.createdAt}>{timeAgo(reply.createdAt)}</p>
                     </div>
                     <div className={styles.commentText}>
-                      <p className={styles.mentionedUser}>@{reply.mentionedUser?.name}</p>
+                      {reply.mentionedUser && (
+                        <p className={styles.mentionedUser}>@{reply.mentionedUser?.name}</p>
+                      )}
                       {reply.content}
                     </div>
                     <div className={styles.likeReplyBtn}>
@@ -249,7 +259,11 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
                       </div>
                       <p
                         onClick={() =>
-                          handleReply(parentId, { id: reply.writer.id, name: reply.writer.name })
+                          handleReply(
+                            parentId,
+                            { id: reply.writer.id, name: reply.writer.name },
+                            true
+                          )
                         }
                         className={styles.replyBtn}
                       >
