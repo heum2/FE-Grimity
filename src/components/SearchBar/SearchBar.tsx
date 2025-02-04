@@ -5,6 +5,7 @@ import { SearchBarProps } from "./SearchBar.types";
 
 export default function SearchBar({ searchValue, setSearchValue, onSearch }: SearchBarProps) {
   const router = useRouter();
+  const { tab } = router.query;
 
   const handleClear = () => {
     setSearchValue("");
@@ -14,7 +15,8 @@ export default function SearchBar({ searchValue, setSearchValue, onSearch }: Sea
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      router.push(`?tab=feed&keyword=${searchValue}`, undefined, { shallow: true });
+      const currentTab = tab === "author" ? "author" : "feed";
+      router.push(`?tab=${currentTab}&keyword=${searchValue}`, undefined, { shallow: true });
       onSearch(searchValue);
     }
   };
