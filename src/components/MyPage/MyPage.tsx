@@ -1,6 +1,7 @@
 import styles from "./MyPage.module.scss";
 import { useRouter } from "next/router";
 import LikedFeeds from "./LikedFeeds/LikedFeeds";
+import SavedFeeds from "./SavedFeeds/SavedFeeds";
 
 export default function MyPage() {
   const router = useRouter();
@@ -10,8 +11,8 @@ export default function MyPage() {
     switch (tab) {
       case "liked-feeds":
         return <LikedFeeds />;
-      // case "saved-feeds":
-      //   return <SavedFeeds />;
+      case "saved-feeds":
+        return <SavedFeeds />;
       // case "liked-posts":
       //   return <LikedPosts />;
       // case "my-comments":

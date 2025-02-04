@@ -1,0 +1,10 @@
+@import "@/styles/globals.scss";
+
+.cardContainer {
+  margin-top: 20px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  row-gap: 40px;
+  column-gap: 16px;
+}
