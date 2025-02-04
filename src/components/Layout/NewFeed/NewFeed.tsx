@@ -44,6 +44,7 @@ export default function NewFeed() {
               thumbnail={feed.thumbnail}
               author={feed.author}
               likeCount={feed.likeCount}
+              viewCount={feed.viewCount}
               isLike={feed.isLike}
             />
           ))

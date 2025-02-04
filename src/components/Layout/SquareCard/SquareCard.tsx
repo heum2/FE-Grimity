@@ -16,7 +16,7 @@ export default function SquareCard({
   cards,
   author,
   likeCount,
-  commentCount,
+  viewCount,
   id,
   isLike,
   createdAt,
@@ -72,25 +72,24 @@ export default function SquareCard({
           <h3 className={styles.title}>{title}</h3>
         </Link>
         <div className={styles.profileContainer}>
-          <>
-            {createdAt ? (
-              <p className={styles.createdAt}>{timeAgo(createdAt)}</p>
-            ) : (
-              <Link href={`/users/${author?.id}`}>
-                <p className={styles.author}>{author?.name}</p>
-              </Link>
-            )}
-            <div className={styles.countContainer}>
-              <div className={styles.likeContainer}>
-                <IconComponent name="likeCount" width={12} height={12} />
-                <p className={styles.count}>{formatCurrency(currentLikeCount)}</p>
-              </div>
-              <div className={styles.likeContainer}>
-                <IconComponent name="commentCount" width={12} height={12} />
-                <p className={styles.count}>{formatCurrency(commentCount)}</p>
-              </div>
+          <div className={styles.countContainer}>
+            <div className={styles.likeContainer}>
+              <IconComponent name="likeCount" width={16} height={16} />
+              <p className={styles.count}>{formatCurrency(currentLikeCount)}</p>
             </div>
-          </>
+            <div className={styles.likeContainer}>
+              <IconComponent name="viewCount" width={16} height={16} />
+              <p className={styles.count}>{formatCurrency(viewCount)}</p>
+            </div>
+          </div>
+          <Image src="/icon/dot.svg" width={3} height={3} alt="" />
+          {createdAt ? (
+            <p className={styles.createdAt}>{timeAgo(createdAt)}</p>
+          ) : (
+            <Link href={`/users/${author?.id}`}>
+              <p className={styles.author}>{author?.name}</p>
+            </Link>
+          )}
         </div>
       </div>
     </div>

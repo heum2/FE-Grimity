@@ -66,7 +66,7 @@
     .profileContainer {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      gap: 8px;
 
       .author {
         @include Label1;
@@ -90,10 +90,8 @@
           gap: 2px;
 
           .count {
-            @include MEDIUM;
-            font-size: 12px;
-            line-height: 12px;
-            color: $gray50;
+            @include Label2;
+            color: $gray60;
           }
         }
       }

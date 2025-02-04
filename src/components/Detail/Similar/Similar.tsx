@@ -25,7 +25,7 @@ export default function Similar({ tagNames }: SimilarProps) {
               thumbnail={item.thumbnail}
               author={item.author}
               likeCount={item.likeCount}
-              commentCount={item.commentCount}
+              viewCount={item.viewCount}
               isLike={item.isLike}
             />
           ))}

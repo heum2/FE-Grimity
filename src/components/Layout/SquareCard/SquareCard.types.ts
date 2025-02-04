@@ -8,6 +8,7 @@ export interface SquareCardProps {
     name: string;
   };
   likeCount: number;
+  viewCount: number;
   commentCount?: number;
   isLike?: boolean;
   createdAt?: string;

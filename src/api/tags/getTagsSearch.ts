@@ -6,12 +6,11 @@ export interface TagsSearchResponse {
   title: string;
   thumbnail: string;
   likeCount: number;
-  commentCount: number;
+  viewCount: number;
   isLike: boolean;
   author: {
     id: string;
     name: string;
-    image: string;
   };
 }
 
@@ -28,7 +27,6 @@ export async function getTagsSearch(tagNames: string): Promise<TagsSearchRespons
       thumbnail: `https://image.grimity.com/${item.thumbnail}`,
       author: {
         ...item.author,
-        image: `https://image.grimity.com/${item.author.image}`,
       },
     }));
 
