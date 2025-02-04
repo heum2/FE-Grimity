@@ -3,27 +3,51 @@ import styles from "./PopularTag.module.scss";
 import Title from "@/components/Layout/Title/Title";
 import Loader from "@/components/Layout/Loader/Loader";
 import Tag from "./Tag/Tag";
-import { Swiper, SwiperSlide } from "swiper/react";
 import Link from "next/link";
+import { useCallback, useEffect, useRef } from "react";
 
 export default function PopularTag() {
   const { data, isLoading } = useTagsPopular();
+  const containerRef = useRef<HTMLDivElement>(null);
 
   if (isLoading) return <Loader />;
+
+  // 가로 스크롤 시 세로 스크롤 막기
+  const handleWheel = useCallback((e: WheelEvent) => {
+    if (!containerRef.current) return;
+
+    const container = containerRef.current;
+    const isScrollable = container.scrollWidth > container.clientWidth;
+
+    if (!isScrollable) return;
+
+    e.preventDefault();
+    container.scrollLeft += e.deltaY;
+  }, []);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    containerRef.current.addEventListener("wheel", handleWheel, { passive: false });
+
+    return () => {
+      if (containerRef.current) {
+        containerRef.current.removeEventListener("wheel", handleWheel);
+      }
+    };
+  }, [handleWheel]);
 
   return (
     <div className={styles.container}>
       <Title>인기 태그</Title>
-      <div className={styles.cardContainer}>
-        <Swiper spaceBetween={16} slidesPerView="auto" grabCursor={true} className={styles.swiper}>
-          {data?.map((tag) => (
-            <SwiperSlide key={tag.tagName} className={styles.slide}>
-              <Link href={`/search?tab=feed&keyword=${tag.tagName}`}>
-                <Tag tagName={tag.tagName} thumbnail={tag.thumbnail} />
-              </Link>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+      <div className={styles.cardContainer} ref={containerRef}>
+        {data?.map((tag) => (
+          <div key={tag.tagName} className={styles.slide}>
+            <Link href={`/search?tab=feed&keyword=${tag.tagName}`}>
+              <Tag tagName={tag.tagName} thumbnail={tag.thumbnail} />
+            </Link>
+          </div>
+        ))}
       </div>
       <div className={styles.lastGradient} />
     </div>
