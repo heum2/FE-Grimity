@@ -18,7 +18,6 @@ export interface MyLikeListFeed {
   author: {
     id: string;
     name: string;
-    image: string;
   };
 }
 
@@ -42,7 +41,6 @@ export async function getMyLikeList({
         thumbnail: `https://image.grimity.com/${feed.thumbnail}`,
         author: {
           ...feed.author,
-          image: `https://image.grimity.com/${feed.author.image}`,
         },
       })),
     };
