@@ -17,8 +17,6 @@ export default function PopularUser() {
     }
   }, [data]);
 
-  if (isLoading) return <Loader />;
-
   // 가로 스크롤 시 세로 스크롤 막기
   const handleWheel = useCallback((e: WheelEvent) => {
     if (!containerRef.current) return;
@@ -33,16 +31,17 @@ export default function PopularUser() {
   }, []);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    const container = containerRef.current;
+    if (!container) return;
 
-    containerRef.current.addEventListener("wheel", handleWheel, { passive: false });
+    container.addEventListener("wheel", handleWheel, { passive: false });
 
     return () => {
-      if (containerRef.current) {
-        containerRef.current.removeEventListener("wheel", handleWheel);
-      }
+      container.removeEventListener("wheel", handleWheel);
     };
   }, [handleWheel]);
+
+  if (isLoading) return <Loader />;
 
   return (
     <div className={styles.container}>
