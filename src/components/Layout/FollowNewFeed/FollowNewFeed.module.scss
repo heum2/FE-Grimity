@@ -10,6 +10,14 @@
   width: 100%;
 }
 
+.message {
+  @include Body1;
+  color: $gray80;
+  align-self: center;
+  margin: 40px 0;
+  @include Drag;
+}
+
 .navButton {
   position: absolute;
   top: 37%;

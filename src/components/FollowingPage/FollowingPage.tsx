@@ -51,18 +51,25 @@ export default function FollowingPage() {
 
   if (isLoading) return <Loader />;
 
+  const isEmpty =
+    !data || data.pages.length === 0 || data.pages.every((page) => page.feeds.length === 0);
+
   return (
     <div className={styles.container}>
       <div className={styles.center}>
-        <div className={styles.feedsContainer}>
-          {data?.pages.map((page, pageIndex) => (
-            <div key={pageIndex}>
-              {page.feeds.map((feed) => (
-                <FollowingFeed key={feed.id} id={feed.id} />
-              ))}
-            </div>
-          ))}
-        </div>
+        {isEmpty ? (
+          <p className={styles.message}>팔로잉하는 유저가 없어요</p>
+        ) : (
+          <div className={styles.feedsContainer}>
+            {data.pages.map((page, pageIndex) => (
+              <div key={pageIndex}>
+                {page.feeds.map((feed) => (
+                  <FollowingFeed key={feed.id} id={feed.id} />
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
         {hasNextPage && !isFetchingNextPage && <div ref={lastFeedElement}></div>}
       </div>
     </div>
