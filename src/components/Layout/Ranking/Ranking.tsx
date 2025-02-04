@@ -26,10 +26,14 @@ export default function Ranking() {
     if (data?.feeds && endIdx < data.feeds.length) setPageIndex((prev) => prev + 1);
   };
 
+  const isEmpty = !data || !data.feeds || data.feeds.length === 0;
+
   return (
     <div className={styles.container}>
       <Title link="/popular">오늘의 인기 랭킹</Title>
-      {data && data.feeds && (
+      {isEmpty ? (
+        <p className={styles.message}>아직 등록된 그림이 없어요</p>
+      ) : (
         <div className={styles.rankingContainer}>
           <button
             className={`${styles.navButton} ${styles.left}`}
@@ -71,7 +75,7 @@ export default function Ranking() {
                   thumbnail={feed.thumbnail}
                   author={feed.author}
                   likeCount={feed.likeCount}
-                  commentCount={feed.commentCount}
+                  viewCount={feed.viewCount}
                   isLike={feed.isLike}
                 />
               </div>

@@ -3,6 +3,13 @@
 .container {
   display: flex;
   flex-direction: column;
+
+  .message {
+    @include Body1;
+    color: $gray80;
+    align-self: center;
+    margin: 40px 0;
+  }
 }
 
 .rankingContainer {
