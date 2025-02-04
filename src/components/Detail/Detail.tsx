@@ -26,6 +26,7 @@ import { modalState } from "@/states/modalState";
 import { deleteSave, putSave } from "@/api/feeds/putDeleteFeedsIdSave";
 import Similar from "./Similar/Similar";
 import Comment from "./Comment/Comment";
+import NewFeed from "../Layout/NewFeed/NewFeed";
 
 export default function Detail({ id }: DetailProps) {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
@@ -406,8 +407,11 @@ export default function Detail({ id }: DetailProps) {
             </div>
             <Comment feedId={id} feedWriterId={details.author.id} />
             <div className={styles.bar} />
-            <Author authorId={details.author.id} feedId={id} />
-            {details.tags.length > 0 && <Similar tagNames={details.tags.join(",")} />}
+            <div className={styles.cards}>
+              <Author authorId={details.author.id} feedId={id} />
+              {details.tags.length > 0 && <Similar tagNames={details.tags.join(",")} />}
+              <NewFeed isDetail />
+            </div>
           </>
         )}
       </div>

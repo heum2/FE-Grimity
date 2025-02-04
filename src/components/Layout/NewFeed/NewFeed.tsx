@@ -3,8 +3,9 @@ import SquareCard from "../SquareCard/SquareCard";
 import Title from "../Title/Title";
 import styles from "./NewFeed.module.scss";
 import { useEffect, useRef } from "react";
+import { NewFeedProps } from "./NewFeed.types";
 
-export default function NewFeed() {
+export default function NewFeed({ isDetail = false }: NewFeedProps) {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useFeedsLatest({
     size: 20,
   });
@@ -34,7 +35,7 @@ export default function NewFeed() {
 
   return (
     <div className={styles.container}>
-      <Title>최신 그림</Title>
+      {isDetail ? <Title>추천 작품</Title> : <Title>최신 그림</Title>}
       <div className={styles.grid}>
         {data?.pages.map((page) =>
           page.feeds.map((feed) => (
