@@ -111,3 +111,11 @@
     }
   }
 }
+
+.noData {
+  @include Sub2;
+  color: $gray50;
+  @include Drag;
+  margin-top: 50px;
+  justify-self: center;
+}

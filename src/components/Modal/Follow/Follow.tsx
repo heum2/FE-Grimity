@@ -141,60 +141,69 @@ export default function Follow({ initialTab }: FollowProps) {
       </div>
       <div className={styles.tabContent}>
         <ul>
-          {data.map((follow, index) => (
-            <li key={index} className={styles.item}>
-              {follow.image !== "https://image.grimity.com/null" ? (
-                <Image
-                  src={follow.image}
-                  width={50}
-                  height={50}
-                  onClick={() => handleClickUser(follow.id)}
-                  className={styles.image}
-                  alt={`${activeTab === "follower" ? "팔로워" : "팔로잉"} 프로필 이미지`}
-                />
-              ) : (
-                <Image
-                  src="/image/default.svg"
-                  width={50}
-                  height={50}
-                  onClick={() => handleClickUser(follow.id)}
-                  className={styles.image}
-                  alt={`${activeTab === "follower" ? "팔로워" : "팔로잉"} 프로필 이미지`}
-                />
-              )}
-              {follow.description !== "" ? (
-                <div className={styles.nameDescription} onClick={() => handleClickUser(follow.id)}>
-                  <p className={styles.name}>{follow.name}</p>
-                  <p className={styles.description}>{follow.description}</p>
-                </div>
-              ) : (
-                <div className={styles.nameContainer} onClick={() => handleClickUser(follow.id)}>
-                  <p className={styles.name}>{follow.name}</p>
-                </div>
-              )}
-              {activeTab === "follower" ? (
-                <div className={follow.description !== "" ? styles.btn : styles.btnCenter}>
-                  <Button
-                    type="outlined-assistive"
-                    size="s"
-                    onClick={() => handleDeleteFollow(follow.id)}
+          {data.length === 0 ? (
+            <p className={styles.noData}>
+              {activeTab === "follower" ? "아직 팔로워가 없어요" : "아직 팔로잉하는 유저가 없어요"}
+            </p>
+          ) : (
+            data.map((follow, index) => (
+              <li key={index} className={styles.item}>
+                {follow.image !== "https://image.grimity.com/null" ? (
+                  <Image
+                    src={follow.image}
+                    width={50}
+                    height={50}
+                    onClick={() => handleClickUser(follow.id)}
+                    className={styles.image}
+                    alt={`${activeTab === "follower" ? "팔로워" : "팔로잉"} 프로필 이미지`}
+                  />
+                ) : (
+                  <Image
+                    src="/image/default.svg"
+                    width={50}
+                    height={50}
+                    onClick={() => handleClickUser(follow.id)}
+                    className={styles.image}
+                    alt={`${activeTab === "follower" ? "팔로워" : "팔로잉"} 프로필 이미지`}
+                  />
+                )}
+                {follow.description !== "" ? (
+                  <div
+                    className={styles.nameDescription}
+                    onClick={() => handleClickUser(follow.id)}
                   >
-                    삭제
-                  </Button>
-                </div>
-              ) : (
-                <div className={follow.description !== "" ? styles.btn : styles.btnCenter}>
-                  <Button
-                    type="outlined-assistive"
-                    size="s"
-                    onClick={() => handleDeleteFollow(follow.id)}
-                  >
-                    언팔로우
-                  </Button>
-                </div>
-              )}
-            </li>
-          ))}
+                    <p className={styles.name}>{follow.name}</p>
+                    <p className={styles.description}>{follow.description}</p>
+                  </div>
+                ) : (
+                  <div className={styles.nameContainer} onClick={() => handleClickUser(follow.id)}>
+                    <p className={styles.name}>{follow.name}</p>
+                  </div>
+                )}
+                {activeTab === "follower" ? (
+                  <div className={follow.description !== "" ? styles.btn : styles.btnCenter}>
+                    <Button
+                      type="outlined-assistive"
+                      size="s"
+                      onClick={() => handleDeleteFollow(follow.id)}
+                    >
+                      삭제
+                    </Button>
+                  </div>
+                ) : (
+                  <div className={follow.description !== "" ? styles.btn : styles.btnCenter}>
+                    <Button
+                      type="outlined-assistive"
+                      size="s"
+                      onClick={() => handleDeleteFollow(follow.id)}
+                    >
+                      언팔로우
+                    </Button>
+                  </div>
+                )}
+              </li>
+            ))
+          )}
         </ul>
         <div ref={observerRef} />
       </div>
