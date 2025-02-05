@@ -5,6 +5,7 @@ export interface PopularResponse {
   id: string;
   name: string;
   image: string;
+  description?: string;
   followerCount: number;
   isFollowing: boolean;
   thumbnails: string[];

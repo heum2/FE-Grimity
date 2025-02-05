@@ -56,4 +56,5 @@ export const ICONS = {
   likeCount: "/icon/like-count.svg",
   saveCount: "/icon/save-count.svg",
   viewCount: "/icon/view-count.svg",
+  addFollow: "/icon/add-follow.svg",
 };

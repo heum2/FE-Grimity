@@ -11,8 +11,6 @@ export interface MyInfoResponse {
   description: string;
   links: { linkName: string; link: string }[];
   createdAt: string;
-  followerCount: number;
-  followingCount: number;
   hasNotification: boolean;
 }
 
