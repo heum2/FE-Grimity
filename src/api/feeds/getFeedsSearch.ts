@@ -40,7 +40,7 @@ export async function getFeedSearch({
         sort,
         size,
         cursor,
-        tag: keyword,
+        keyword,
       },
     });
 
