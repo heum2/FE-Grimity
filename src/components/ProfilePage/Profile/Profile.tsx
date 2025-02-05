@@ -37,7 +37,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
       setProfileImage(userData.image || "/image/default.svg");
       setCoverImage(userData.backgroundImage || "/image/default-cover.png");
     }
-  }, [myData, userData]);
+  }, [id, myData, userData]);
 
   const handleFollowClick = async () => {
     try {
@@ -255,13 +255,15 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
           >
             {userData.image !== "https://image.grimity.com/null" ? (
               <div className={styles.profileImageContainer}>
-                <Image
-                  src={profileImage}
-                  width={140}
-                  height={140}
-                  alt="프로필 이미지"
-                  className={styles.profileImage}
-                />
+                {profileImage && (
+                  <Image
+                    src={profileImage}
+                    width={140}
+                    height={140}
+                    alt="프로필 이미지"
+                    className={styles.profileImage}
+                  />
+                )}
                 {userData.id === user_id && (
                   <>
                     <label htmlFor="upload-image">
