@@ -35,7 +35,7 @@ export async function getUserSearch({
         sort,
         size,
         cursor,
-        name: keyword,
+        keyword: keyword,
       },
     });
 
