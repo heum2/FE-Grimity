@@ -10,6 +10,8 @@ import ProfileCard from "../Layout/ProfileCard/ProfileCard";
 import Dropdown from "../Dropdown/Dropdown";
 import Button from "../Button/Button";
 import IconComponent from "../Asset/Icon";
+import { all } from "axios";
+import Link from "next/link";
 
 type SortOption = "latest" | "like" | "oldest";
 
@@ -146,50 +148,69 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
           />
         </div>
         <div className={styles.feedContainer}>
-          <section className={styles.header}>
-            <div className={styles.sortWrapper}>
-              <Dropdown
-                menuItems={sortOptions.map((option) => ({
-                  label: option.label,
-                  value: option.value,
-                  onClick: () => handleSortChange(option.value),
-                }))}
-                onOpenChange={handleDropdownToggle}
-                trigger={
-                  <Button
-                    type="text-assistive"
-                    size="l"
-                    rightIcon={
-                      isDropdownOpen ? (
-                        <IconComponent name="arrowUp" width={20} height={20} isBtn />
-                      ) : (
-                        <IconComponent name="arrowDown" width={20} height={20} isBtn />
-                      )
-                    }
-                  >
-                    {sortOptions.find((option) => option.value === sortBy)?.label || "최신 순"}
-                  </Button>
-                }
-              />
-            </div>
-          </section>
-          {activeTab === "images" ? (
-            <section className={styles.cardContainer}>
-              {allFeeds.map((feed, index) => (
-                <div key={`${feed.id}-${index}`}>
-                  <ProfileCard
-                    title={feed.title}
-                    cards={feed.cards}
-                    thumbnail={feed.thumbnail}
-                    likeCount={feed.likeCount}
-                    commentCount={feed.commentCount}
-                    createdAt={feed.createdAt}
-                    id={feed.id}
-                  />
-                </div>
-              ))}
-              <div ref={ref} />
+          {allFeeds.length !== 0 && (
+            <section className={styles.header}>
+              <div className={styles.sortWrapper}>
+                <Dropdown
+                  menuItems={sortOptions.map((option) => ({
+                    label: option.label,
+                    value: option.value,
+                    onClick: () => handleSortChange(option.value),
+                  }))}
+                  onOpenChange={handleDropdownToggle}
+                  trigger={
+                    <Button
+                      type="text-assistive"
+                      size="l"
+                      rightIcon={
+                        isDropdownOpen ? (
+                          <IconComponent name="arrowUp" width={20} height={20} isBtn />
+                        ) : (
+                          <IconComponent name="arrowDown" width={20} height={20} isBtn />
+                        )
+                      }
+                    >
+                      {sortOptions.find((option) => option.value === sortBy)?.label || "최신 순"}
+                    </Button>
+                  }
+                />
+              </div>
             </section>
+          )}
+          {activeTab === "images" ? (
+            allFeeds.length === 0 ? (
+              isMyProfile ? (
+                <div className={styles.empty}>
+                  <p className={styles.message}>첫 그림을 업로드해보세요</p>
+                  <Link href="/write">
+                    <Button size="m" type="filled-primary">
+                      그림 업로드
+                    </Button>
+                  </Link>
+                </div>
+              ) : (
+                <div className={styles.empty}>
+                  <p className={styles.message}>아직 업로드한 그림이 없어요</p>
+                </div>
+              )
+            ) : (
+              <section className={styles.cardContainer}>
+                {allFeeds.map((feed, index) => (
+                  <div key={`${feed.id}-${index}`}>
+                    <ProfileCard
+                      title={feed.title}
+                      cards={feed.cards}
+                      thumbnail={feed.thumbnail}
+                      likeCount={feed.likeCount}
+                      commentCount={feed.commentCount}
+                      createdAt={feed.createdAt}
+                      id={feed.id}
+                    />
+                  </div>
+                ))}
+                <div ref={ref} />
+              </section>
+            )
           ) : (
             <p>준비 중...</p>
           )}
