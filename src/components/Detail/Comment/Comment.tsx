@@ -21,7 +21,6 @@ import { timeAgo } from "@/utils/timeAgo";
 import TextField from "@/components/TextField/TextField";
 import IconComponent from "@/components/Asset/Icon";
 import Button from "@/components/Button/Button";
-import Chip from "@/components/Chip/Chip";
 import { deleteCommentLike, putCommentLike } from "@/api/feeds-comments/putDeleteCommentsLike";
 import { modalState } from "@/states/modalState";
 import CommentInput from "./CommentInput/CommentInput";
@@ -199,16 +198,16 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
                 {reply.writer.image !== "https://image.grimity.com/null" ? (
                   <Image
                     src={reply.writer.image}
-                    width={28}
-                    height={28}
+                    width={24}
+                    height={24}
                     alt="댓글 프로필"
                     className={styles.writerImage}
                   />
                 ) : (
                   <Image
                     src="/image/default.svg"
-                    width={28}
-                    height={28}
+                    width={24}
+                    height={24}
                     alt="댓글 프로필"
                     className={styles.writerImage}
                   />
@@ -219,15 +218,11 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
                   <div className={styles.writerLeft}>
                     <div className={styles.writerCreatedAt}>
                       <Link href={`/users/${reply.writer.id}`}>
-                        <div className={styles.writerName}>
-                          {reply.writer.name}
-                          {reply.writer.id === feedWriterId && (
-                            <Chip size="s" type="filled-secondary">
-                              작성자
-                            </Chip>
-                          )}
-                        </div>
+                        <div className={styles.writerName}>{reply.writer.name}</div>
                       </Link>
+                      {reply.writer.id === feedWriterId && (
+                        <div className={styles.feedWriter}>작성자</div>
+                      )}
                       <p className={styles.createdAt}>{timeAgo(reply.createdAt)}</p>
                     </div>
                     <div className={styles.commentText}>
@@ -238,7 +233,7 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
                     </div>
                     <div className={styles.likeReplyBtn}>
                       <div
-                        className={styles.likeButton}
+                        className={reply.isLike ? styles.likeOnButton : styles.likeButton}
                         onClick={(e) => {
                           e.stopPropagation();
                           handleLikeClick(reply.id, reply.isLike);
@@ -358,9 +353,7 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
                     <div className={styles.writerName}>
                       {comment.writer.name}
                       {comment.writer.id === feedWriterId && (
-                        <Chip size="s" type="filled-secondary">
-                          작성자
-                        </Chip>
+                        <div className={styles.feedWriter}>작성자</div>
                       )}
                     </div>
                   </Link>

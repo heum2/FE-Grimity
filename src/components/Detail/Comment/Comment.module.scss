@@ -3,26 +3,6 @@
 .container {
   width: 100%;
 
-  .inputContainer {
-    margin-top: 60px;
-    margin-bottom: 32px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-
-    .writerImage {
-      object-fit: cover;
-      border-radius: 50%;
-      overflow: hidden;
-      flex-shrink: 0;
-      border: 1px solid $gray30;
-      @include Drag;
-    }
-
-    .submitBtn {
-      flex-shrink: 0;
-    }
-  }
   .childComments {
     width: 100%;
   }
@@ -59,14 +39,14 @@
   .writerCreatedAt {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
   }
   .writerName {
-    @include Cap1;
+    @include Label1;
     color: $gray60;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
   }
 
   .createdAt {
@@ -75,8 +55,14 @@
     @include Drag;
   }
 
+  .feedWriter {
+    @include Cap3;
+    color: $secandary1;
+    @include Drag;
+  }
+
   .commentText {
-    @include Label2;
+    @include Body1;
     color: $gray80;
     white-space: pre-line;
     margin-top: 2px;
@@ -87,6 +73,7 @@
 
     .mentionedUser {
       color: $secandary1;
+      @include Label1;
     }
   }
 
@@ -103,6 +90,10 @@
     color: $gray50;
     cursor: pointer;
     @include Drag;
+  }
+  .likeOnButton {
+    @extend .likeButton;
+    color: #f5506c;
   }
 
   .replyBtn {
