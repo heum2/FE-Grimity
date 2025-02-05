@@ -9,6 +9,7 @@ import { modalState } from "@/states/modalState";
 import { authState } from "@/states/authState";
 import { useMyData } from "@/api/users/getMe";
 import { useRouter } from "next/router";
+import { useToast } from "@/utils/useToast";
 
 export default function Header() {
   const [, setModal] = useRecoilState(modalState);
@@ -22,6 +23,7 @@ export default function Header() {
   const [keyword, setKeyword] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { showToast } = useToast();
 
   const router = useRouter();
   const isUserPage = router.pathname.startsWith("/users/[id]");
@@ -99,8 +101,12 @@ export default function Header() {
 
   const handleSearchKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
-      if (keyword.trim() === "") return;
-      router.push(`/search?tab=feed&keyword=${encodeURIComponent(keyword)}`);
+      const trimmedKeyword = keyword.trim();
+      if (trimmedKeyword.length < 2) {
+        showToast("두 글자 이상 입력해주세요.", "warning");
+        return;
+      }
+      router.push(`/search?tab=feed&keyword=${encodeURIComponent(trimmedKeyword)}`);
       setIsSearchBarOpen(false);
       setKeyword("");
     }
