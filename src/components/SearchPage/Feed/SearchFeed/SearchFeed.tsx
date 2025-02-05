@@ -8,15 +8,16 @@ import Button from "@/components/Button/Button";
 import IconComponent from "@/components/Asset/Icon";
 import { useFeedSearch } from "@/api/feeds/getFeedsSearch";
 
-type SortOption = "latest" | "popular";
+type SortOption = "latest" | "popular" | "accuracy";
 
 const sortOptions: { value: SortOption; label: string }[] = [
-  { value: "latest", label: "최신 순" },
-  { value: "popular", label: "인기 순" },
+  { value: "latest", label: "최신순" },
+  { value: "popular", label: "인기순" },
+  { value: "accuracy", label: "정확도순" },
 ];
 
 export default function SearchFeed() {
-  const [sortBy, setSortBy] = useState<SortOption>("latest");
+  const [sortBy, setSortBy] = useState<SortOption>("accuracy");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState<string>("");
   const router = useRouter();
@@ -93,7 +94,7 @@ export default function SearchFeed() {
                 )
               }
             >
-              {sortOptions.find((option) => option.value === sortBy)?.label || "최신 순"}
+              {sortOptions.find((option) => option.value === sortBy)?.label || "정확도순"}
             </Button>
           }
         />

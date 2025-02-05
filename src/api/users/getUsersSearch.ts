@@ -2,7 +2,7 @@ import BASE_URL from "@/constants/baseurl";
 import { useInfiniteQuery } from "react-query";
 
 export interface UserSearchRequest {
-  sort?: "popular";
+  sort?: "popular" | "accuracy";
   size?: number;
   cursor?: string;
   keyword: string;
@@ -35,7 +35,7 @@ export async function getUserSearch({
         sort,
         size,
         cursor,
-        keyword: keyword,
+        keyword,
       },
     });
 

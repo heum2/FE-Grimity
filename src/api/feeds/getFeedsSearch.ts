@@ -2,7 +2,7 @@ import BASE_URL from "@/constants/baseurl";
 import { useInfiniteQuery } from "react-query";
 
 export interface FeedSearchRequest {
-  sort?: "latest" | "popular";
+  sort?: "latest" | "popular" | "accuracy";
   size?: number;
   cursor?: string;
   keyword: string;

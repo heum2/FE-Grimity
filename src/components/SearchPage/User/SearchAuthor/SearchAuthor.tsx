@@ -8,14 +8,15 @@ import IconComponent from "@/components/Asset/Icon";
 import SearchProfile from "../SearchProfile/SearchProfile";
 import { useUserSearch } from "@/api/users/getUsersSearch";
 
-type SortOption = "popular";
+type SortOption = "popular" | "accuracy";
 
 const sortOptions: { value: SortOption; label: string }[] = [
-  { value: "popular", label: "인기 순" },
+  { value: "popular", label: "인기순" },
+  { value: "accuracy", label: "정확도순" },
 ];
 
 export default function SearchAuthor() {
-  const [sortBy, setSortBy] = useState<SortOption>("popular");
+  const [sortBy, setSortBy] = useState<SortOption>("accuracy");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState<string>("");
   const router = useRouter();
@@ -92,7 +93,7 @@ export default function SearchAuthor() {
                 )
               }
             >
-              {sortOptions.find((option) => option.value === sortBy)?.label || "인기 순"}
+              {sortOptions.find((option) => option.value === sortBy)?.label || "정확도순"}
             </Button>
           }
         />
