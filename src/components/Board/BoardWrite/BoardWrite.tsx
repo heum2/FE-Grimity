@@ -8,6 +8,7 @@ import { useMemo, useRef } from "react";
 import QuillImageDropAndPaste, { type ImageData } from "quill-image-drop-and-paste";
 import { postPresignedUrl, PresignedUrlResponse } from "@/api/aws/postPresigned";
 import MagicUrl from "quill-magic-url";
+import TextField from "@/components/TextField/TextField";
 
 Quill.register("modules/imageDropAndPaste", QuillImageDropAndPaste);
 Quill.register("modules/imageResize", ImageResize);
@@ -33,14 +34,26 @@ export async function uploadImage(file: File) {
 }
 
 export default function BoardWrite() {
+  const [title, setTitle] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("일반");
   const [content, setContent] = useState("");
+
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(event.target.value);
+  };
+
+  const handleCategoryClick = (category: string) => {
+    setSelectedCategory(category);
+  };
 
   const handleEditorChange = (value: string) => {
     setContent(value);
   };
 
   const handleSubmit = () => {
-    console.log(content);
+    console.log("Title:", title);
+    console.log("Category:", selectedCategory);
+    console.log("Content:", content);
   };
 
   const quillRef = useRef<ReactQuill>(null);
@@ -83,9 +96,8 @@ export default function BoardWrite() {
     return {
       toolbar: {
         container: [
-          [{ size: ["small", "normal", "large", "huge"] }],
+          [{ header: [1, 2, 3, 4, 5, 6, false] }],
           ["bold", "italic", "underline", "strike", { color: [] }],
-          [{ list: "ordered" }, { list: "bullet" }],
           ["link", "image"],
         ],
         handlers: {
@@ -130,6 +142,24 @@ export default function BoardWrite() {
             작성 완료
           </Button>
         </section>
+        <section className={styles.categorys}>
+          {["일반", "질문", "피드백"].map((category) => (
+            <Button
+              key={category}
+              size="s"
+              type={selectedCategory === category ? "filled-primary" : "outlined-assistive"}
+              onClick={() => handleCategoryClick(category)}
+            >
+              {category}
+            </Button>
+          ))}
+        </section>
+        <TextField
+          placeholder="제목을 입력해주세요"
+          maxLength={32}
+          value={title}
+          onChange={handleTitleChange}
+        />
         <section className={styles.editor}>
           <ReactQuill
             theme="snow"

@@ -133,3 +133,31 @@ table {
 a {
   text-decoration: none;
 }
+
+@font-face {
+  font-family: "Pretendard";
+  font-style: normal;
+  font-weight: 500;
+  src: url("/font/Pretendard-Medium.woff2") format("woff2");
+}
+
+.ql-toolbar.ql-snow {
+  height: 54px !important;
+  background-color: #f8f8fc;
+  padding: 12px 24px !important;
+  border: 1px solid #eaeaf2 !important;
+  border-bottom: none !important;
+  border-radius: 12px 12px 0 0;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.ql-container {
+  border: 1px solid #eaeaf2 !important;
+  border-radius: 0 0 12px 12px;
+  font-family: "Pretendard" !important;
+}
+
+.ql-fill {
+  color: #fff !important;
+}
