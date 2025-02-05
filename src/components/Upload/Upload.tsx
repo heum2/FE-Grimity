@@ -425,7 +425,7 @@ export default function Upload() {
                     <input
                       className={styles.input}
                       type="text"
-                      placeholder="태그를 10개까지 추가할 수 있어요"
+                      placeholder="엔터를 통해 태그를 10개까지 등록할 수 있어요"
                       maxLength={10}
                       value={tag}
                       onChange={(e) => setTag(e.target.value)}
