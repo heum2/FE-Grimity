@@ -16,9 +16,9 @@ import Link from "next/link";
 type SortOption = "latest" | "like" | "oldest";
 
 const sortOptions: { value: SortOption; label: string }[] = [
-  { value: "latest", label: "최신 순" },
-  { value: "like", label: "좋아요 순" },
-  { value: "oldest", label: "오래된 순" },
+  { value: "latest", label: "최신순" },
+  { value: "like", label: "좋아요순" },
+  { value: "oldest", label: "오래된순" },
 ];
 
 const PAGE_SIZE = 12;
@@ -170,7 +170,7 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
                         )
                       }
                     >
-                      {sortOptions.find((option) => option.value === sortBy)?.label || "최신 순"}
+                      {sortOptions.find((option) => option.value === sortBy)?.label || "최신순"}
                     </Button>
                   }
                 />
