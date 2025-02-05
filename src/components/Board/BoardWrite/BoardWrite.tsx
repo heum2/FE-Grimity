@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Button from "@/components/Button/Button";
 import styles from "./BoardWrite.module.scss";
 import ReactQuill, { Quill } from "react-quill-new";
+import "react-quill-new/dist/quill.core.css";
 import "react-quill-new/dist/quill.snow.css";
 import ImageResize from "quill-image-resize-module-react";
 import { useMemo, useRef } from "react";
@@ -96,7 +97,7 @@ export default function BoardWrite() {
     return {
       toolbar: {
         container: [
-          [{ header: [1, 2, 3, 4, 5, 6, false] }],
+          [{ header: [1, 2, false] }],
           ["bold", "italic", "underline", "strike", { color: [] }],
           ["link", "image"],
         ],
@@ -133,6 +134,8 @@ export default function BoardWrite() {
     };
   }, []);
 
+  const formats = ["header", "bold", "italic", "underline", "strike", "color", "link", "image"];
+
   return (
     <div className={styles.container}>
       <div className={styles.center}>
@@ -164,6 +167,7 @@ export default function BoardWrite() {
           <ReactQuill
             theme="snow"
             modules={modules}
+            formats={formats}
             value={content}
             onChange={handleEditorChange}
             ref={quillRef}
