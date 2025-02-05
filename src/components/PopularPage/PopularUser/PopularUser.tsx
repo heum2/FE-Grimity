@@ -10,13 +10,6 @@ export default function PopularUser() {
   const [randomUsers, setRandomUsers] = useState<any[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (data) {
-      const randomData = [...data].sort(() => Math.random() - 0.5).slice(0, 5);
-      setRandomUsers(randomData);
-    }
-  }, [data]);
-
   // 가로 스크롤 시 세로 스크롤 막기
   const handleWheel = useCallback((e: WheelEvent) => {
     if (!containerRef.current) return;
@@ -40,6 +33,13 @@ export default function PopularUser() {
       container.removeEventListener("wheel", handleWheel);
     };
   }, [handleWheel]);
+
+  useEffect(() => {
+    if (data) {
+      const randomData = [...data].sort(() => Math.random() - 0.5).slice(0, 5);
+      setRandomUsers(randomData);
+    }
+  }, [data]);
 
   if (isLoading) return <Loader />;
 

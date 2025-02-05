@@ -10,8 +10,6 @@ export default function PopularTag() {
   const { data, isLoading } = useTagsPopular();
   const containerRef = useRef<HTMLDivElement>(null);
 
-  if (isLoading) return <Loader />;
-
   // 가로 스크롤 시 세로 스크롤 막기
   const handleWheel = useCallback((e: WheelEvent) => {
     if (!containerRef.current) return;
@@ -35,6 +33,8 @@ export default function PopularTag() {
       container.removeEventListener("wheel", handleWheel);
     };
   }, [handleWheel]);
+
+  if (isLoading) return <Loader />;
 
   return (
     <div className={styles.container}>
