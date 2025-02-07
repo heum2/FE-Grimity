@@ -112,7 +112,7 @@ export default function BoardWrite() {
               blot.deleteAt(0, 1);
             }
             // 새 위치에 이미지 삽입
-            editor.insertEmbed(range.index, "draggable-image", draggedImageSrc);
+            editor.insertEmbed(range.index, "image", draggedImageSrc);
             editor.setSelection(range.index + 1);
           }
           draggedImageSrc = null;
@@ -150,11 +150,7 @@ export default function BoardWrite() {
         const imageName = await uploadImage(file);
         const editor = quillRef.current!.getEditor();
         const range = editor.getSelection()!;
-        editor.insertEmbed(
-          range.index,
-          "draggable-image",
-          `https://image.grimity.com/${imageName}`
-        );
+        editor.insertEmbed(range.index, "image", `https://image.grimity.com/${imageName}`);
         editor.setSelection(range.index + 1);
       }
     };
