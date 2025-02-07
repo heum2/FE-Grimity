@@ -77,9 +77,23 @@ export default function Detail({ id }: DetailProps) {
     if (!id) return;
 
     try {
-      await deleteFeeds(id);
-      showToast("삭제가 완료되었습니다.", "success");
-      router.push("/");
+      setModal({
+        isOpen: true,
+        type: null,
+        data: {
+          title: "그림을 정말 삭제하시겠어요?",
+          confirmBtn: "삭제하기",
+          onClick: async () => {
+            try {
+              await deleteFeeds(id);
+              router.push("/");
+            } catch (err) {
+              showToast("삭제 중 오류가 발생했습니다.", "error");
+            }
+          },
+        },
+        isComfirm: true,
+      });
     } catch (error) {
       showToast("삭제 중 오류가 발생했습니다.", "error");
     }
