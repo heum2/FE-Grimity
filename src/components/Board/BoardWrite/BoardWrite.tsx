@@ -60,7 +60,7 @@ export default function BoardWrite() {
             apiKey="j0wfnd24aqsdpnucudy7qwpadldqmovdyc9wqh1jscm0a9vq"
             value={content}
             init={{
-              height: 600,
+              min_height: 600,
               menubar: false,
               plugins: ["image", "link", "textcolor"],
               toolbar: "undo redo | bold italic underline | link image | forecolor backcolor",
@@ -71,21 +71,58 @@ export default function BoardWrite() {
               images_upload_handler: async (blobInfo: any) => {
                 try {
                   const file = blobInfo.blob() as File;
-                  const ext = file.name.split(".").pop() as "jpg" | "jpeg" | "png" | "gif";
+                  const maxWidth = 800;
+                  const maxHeight = 600;
 
+                  const resizeImage = (file: File, maxWidth: number, maxHeight: number) =>
+                    new Promise<File>((resolve) => {
+                      const img = document.createElement("img");
+                      const reader = new FileReader();
+
+                      reader.onload = (e) => {
+                        img.src = e.target?.result as string;
+                        img.onload = () => {
+                          const canvas = document.createElement("canvas");
+                          const ctx = canvas.getContext("2d")!;
+                          let width = img.width;
+                          let height = img.height;
+
+                          if (width > maxWidth || height > maxHeight) {
+                            if (width > height) {
+                              height *= maxWidth / width;
+                              width = maxWidth;
+                            } else {
+                              width *= maxHeight / height;
+                              height = maxHeight;
+                            }
+                          }
+
+                          canvas.width = width;
+                          canvas.height = height;
+                          ctx.drawImage(img, 0, 0, width, height);
+
+                          canvas.toBlob((blob) => {
+                            resolve(new File([blob!], file.name, { type: file.type }));
+                          }, file.type);
+                        };
+                      };
+
+                      reader.readAsDataURL(file);
+                    });
+
+                  const resizedFile = await resizeImage(file, maxWidth, maxHeight);
+
+                  const ext = resizedFile.name.split(".").pop() as "jpg" | "jpeg" | "png" | "gif";
                   const data = await postPresignedUrl({
                     type: "post",
                     ext,
                   });
 
-                  const formData = new FormData();
-                  formData.append("file", file);
-
                   const uploadResponse = await fetch(data.url, {
                     method: "PUT",
-                    body: file,
+                    body: resizedFile,
                     headers: {
-                      "Content-Type": file.type,
+                      "Content-Type": resizedFile.type,
                     },
                   });
 
