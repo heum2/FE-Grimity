@@ -35,6 +35,17 @@ export default function EditFeeds({ id }: EditFeedsProps) {
   const hasUnsavedChangesRef = useRef(hasUnsavedChanges);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
+  // 첫 번째 사진을 썸네일 기본값으로
+  useEffect(() => {
+    if (images.length > 0) {
+      setThumbnailUrl(images[0].url);
+      setThumbnailName(images[0].name);
+    } else {
+      setThumbnailUrl("");
+      setThumbnailName("");
+    }
+  }, [images]);
+
   useEffect(() => {
     if (feedData) {
       const initialImages = feedData.cards.map((name) => ({
@@ -226,10 +237,16 @@ export default function EditFeeds({ id }: EditFeedsProps) {
   const removeImage = (index: number) => {
     setImages((prevImages) => {
       const updatedImages = prevImages.filter((_, i) => i !== index);
+
+      // 첫 번째 이미지가 삭제되었을 경우 대표 이미지 변경
       if (index === 0 && updatedImages.length > 0) {
         setThumbnailUrl(updatedImages[0].url);
         setThumbnailName(updatedImages[0].name);
+      } else if (updatedImages.length === 0) {
+        setThumbnailUrl("");
+        setThumbnailName("");
       }
+
       return updatedImages;
     });
   };
