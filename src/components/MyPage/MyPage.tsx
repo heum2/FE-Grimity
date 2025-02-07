@@ -13,10 +13,8 @@ export default function MyPage() {
         return <LikedFeeds />;
       case "saved-feeds":
         return <SavedFeeds />;
-      // case "liked-posts":
-      //   return <LikedPosts />;
-      // case "my-comments":
-      //   return <MyComments />;
+      // case "saved-posts":
+      //   return <SavedPosts />;
       default:
         return null;
     }
@@ -44,16 +42,10 @@ export default function MyPage() {
           </button>
           <div className={styles.bar} />
           <button
-            className={`${styles.button} ${getTabClass("liked-posts")}`}
-            onClick={() => router.push("?tab=liked-posts")}
+            className={`${styles.button} ${getTabClass("saved-posts")}`}
+            onClick={() => router.push("?tab=saved-posts")}
           >
-            좋아요한 글
-          </button>
-          <button
-            className={`${styles.button} ${getTabClass("my-comments")}`}
-            onClick={() => router.push("?tab=my-comments")}
-          >
-            내가 쓴 댓글
+            저장한 글
           </button>
         </section>
         {getTabComponent()}

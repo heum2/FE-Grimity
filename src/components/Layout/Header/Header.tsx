@@ -253,15 +253,9 @@ export default function Header() {
                       저장한 그림
                     </div>
                   </Link>
-                  <div className={styles.divider} />
                   <Link href="/mypage?tab=liked-posts">
                     <div className={styles.dropdownItem} onClick={() => setIsDropdownOpen(false)}>
-                      좋아요한 글
-                    </div>
-                  </Link>
-                  <Link href="/mypage?tab=my-comments">
-                    <div className={styles.dropdownItem} onClick={() => setIsDropdownOpen(false)}>
-                      내가 쓴 댓글
+                      저장한 글
                     </div>
                   </Link>
                   <div className={styles.divider} />
