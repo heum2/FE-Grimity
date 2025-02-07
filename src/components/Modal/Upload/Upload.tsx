@@ -1,16 +1,15 @@
 import { useToast } from "@/utils/useToast";
 import Image from "next/image";
-import styles from "./Share.module.scss";
-import { ShareBtnProps } from "@/components/Detail/ShareBtn/ShareBtn.types";
+import styles from "./Upload.module.scss";
 import { modalState } from "@/states/modalState";
 import { useRecoilState } from "recoil";
 import Button from "@/components/Button/Button";
-import { serviceUrl } from "@/constants/serviceurl";
+import { UploadModalProps } from "./Upload.types";
 
-export default function Share({ feedId, title, image }: ShareBtnProps) {
+export default function UploadModal({ feedId, title, image }: UploadModalProps) {
   const { showToast } = useToast();
   const [, setModal] = useRecoilState(modalState);
-  const url = `${serviceUrl}/feeds/${feedId}`;
+  const url = `https://www.grimity.com/feeds/${feedId}`;
 
   const copyToClipboard = async () => {
     try {
@@ -47,15 +46,22 @@ export default function Share({ feedId, title, image }: ShareBtnProps) {
   };
 
   const handleTwitterShare = () => {
-    const text = "이 그림 어때요?";
+    const text = "제가 그린 그림을 봐주세요!";
     window.open("https://twitter.com/intent/tweet?text=" + text + "&url=" + url);
+  };
+
+  const handleClose = () => {
+    setModal({ isOpen: false, type: null, data: null, isComfirm: false });
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.messageContainer}>
-        <Image src="/image/logo.svg" width={120} height={34} alt="logo" />
-        <p className={styles.text}>그리미티의 그림을 공유해보세요!</p>
+        <Image src="/image/confetti.svg" width={96} height={96} alt="" />
+        <div className={styles.texts}>
+          <p className={styles.text}>그림 업로드가 완료되었어요</p>
+          <p className={styles.subtext}>업로드 소식을 공유해보세요</p>
+        </div>
       </div>
       <div className={styles.buttonContainer}>
         <Button
@@ -83,6 +89,9 @@ export default function Share({ feedId, title, image }: ShareBtnProps) {
           카톡으로 공유
         </Button>
       </div>
+      <Button size="l" type="filled-primary" onClick={handleClose}>
+        업로드 된 그림 보기
+      </Button>
     </div>
   );
 }

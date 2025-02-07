@@ -101,7 +101,15 @@ export default function Upload() {
   const { mutate: uploadFeed } = useMutation<FeedsResponse, AxiosError, FeedsRequest>(postFeeds, {
     onSuccess: (response: FeedsResponse) => {
       hasUnsavedChangesRef.current = false;
-      showToast("그림이 업로드되었습니다!", "success");
+      if (!response.id) {
+        showToast("업로드 중 문제가 발생했습니다. 다시 시도해주세요.", "error");
+        return;
+      }
+      setModal({
+        isOpen: true,
+        type: "UPLOAD",
+        data: { id: response.id, title, images },
+      });
       router.push(`/feeds/${response.id}`);
     },
     onError: (error: AxiosError) => {
@@ -252,13 +260,6 @@ export default function Upload() {
   };
 
   const handleUpload = async () => {
-    setModal({
-      isOpen: false,
-      type: null,
-      data: null,
-      isComfirm: false,
-    });
-
     uploadFeed({
       title,
       cards: images.map((image) => image.name),

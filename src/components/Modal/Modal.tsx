@@ -11,6 +11,7 @@ import Background from "./Background/Background";
 import Follow from "./Follow/Follow";
 import Button from "../Button/Button";
 import Share from "./Share/Share";
+import UploadModal from "./Upload/Upload";
 
 export default function Modal() {
   const [modal, setModal] = useRecoilState(modalState);
@@ -40,6 +41,8 @@ export default function Modal() {
         return <Follow initialTab="following" />;
       case "SHARE":
         return <Share {...modal.data} />;
+      case "UPLOAD":
+        return <UploadModal {...modal.data} />;
       default:
         return null;
     }

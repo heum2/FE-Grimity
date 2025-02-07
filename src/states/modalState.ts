@@ -8,7 +8,8 @@ export type ModalType =
   | "BACKGROUND"
   | "FOLLOWER"
   | "FOLLOWING"
-  | "SHARE";
+  | "SHARE"
+  | "UPLOAD";
 
 export interface ModalState {
   isOpen: boolean;
