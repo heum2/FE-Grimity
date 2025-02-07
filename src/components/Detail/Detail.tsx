@@ -142,7 +142,7 @@ export default function Detail({ id }: DetailProps) {
       setModal({
         isOpen: true,
         type: "SHARE",
-        data: { id, details },
+        data: { feedId: id, details },
       });
     }
   };
