@@ -1,14 +1,14 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import Button from "@/components/Button/Button";
 import TextField from "@/components/TextField/TextField";
 import styles from "./BoardWrite.module.scss";
+import { Editor } from "@toast-ui/react-editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { postPresignedUrl, PresignedUrlResponse } from "@/api/aws/postPresigned";
 import "tui-color-picker/dist/tui-color-picker.css";
 import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
 import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
 import "@toast-ui/editor/dist/i18n/ko-kr";
-import Editor from "@toast-ui/editor";
 
 export async function uploadImage(file: File): Promise<string> {
   const ext = file.name.split(".").pop() as "jpg" | "jpeg" | "png" | "gif";
@@ -31,35 +31,7 @@ export async function uploadImage(file: File): Promise<string> {
 export default function BoardWrite() {
   const [title, setTitle] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("일반");
-  const editorRef = useRef<HTMLDivElement>(null);
-  const editorInstanceRef = useRef<Editor | null>(null);
-
-  useEffect(() => {
-    if (editorRef.current) {
-      editorInstanceRef.current = new Editor({
-        el: editorRef.current,
-        initialValue: "",
-        previewStyle: "vertical",
-        height: "600px",
-        initialEditType: "wysiwyg",
-        useCommandShortcut: true,
-        hooks: {
-          addImageBlobHook: onUploadImage,
-        },
-        toolbarItems: [
-          ["heading", "bold", "italic", "strike"],
-          ["ul", "ol"],
-          ["image", "link"],
-        ],
-        plugins: [colorSyntax],
-        language: "ko-KR",
-      });
-    }
-
-    return () => {
-      editorInstanceRef.current?.destroy();
-    };
-  }, []);
+  const editorRef = useRef<Editor>(null);
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
@@ -70,9 +42,9 @@ export default function BoardWrite() {
   };
 
   const handleSubmit = () => {
-    if (!editorInstanceRef.current) return;
+    if (!editorRef.current) return;
 
-    const content = editorInstanceRef.current.getHTML();
+    const content = editorRef.current.getInstance().getHTML();
     console.log("Title:", title);
     console.log("Category:", selectedCategory);
     console.log("Content:", content);
@@ -122,7 +94,24 @@ export default function BoardWrite() {
           onChange={handleTitleChange}
         />
         <section className={styles.editor}>
-          <div ref={editorRef} />
+          <Editor
+            ref={editorRef}
+            initialValue=""
+            previewStyle="vertical"
+            height="600px"
+            initialEditType="wysiwyg"
+            useCommandShortcut={true}
+            hooks={{
+              addImageBlobHook: onUploadImage,
+            }}
+            toolbarItems={[
+              ["heading", "bold", "italic", "strike"],
+              ["ul", "ol"],
+              ["image", "link"],
+            ]}
+            plugins={[colorSyntax]}
+            language="ko-KR"
+          />
         </section>
       </div>
     </div>
