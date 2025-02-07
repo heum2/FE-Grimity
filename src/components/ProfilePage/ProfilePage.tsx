@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { useInfiniteQuery, useQueryClient } from "react-query";
+import { useInfiniteQuery } from "react-query";
 import { useUserData } from "@/api/users/getId";
 import { getUserFeeds } from "@/api/users/getIdFeeds";
 import Profile from "./Profile/Profile";
@@ -10,7 +10,6 @@ import ProfileCard from "../Layout/ProfileCard/ProfileCard";
 import Dropdown from "../Dropdown/Dropdown";
 import Button from "../Button/Button";
 import IconComponent from "../Asset/Icon";
-import { all } from "axios";
 import Link from "next/link";
 
 type SortOption = "latest" | "like" | "oldest";
@@ -33,7 +32,6 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
   const { ref, inView } = useInView();
   const [feeds, setFeeds] = useState<any[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const queryClient = useQueryClient();
 
   const handleDropdownToggle = (isOpen: boolean) => {
     setIsDropdownOpen(isOpen);
@@ -43,7 +41,6 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
     data: feedsData,
     fetchNextPage,
     hasNextPage,
-    refetch,
   } = useInfiniteQuery(
     ["userFeeds", id, sortBy],
     async ({ pageParam = null }) => {
@@ -65,12 +62,6 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
       keepPreviousData: true,
     }
   );
-
-  useEffect(() => {
-    queryClient.resetQueries(["userFeeds", id, sortBy]);
-    setFeeds([]);
-    refetch();
-  }, [sortBy, id, queryClient, refetch]);
 
   useEffect(() => {
     if (inView && hasNextPage) {
