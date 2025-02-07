@@ -13,24 +13,23 @@ import { useUserData } from "@/api/users/getId";
 
 export default function FollowingPage() {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
-  const { data: myData } = useUserData(user_id);
+  const { data: myData, isLoading: isUserDataLoading } = useUserData(user_id);
   const setModal = useSetRecoilState(modalState);
   const { data: recommendData, isLoading: recommendIsLoading } = usePopular();
   const [randomUsers, setRandomUsers] = useState<any[]>([]);
 
+  const params = isLoggedIn && myData && myData.followingCount > 0 ? { size: 3 } : null;
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    isLoggedIn && myData && myData.followingCount > 0
-      ? useFollowingFeeds({ size: 3 })
-      : {
-          data: null,
-          isLoading: false,
-          fetchNextPage: () => {},
-          hasNextPage: false,
-          isFetchingNextPage: false,
-        };
+    useFollowingFeeds(params);
 
   const observer = useRef<IntersectionObserver | null>(null);
   const lastFeedElement = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (isUserDataLoading && !isLoggedIn) {
+      setModal({ isOpen: true, type: "LOGIN" });
+    }
+  }, [isUserDataLoading, isLoggedIn, setModal]);
 
   useEffect(() => {
     if (lastFeedElement.current && observer.current) {
@@ -64,15 +63,12 @@ export default function FollowingPage() {
     }
   }, [recommendData]);
 
-  if (!isLoggedIn) {
-    setModal({ isOpen: true, type: "LOGIN" });
-    return null;
-  }
+  if (isUserDataLoading) return <Loader />;
 
-  if (isLoading || recommendIsLoading) return <Loader />;
+  if (isLoading || recommendIsLoading || !params) return <Loader />;
 
   const isFeedEmpty =
-    !data || data.pages.length === 0 || data.pages.every((page) => page.feeds?.length === 0); // 피드가 없을 경우
+    !data || data.pages.length === 0 || data.pages.every((page) => page.feeds?.length === 0);
 
   const isFollowingEmpty = myData?.followingCount === 0;
 

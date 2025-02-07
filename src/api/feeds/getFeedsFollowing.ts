@@ -65,11 +65,15 @@ export function useFollowingNew(params: FollowingFeedsRequest) {
   );
 }
 
-export function useFollowingFeeds(params: FollowingFeedsRequest) {
+export function useFollowingFeeds(params: FollowingFeedsRequest | null) {
   return useInfiniteQuery<FollowingFeedsResponse>(
-    ["FollowingFeeds", params.size],
-    ({ pageParam = null }) => getFollowingFeeds({ ...params, cursor: pageParam }),
+    ["FollowingFeeds", params?.size],
+    ({ pageParam = null }) => {
+      if (!params) throw new Error("Params are not ready");
+      return getFollowingFeeds({ ...params, cursor: pageParam });
+    },
     {
+      enabled: !!params,
       getNextPageParam: (lastPage) => lastPage.nextCursor,
     }
   );
