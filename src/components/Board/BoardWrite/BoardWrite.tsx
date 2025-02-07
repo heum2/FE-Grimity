@@ -4,11 +4,18 @@ import styles from "./BoardWrite.module.scss";
 import { Editor } from "@tinymce/tinymce-react";
 import { postPresignedUrl, PresignedUrlResponse } from "@/api/aws/postPresigned";
 import TextField from "@/components/TextField/TextField";
+import { useMutation } from "react-query";
+import { PostsRequest, PostsResponse, postPosts } from "@/api/posts/postPosts";
+import { AxiosError } from "axios";
+import { useRouter } from "next/router";
+import { useToast } from "@/utils/useToast";
 
 export default function BoardWrite() {
   const [title, setTitle] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("일반");
   const [content, setContent] = useState("");
+  const { showToast } = useToast();
+  const router = useRouter();
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
@@ -22,10 +29,38 @@ export default function BoardWrite() {
     setContent(value);
   };
 
+  const { mutate: createPost } = useMutation<PostsResponse, AxiosError, PostsRequest>(postPosts, {
+    onSuccess: (response) => {
+      showToast("글이 등록되었어요.", "error");
+      router.push(`/posts/${response.id}`);
+    },
+    onError: () => {
+      showToast("글 작성에 실패했습니다.", "error");
+    },
+  });
+
   const handleSubmit = () => {
-    console.log("Title:", title);
-    console.log("Category:", selectedCategory);
-    console.log("Content:", content);
+    if (!title.trim()) {
+      showToast("제목을 입력해주세요.", "error");
+      return;
+    }
+
+    if (!content.trim()) {
+      showToast("내용을 입력해주세요.", "error");
+      return;
+    }
+
+    const typeMap = {
+      일반: "NORMAL",
+      질문: "QUESTION",
+      피드백: "FEEDBACK",
+    } as const;
+
+    createPost({
+      title,
+      content,
+      type: typeMap[selectedCategory as keyof typeof typeMap],
+    });
   };
 
   return (
