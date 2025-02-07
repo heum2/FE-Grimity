@@ -8,6 +8,7 @@ import Link from "next/link";
 import { timeAgo } from "@/utils/timeAgo";
 import { useRecoilValue } from "recoil";
 import { authState } from "@/states/authState";
+import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
 
 export default function RectangleCard({
   id,
@@ -24,13 +25,16 @@ export default function RectangleCard({
   const [isLiked, setIsLiked] = useState(initialIsLike);
   const [likeCount, setLikeCount] = useState(initialLikeCount);
 
-  const handleLikeClick = () => {
+  const handleLikeClick = async (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (isLiked) {
+      await deleteLike(id);
       setLikeCount((prev) => prev - 1);
     } else {
+      await putLike(id);
       setLikeCount((prev) => prev + 1);
     }
-    setIsLiked((prev) => !prev);
+    setIsLiked(!isLiked);
   };
 
   return (
