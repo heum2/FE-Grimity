@@ -32,13 +32,14 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
   const [, setModal] = useRecoilState(modalState);
   const queryClient = useQueryClient();
   const [replyText, setReplyText] = useState("");
-  const [activeReplyId, setActiveReplyId] = useState<string | null>(null);
   const [mentionedUser, setMentionedUser] = useState<{ id: string; name: string } | null>(null);
   const [expandedComments, setExpandedComments] = useState<Set<string>>(new Set());
   const [isReplyToChild, setIsReplyToChild] = useState(false);
   const replyInputRef = useRef<HTMLInputElement>(null);
   const { data: commentsData, refetch: refetchComments } = useGetFeedsComments({ feedId });
   const postCommentMutation = usePostFeedsComments();
+  const [activeParentReplyId, setActiveParentReplyId] = useState<string | null>(null);
+  const [activeChildReplyId, setActiveChildReplyId] = useState<string | null>(null);
   const deleteCommentMutation = useMutation(deleteComments, {
     onSuccess: () => {
       showToast("댓글이 삭제되었습니다.", "success");
@@ -82,21 +83,43 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
     setReplyText(e.target.value);
   };
 
-  const handleReply = (
-    commentId: string,
-    writer: { id: string; name: string },
-    isChild: boolean = false
-  ) => {
-    if (activeReplyId === commentId) {
-      setActiveReplyId(null);
+  const handleParentReply = (commentId: string, writer: { id: string; name: string }) => {
+    if (activeParentReplyId === commentId) {
+      setActiveParentReplyId(null);
       setMentionedUser(null);
       setReplyText("");
       setIsReplyToChild(false);
     } else {
-      setActiveReplyId(commentId);
+      setActiveParentReplyId(commentId);
+      setActiveChildReplyId(null);
       setMentionedUser(writer);
       setReplyText("");
-      setIsReplyToChild(isChild);
+      setIsReplyToChild(false);
+      setTimeout(() => {
+        replyInputRef.current?.focus();
+      }, 0);
+    }
+  };
+
+  const handleChildReply = (
+    commentId: string,
+    parentId: string,
+    writer: { id: string; name: string }
+  ) => {
+    if (activeChildReplyId === commentId) {
+      setActiveChildReplyId(null);
+      setMentionedUser(null);
+      setReplyText("");
+      setIsReplyToChild(false);
+    } else {
+      setActiveChildReplyId(commentId);
+      setActiveParentReplyId(parentId);
+      setMentionedUser(writer);
+      setReplyText("");
+      setIsReplyToChild(true);
+      setTimeout(() => {
+        replyInputRef.current?.focus();
+      }, 0);
     }
   };
 
@@ -120,7 +143,7 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
   };
 
   const handleReplySubmit = async () => {
-    if (!isLoggedIn || !replyText.trim() || !activeReplyId || !mentionedUser) return;
+    if (!isLoggedIn || !replyText.trim() || !activeParentReplyId || !mentionedUser) return;
 
     const actualReplyContent = replyText.trim();
 
@@ -133,17 +156,18 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
       {
         feedId,
         content: replyText,
-        parentCommentId: activeReplyId,
+        parentCommentId: activeParentReplyId,
         mentionedUserId: isReplyToChild ? mentionedUser.id : undefined,
       },
       {
         onSuccess: () => {
           setReplyText("");
-          setActiveReplyId(null);
+          setActiveParentReplyId(null);
+          setActiveChildReplyId(null);
           setMentionedUser(null);
           setIsReplyToChild(false);
           refetchComments();
-          queryClient.invalidateQueries(["getFeedsChildComments", feedId, activeReplyId]);
+          queryClient.invalidateQueries(["getFeedsChildComments", feedId, activeParentReplyId]);
         },
       }
     );
@@ -165,7 +189,8 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
-        setActiveReplyId(null);
+        setActiveChildReplyId(null);
+        setActiveParentReplyId(null);
       }
     };
 
@@ -174,6 +199,12 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
+
+  const handleEnterKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      handleReplySubmit();
+    }
+  };
 
   if (isLoading) {
     return <Loader />;
@@ -254,15 +285,14 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
                       </div>
                       <p
                         onClick={() =>
-                          handleReply(
-                            parentId,
-                            { id: reply.writer.id, name: reply.writer.name },
-                            true
-                          )
+                          handleChildReply(reply.id, parentId, {
+                            id: reply.writer.id,
+                            name: reply.writer.name,
+                          })
                         }
                         className={styles.replyBtn}
                       >
-                        답글
+                        {activeChildReplyId === reply.id ? "취소" : "답글"}
                       </p>
                     </div>
                   </div>
@@ -320,7 +350,6 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
 
   // 댓글 영역
   const renderComment = (comment: FeedsCommentsResponse["comments"][number]) => {
-    const isReplyActive = activeReplyId === comment.id;
     const isExpanded = expandedComments.has(comment.id);
 
     return (
@@ -381,11 +410,14 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
                   </div>
                   <p
                     onClick={() =>
-                      handleReply(comment.id, { id: comment.writer.id, name: comment.writer.name })
+                      handleParentReply(comment.id, {
+                        id: comment.writer.id,
+                        name: comment.writer.name,
+                      })
                     }
                     className={styles.replyBtn}
                   >
-                    {isReplyActive ? "취소" : "답글"}
+                    {activeParentReplyId === comment.id ? "취소" : "답글"}
                   </p>
                 </div>
               </div>
@@ -438,7 +470,7 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
               </div>
             )}
             {/* 답글 입력창 */}
-            {isReplyActive && (
+            {activeParentReplyId === comment.id && (
               <div className={styles.input}>
                 {isLoggedIn && userData ? (
                   <Image
@@ -466,6 +498,7 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
                   placeholder={isLoggedIn ? "답글 달기" : "회원만 답글 달 수 있어요!"}
                   value={replyText}
                   onChange={handleReplyTextChange}
+                  onKeyDown={handleEnterKeyDown}
                   onFocus={() => {
                     if (!isLoggedIn) {
                       showToast("회원만 답글 달 수 있어요!", "error");

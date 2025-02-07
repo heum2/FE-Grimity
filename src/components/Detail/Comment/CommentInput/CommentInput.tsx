@@ -45,6 +45,13 @@ export default function CommentInput({
       }
     );
   };
+
+  const handleEnterKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      handleCommentSubmit();
+    }
+  };
+
   return (
     <section className={styles.inputContainer}>
       {isLoggedIn && userData ? (
@@ -72,6 +79,7 @@ export default function CommentInput({
         placeholder={isLoggedIn ? "댓글 달기" : "회원만 댓글 달 수 있어요!"}
         value={comment}
         onChange={handleCommentChange}
+        onKeyDown={handleEnterKeyDown}
         onFocus={() => {
           if (!isLoggedIn) {
             showToast("회원만 댓글 달 수 있어요!", "error");
