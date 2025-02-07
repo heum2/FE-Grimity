@@ -105,10 +105,12 @@ export default function Upload() {
         showToast("업로드 중 문제가 발생했습니다. 다시 시도해주세요.", "error");
         return;
       }
+
+      const imageUrl = `https://image.grimity.com/${thumbnailName}`;
       setModal({
         isOpen: true,
         type: "UPLOAD",
-        data: { id: response.id, title, images },
+        data: { feedId: response.id, title, image: imageUrl },
       });
       router.push(`/feeds/${response.id}`);
     },
