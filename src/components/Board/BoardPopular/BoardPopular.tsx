@@ -5,12 +5,13 @@ import { useTodayPopularPosts } from "@/api/posts/getTodayPopular";
 import PopularCard from "./PopularCard/PopularCard";
 import Loader from "@/components/Layout/Loader/Loader";
 import Image from "next/image";
+import { BoardPopularProps } from "./BoardPopular.types";
 
-export default function BoardPopular() {
+export default function BoardPopular({ isDetail }: BoardPopularProps) {
   const { data, isLoading } = useTodayPopularPosts();
   const [pageIndex, setPageIndex] = useState(0);
 
-  const POSTS_PER_PAGE = 4;
+  const POSTS_PER_PAGE = isDetail ? 3 : 4;
   const totalPages = Math.ceil((data?.length || 0) / POSTS_PER_PAGE);
 
   if (isLoading) {
@@ -30,8 +31,8 @@ export default function BoardPopular() {
 
   return (
     <div className={styles.container}>
-      <Title>오늘의 인기 글</Title>
-      <div className={styles.cardList}>
+      {isDetail ? <Title>자유게시판 인기글</Title> : <Title>오늘의 인기 글</Title>}
+      <div className={isDetail ? styles.cardListDetail : styles.cardList}>
         {currentPageData?.map((post) => (
           <PopularCard key={post.id} post={post} />
         ))}

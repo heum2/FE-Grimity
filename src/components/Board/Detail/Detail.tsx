@@ -22,6 +22,7 @@ import Dropdown from "@/components/Dropdown/Dropdown";
 import { deletePostsFeeds } from "@/api/posts/deletePostsId";
 import ShareBtn from "@/components/Detail/ShareBtn/ShareBtn";
 import BoardAll from "../BoardAll/BoardAll";
+import BoardPopular from "../BoardPopular/BoardPopular";
 
 export default function PostDetail({ id }: PostDetailProps) {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
@@ -273,6 +274,9 @@ export default function PostDetail({ id }: PostDetailProps) {
             </section>
           )}
           <BoardAll isDetail />
+          <div className={styles.boardPopular}>
+            <BoardPopular isDetail />
+          </div>
         </div>
       )}
     </div>

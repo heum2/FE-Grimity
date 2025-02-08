@@ -7,6 +7,12 @@
   flex-direction: column;
 
   .title {
+    height: 22px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
     @include Sub4;
     color: $gray80;
     margin-bottom: 8px;
