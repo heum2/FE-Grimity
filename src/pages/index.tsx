@@ -5,10 +5,10 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Ranking from "@/components/Layout/Ranking/Ranking";
 import NewFeed from "@/components/Layout/NewFeed/NewFeed";
-import BoardPopular from "@/components/Layout/BoardPopular/BoardPopular";
 import FollowNewFeed from "@/components/Layout/FollowNewFeed/FollowNewFeed";
 import { authState } from "@/states/authState";
 import { useRecoilValue } from "recoil";
+import MainBoard from "@/components/Layout/MainBoard/MainBoard";
 
 export default function Home() {
   const router = useRouter();
@@ -36,9 +36,11 @@ export default function Home() {
           <NewFeed />
         </section>
         <section className={styles.BoardSection}>
-          <BoardPopular />
+          <MainBoard type="popular" />
           <div className={styles.bar} />
-          <BoardPopular />
+          <MainBoard type="feedback" />
+          <div className={styles.bar} />
+          <MainBoard type="question" />
         </section>
       </div>
     </>
