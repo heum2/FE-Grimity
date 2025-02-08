@@ -2,17 +2,26 @@ import React from "react";
 import BoardCard from "../BoardCard/BoardCard";
 import Title from "../Title/Title";
 import styles from "./BoardPopular.module.scss";
-import { mockBoardData } from "./mockup";
+import { useTodayPopularPosts } from "@/api/posts/getTodayPopular";
+import Loader from "../Loader/Loader";
 
 export default function BoardPopular() {
+  const { data, isLoading } = useTodayPopularPosts();
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  const popularPosts = data?.slice(0, 4);
+
   return (
     <div className={styles.container}>
-      <Title link="/">목업 데이터 자유게시판</Title>
+      <Title link="/board">자유게시판 인기글</Title>
       <section className={styles.cardSection}>
-        {mockBoardData.map((data, index) => (
-          <React.Fragment key={data.id}>
-            <BoardCard {...data} />
-            {index < mockBoardData.length - 1 && <div className={styles.bar} />}
+        {popularPosts?.map((post, index) => (
+          <React.Fragment key={post.id}>
+            <BoardCard {...post} />
+            {index < popularPosts.length - 1 && <div className={styles.bar} />}
           </React.Fragment>
         ))}
       </section>

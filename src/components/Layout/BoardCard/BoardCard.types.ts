@@ -1,13 +1,11 @@
 export interface BoardCardProps {
   id: string;
   title: string;
-  cards: string[];
-  author?: {
+  author: {
     id: string;
     name: string;
-    image: string;
   };
-  likeCount: number;
   commentCount: number;
+  viewCount: number;
   createdAt: string;
 }

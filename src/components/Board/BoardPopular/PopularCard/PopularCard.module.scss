@@ -1,0 +1,60 @@
+@import "@/styles/globals.scss";
+
+.container {
+  max-width: 470px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .title {
+    @include Sub4;
+    color: $gray80;
+    margin-bottom: 8px;
+  }
+
+  .content {
+    @include Label2;
+    color: $gray60;
+    height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  .footer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+
+    .author {
+      @include Label1;
+      color: $gray60;
+    }
+
+    .date {
+      @include Label2;
+      color: $gray50;
+    }
+
+    .countContainer {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      @include Drag;
+
+      .likeContainer {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+
+        .count {
+          @include Label2;
+          color: $gray60;
+        }
+      }
+    }
+  }
+}

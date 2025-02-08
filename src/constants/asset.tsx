@@ -13,6 +13,7 @@ export const ICONS = {
   ranking3: "/icon/ranking3.svg",
   boardLike: "/icon/board-like.svg",
   boardComment: "/icon/board-comment.svg",
+  boardView: "/icon/board-view.svg",
   cardSaveOff: "/icon/card-save-off.svg",
   cardSaveOn: "/icon/card-save-on.svg",
   cardLikeOff: "/icon/card-like-off.svg",
@@ -57,4 +58,5 @@ export const ICONS = {
   saveCount: "/icon/save-count.svg",
   viewCount: "/icon/view-count.svg",
   addFollow: "/icon/add-follow.svg",
+  writePost: "/icon/write-post.svg",
 };

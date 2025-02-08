@@ -7,37 +7,10 @@
   gap: 12px;
   width: 100%;
 
-  .imageContainer {
-    width: 90px;
-    height: 90px;
-    border-radius: 12px;
-    object-fit: cover;
-    overflow: hidden;
-    position: relative;
-    cursor: pointer;
-    @include Drag;
-
-    .image {
-      object-fit: cover;
-    }
-  }
-
-  .saveBtn {
-    position: absolute;
-    top: 8px;
-    left: 12px;
-    cursor: pointer;
-    z-index: 1;
-
-    &:hover {
-      animation: pulse 0.5s ease-in-out;
-    }
-  }
-
   .infoContainer {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 8px;
 
     .title {
       overflow: hidden;
@@ -46,53 +19,41 @@
       @include Sub4;
     }
 
-    .profileContainer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .profile {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      @include Drag;
-
-      .author {
-        @include Label1;
-        color: $gray60;
-      }
+    .author {
+      @include Label1;
+      color: $gray60;
+      margin-bottom: 8px;
     }
 
     .bottomContainer {
       display: flex;
-      justify-content: center;
       align-items: center;
       gap: 8px;
       @include Drag;
+      margin-top: 4px;
 
       .createdAt {
-        @include Label2;
+        @include Label1;
         color: $gray50;
       }
-    }
 
-    .countContainer {
-      display: flex;
-      gap: 6px;
-    }
+      .countContainer {
+        display: flex;
+        gap: 6px;
+      }
 
-    .likeContainer {
-      display: flex;
-      align-items: center;
-      gap: 2px;
-    }
+      .likeContainer {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+      }
 
-    .count {
-      @include MEDIUM;
-      font-size: 12px;
-      line-height: 12px;
-      color: $secandary1;
+      .count {
+        @include MEDIUM;
+        font-size: 12px;
+        line-height: 12px;
+        color: $secandary1;
+      }
     }
   }
 }
