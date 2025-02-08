@@ -31,7 +31,7 @@
 }
 
 .filled-assistive {
-  @include chip-styles($gray10, $gray70);
+  @include chip-styles($gray10, $gray60);
 }
 
 .outlined-primary {
@@ -52,9 +52,9 @@
 }
 
 .s {
-  padding: 2px 8px;
-  @include Btn3;
-  line-height: 18px;
+  padding: 6px 12px;
+  @include Cap1;
+  line-height: 16.8px;
 }
 
 .icon {

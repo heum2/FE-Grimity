@@ -1,0 +1,93 @@
+@import "@/styles/globals.scss";
+
+.container {
+  width: 100%;
+  display: flex;
+  padding-bottom: 20px;
+  border-bottom: 1px solid $gray30;
+
+  .chipContainer {
+    width: 80px;
+    flex-shrink: 0;
+  }
+
+  .spaceBetween {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .titleContent {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+    max-width: 600px;
+
+    .titleContainer {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      .title {
+        @include Sub4;
+        color: $gray80;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+      }
+
+      .comment {
+        @include Cap2;
+        color: $gray50;
+        display: flex;
+        gap: 2px;
+        align-items: center;
+      }
+    }
+
+    .content {
+      @include Label2;
+      color: $gray60;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+    }
+  }
+
+  .rightContainer {
+    width: 100%;
+    max-width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .createdAtView {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      .createdAt {
+        @include Label2;
+        color: $gray50;
+      }
+
+      .viewCount {
+        @include Cap2;
+        color: $gray50;
+        display: flex;
+        gap: 2px;
+        align-items: center;
+      }
+    }
+
+    .author {
+      @include Label2;
+      color: $gray60;
+    }
+  }
+}
