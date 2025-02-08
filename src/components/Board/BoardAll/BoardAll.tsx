@@ -10,8 +10,9 @@ import { useEffect, useState } from "react";
 import { getPostsLatest, PostsLatest } from "@/api/posts/getPosts";
 import { useRecoilValue } from "recoil";
 import { authState } from "@/states/authState";
+import { BoardAllProps } from "./BoardAll.types";
 
-export default function BoardAll() {
+export default function BoardAll({ isDetail }: BoardAllProps) {
   const { isLoggedIn } = useRecoilValue(authState);
   const [posts, setPosts] = useState<PostsLatest[]>([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -48,35 +49,37 @@ export default function BoardAll() {
 
   return (
     <div className={styles.container}>
-      <Title>전체 글</Title>
-      <section className={styles.types}>
-        <button
-          className={`${styles.type} ${currentType === "all" ? styles.active : ""}`}
-          onClick={() => handleTabChange("all")}
-        >
-          전체
-        </button>
-        <Image src="/icon/dot.svg" width={3} height={3} alt="" />
-        <button
-          className={`${styles.type} ${currentType === "question" ? styles.active : ""}`}
-          onClick={() => handleTabChange("question")}
-        >
-          질문
-        </button>
-        <Image src="/icon/dot.svg" width={3} height={3} alt="" />
-        <button
-          className={`${styles.type} ${currentType === "feedback" ? styles.active : ""}`}
-          onClick={() => handleTabChange("feedback")}
-        >
-          피드백
-        </button>
-      </section>
+      {isDetail ? <Title>자유게시판 최신글</Title> : <Title>전체 글</Title>}
+      {!isDetail && (
+        <section className={styles.types}>
+          <button
+            className={`${styles.type} ${currentType === "all" ? styles.active : ""}`}
+            onClick={() => handleTabChange("all")}
+          >
+            전체
+          </button>
+          <Image src="/icon/dot.svg" width={3} height={3} alt="" />
+          <button
+            className={`${styles.type} ${currentType === "question" ? styles.active : ""}`}
+            onClick={() => handleTabChange("question")}
+          >
+            질문
+          </button>
+          <Image src="/icon/dot.svg" width={3} height={3} alt="" />
+          <button
+            className={`${styles.type} ${currentType === "feedback" ? styles.active : ""}`}
+            onClick={() => handleTabChange("feedback")}
+          >
+            피드백
+          </button>
+        </section>
+      )}
       <section className={styles.cards}>
         {posts.map((post) => (
           <AllCard key={post.id} post={post} />
         ))}
       </section>
-      {isLoggedIn && (
+      {isLoggedIn && !isDetail && (
         <section className={styles.uploadBtn}>
           <Link href="/board/write">
             <Button
@@ -89,7 +92,7 @@ export default function BoardAll() {
           </Link>
         </section>
       )}
-      <section className={styles.pagination}>
+      <section className={`${styles.pagination} ${isDetail ? styles.paginationDetail : ""}`}>
         <button
           className={styles.paginationArrow}
           onClick={() => handlePageChange(currentPage - 1)}

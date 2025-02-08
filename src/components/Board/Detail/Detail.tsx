@@ -21,6 +21,7 @@ import { PostDetailProps } from "./Detail.types";
 import Dropdown from "@/components/Dropdown/Dropdown";
 import { deletePostsFeeds } from "@/api/posts/deletePostsId";
 import ShareBtn from "@/components/Detail/ShareBtn/ShareBtn";
+import BoardAll from "../BoardAll/BoardAll";
 
 export default function PostDetail({ id }: PostDetailProps) {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
@@ -271,6 +272,7 @@ export default function PostDetail({ id }: PostDetailProps) {
               </Link>
             </section>
           )}
+          <BoardAll isDetail />
         </div>
       )}
     </div>
