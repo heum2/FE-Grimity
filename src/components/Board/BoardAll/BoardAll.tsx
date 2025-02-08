@@ -8,8 +8,11 @@ import IconComponent from "@/components/Asset/Icon";
 import AllCard from "./AllCard/AllCard";
 import { useEffect, useState } from "react";
 import { getPostsLatest, PostsLatest } from "@/api/posts/getPosts";
+import { useRecoilValue } from "recoil";
+import { authState } from "@/states/authState";
 
 export default function BoardAll() {
+  const { isLoggedIn } = useRecoilValue(authState);
   const [posts, setPosts] = useState<PostsLatest[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const router = useRouter();
@@ -73,17 +76,19 @@ export default function BoardAll() {
           <AllCard key={post.id} post={post} />
         ))}
       </section>
-      <section className={styles.uploadBtn}>
-        <Link href="/board/write">
-          <Button
-            size="l"
-            type="outlined-assistive"
-            leftIcon={<IconComponent name="writePost" width={20} height={20} />}
-          >
-            글쓰기
-          </Button>
-        </Link>
-      </section>
+      {isLoggedIn && (
+        <section className={styles.uploadBtn}>
+          <Link href="/board/write">
+            <Button
+              size="l"
+              type="outlined-assistive"
+              leftIcon={<IconComponent name="writePost" width={20} height={20} />}
+            >
+              글쓰기
+            </Button>
+          </Link>
+        </section>
+      )}
       <section className={styles.pagination}>
         <button
           className={styles.paginationArrow}

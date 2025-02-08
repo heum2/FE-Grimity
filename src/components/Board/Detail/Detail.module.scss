@@ -1,0 +1,145 @@
+@import "@/styles/globals.scss";
+
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 48px;
+
+  .center {
+    width: 100%;
+    max-width: 880px;
+
+    .bar {
+      width: 100%;
+      height: 1px;
+      background-color: $gray30;
+    }
+
+    .header {
+      width: 100%;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding-bottom: 12px;
+
+      .headerLeft {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        .chip {
+          flex-shrink: 0;
+        }
+
+        .title {
+          @include Title3;
+          color: $gray80;
+        }
+
+        .authorCreatedAt {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+
+          .author {
+            @include Body1;
+            color: $gray60;
+          }
+
+          .createdAt {
+            @include Label1;
+            color: $gray50;
+          }
+        }
+      }
+
+      .dropdownContainer {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+    }
+
+    .content {
+      width: 100%;
+      padding-top: 20px;
+      padding-bottom: 24px;
+      line-height: 24px;
+      color: $gray70;
+      font-family: Pretendard;
+      font-size: 16px;
+      font-weight: 500;
+      min-height: 120px;
+    }
+
+    .counts {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .count {
+        display: flex;
+        gap: 2px;
+        align-items: center;
+        @include Cap2;
+        color: $gray60;
+      }
+    }
+
+    .btnContainer {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 40px;
+
+      .likeBtn {
+        cursor: pointer;
+      }
+
+      .saveBtn {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        outline: none;
+        border: none;
+        cursor: pointer;
+        @include Drag;
+        border: 1px solid $gray30;
+        color: $gray70;
+        background-color: $gray0;
+        padding: 16px 16px;
+        border-radius: 12px;
+        @include Btn1;
+
+        &:hover {
+          background-color: darken($gray0, 4%);
+        }
+
+        &:active {
+          background-color: darken($gray0, 8%);
+        }
+      }
+
+      .dropdown {
+        cursor: pointer;
+        position: relative;
+      }
+
+      .menuBtn {
+        @extend .saveBtn;
+      }
+    }
+
+    .uploadBtn {
+      margin-top: 24px;
+      margin-bottom: 50px;
+      justify-self: flex-end;
+    }
+  }
+}

@@ -57,6 +57,8 @@ export const ICONS = {
   likeCount: "/icon/like-count.svg",
   saveCount: "/icon/save-count.svg",
   viewCount: "/icon/view-count.svg",
+  boardLikeCount: "/icon/board-like-count.svg",
+  boardLikeCountOn: "/icon/board-like-count-on.svg",
   addFollow: "/icon/add-follow.svg",
   writePost: "/icon/write-post.svg",
   boardAllImage: "/icon/board-all-image.svg",
@@ -64,4 +66,5 @@ export const ICONS = {
   boardAllView: "/icon/board-all-view.svg",
   paginationLeft: "/icon/pagination-left.svg",
   paginationRight: "/icon/pagination-right.svg",
+  detailWrite: "/icon/board-detail-write.svg",
 };

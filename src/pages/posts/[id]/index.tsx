@@ -1,3 +1,4 @@
+import PostDetail from "@/components/Board/Detail/Detail";
 import { InitialPageMeta } from "@/components/MetaData/MetaData";
 import { serviceUrl } from "@/constants/serviceurl";
 import { useRouter } from "next/router";
@@ -21,6 +22,7 @@ export default function FeedDetail() {
   return (
     <>
       <InitialPageMeta title={OGTitle} url={OGUrl} />
+      <PostDetail id={id as string} />
     </>
   );
 }

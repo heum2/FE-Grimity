@@ -7,7 +7,7 @@ import Image from "next/image";
 import striptags from "striptags";
 import Link from "next/link";
 
-function getTypeLabel(type: string): string {
+export function getTypeLabel(type: string): string {
   switch (type) {
     case "QUESTION":
       return "질문";
