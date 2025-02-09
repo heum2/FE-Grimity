@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Script from "next/script";
 import Button from "@/components/Button/Button";
@@ -21,10 +21,16 @@ export default function BoardWrite() {
   const [title, setTitle] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("일반");
   const [content, setContent] = useState("");
-  const [editorReady, setEditorReady] = useState(false);
+  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
   const { showToast } = useToast();
   const router = useRouter();
   const editorRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (window.tinymce) {
+      setIsScriptLoaded(true);
+    }
+  }, []);
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
@@ -74,7 +80,11 @@ export default function BoardWrite() {
 
   return (
     <div className={styles.container}>
-      <Script src="/tinymce/tinymce.min.js" onLoad={() => setEditorReady(true)} />
+      <Script
+        src="/tinymce/tinymce.min.js"
+        onLoad={() => setIsScriptLoaded(true)}
+        strategy="afterInteractive"
+      />
       <div className={styles.center}>
         <section className={styles.header}>
           <h2 className={styles.title}>글쓰기</h2>
@@ -101,8 +111,9 @@ export default function BoardWrite() {
           onChange={handleTitleChange}
         />
         <section className={styles.editor}>
-          {editorReady && (
+          {isScriptLoaded ? (
             <Editor
+              licenseKey="gpl"
               onInit={(evt, editor) => (editorRef.current = editor)}
               init={{
                 height: 600,
@@ -115,10 +126,7 @@ export default function BoardWrite() {
                 icons_url: "/tinymce/icons/default/icons.js",
                 statusbar: false,
                 images_upload_handler: async (
-                  blobInfo: {
-                    filename: () => string;
-                    blob: () => Blob;
-                  },
+                  blobInfo: { filename: () => string; blob: () => Blob },
                   progress: (progress: number) => void
                 ): Promise<string> => {
                   try {
@@ -191,6 +199,8 @@ export default function BoardWrite() {
               value={content}
               onEditorChange={handleEditorChange}
             />
+          ) : (
+            <Loader />
           )}
         </section>
       </div>
