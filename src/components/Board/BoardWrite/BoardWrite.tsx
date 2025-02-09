@@ -88,7 +88,12 @@ export default function BoardWrite() {
       <div className={styles.center}>
         <section className={styles.header}>
           <h2 className={styles.title}>글쓰기</h2>
-          <Button size="m" type="filled-primary" onClick={handleSubmit}>
+          <Button
+            size="m"
+            type="filled-primary"
+            onClick={handleSubmit}
+            disabled={!title.trim() || !content.trim()}
+          >
             작성 완료
           </Button>
         </section>
@@ -118,8 +123,9 @@ export default function BoardWrite() {
               init={{
                 height: 600,
                 menubar: false,
-                plugins: ["image", "link"],
-                toolbar: "undo redo | bold italic | link image | forecolor backcolor",
+                plugins: ["image", "link", "autolink"],
+                toolbar:
+                  "undo redo | h1 h2 | bold italic underline | forecolor backcolor | link image",
                 content_style: "body { font-family: Pretendard, sans-serif; font-size: 14px; }",
                 base_url: "/tinymce",
                 skin_url: "/tinymce/skins/ui/oxide",
