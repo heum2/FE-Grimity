@@ -30,6 +30,7 @@ export default function Document() {
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
         <script defer src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
         <script defer src="https://accounts.google.com/gsi/client" />
+        <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"></script>
       </Head>
       <body>
         <Main />

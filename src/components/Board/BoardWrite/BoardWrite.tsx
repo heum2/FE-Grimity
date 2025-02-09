@@ -1,22 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import dynamic from "next/dynamic";
+import Script from "next/script";
 import Button from "@/components/Button/Button";
 import styles from "./BoardWrite.module.scss";
-import { Editor } from "@tinymce/tinymce-react";
-import { postPresignedUrl, PresignedUrlResponse } from "@/api/aws/postPresigned";
+import { postPresignedUrl } from "@/api/aws/postPresigned";
 import TextField from "@/components/TextField/TextField";
 import { useMutation } from "react-query";
 import { PostsRequest, PostsResponse, postPosts } from "@/api/posts/postPosts";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useToast } from "@/utils/useToast";
+import Loader from "@/components/Layout/Loader/Loader";
+
+const Editor = dynamic(() => import("@tinymce/tinymce-react").then((mod) => mod.Editor), {
+  ssr: false,
+  loading: () => <Loader />,
+});
 
 export default function BoardWrite() {
   const [title, setTitle] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("일반");
   const [content, setContent] = useState("");
+  const [editorReady, setEditorReady] = useState(false);
   const { showToast } = useToast();
   const router = useRouter();
-  const API_KEY = process.env.NEXT_PUBLIC_EDITOR_API_KEY;
+  const editorRef = useRef<any>(null);
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
@@ -66,6 +74,7 @@ export default function BoardWrite() {
 
   return (
     <div className={styles.container}>
+      <Script src="/tinymce/tinymce.min.js" onLoad={() => setEditorReady(true)} />
       <div className={styles.center}>
         <section className={styles.header}>
           <h2 className={styles.title}>글쓰기</h2>
@@ -92,88 +101,97 @@ export default function BoardWrite() {
           onChange={handleTitleChange}
         />
         <section className={styles.editor}>
-          <Editor
-            apiKey={API_KEY}
-            value={content}
-            init={{
-              min_height: 600,
-              menubar: false,
-              plugins: ["image", "link", "textcolor"],
-              toolbar: "undo redo | bold italic underline | link image | forecolor backcolor",
-              content_style: "body {font-family: Pretendard, sans-serif; font-size: 14px; }",
-              fontsize_formats: "11px 12px 14px ...",
-              image_uploadtab: true,
-              statusbar: false,
-              images_upload_handler: async (blobInfo: any) => {
-                try {
-                  const file = blobInfo.blob() as File;
-                  const maxWidth = 800;
-                  const maxHeight = 600;
+          {editorReady && (
+            <Editor
+              onInit={(evt, editor) => (editorRef.current = editor)}
+              init={{
+                height: 600,
+                menubar: false,
+                plugins: ["image", "link"],
+                toolbar: "undo redo | bold italic | link image | forecolor backcolor",
+                content_style: "body { font-family: Pretendard, sans-serif; font-size: 14px; }",
+                base_url: "/tinymce",
+                skin_url: "/tinymce/skins/ui/oxide",
+                icons_url: "/tinymce/icons/default/icons.js",
+                statusbar: false,
+                images_upload_handler: async (
+                  blobInfo: {
+                    filename: () => string;
+                    blob: () => Blob;
+                  },
+                  progress: (progress: number) => void
+                ): Promise<string> => {
+                  try {
+                    const file = blobInfo.blob() as File;
+                    const maxWidth = 800;
+                    const maxHeight = 600;
 
-                  const resizeImage = (file: File, maxWidth: number, maxHeight: number) =>
-                    new Promise<File>((resolve) => {
-                      const img = document.createElement("img");
-                      const reader = new FileReader();
+                    const resizeImage = (file: File, maxWidth: number, maxHeight: number) =>
+                      new Promise<File>((resolve) => {
+                        const img = document.createElement("img");
+                        const reader = new FileReader();
 
-                      reader.onload = (e) => {
-                        img.src = e.target?.result as string;
-                        img.onload = () => {
-                          const canvas = document.createElement("canvas");
-                          const ctx = canvas.getContext("2d")!;
-                          let width = img.width;
-                          let height = img.height;
+                        reader.onload = (e) => {
+                          img.src = e.target?.result as string;
+                          img.onload = () => {
+                            const canvas = document.createElement("canvas");
+                            const ctx = canvas.getContext("2d")!;
+                            let width = img.width;
+                            let height = img.height;
 
-                          if (width > maxWidth || height > maxHeight) {
-                            if (width > height) {
-                              height *= maxWidth / width;
-                              width = maxWidth;
-                            } else {
-                              width *= maxHeight / height;
-                              height = maxHeight;
+                            if (width > maxWidth || height > maxHeight) {
+                              if (width > height) {
+                                height *= maxWidth / width;
+                                width = maxWidth;
+                              } else {
+                                width *= maxHeight / height;
+                                height = maxHeight;
+                              }
                             }
-                          }
 
-                          canvas.width = width;
-                          canvas.height = height;
-                          ctx.drawImage(img, 0, 0, width, height);
+                            canvas.width = width;
+                            canvas.height = height;
+                            ctx.drawImage(img, 0, 0, width, height);
 
-                          canvas.toBlob((blob) => {
-                            resolve(new File([blob!], file.name, { type: file.type }));
-                          }, file.type);
+                            canvas.toBlob((blob) => {
+                              resolve(new File([blob!], file.name, { type: file.type }));
+                            }, file.type);
+                          };
                         };
-                      };
 
-                      reader.readAsDataURL(file);
+                        reader.readAsDataURL(file);
+                      });
+
+                    const resizedFile = await resizeImage(file, maxWidth, maxHeight);
+
+                    const ext = resizedFile.name.split(".").pop() as "jpg" | "jpeg" | "png" | "gif";
+                    const data = await postPresignedUrl({
+                      type: "post",
+                      ext,
                     });
 
-                  const resizedFile = await resizeImage(file, maxWidth, maxHeight);
+                    const uploadResponse = await fetch(data.url, {
+                      method: "PUT",
+                      body: resizedFile,
+                      headers: {
+                        "Content-Type": resizedFile.type,
+                      },
+                    });
 
-                  const ext = resizedFile.name.split(".").pop() as "jpg" | "jpeg" | "png" | "gif";
-                  const data = await postPresignedUrl({
-                    type: "post",
-                    ext,
-                  });
+                    if (!uploadResponse.ok) {
+                      throw new Error(`${uploadResponse.status}`);
+                    }
 
-                  const uploadResponse = await fetch(data.url, {
-                    method: "PUT",
-                    body: resizedFile,
-                    headers: {
-                      "Content-Type": resizedFile.type,
-                    },
-                  });
-
-                  if (!uploadResponse.ok) {
-                    throw new Error(`${uploadResponse.status}`);
+                    return `https://image.grimity.com/${data.imageName}`;
+                  } catch (error) {
+                    return Promise.reject("이미지 업로드 실패");
                   }
-
-                  return `https://image.grimity.com/${data.imageName}`;
-                } catch (error) {
-                  return Promise.reject("이미지 업로드 실패");
-                }
-              },
-            }}
-            onEditorChange={handleEditorChange}
-          />
+                },
+              }}
+              value={content}
+              onEditorChange={handleEditorChange}
+            />
+          )}
         </section>
       </div>
     </div>
