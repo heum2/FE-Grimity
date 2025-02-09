@@ -12,6 +12,7 @@ import Follow from "./Follow/Follow";
 import Button from "../Button/Button";
 import Share from "./Share/Share";
 import UploadModal from "./Upload/Upload";
+import SharePost from "./SharePost/SharePost";
 
 export default function Modal() {
   const [modal, setModal] = useRecoilState(modalState);
@@ -41,6 +42,8 @@ export default function Modal() {
         return <Follow initialTab="following" />;
       case "SHARE":
         return <Share {...modal.data} />;
+      case "SHAREPOST":
+        return <SharePost {...modal.data} />;
       case "UPLOAD":
         return <UploadModal {...modal.data} />;
       default:

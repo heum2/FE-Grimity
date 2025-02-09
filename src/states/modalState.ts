@@ -9,6 +9,7 @@ export type ModalType =
   | "FOLLOWER"
   | "FOLLOWING"
   | "SHARE"
+  | "SHAREPOST"
   | "UPLOAD";
 
 export interface ModalState {

@@ -20,9 +20,9 @@ import { deletePostsLike, putPostsLike } from "@/api/posts/putDeletePostsLike";
 import { PostDetailProps } from "./Detail.types";
 import Dropdown from "@/components/Dropdown/Dropdown";
 import { deletePostsFeeds } from "@/api/posts/deletePostsId";
-import ShareBtn from "@/components/Detail/ShareBtn/ShareBtn";
 import BoardAll from "../BoardAll/BoardAll";
 import BoardPopular from "../BoardPopular/BoardPopular";
+import ShareBtn from "./ShareBtn/ShareBtn";
 
 export default function PostDetail({ id }: PostDetailProps) {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
@@ -50,8 +50,8 @@ export default function PostDetail({ id }: PostDetailProps) {
     if (posts) {
       setModal({
         isOpen: true,
-        type: "SHARE",
-        data: { feedId: id, posts },
+        type: "SHAREPOST",
+        data: { postId: id, title: posts.title },
       });
     }
   };
@@ -98,7 +98,7 @@ export default function PostDetail({ id }: PostDetailProps) {
         isOpen: true,
         type: null,
         data: {
-          title: "그림을 정말 삭제하시겠어요?",
+          title: "글을 정말 삭제하시겠어요?",
           confirmBtn: "삭제하기",
           onClick: async () => {
             try {
@@ -117,7 +117,7 @@ export default function PostDetail({ id }: PostDetailProps) {
   };
 
   const handleOpenEditPage = () => {
-    router.push(`/feeds/${id}/edit`);
+    router.push(`/posts/${id}/edit`);
   };
 
   return (
@@ -174,7 +174,7 @@ export default function PostDetail({ id }: PostDetailProps) {
                     />
                   </div>
                 ))}
-              <ShareBtn feedId={id} title={posts.title} />
+              <ShareBtn postId={id} title={posts.title} />
             </div>
           </section>
           <div className={styles.bar} />
