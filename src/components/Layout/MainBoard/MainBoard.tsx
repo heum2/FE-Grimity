@@ -5,31 +5,35 @@ import styles from "./MainBoard.module.scss";
 import Loader from "../Loader/Loader";
 import { MainBoardProps } from "./MainBoard.types";
 import { getPostsLatest, PostsLatest } from "@/api/posts/getPosts";
+import { useTodayPopularPosts } from "@/api/posts/getTodayPopular";
 
 export default function MainBoard({ type }: MainBoardProps) {
   const [data, setData] = useState<PostsLatest[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { data: popularPosts, isLoading: isPopularLoading } = useTodayPopularPosts();
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await getPostsLatest({
-          size: 4,
-          page: 1,
-          type: type === "popular" ? "all" : type,
-        });
-        setData(response.posts);
-      } catch (error) {
-        console.error("Error fetching posts:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    if (type !== "popular") {
+      const fetchPosts = async () => {
+        try {
+          const response = await getPostsLatest({
+            size: 4,
+            page: 1,
+            type: type,
+          });
+          setData(response.posts);
+        } catch (error) {
+          console.error("Error fetching posts:", error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
 
-    fetchPosts();
+      fetchPosts();
+    }
   }, [type]);
 
-  if (isLoading) {
+  if ((type === "popular" && isPopularLoading) || (type !== "popular" && isLoading)) {
     return <Loader />;
   }
 
@@ -63,12 +67,19 @@ export default function MainBoard({ type }: MainBoardProps) {
     <div className={styles.container}>
       <Title link={getLink()}>{getTitle()}</Title>
       <section className={styles.cardSection}>
-        {data?.map((post, index) => (
-          <React.Fragment key={post.id}>
-            <BoardCard {...post} />
-            {index < data.length - 1 && <div className={styles.bar} />}
-          </React.Fragment>
-        ))}
+        {type === "popular"
+          ? popularPosts?.slice(0, 4).map((post, index) => (
+              <React.Fragment key={post.id}>
+                <BoardCard {...post} />
+                {index < 3 && <div className={styles.bar} />}
+              </React.Fragment>
+            ))
+          : data?.map((post, index) => (
+              <React.Fragment key={post.id}>
+                <BoardCard {...post} />
+                {index < data.length - 1 && <div className={styles.bar} />}
+              </React.Fragment>
+            ))}
       </section>
     </div>
   );
