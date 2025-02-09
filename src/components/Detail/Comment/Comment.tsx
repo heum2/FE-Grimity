@@ -18,12 +18,12 @@ import Link from "next/link";
 import Loader from "@/components/Layout/Loader/Loader";
 import Dropdown from "@/components/Dropdown/Dropdown";
 import { timeAgo } from "@/utils/timeAgo";
-import TextField from "@/components/TextField/TextField";
 import IconComponent from "@/components/Asset/Icon";
 import Button from "@/components/Button/Button";
 import { deleteCommentLike, putCommentLike } from "@/api/feeds-comments/putDeleteCommentsLike";
 import { modalState } from "@/states/modalState";
 import CommentInput from "./CommentInput/CommentInput";
+import TextArea from "@/components/TextArea/TextArea";
 
 export default function Comment({ feedId, feedWriterId, isFollowingPage }: CommentProps) {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
@@ -35,7 +35,7 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
   const [mentionedUser, setMentionedUser] = useState<{ id: string; name: string } | null>(null);
   const [expandedComments, setExpandedComments] = useState<Set<string>>(new Set());
   const [isReplyToChild, setIsReplyToChild] = useState(false);
-  const replyInputRef = useRef<HTMLInputElement>(null);
+  const replyInputRef = useRef<HTMLTextAreaElement>(null);
   const { data: commentsData, refetch: refetchComments } = useGetFeedsComments({ feedId });
   const postCommentMutation = usePostFeedsComments();
   const [activeParentReplyId, setActiveParentReplyId] = useState<string | null>(null);
@@ -79,7 +79,7 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
     }
   };
 
-  const handleReplyTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleReplyTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setReplyText(e.target.value);
   };
 
@@ -200,8 +200,9 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
     };
   }, []);
 
-  const handleEnterKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
+  const handleEnterKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
       handleReplySubmit();
     }
   };
@@ -493,7 +494,7 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
                     className={styles.writerImage}
                   />
                 )}
-                <TextField
+                <TextArea
                   ref={replyInputRef}
                   placeholder={isLoggedIn ? "답글 달기" : "회원만 답글 달 수 있어요!"}
                   value={replyText}

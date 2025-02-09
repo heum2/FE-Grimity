@@ -1,9 +1,9 @@
 import Image from "next/image";
 import { useState } from "react";
 import styles from "./CommentInput.module.scss";
-import TextField from "@/components/TextField/TextField";
 import Button from "@/components/Button/Button";
 import { usePostFeedsComments } from "@/api/feeds-comments/postFeedComments";
+import TextArea from "@/components/TextArea/TextArea";
 
 interface CommentInputProps {
   feedId: string;
@@ -23,7 +23,7 @@ export default function CommentInput({
   const [comment, setComment] = useState("");
   const postCommentMutation = usePostFeedsComments();
 
-  const handleCommentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
   };
 
@@ -46,8 +46,8 @@ export default function CommentInput({
     );
   };
 
-  const handleEnterKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
+  const handleEnterKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === "Enter" && !event.shiftKey) {
       handleCommentSubmit();
     }
   };
@@ -75,7 +75,7 @@ export default function CommentInput({
           className={styles.writerImage}
         />
       )}
-      <TextField
+      <TextArea
         placeholder={isLoggedIn ? "댓글 달기" : "회원만 댓글 달 수 있어요!"}
         value={comment}
         onChange={handleCommentChange}
