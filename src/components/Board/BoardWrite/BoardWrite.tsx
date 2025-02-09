@@ -16,6 +16,7 @@ export default function BoardWrite() {
   const [content, setContent] = useState("");
   const { showToast } = useToast();
   const router = useRouter();
+  const API_KEY = process.env.NEXT_PUBLIC_EDITOR_API_KEY;
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
@@ -92,7 +93,7 @@ export default function BoardWrite() {
         />
         <section className={styles.editor}>
           <Editor
-            apiKey="j0wfnd24aqsdpnucudy7qwpadldqmovdyc9wqh1jscm0a9vq"
+            apiKey={API_KEY}
             value={content}
             init={{
               min_height: 600,
