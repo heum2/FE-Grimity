@@ -125,7 +125,7 @@ export default function BoardWrite() {
                 menubar: false,
                 plugins: ["image", "link", "autolink"],
                 toolbar:
-                  "undo redo | h1 h2 | bold italic underline | forecolor backcolor | link image",
+                  "undo redo | h1 h2 | bold italic underline strikethrough | forecolor backcolor | link image",
                 content_style: "body { font-family: Pretendard, sans-serif; font-size: 14px; }",
                 base_url: "/tinymce",
                 skin_url: "/tinymce/skins/ui/oxide",
