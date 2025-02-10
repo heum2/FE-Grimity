@@ -55,9 +55,9 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
             id="label"
           />
           {value && maxLength && (
-            <p className={styles.countTotal}>
+            <div className={styles.countTotal}>
               <p className={styles.count}>{value.length}</p>/{maxLength}
-            </p>
+            </div>
           )}
         </div>
         {isError && <span className={styles.error}>{errorMessage}</span>}
