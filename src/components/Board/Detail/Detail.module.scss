@@ -40,6 +40,22 @@
           color: $gray80;
         }
 
+        .notice {
+          display: flex;
+          align-items: flex-end;
+          gap: 10px;
+
+          .noticeTitle {
+            @include Title3;
+            color: $secandary1;
+          }
+
+          .noticeCreatedAt {
+            @include Label1;
+            color: $gray50;
+          }
+        }
+
         .authorCreatedAt {
           display: flex;
           align-items: center;

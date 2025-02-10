@@ -41,3 +41,13 @@ export async function getPostsLatest({
     throw new Error("Failed to fetch postsLatest");
   }
 }
+
+export async function getPostsNotices(): Promise<PostsLatest[]> {
+  try {
+    const response = await BASE_URL.get("/posts/notices");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching postsNotices:", error);
+    throw new Error("Failed to fetch postsNotices");
+  }
+}

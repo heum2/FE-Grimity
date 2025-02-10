@@ -127,15 +127,30 @@ export default function PostDetail({ id }: PostDetailProps) {
           <section className={styles.header}>
             <div className={styles.headerLeft}>
               <div className={styles.chip}>
-                <Chip size="s" type="filled-assistive">
-                  {getTypeLabel(posts.type)}
-                </Chip>
+                {posts.type === "NOTICE" ? (
+                  <Chip size="s" type="filled-secondary">
+                    {getTypeLabel(posts.type)}
+                  </Chip>
+                ) : (
+                  <Chip size="s" type="filled-assistive">
+                    {getTypeLabel(posts.type)}
+                  </Chip>
+                )}
               </div>
-              <h1 className={styles.title}>{posts.title}</h1>
-              <div className={styles.authorCreatedAt}>
-                <p className={styles.author}>{posts.author.name}</p>
-                <p className={styles.createdAt}>{timeAgo(posts.createdAt)}</p>
-              </div>
+              {posts.type !== "NOTICE" ? (
+                <>
+                  <h1 className={styles.title}>{posts.title}</h1>
+                  <div className={styles.authorCreatedAt}>
+                    <p className={styles.author}>{posts.author.name}</p>
+                    <p className={styles.createdAt}>{timeAgo(posts.createdAt)}</p>
+                  </div>
+                </>
+              ) : (
+                <div className={styles.notice}>
+                  <h1 className={styles.noticeTitle}>{posts.title}</h1>
+                  <p className={styles.noticeCreatedAt}>{timeAgo(posts.createdAt)}</p>
+                </div>
+              )}
             </div>
             <div className={styles.dropdownContainer}>
               {isLoggedIn &&

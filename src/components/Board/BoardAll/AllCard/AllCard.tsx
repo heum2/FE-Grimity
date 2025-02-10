@@ -13,6 +13,8 @@ export function getTypeLabel(type: string): string {
       return "질문";
     case "FEEDBACK":
       return "피드백";
+    case "NOTICE":
+      return "공지";
     case "NORMAL":
     default:
       return "일반";
@@ -26,15 +28,23 @@ export default function AllCard({ post }: AllCardProps) {
   return (
     <div className={styles.container}>
       <div className={styles.chipContainer}>
-        <Chip size="s" type="filled-assistive">
-          {getTypeLabel(post.type)}
-        </Chip>
+        {post.type === "NOTICE" ? (
+          <Chip size="s" type="filled-secondary">
+            {getTypeLabel(post.type)}
+          </Chip>
+        ) : (
+          <Chip size="s" type="filled-assistive">
+            {getTypeLabel(post.type)}
+          </Chip>
+        )}
       </div>
       <div className={styles.spaceBetween}>
         <Link href={`/posts/${post.id}`}>
           <div className={styles.titleContent}>
             <div className={styles.titleContainer}>
-              <h2 className={styles.title}>{post.title}</h2>
+              <h2 className={post.type === "NOTICE" ? styles.noticeTitle : styles.title}>
+                {post.title}
+              </h2>
               {post.hasImage && <IconComponent name="boardAllImage" width={16} height={16} />}
               <div className={styles.comment}>
                 <Image src="/icon/board-all-comment.svg" width={16} height={16} alt="" />
@@ -53,9 +63,11 @@ export default function AllCard({ post }: AllCardProps) {
               {post.viewCount}
             </div>
           </div>
-          <Link href={`/users/${post.author.id}`}>
-            <p className={styles.author}>{post.author.name}</p>
-          </Link>
+          {post.type !== "NOTICE" && (
+            <Link href={`/users/${post.author.id}`}>
+              <p className={styles.author}>{post.author.name}</p>
+            </Link>
+          )}
         </div>
       </div>
     </div>

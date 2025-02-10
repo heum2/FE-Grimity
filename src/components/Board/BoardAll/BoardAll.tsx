@@ -7,7 +7,7 @@ import Button from "@/components/Button/Button";
 import IconComponent from "@/components/Asset/Icon";
 import AllCard from "./AllCard/AllCard";
 import { useEffect, useState } from "react";
-import { getPostsLatest, PostsLatest } from "@/api/posts/getPosts";
+import { getPostsLatest, getPostsNotices, PostsLatest } from "@/api/posts/getPosts";
 import { useRecoilValue } from "recoil";
 import { authState } from "@/states/authState";
 import { BoardAllProps } from "./BoardAll.types";
@@ -24,13 +24,24 @@ export default function BoardAll({ isDetail }: BoardAllProps) {
 
   useEffect(() => {
     async function fetchPosts() {
-      const response = await getPostsLatest({
-        type: currentType as "all" | "question" | "feedback",
-        page: currentPage,
-        size: 10,
-      });
-      setPosts(response.posts);
-      setTotalCount(response.totalCount);
+      try {
+        const noticesResponse = await getPostsNotices();
+        const notices = noticesResponse;
+
+        const latestResponse = await getPostsLatest({
+          type: currentType as "all" | "question" | "feedback",
+          page: currentPage,
+          size: 10,
+        });
+        const latestPosts = latestResponse.posts;
+
+        const mergedPosts = currentPage === 1 ? [...notices, ...latestPosts] : latestPosts;
+
+        setPosts(mergedPosts);
+        setTotalCount(latestResponse.totalCount + (currentPage === 1 ? notices.length : 0));
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
     }
     fetchPosts();
   }, [currentType, currentPage]);

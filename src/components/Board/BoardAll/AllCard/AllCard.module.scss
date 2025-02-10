@@ -23,6 +23,7 @@
     gap: 6px;
     width: 100%;
     max-width: 600px;
+    min-width: 400px;
 
     .titleContainer {
       display: flex;
@@ -32,6 +33,16 @@
       .title {
         @include Sub4;
         color: $gray80;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+      }
+
+      .noticeTitle {
+        @include Sub4;
+        color: $secandary1;
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;
@@ -49,6 +60,7 @@
     }
 
     .content {
+      width: 100%;
       @include Label2;
       color: $gray60;
       overflow: hidden;
