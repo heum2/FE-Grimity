@@ -40,6 +40,7 @@ export default function NewFeed({ isDetail = false }: NewFeedProps) {
         {data?.pages.map((page) =>
           page.feeds.map((feed) => (
             <SquareCard
+              key={feed.id}
               id={feed.id}
               title={feed.title}
               thumbnail={feed.thumbnail}
