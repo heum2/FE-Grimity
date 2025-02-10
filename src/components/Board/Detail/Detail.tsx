@@ -23,6 +23,7 @@ import { deletePostsFeeds } from "@/api/posts/deletePostsId";
 import BoardAll from "../BoardAll/BoardAll";
 import BoardPopular from "../BoardPopular/BoardPopular";
 import ShareBtn from "./ShareBtn/ShareBtn";
+import PostComment from "./Comment/Comment";
 
 export default function PostDetail({ id }: PostDetailProps) {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
@@ -274,7 +275,8 @@ export default function PostDetail({ id }: PostDetailProps) {
               </div>
             )}
           </div>
-          <div className={styles.bar} />
+          <PostComment postId={id} postWriterId={posts.author.id} />
+          {!posts.commentCount && <div className={styles.bar} />}
           {isLoggedIn && (
             <section className={styles.uploadBtn}>
               <Link href="/board/write">
