@@ -265,6 +265,8 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
   }, []);
 
   const handleEnterKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.nativeEvent.isComposing) return;
+
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
       handleReplySubmit();
