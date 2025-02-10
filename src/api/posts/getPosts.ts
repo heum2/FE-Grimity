@@ -23,7 +23,7 @@ export interface PostsLatest {
 
 export interface PostsLatestResponse {
   posts: PostsLatest[];
-  totalCount: number | null;
+  totalCount: number;
 }
 
 export async function getPostsLatest({

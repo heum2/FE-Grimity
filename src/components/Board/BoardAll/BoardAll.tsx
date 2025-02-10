@@ -30,9 +30,7 @@ export default function BoardAll({ isDetail }: BoardAllProps) {
         size: 10,
       });
       setPosts(response.posts);
-      if (currentPage === 1) {
-        setTotalCount(response.totalCount || 0);
-      }
+      setTotalCount(response.totalCount);
     }
     fetchPosts();
   }, [currentType, currentPage]);
