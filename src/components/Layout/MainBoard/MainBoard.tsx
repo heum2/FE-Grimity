@@ -68,16 +68,16 @@ export default function MainBoard({ type }: MainBoardProps) {
       <Title link={getLink()}>{getTitle()}</Title>
       <section className={styles.cardSection}>
         {type === "popular"
-          ? popularPosts?.slice(0, 4).map((post, index) => (
+          ? popularPosts?.slice(0, 4).map((post, index, arr) => (
               <React.Fragment key={post.id}>
                 <BoardCard {...post} />
-                {index < 3 && <div className={styles.bar} />}
+                {index < arr.length - 1 && <div className={styles.bar} />}
               </React.Fragment>
             ))
-          : data?.map((post, index) => (
+          : data?.map((post, index, arr) => (
               <React.Fragment key={post.id}>
                 <BoardCard {...post} />
-                {index < data.length - 1 && <div className={styles.bar} />}
+                {index < arr.length - 1 && <div className={styles.bar} />}
               </React.Fragment>
             ))}
       </section>
