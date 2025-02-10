@@ -69,7 +69,7 @@ export default function SearchProfile({
       <div className={styles.profile}>
         <Link href={`/users/${id}`}>
           {image !== "https://image.grimity.com/null" ? (
-            <Image src={image} alt="프로필" width={64} height={64} className={styles.image} />
+            <Image src={image} alt="프로필" width={200} height={200} className={styles.image} />
           ) : (
             <Image
               src="/image/default.svg"
