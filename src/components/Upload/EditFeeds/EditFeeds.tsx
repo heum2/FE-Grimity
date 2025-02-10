@@ -298,21 +298,30 @@ export default function EditFeeds({ id }: EditFeedsProps) {
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.nativeEvent.isComposing) return;
+
     if (event.key === "Enter" && tag.trim() !== "") {
       event.preventDefault();
 
-      if (tags.length >= 8) {
-        showToast("태그는 최대 8개까지 추가할 수 있어요", "error");
+      if (tag.trim().length < 2) {
+        showToast("태그는 두 글자 이상이어야 합니다.", "error");
         return;
       }
 
-      if (tags.includes(tag.trim())) {
+      if (tags.length >= 10) {
+        showToast("태그는 최대 10개까지 추가할 수 있어요", "error");
+        return;
+      }
+
+      const newTag = tag.replace(/\s+/g, "");
+
+      // 중복 태그 방지
+      if (!tags.includes(newTag)) {
+        setTags((prevTags) => [...prevTags, newTag]);
+      } else {
         showToast("이미 추가된 태그입니다.", "error");
-        setTag("");
-        return;
       }
 
-      setTags([...tags, tag.trim()]);
       setTag("");
     }
   };

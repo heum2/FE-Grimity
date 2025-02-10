@@ -278,6 +278,11 @@ export default function Upload() {
     if (event.key === "Enter" && tag.trim() !== "") {
       event.preventDefault();
 
+      if (tag.trim().length < 2) {
+        showToast("태그는 두 글자 이상이어야 합니다.", "error");
+        return;
+      }
+
       if (tags.length >= 10) {
         showToast("태그는 최대 10개까지 추가할 수 있어요", "error");
         return;
