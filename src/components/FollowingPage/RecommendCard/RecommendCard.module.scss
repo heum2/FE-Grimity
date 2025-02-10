@@ -73,7 +73,9 @@
       @include Label2;
       color: $gray60;
       @include Drag;
-      align-self: flex-start;
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
       height: 44px;
       overflow: hidden;
       text-overflow: ellipsis;

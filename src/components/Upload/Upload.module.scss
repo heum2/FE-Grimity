@@ -163,7 +163,9 @@
               height: 200px;
 
               .contentCount {
-                justify-self: flex-end;
+                width: 100%;
+                display: flex;
+                justify-content: flex-end;
               }
 
               .textarea {

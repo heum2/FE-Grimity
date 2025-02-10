@@ -107,7 +107,8 @@
 
     .btnCenter {
       flex-shrink: 0;
-      align-self: center;
+      display: flex;
+      align-items: center;
     }
   }
 }
@@ -117,5 +118,7 @@
   color: $gray50;
   @include Drag;
   margin-top: 50px;
-  justify-self: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }

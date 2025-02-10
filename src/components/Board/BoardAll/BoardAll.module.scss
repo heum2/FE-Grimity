@@ -35,8 +35,10 @@
 
   .uploadBtn {
     width: 120px;
-    align-self: flex-end;
     margin-top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
   }
 
   .paginationDetail {

@@ -231,7 +231,9 @@
       color: $gray60;
       cursor: pointer;
       @include Btn2;
-      align-self: flex-start;
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
       padding: 0;
       @include Drag;
     }
@@ -285,7 +287,8 @@
   .commentShowMore {
     display: flex;
     align-items: center;
-    align-self: flex-start;
+    width: 100%;
+    justify-content: flex-start;
     gap: 6px;
     color: $gray60;
     @include Btn2;

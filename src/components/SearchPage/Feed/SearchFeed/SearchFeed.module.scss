@@ -5,7 +5,9 @@
 
   .sortWrapper {
     position: relative;
-    justify-self: flex-end;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
   }
 
   .feedContainer {
@@ -17,8 +19,10 @@
 }
 
 .noResult {
-  align-self: center;
-  justify-self: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   @include Sub2;
   color: $gray50;
   margin-top: 50px;
