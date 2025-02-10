@@ -237,6 +237,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
           setReplyText("");
           if (isReplyToChild) {
             setActiveChildReplyId(null);
+            setActiveParentReplyId(null);
           } else {
             setActiveParentReplyId(null);
           }
