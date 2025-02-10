@@ -6,6 +6,7 @@ import { useTagsPopular } from "@/api/tags/getTagsPopular";
 import Link from "next/link";
 import SearchFeed from "./Feed/SearchFeed/SearchFeed";
 import SearchAuthor from "./User/SearchAuthor/SearchAuthor";
+import SearchPost from "./Post/SearchPost/SearchPost";
 
 export default function SearchPage() {
   const [searchValue, setSearchValue] = useState<string>("");
@@ -28,8 +29,8 @@ export default function SearchPage() {
         return <SearchFeed />;
       case "author":
         return <SearchAuthor />;
-      // case "board":
-      //   return <SearchBoard />;
+      case "board":
+        return <SearchPost />;
       default:
         return null;
     }
@@ -52,7 +53,7 @@ export default function SearchPage() {
             <p className={styles.recommendMessage}>추천 태그</p>
             <div className={styles.chips}>
               {popularData?.slice(0, 8).map((tag, index) => (
-                <Link href={`/search?tab=feed&keyword=${tag.tagName}`}>
+                <Link href={`/search?tab=feed&keyword=${tag.tagName}`} key={index}>
                   <div key={index} className={styles.chip}>
                     {tag.tagName}
                   </div>
@@ -75,7 +76,12 @@ export default function SearchPage() {
             작가
           </button>
           <div className={styles.bar} />
-          <button className={`${styles.button} ${getTabClass("board")}`}>자유게시판</button>
+          <button
+            className={`${styles.button} ${getTabClass("board")}`}
+            onClick={() => router.push(`?tab=board&keyword=${searchKeyword}`)}
+          >
+            자유게시판
+          </button>
         </section>
         {getTabComponent()}
       </div>

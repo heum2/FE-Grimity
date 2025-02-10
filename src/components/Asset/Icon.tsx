@@ -30,6 +30,9 @@ export default function IconComponent({
     return (
       <div
         style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
           padding,
           cursor: isBtn ? "pointer" : "default",
         }}

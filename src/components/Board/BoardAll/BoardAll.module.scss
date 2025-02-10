@@ -5,24 +5,93 @@
   display: flex;
   flex-direction: column;
 
-  .types {
-    margin-bottom: 28px;
+  .header {
+    height: 60px;
     display: flex;
-    align-items: center;
-    gap: 8px;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 32px;
 
-    .type {
-      border: none;
-      background: none;
-      @include Sub4;
-      color: $gray60;
-      padding: 0;
-      cursor: pointer;
+    .types {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .type {
+        border: none;
+        background: none;
+        @include Sub4;
+        color: $gray60;
+        padding: 0;
+        cursor: pointer;
+      }
+
+      .active {
+        @extend .type;
+        color: $secandary1;
+      }
     }
 
-    .active {
-      @extend .type;
-      color: $secandary1;
+    .search {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .dropdown {
+        position: relative;
+
+        .dropdownBtn {
+          display: inline-flex;
+          justify-content: center;
+          align-items: center;
+          gap: 8px;
+          outline: none;
+          border: none;
+          cursor: pointer;
+          @include Drag;
+          border: 1px solid $gray30;
+          color: $gray70;
+          background-color: $gray0;
+          padding: 10px 12px 10px 16px;
+          border-radius: 12px;
+          @include Cap1;
+          line-height: 20px;
+
+          &:hover {
+            background-color: darken($gray0, 4%);
+          }
+
+          &:active {
+            background-color: darken($gray0, 8%);
+          }
+        }
+      }
+
+      .searchbarContainer {
+        width: 250px;
+        height: 40px;
+        padding-left: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        border-radius: 12px;
+        border: 1px solid $gray30;
+        background-color: $gray10;
+
+        .input {
+          width: 100%;
+          color: $gray70;
+          @include Label2;
+          background: none;
+          border: none;
+          outline: none;
+
+          &::placeholder {
+            color: $gray50;
+          }
+        }
+      }
     }
   }
 
@@ -87,4 +156,13 @@
       background-color: $gray20;
     }
   }
+}
+
+.noResults {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @include Sub2;
+  color: $gray50;
 }

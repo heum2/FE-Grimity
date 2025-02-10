@@ -106,7 +106,13 @@ export default function Header() {
         showToast("두 글자 이상 입력해주세요.", "warning");
         return;
       }
-      router.push(`/search?tab=feed&keyword=${encodeURIComponent(trimmedKeyword)}`);
+      let tab = "feed";
+      if (router.pathname.includes("board")) {
+        tab = "board";
+      } else if (router.pathname.includes("posts")) {
+        tab = "board";
+      }
+      router.push(`/search?tab=${tab}&keyword=${encodeURIComponent(trimmedKeyword)}`);
       setIsSearchBarOpen(false);
       setKeyword("");
     }

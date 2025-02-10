@@ -17,7 +17,7 @@ export default function SearchBar({ searchValue, setSearchValue, onSearch }: Sea
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      const currentTab = tab === "author" ? "author" : "feed";
+      const currentTab = tab === "author" ? "author" : tab === "board" ? "board" : "feed";
       const trimmedKeyword = searchValue.trim();
       if (trimmedKeyword.length < 2) {
         showToast("두 글자 이상 입력해주세요.", "warning");
