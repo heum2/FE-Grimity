@@ -9,7 +9,6 @@ import { timeAgo } from "@/utils/timeAgo";
 export default function BoardCard({
   id,
   title,
-  author,
   commentCount,
   viewCount,
   createdAt,
@@ -17,13 +16,6 @@ export default function BoardCard({
   return (
     <div className={styles.container}>
       <div className={styles.infoContainer}>
-        {author && (
-          <Link href={`/users/${author.id}`}>
-            <div className={styles.profile}>
-              <p className={styles.author}>{author.name}</p>
-            </div>
-          </Link>
-        )}
         <Link href={`/posts/${id}`}>
           <h3 className={styles.title}>{title}</h3>
           <div className={styles.bottomContainer}>

@@ -19,12 +19,6 @@
       @include Sub4;
     }
 
-    .author {
-      @include Label1;
-      color: $gray60;
-      margin-bottom: 8px;
-    }
-
     .bottomContainer {
       display: flex;
       align-items: center;
