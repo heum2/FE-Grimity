@@ -302,13 +302,7 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
                       {reply.writer.id === user_id ? (
                         <Dropdown
                           trigger={
-                            <IconComponent
-                              name="meatball"
-                              padding={8}
-                              width={24}
-                              height={24}
-                              isBtn
-                            />
+                            <IconComponent name="kebab" padding={8} width={24} height={24} isBtn />
                           }
                           menuItems={[
                             {
@@ -321,13 +315,7 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
                       ) : (
                         <Dropdown
                           trigger={
-                            <IconComponent
-                              name="meatball"
-                              padding={8}
-                              width={24}
-                              height={24}
-                              isBtn
-                            />
+                            <IconComponent name="kebab" padding={8} width={24} height={24} isBtn />
                           }
                           menuItems={[
                             {
@@ -427,7 +415,7 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
                   {comment.writer.id === user_id ? (
                     <Dropdown
                       trigger={
-                        <IconComponent name="meatball" padding={8} width={24} height={24} isBtn />
+                        <IconComponent name="kebab" padding={8} width={24} height={24} isBtn />
                       }
                       menuItems={[
                         {
@@ -440,7 +428,7 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
                   ) : (
                     <Dropdown
                       trigger={
-                        <IconComponent name="meatball" padding={8} width={24} height={24} isBtn />
+                        <IconComponent name="kebab" padding={8} width={24} height={24} isBtn />
                       }
                       menuItems={[
                         {
