@@ -13,7 +13,6 @@ import IconComponent from "@/components/Asset/Icon";
 import Button from "@/components/Button/Button";
 import { modalState } from "@/states/modalState";
 import TextArea from "@/components/TextArea/TextArea";
-import TextField from "@/components/TextField/TextField";
 import {
   deletePostsCommentLike,
   putPostsCommentLike,
@@ -51,7 +50,7 @@ const ReplyInput = memo(
     showToast,
     handleReplySubmit,
   }: ReplyInputProps) => (
-    <div className={`${styles.input} ${isChildReply ? styles.childInput : ""}`}>
+    <div className={styles.input}>
       <TextArea
         ref={replyInputRef}
         placeholder={isLoggedIn ? "답글 달기" : "회원만 답글 달 수 있어요!"}
@@ -123,7 +122,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
     }
   };
 
-  const handleCommentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
   };
 
@@ -507,7 +506,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
   return (
     <div className={styles.container}>
       <section className={styles.inputContainer}>
-        <TextField
+        <TextArea
           placeholder={isLoggedIn ? "댓글 달기" : "회원만 댓글 달 수 있어요!"}
           value={comment}
           onChange={handleCommentChange}
