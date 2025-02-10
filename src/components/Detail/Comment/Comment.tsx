@@ -380,7 +380,7 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
                 <p className={styles.commentText}>{comment.content}</p>
                 <div className={styles.likeReplyBtn}>
                   <div
-                    className={styles.likeButton}
+                    className={comment.isLike ? styles.likeOnButton : styles.likeButton}
                     onClick={(e) => {
                       e.stopPropagation();
                       handleLikeClick(comment.id, comment.isLike);
