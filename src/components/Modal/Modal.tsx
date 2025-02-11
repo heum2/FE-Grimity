@@ -13,6 +13,7 @@ import Button from "../Button/Button";
 import Share from "./Share/Share";
 import UploadModal from "./Upload/Upload";
 import SharePost from "./SharePost/SharePost";
+import Like from "./Like/Like";
 
 export default function Modal() {
   const [modal, setModal] = useRecoilState(modalState);
@@ -46,6 +47,8 @@ export default function Modal() {
         return <SharePost {...modal.data} />;
       case "UPLOAD":
         return <UploadModal {...modal.data} />;
+      case "LIKE":
+        return <Like />;
       default:
         return null;
     }
@@ -73,7 +76,7 @@ export default function Modal() {
           className={
             modal.type === "PROFILE-EDIT"
               ? styles.profileEditModal
-              : modal.type === "FOLLOWER" || modal.type === "FOLLOWING"
+              : modal.type === "FOLLOWER" || modal.type === "FOLLOWING" || modal.type === "LIKE"
               ? styles.followModal
               : styles.modal
           }

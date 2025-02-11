@@ -109,14 +109,21 @@ export default function Detail({ id }: DetailProps) {
       return;
     }
 
-    if (isLiked) {
-      await deleteLike(id);
-      setCurrentLikeCount((prev) => prev - 1);
+    if (details?.author.id === user_id) {
+      setModal({
+        isOpen: true,
+        type: "LIKE",
+      });
     } else {
-      await putLike(id);
-      setCurrentLikeCount((prev) => prev + 1);
+      if (isLiked) {
+        await deleteLike(id);
+        setCurrentLikeCount((prev) => prev - 1);
+      } else {
+        await putLike(id);
+        setCurrentLikeCount((prev) => prev + 1);
+      }
+      setIsLiked(!isLiked);
     }
-    setIsLiked(!isLiked);
   };
 
   const handleSaveClick = async () => {
