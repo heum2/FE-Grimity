@@ -55,6 +55,11 @@ export default function BoardWrite() {
   });
 
   const handleSubmit = () => {
+    if (content.length > 1000) {
+      showToast("내용은 최대 1000자까지 입력 가능합니다.", "warning");
+      return;
+    }
+
     if (!title.trim()) {
       showToast("제목을 입력해주세요.", "error");
       return;
