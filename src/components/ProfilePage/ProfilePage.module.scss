@@ -110,3 +110,55 @@
     @include Drag;
   }
 }
+
+.postContainer {
+  padding-top: 32px;
+  padding-bottom: 40px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pagination {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+
+  button {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $gray0;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    @include Label2;
+
+    &:hover {
+      background-color: $gray10;
+    }
+  }
+
+  .paginationArrow {
+    padding: 6px;
+    background-color: transparent;
+    border: none;
+
+    &:hover {
+      background-color: $gray10;
+    }
+
+    &:disabled {
+      display: none;
+    }
+  }
+
+  .active {
+    background-color: $gray20;
+  }
+}

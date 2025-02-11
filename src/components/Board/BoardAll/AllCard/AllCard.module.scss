@@ -111,6 +111,10 @@
         align-items: flex-end;
         @extend .createdAtView;
       }
+
+      .dropdown {
+        position: relative;
+      }
     }
 
     .author {

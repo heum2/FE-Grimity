@@ -15,6 +15,7 @@ export interface UserInfoResponse {
   followerCount: number;
   followingCount: number;
   feedCount: number;
+  postCount: number;
   isFollowing: boolean;
 }
 

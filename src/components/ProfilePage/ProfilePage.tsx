@@ -11,6 +11,10 @@ import Dropdown from "../Dropdown/Dropdown";
 import Button from "../Button/Button";
 import IconComponent from "../Asset/Icon";
 import Link from "next/link";
+import { getUserPosts } from "@/api/users/getIdPosts";
+import { useRouter } from "next/router";
+import AllCard from "../Board/BoardAll/AllCard/AllCard";
+import Image from "next/image";
 
 type SortOption = "latest" | "like" | "oldest";
 
@@ -24,14 +28,45 @@ const PAGE_SIZE = 12;
 
 export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
   const [sortBy, setSortBy] = useState<SortOption>("latest");
-  const [activeTab, setActiveTab] = useState<"images" | "texts">("images");
   const [indicatorStyle, setIndicatorStyle] = useState({ width: 0, left: 0 });
-  const imagesTabRef = useRef<HTMLDivElement>(null);
-  const textsTabRef = useRef<HTMLDivElement>(null);
+  const feedsTabRef = useRef<HTMLDivElement>(null);
+  const postsTabRef = useRef<HTMLDivElement>(null);
   const { data: userData } = useUserData(id);
   const { ref, inView } = useInView();
   const [feeds, setFeeds] = useState<any[]>([]);
+  const [posts, setPosts] = useState<any[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const router = useRouter();
+  const { query } = router;
+  const currentPage = Number(query.page) || 1;
+  const [totalCount, setTotalCount] = useState(0);
+  const totalPages = Math.ceil(totalCount / 10);
+  const [activeTab, setActiveTab] = useState<"feeds" | "posts">(
+    (query.tab as "feeds" | "posts") || "feeds"
+  );
+
+  useEffect(() => {
+    setFeeds([]);
+    setActiveTab("feeds");
+  }, [id]);
+
+  useEffect(() => {
+    if (query.tab && (query.tab === "feeds" || query.tab === "posts")) {
+      setActiveTab(query.tab);
+    }
+  }, [query.tab]);
+
+  const handleTabChange = (tab: "feeds" | "posts") => {
+    setActiveTab(tab);
+    const { page, ...restQuery } = query;
+    router.push(
+      {
+        query: { ...restQuery, tab },
+      },
+      undefined,
+      { shallow: true }
+    );
+  };
 
   const handleDropdownToggle = (isOpen: boolean) => {
     setIsDropdownOpen(isOpen);
@@ -70,6 +105,22 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
   }, [inView, hasNextPage, fetchNextPage]);
 
   useEffect(() => {
+    async function fetchPosts() {
+      try {
+        const data = await getUserPosts({ id, size: 10, page: currentPage });
+
+        setPosts(data);
+        setTotalCount(userData?.postCount ?? 0);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    }
+    if (isMyProfile) {
+      fetchPosts();
+    }
+  }, [currentPage]);
+
+  useEffect(() => {
     if (feedsData?.pages) {
       const newFeeds = feedsData.pages.flatMap((page) => page.items);
       setFeeds((prevFeeds) => {
@@ -83,7 +134,7 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
   }, [feedsData]);
 
   useEffect(() => {
-    const activeTabRef = activeTab === "images" ? imagesTabRef : textsTabRef;
+    const activeTabRef = activeTab === "feeds" ? feedsTabRef : postsTabRef;
     if (!activeTabRef.current) return;
 
     const { offsetWidth, offsetLeft } = activeTabRef.current;
@@ -105,6 +156,12 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
     return () => observer.disconnect();
   }, [activeTab]);
 
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      router.push({ query: { ...query, page } }, undefined, { shallow: true });
+    }
+  };
+
   const handleSortChange = (option: SortOption) => {
     setSortBy(option);
   };
@@ -117,19 +174,21 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
         <Profile isMyProfile={isMyProfile} id={id} />
         <div className={styles.bar}>
           <div
-            ref={imagesTabRef}
-            className={`${styles.tab} ${activeTab === "images" ? styles.active : ""}`}
-            onClick={() => setActiveTab("images")}
+            ref={feedsTabRef}
+            className={`${styles.tab} ${activeTab === "feeds" ? styles.active : ""}`}
+            onClick={() => handleTabChange("feeds")}
           >
             그림<p className={styles.feedCount}>{userData?.feedCount}</p>
           </div>
-          <div
-            ref={textsTabRef}
-            className={`${styles.tab} ${activeTab === "texts" ? styles.active : ""}`}
-            onClick={() => setActiveTab("texts")}
-          >
-            글<p className={styles.feedCount}>0</p>
-          </div>
+          {isMyProfile && (
+            <div
+              ref={postsTabRef}
+              className={`${styles.tab} ${activeTab === "posts" ? styles.active : ""}`}
+              onClick={() => handleTabChange("posts")}
+            >
+              글<p className={styles.feedCount}>{userData?.postCount}</p>
+            </div>
+          )}
           <div
             className={styles.indicator}
             style={{
@@ -139,7 +198,7 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
           />
         </div>
         <div className={styles.feedContainer}>
-          {allFeeds.length !== 0 && (
+          {allFeeds.length !== 0 && activeTab === "feeds" && (
             <section className={styles.header}>
               <div className={styles.sortWrapper}>
                 <Dropdown
@@ -168,7 +227,7 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
               </div>
             </section>
           )}
-          {activeTab === "images" ? (
+          {activeTab === "feeds" ? (
             allFeeds.length === 0 ? (
               isMyProfile ? (
                 <div className={styles.empty}>
@@ -203,7 +262,49 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
               </section>
             )
           ) : (
-            <p>준비 중...</p>
+            <section>
+              {posts.length === 0 ? (
+                <div className={styles.empty}>
+                  <p className={styles.message}>첫 글을 업로드해보세요</p>
+                  <Link href="/board">
+                    <Button size="m" type="filled-primary">
+                      자유게시판 바로가기
+                    </Button>
+                  </Link>
+                </div>
+              ) : (
+                <div className={styles.postContainer}>
+                  {posts.map((post) => (
+                    <AllCard key={post.id} post={post} case="my-posts" />
+                  ))}
+                </div>
+              )}
+              <section className={styles.pagination}>
+                <button
+                  className={styles.paginationArrow}
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  <Image src="/icon/pagination-left.svg" width={24} height={24} alt="" />
+                </button>
+                {Array.from({ length: totalPages }, (_, index) => (
+                  <button
+                    key={index + 1}
+                    className={currentPage === index + 1 ? styles.active : ""}
+                    onClick={() => handlePageChange(index + 1)}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+                <button
+                  className={styles.paginationArrow}
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages || posts.length === 0}
+                >
+                  <Image src="/icon/pagination-right.svg" width={24} height={24} alt="" />
+                </button>
+              </section>
+            </section>
           )}
         </div>
       </div>

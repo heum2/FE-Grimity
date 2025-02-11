@@ -8,6 +8,12 @@ import striptags from "striptags";
 import Link from "next/link";
 import { deletePostsSave, putPostsSave } from "@/api/posts/putDeletePostsIdSave";
 import { useState } from "react";
+import Dropdown from "@/components/Dropdown/Dropdown";
+import { useRecoilState } from "recoil";
+import { modalState } from "@/states/modalState";
+import { deletePostsFeeds } from "@/api/posts/deletePostsId";
+import { useRouter } from "next/router";
+import { useToast } from "@/utils/useToast";
 
 export function getTypeLabel(type: string): string {
   switch (type) {
@@ -24,9 +30,12 @@ export function getTypeLabel(type: string): string {
 }
 
 export default function AllCard({ post, case: cardCase }: AllCardProps) {
+  const [, setModal] = useRecoilState(modalState);
+  const { showToast } = useToast();
   let plainTextContent = striptags(post.content);
   plainTextContent = plainTextContent.replace(/&nbsp;|&lt;|&gt;|&amp;|&quot;|&#39;/g, "").trim();
   const [isSaved, setIsSaved] = useState(true);
+  const router = useRouter();
 
   const handleSaveClick = async () => {
     if (isSaved) {
@@ -35,6 +44,40 @@ export default function AllCard({ post, case: cardCase }: AllCardProps) {
       await putPostsSave(post.id);
     }
     setIsSaved(!isSaved);
+  };
+
+  const handleDelete = async () => {
+    try {
+      setModal({
+        isOpen: true,
+        type: null,
+        data: {
+          title: "글을 정말 삭제하시겠어요?",
+          confirmBtn: "삭제하기",
+          onClick: async () => {
+            try {
+              await deletePostsFeeds(post.id);
+              router.reload();
+            } catch (err) {
+              showToast("삭제 중 오류가 발생했습니다.", "error");
+            }
+          },
+        },
+        isComfirm: true,
+      });
+    } catch (error) {
+      showToast("삭제 중 오류가 발생했습니다.", "error");
+    }
+  };
+
+  const handleOpenShareModal = () => {
+    if (post) {
+      setModal({
+        isOpen: true,
+        type: "SHAREPOST",
+        data: { postId: post.id, title: post.title },
+      });
+    }
   };
 
   return (
@@ -83,6 +126,34 @@ export default function AllCard({ post, case: cardCase }: AllCardProps) {
                   height={20}
                   padding={8}
                   isBtn
+                />
+              </div>
+            </div>
+          ) : cardCase === "my-posts" ? (
+            <div className={styles.savedPosts}>
+              <div className={styles.savedCreatedAtView}>
+                <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
+                <div className={styles.viewCount}>
+                  <Image src="/icon/board-all-view.svg" width={16} height={16} alt="" />
+                  {post.viewCount}
+                </div>
+              </div>
+              <div className={styles.dropdown}>
+                <Dropdown
+                  trigger={
+                    <IconComponent name="meatball" padding={8} width={24} height={24} isBtn />
+                  }
+                  menuItems={[
+                    {
+                      label: "공유하기",
+                      onClick: handleOpenShareModal,
+                    },
+                    {
+                      label: "삭제하기",
+                      onClick: handleDelete,
+                      isDelete: true,
+                    },
+                  ]}
                 />
               </div>
             </div>
