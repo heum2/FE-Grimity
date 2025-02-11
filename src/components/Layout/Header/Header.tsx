@@ -282,7 +282,7 @@ export default function Header() {
                       저장한 그림
                     </div>
                   </Link>
-                  <Link href="/mypage?tab=liked-posts">
+                  <Link href="/mypage?tab=saved-posts">
                     <div className={styles.dropdownItem} onClick={() => setIsDropdownOpen(false)}>
                       저장한 글
                     </div>

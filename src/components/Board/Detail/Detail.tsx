@@ -38,6 +38,7 @@ export default function PostDetail({ id }: PostDetailProps) {
   useEffect(() => {
     if (!posts) return;
     setIsLiked(posts.isLike ?? false);
+    setIsSaved(posts.isSave ?? false);
     setCurrentLikeCount(posts.likeCount ?? 0);
   }, [posts]);
 

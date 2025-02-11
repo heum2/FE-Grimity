@@ -98,6 +98,21 @@
       }
     }
 
+    .savedPosts {
+      width: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .savedCreatedAtView {
+        width: 90px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        @extend .createdAtView;
+      }
+    }
+
     .author {
       @include Label2;
       color: $gray60;

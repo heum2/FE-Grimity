@@ -73,4 +73,6 @@ export const ICONS = {
   notiSetting: "/icon/noti-setting.svg",
   notiClose: "/icon/noti-close.svg",
   notiBack: "/icon/noti-back.svg",
+  saveOn: "/icon/detail-save-on.svg",
+  saveOff: "/icon/detail-save.svg",
 };

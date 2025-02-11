@@ -218,7 +218,7 @@ export default function BoardAll({ isDetail }: BoardAllProps) {
       )}
       <section className={styles.cards}>
         {posts.map((post) => (
-          <AllCard key={post.id} post={post} />
+          <AllCard key={post.id} post={post} case="board" />
         ))}
       </section>
       {posts.length === 0 && <div className={styles.noResults}>검색 결과가 없습니다</div>}

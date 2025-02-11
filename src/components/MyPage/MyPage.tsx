@@ -2,6 +2,7 @@ import styles from "./MyPage.module.scss";
 import { useRouter } from "next/router";
 import LikedFeeds from "./LikedFeeds/LikedFeeds";
 import SavedFeeds from "./SavedFeeds/SavedFeeds";
+import SavedPosts from "./SavedPosts/SavedPosts";
 
 export default function MyPage() {
   const router = useRouter();
@@ -13,8 +14,8 @@ export default function MyPage() {
         return <LikedFeeds />;
       case "saved-feeds":
         return <SavedFeeds />;
-      // case "saved-posts":
-      //   return <SavedPosts />;
+      case "saved-posts":
+        return <SavedPosts />;
       default:
         return null;
     }
