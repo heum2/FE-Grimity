@@ -8,3 +8,14 @@
   row-gap: 40px;
   column-gap: 16px;
 }
+
+.noResult {
+  @include Sub2;
+  color: $gray50;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100px 0;
+  gap: 24px;
+}

@@ -1,6 +1,8 @@
+import Button from "@/components/Button/Button";
 import styles from "./SavedFeeds.module.scss";
 import { useMySaveList } from "@/api/users/getMeSaveFeeds";
 import ProfileCard from "@/components/Layout/ProfileCard/ProfileCard";
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 
 export default function SavedFeeds() {
@@ -30,11 +32,22 @@ export default function SavedFeeds() {
     };
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
+  const isEmpty = !data || !data.pages || data.pages.every((page) => page.feeds.length === 0);
+
   return (
     <>
-      <section className={styles.cardContainer}>
-        {data &&
-          data.pages.flat().map((page) =>
+      {isEmpty ? (
+        <div className={styles.noResult}>
+          아직 저장한 그림이 없어요
+          <Link href="/popular">
+            <Button size="m" type="filled-primary">
+              인기그림 둘러보기
+            </Button>
+          </Link>
+        </div>
+      ) : (
+        <section className={styles.cardContainer}>
+          {data.pages.flat().map((page) =>
             page.feeds.map((feed, index) => (
               <div key={`${feed.id}-${index}`}>
                 <ProfileCard
@@ -49,7 +62,8 @@ export default function SavedFeeds() {
               </div>
             ))
           )}
-      </section>
+        </section>
+      )}
       <div ref={observerRef} />
     </>
   );

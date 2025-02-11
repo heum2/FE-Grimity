@@ -1,6 +1,8 @@
+import Button from "@/components/Button/Button";
 import styles from "./LikedFeeds.module.scss";
 import { useMyLikeList } from "@/api/users/getMeLikeFeeds";
 import ProfileCard from "@/components/Layout/ProfileCard/ProfileCard";
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 
 export default function LikedFeeds() {
@@ -30,26 +32,39 @@ export default function LikedFeeds() {
     };
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
+  const isEmpty = !data || !data.pages || data.pages.every((page) => page.feeds.length === 0);
+
   return (
     <>
-      <section className={styles.cardContainer}>
-        {data &&
-          data.pages.flat().map((page) =>
-            page.feeds.map((feed, index) => (
-              <div key={`${feed.id}-${index}`}>
-                <ProfileCard
-                  title={feed.title}
-                  cards={feed.cards}
-                  thumbnail={feed.thumbnail}
-                  likeCount={feed.likeCount}
-                  commentCount={feed.commentCount}
-                  createdAt={feed.createdAt}
-                  id={feed.id}
-                />
-              </div>
-            ))
-          )}
-      </section>
+      {isEmpty ? (
+        <div className={styles.noResult}>
+          아직 좋아요한 그림이 없어요
+          <Link href="/popular">
+            <Button size="m" type="filled-primary">
+              인기그림 둘러보기
+            </Button>
+          </Link>
+        </div>
+      ) : (
+        <section className={styles.cardContainer}>
+          {data &&
+            data.pages.flat().map((page) =>
+              page.feeds.map((feed, index) => (
+                <div key={`${feed.id}-${index}`}>
+                  <ProfileCard
+                    title={feed.title}
+                    cards={feed.cards}
+                    thumbnail={feed.thumbnail}
+                    likeCount={feed.likeCount}
+                    commentCount={feed.commentCount}
+                    createdAt={feed.createdAt}
+                    id={feed.id}
+                  />
+                </div>
+              ))
+            )}
+        </section>
+      )}
       <div ref={observerRef} />
     </>
   );
