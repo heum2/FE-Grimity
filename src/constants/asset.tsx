@@ -67,4 +67,10 @@ export const ICONS = {
   paginationLeft: "/icon/pagination-left.svg",
   paginationRight: "/icon/pagination-right.svg",
   detailWrite: "/icon/board-detail-write.svg",
+  notiDelete: "/icon/noti-delete.svg",
+  notiDeleteAll: "/icon/noti-delete-all.svg",
+  notiRead: "/icon/noti-read.svg",
+  notiSetting: "/icon/noti-setting.svg",
+  notiClose: "/icon/noti-close.svg",
+  notiBack: "/icon/noti-back.svg",
 };

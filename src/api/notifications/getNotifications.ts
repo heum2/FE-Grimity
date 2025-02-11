@@ -1,19 +1,17 @@
 import BASE_URL from "@/constants/baseurl";
 import { useQuery } from "react-query";
+import { NotificationData } from "@grimity/shared-types";
 
 export interface NotificationsResponse {
-  type: "LIKE" | "COMMENT" | "FOLLOW";
   id: string;
-  actorId: string;
-  actorName: string;
   createdAt: string;
   isRead: boolean;
-  feedId?: string;
+  data: NotificationData;
 }
 
 export async function getNotifications(): Promise<NotificationsResponse[]> {
   const response = await BASE_URL.get("/notifications");
-  return response.data;
+  return response.data as NotificationsResponse[];
 }
 
 export function useGetNotifications() {

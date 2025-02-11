@@ -200,3 +200,12 @@
     }
   }
 }
+
+.notificationWrapper {
+  position: relative;
+
+  .notification {
+    cursor: pointer;
+    position: relative;
+  }
+}

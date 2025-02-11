@@ -1,0 +1,226 @@
+@import "@/styles/globals.scss";
+
+.container {
+  min-width: 500px;
+  height: 600px;
+  position: absolute;
+  padding: 40px 32px;
+  flex-direction: column;
+  align-items: flex-start;
+  border-radius: 12px;
+  background-color: $gray0;
+  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.15);
+  z-index: 15;
+  top: 100%;
+  right: -100%;
+  transform: translateY(10px);
+
+  .notification {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    .topSection {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      .titleContainer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .title {
+          @include Title3;
+          color: $gray70;
+        }
+
+        .headerBtns {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+
+          .settingButton {
+            padding: 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+          }
+
+          .closeButton {
+            padding: 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+
+    .notiSection {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 400px;
+      overflow-y: auto;
+
+      &::-webkit-scrollbar {
+        width: 5px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: $gray20;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+
+      &::-webkit-scrollbar-thumb:hover {
+        background: $gray30;
+      }
+    }
+
+    .noneNoti {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: $gray50;
+      @include Sub2;
+    }
+
+    .options {
+      width: 100%;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+
+      .option {
+        width: 100%;
+        border: 1px solid $gray30;
+        color: $gray70;
+        background-color: $gray0;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+        padding: 11px 20px;
+        border-radius: 10px;
+        @include Btn2;
+        line-height: 14px;
+        outline: none;
+        cursor: pointer;
+        @include Drag;
+
+        &:hover {
+          background-color: darken($gray0, 4%);
+        }
+
+        &:active {
+          background-color: darken($gray0, 8%);
+        }
+      }
+    }
+  }
+}
+
+.setting {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+
+  .topSection {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .titleContainer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .title {
+        @include Title3;
+        color: $gray70;
+      }
+
+      .backButton {
+        padding: 0;
+        background: none;
+        border: none;
+        cursor: pointer;
+      }
+
+      .closeButton {
+        padding: 0;
+        background: none;
+        border: none;
+        cursor: pointer;
+      }
+    }
+  }
+  .notiOption {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .column {
+      width: 100%;
+      height: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      align-self: stretch;
+    }
+
+    .bar {
+      width: 100%;
+      height: 1px;
+      background-color: $gray30;
+      margin: 20px 0;
+    }
+
+    .label {
+      @include Sub4;
+      color: $gray80;
+    }
+
+    .gap {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .toggle {
+      cursor: pointer;
+      transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+
+    .columnContainer {
+      display: flex;
+      align-items: flex-start;
+      gap: 40px;
+
+      .topLabel {
+        @include Sub4;
+        color: $gray60;
+        width: 100px;
+      }
+
+      .optionsContainer {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+    }
+  }
+}

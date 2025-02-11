@@ -10,6 +10,7 @@ import { authState } from "@/states/authState";
 import { useMyData } from "@/api/users/getMe";
 import { useRouter } from "next/router";
 import { useToast } from "@/utils/useToast";
+import Notifications from "@/components/Notifications/Notifications";
 
 export default function Header() {
   const [, setModal] = useRecoilState(modalState);
@@ -23,8 +24,9 @@ export default function Header() {
   const [keyword, setKeyword] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const notificationRef = useRef<HTMLDivElement>(null);
+  const [showNotifications, setShowNotifications] = useState(false);
   const { showToast } = useToast();
-
   const router = useRouter();
   const isUserPage = router.pathname.startsWith("/users/[id]");
   const isNavPage = ["/", "/popular", "/board", "/following", "/board/write"].includes(
@@ -38,6 +40,18 @@ export default function Header() {
     { name: "자유게시판", path: "/board" },
     { name: "팔로잉", path: "/following" },
   ];
+
+  let name: "bellWhiteActive" | "bellActive" | "bellWhite" | "bell";
+
+  if (myData?.hasNotification && isUserPage) {
+    name = "bellWhiteActive";
+  } else if (myData?.hasNotification && !isUserPage) {
+    name = "bellActive";
+  } else if (!myData?.hasNotification && isUserPage) {
+    name = "bellWhite";
+  } else {
+    name = "bell";
+  }
 
   const handleNavClick = (item: { name: string; path: string }) => {
     setActiveNav(item.name);
@@ -83,13 +97,20 @@ export default function Header() {
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
+      if (
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target as Node) &&
+        showNotifications
+      ) {
+        setShowNotifications(false);
+      }
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsDropdownOpen(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [showNotifications]);
 
   const handleClickLogo = () => {
     router.push("/");
@@ -97,6 +118,10 @@ export default function Header() {
 
   const handleSearchBarOpen = () => {
     setIsSearchBarOpen((prev) => !prev);
+  };
+
+  const toggleNotifications = () => {
+    setShowNotifications((prev) => !prev);
   };
 
   const handleSearchKeyDown = (e: React.KeyboardEvent) => {
@@ -181,16 +206,12 @@ export default function Header() {
                 />
               </div>
             )}
-            {isLoggedIn && (
-              <IconComponent
-                name={isUserPage ? "bellWhiteActive" : "bellActive"}
-                width={40}
-                height={40}
-                padding={0}
-                isBtn
-                alt="알림"
-              />
-            )}
+            <div className={styles.notificationWrapper} ref={notificationRef}>
+              <div className={styles.notification} onClick={toggleNotifications}>
+                <IconComponent name={name} width={40} height={40} alt="알림" isBtn />
+              </div>
+              {showNotifications && <Notifications onClose={() => setShowNotifications(false)} />}
+            </div>
           </div>
           {isLoggedIn && myData ? (
             <div className={styles.profileSection}>
