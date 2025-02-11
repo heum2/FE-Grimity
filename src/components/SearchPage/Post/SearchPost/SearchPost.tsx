@@ -39,7 +39,7 @@ export default function SearchPost() {
         ) : (
           <div className={styles.cards}>
             {posts.map((post) => (
-              <AllCard key={post.id} post={post} />
+              <AllCard key={post.id} post={post} case="board" />
             ))}
           </div>
         )}
