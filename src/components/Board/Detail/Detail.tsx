@@ -58,8 +58,12 @@ export default function PostDetail({ id }: PostDetailProps) {
     }
   };
 
-  const handleShowToast = () => {
-    showToast("신고되었습니다.", "information");
+  const handleOpenReportModal = () => {
+    setModal({
+      isOpen: true,
+      type: "REPORT",
+      data: { refType: "POST", refId: posts?.author.id },
+    });
   };
 
   const handleLikeClick = async () => {
@@ -184,7 +188,7 @@ export default function PostDetail({ id }: PostDetailProps) {
                       menuItems={[
                         {
                           label: "신고하기",
-                          onClick: handleShowToast,
+                          onClick: handleOpenReportModal,
                           isDelete: true,
                         },
                       ]}
@@ -268,7 +272,7 @@ export default function PostDetail({ id }: PostDetailProps) {
                     },
                     {
                       label: "신고하기",
-                      onClick: handleShowToast,
+                      onClick: handleOpenReportModal,
                       isDelete: true,
                     },
                   ]}

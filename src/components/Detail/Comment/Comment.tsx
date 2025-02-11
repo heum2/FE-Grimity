@@ -123,8 +123,17 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
     }
   };
 
-  const handleReport = () => {
-    showToast("신고 처리 로직 추가 필요합니다.", "success");
+  const handleReport = (id?: string) => {
+    if (!id) {
+      showToast("신고할 대상을 찾을 수 없습니다.", "error");
+      return;
+    }
+
+    setModal({
+      isOpen: true,
+      type: "REPORT",
+      data: { refType: "FEED_COMMENT", refId: id },
+    });
   };
 
   const handleCommentDelete = async (id: string) => {
@@ -320,7 +329,7 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
                           menuItems={[
                             {
                               label: "신고하기",
-                              onClick: handleReport,
+                              onClick: () => handleReport(reply.writer?.id),
                               isDelete: true,
                             },
                           ]}
@@ -433,7 +442,7 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
                       menuItems={[
                         {
                           label: "신고하기",
-                          onClick: handleReport,
+                          onClick: () => handleReport(comment.writer?.id),
                           isDelete: true,
                         },
                       ]}

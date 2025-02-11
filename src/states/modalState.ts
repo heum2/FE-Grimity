@@ -11,7 +11,8 @@ export type ModalType =
   | "SHARE"
   | "SHAREPOST"
   | "UPLOAD"
-  | "LIKE";
+  | "LIKE"
+  | "REPORT";
 
 export interface ModalState {
   isOpen: boolean;

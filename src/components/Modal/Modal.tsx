@@ -14,6 +14,7 @@ import Share from "./Share/Share";
 import UploadModal from "./Upload/Upload";
 import SharePost from "./SharePost/SharePost";
 import Like from "./Like/Like";
+import Report from "./Report/Report";
 
 export default function Modal() {
   const [modal, setModal] = useRecoilState(modalState);
@@ -49,6 +50,8 @@ export default function Modal() {
         return <UploadModal {...modal.data} />;
       case "LIKE":
         return <Like />;
+      case "REPORT":
+        return <Report {...modal.data} />;
       default:
         return null;
     }

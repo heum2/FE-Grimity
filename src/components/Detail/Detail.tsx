@@ -154,8 +154,12 @@ export default function Detail({ id }: DetailProps) {
     }
   };
 
-  const handleShowToast = () => {
-    showToast("신고되었습니다.", "information");
+  const handleOpenReportModal = () => {
+    setModal({
+      isOpen: true,
+      type: "REPORT",
+      data: { refType: "FEED", refId: details?.author.id },
+    });
   };
 
   return (
@@ -249,7 +253,7 @@ export default function Detail({ id }: DetailProps) {
                         menuItems={[
                           {
                             label: "신고하기",
-                            onClick: handleShowToast,
+                            onClick: handleOpenReportModal,
                             isDelete: true,
                           },
                         ]}
@@ -418,7 +422,7 @@ export default function Detail({ id }: DetailProps) {
                       },
                       {
                         label: "신고하기",
-                        onClick: handleShowToast,
+                        onClick: handleOpenReportModal,
                         isDelete: true,
                       },
                     ]}
