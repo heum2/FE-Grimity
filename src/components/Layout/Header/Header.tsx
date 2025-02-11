@@ -206,12 +206,14 @@ export default function Header() {
                 />
               </div>
             )}
-            <div className={styles.notificationWrapper} ref={notificationRef}>
-              <div className={styles.notification} onClick={toggleNotifications}>
-                <IconComponent name={name} width={40} height={40} alt="알림" isBtn />
+            {isLoggedIn && myData && (
+              <div className={styles.notificationWrapper} ref={notificationRef}>
+                <div className={styles.notification} onClick={toggleNotifications}>
+                  <IconComponent name={name} width={40} height={40} alt="알림" isBtn />
+                </div>
+                {showNotifications && <Notifications onClose={() => setShowNotifications(false)} />}
               </div>
-              {showNotifications && <Notifications onClose={() => setShowNotifications(false)} />}
-            </div>
+            )}
           </div>
           {isLoggedIn && myData ? (
             <div className={styles.profileSection}>
