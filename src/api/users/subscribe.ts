@@ -8,6 +8,15 @@ export type SubscriptionType =
   | "POST_COMMENT"
   | "POST_REPLY";
 
+export const SubscriptionTypes = [
+  "FOLLOW",
+  "FEED_LIKE",
+  "FEED_COMMENT",
+  "FEED_REPLY",
+  "POST_COMMENT",
+  "POST_REPLY",
+] as const;
+
 export interface SubscribeResponse {
   subscription: SubscriptionType[];
 }
@@ -22,6 +31,9 @@ export async function getSubscribe(): Promise<SubscribeResponse> {
 }
 
 export async function putSubscribe({ type }: SubscribeRequest): Promise<Response> {
-  const response = await BASE_URL.put(`/users/me/subscribe?type=${type}`);
+  const payload = {
+    subscription: type === "ALL" ? SubscriptionTypes : [type],
+  };
+  const response = await BASE_URL.put(`/users/me/subscribe`, payload);
   return response.data;
 }
