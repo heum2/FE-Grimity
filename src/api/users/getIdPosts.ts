@@ -8,7 +8,7 @@ export interface UserPostsRequest {
 
 export interface UserPostsResponse {
   id: string;
-  type: "normal" | "question" | "feedback" | "notice";
+  type: "NORMAL" | "QUESTION" | "FEEDBACK" | "NOTICE";
   title: string;
   content: string;
   hasImage?: boolean;

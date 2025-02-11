@@ -13,7 +13,7 @@ export default function MainBoard({ type }: MainBoardProps) {
   const { data: popularPosts, isLoading: isPopularLoading } = useTodayPopularPosts();
 
   useEffect(() => {
-    if (type !== "popular") {
+    if (type !== "POPULAR") {
       const fetchPosts = async () => {
         try {
           const response = await getPostsLatest({
@@ -33,17 +33,17 @@ export default function MainBoard({ type }: MainBoardProps) {
     }
   }, [type]);
 
-  if ((type === "popular" && isPopularLoading) || (type !== "popular" && isLoading)) {
+  if ((type === "POPULAR" && isPopularLoading) || (type !== "POPULAR" && isLoading)) {
     return <Loader />;
   }
 
   const getTitle = () => {
     switch (type) {
-      case "popular":
+      case "POPULAR":
         return "자유게시판 인기글";
-      case "feedback":
+      case "FEEDBACK":
         return "피드백을 기다리고 있어요";
-      case "question":
+      case "QUESTION":
         return "새로 올라온 질문 글";
       default:
         return "";
@@ -52,11 +52,11 @@ export default function MainBoard({ type }: MainBoardProps) {
 
   const getLink = () => {
     switch (type) {
-      case "popular":
+      case "POPULAR":
         return "/board";
-      case "feedback":
+      case "FEEDBACK":
         return "/board?type=feedback&page=1";
-      case "question":
+      case "QUESTION":
         return "/board?type=question&page=1";
       default:
         return "/board";
@@ -67,7 +67,7 @@ export default function MainBoard({ type }: MainBoardProps) {
     <div className={styles.container}>
       <Title link={getLink()}>{getTitle()}</Title>
       <section className={styles.cardSection}>
-        {type === "popular"
+        {type === "POPULAR"
           ? popularPosts?.slice(0, 4).map((post, index, arr) => (
               <React.Fragment key={post.id}>
                 <BoardCard {...post} />

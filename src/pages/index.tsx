@@ -36,11 +36,11 @@ export default function Home() {
           <NewFeed />
         </section>
         <section className={styles.BoardSection}>
-          <MainBoard type="popular" />
+          <MainBoard type="POPULAR" />
           <div className={styles.bar} />
-          <MainBoard type="feedback" />
+          <MainBoard type="FEEDBACK" />
           <div className={styles.bar} />
-          <MainBoard type="question" />
+          <MainBoard type="QUESTION" />
         </section>
       </div>
     </>

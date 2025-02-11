@@ -1,3 +1,3 @@
 export interface MainBoardProps {
-  type: "popular" | "feedback" | "question";
+  type: "POPULAR" | "FEEDBACK" | "QUESTION";
 }
