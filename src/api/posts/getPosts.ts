@@ -3,12 +3,12 @@ import BASE_URL from "@/constants/baseurl";
 export interface PostsLatestRequest {
   size: number;
   page: number;
-  type: "all" | "question" | "feedback";
+  type: "ALL" | "QUESTION" | "FEEDBACK";
 }
 
 export interface PostsLatest {
   id: string;
-  type: "normal" | "question" | "feedback";
+  type: "NORMAL" | "QUESTION" | "FEEDBACK";
   title: string;
   content: string;
   hasImage?: boolean;
@@ -29,7 +29,7 @@ export interface PostsLatestResponse {
 export async function getPostsLatest({
   size = 10,
   page = 1,
-  type = "all",
+  type = "ALL",
 }: PostsLatestRequest): Promise<PostsLatestResponse> {
   try {
     const response = await BASE_URL.get("/posts", {

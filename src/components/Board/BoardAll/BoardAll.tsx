@@ -31,7 +31,7 @@ export default function BoardAll({ isDetail }: BoardAllProps) {
   const [keyword, setKeyword] = useState("");
   const router = useRouter();
   const { query } = router;
-  const currentType = (query.type as string)?.toLowerCase() || "all";
+  const currentType = (query.type as string) || "ALL";
   const currentPage = Number(query.page) || 1;
   const totalPages = Math.ceil(totalCount / 10);
   const { showToast } = useToast();
@@ -65,7 +65,7 @@ export default function BoardAll({ isDetail }: BoardAllProps) {
         const notices = noticesResponse;
 
         const latestResponse = await getPostsLatest({
-          type: currentType as "all" | "question" | "feedback",
+          type: currentType as "ALL" | "QUESTION" | "FEEDBACK",
           page: currentPage,
           size: 10,
         });
@@ -82,7 +82,7 @@ export default function BoardAll({ isDetail }: BoardAllProps) {
     fetchPosts();
   }, [currentType, currentPage, query.keyword]);
 
-  const handleTabChange = (type: "all" | "question" | "feedback") => {
+  const handleTabChange = (type: "ALL" | "QUESTION" | "FEEDBACK") => {
     const newQuery: { type: string; page: number; searchBy?: string; keyword?: string } = {
       ...query,
       type: type.toLowerCase(),
@@ -151,21 +151,21 @@ export default function BoardAll({ isDetail }: BoardAllProps) {
           <section className={styles.types}>
             <button
               className={`${styles.type} ${currentType === "all" ? styles.active : ""}`}
-              onClick={() => handleTabChange("all")}
+              onClick={() => handleTabChange("ALL")}
             >
               전체
             </button>
             <Image src="/icon/dot.svg" width={3} height={3} alt="" />
             <button
               className={`${styles.type} ${currentType === "question" ? styles.active : ""}`}
-              onClick={() => handleTabChange("question")}
+              onClick={() => handleTabChange("QUESTION")}
             >
               질문
             </button>
             <Image src="/icon/dot.svg" width={3} height={3} alt="" />
             <button
               className={`${styles.type} ${currentType === "feedback" ? styles.active : ""}`}
-              onClick={() => handleTabChange("feedback")}
+              onClick={() => handleTabChange("FEEDBACK")}
             >
               피드백
             </button>

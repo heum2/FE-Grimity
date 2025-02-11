@@ -1,7 +1,7 @@
 export interface AllCardProps {
   post: {
     id: string;
-    type: "normal" | "question" | "feedback" | "notice";
+    type: "NORMAL" | "QUESTION" | "FEEDBACK" | "NOTICE";
     title: string;
     content: string;
     hasImage?: boolean;

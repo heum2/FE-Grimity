@@ -83,7 +83,7 @@ export default function AllCard({ post, case: cardCase }: AllCardProps) {
   return (
     <div className={styles.container}>
       <div className={styles.chipContainer}>
-        {post.type === "notice" ? (
+        {post.type === "NOTICE" ? (
           <Chip size="s" type="filled-secondary">
             {getTypeLabel(post.type)}
           </Chip>
@@ -97,7 +97,7 @@ export default function AllCard({ post, case: cardCase }: AllCardProps) {
         <Link href={`/posts/${post.id}`}>
           <div className={styles.titleContent}>
             <div className={styles.titleContainer}>
-              <h2 className={post.type === "notice" ? styles.noticeTitle : styles.title}>
+              <h2 className={post.type === "NOTICE" ? styles.noticeTitle : styles.title}>
                 {post.title}
               </h2>
               {post.hasImage && <IconComponent name="boardAllImage" width={16} height={16} />}
@@ -167,7 +167,7 @@ export default function AllCard({ post, case: cardCase }: AllCardProps) {
               </div>
             </div>
           )}
-          {post.type !== "notice" && post.author && (
+          {post.type !== "NOTICE" && post.author && (
             <Link href={`/users/${post.author.id}`}>
               <p className={styles.author}>{post.author.name}</p>
             </Link>

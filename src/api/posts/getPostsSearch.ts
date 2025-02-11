@@ -10,7 +10,7 @@ export interface PostSearchRequest {
 
 export interface PostSearch {
   id: string;
-  type: "normal" | "question" | "feedback";
+  type: "NORMAL" | "QUESTION" | "FEEDBACK";
   title: string;
   createdAt: string;
   content: string;
