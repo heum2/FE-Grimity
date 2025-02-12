@@ -19,6 +19,7 @@ import { useMutation } from "react-query";
 import { putProfileImage } from "@/api/users/putMeImage";
 import { AxiosError } from "axios";
 import { deleteMyBackgroundImage, deleteMyProfileImage } from "@/api/users/deleteMeImage";
+import Dropdown from "@/components/Dropdown/Dropdown";
 
 export default function Profile({ isMyProfile, id }: ProfileProps) {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
@@ -172,6 +173,14 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
     }
   };
 
+  const handleOpenReportModal = () => {
+    setModal({
+      isOpen: true,
+      type: "REPORT",
+      data: { refType: "USER", refId: userData?.id },
+    });
+  };
+
   return (
     <div className={styles.container}>
       {userData && (
@@ -253,149 +262,209 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                 : styles.infoContainerDefault
             }
           >
-            {userData.image !== "https://image.grimity.com/null" ? (
-              <div className={styles.profileImageContainer}>
-                {profileImage && (
+            <div className={styles.imageLeft}>
+              {userData.image !== "https://image.grimity.com/null" ? (
+                <div className={styles.profileImageContainer}>
+                  {profileImage && (
+                    <Image
+                      src={profileImage}
+                      width={140}
+                      height={140}
+                      alt="프로필 이미지"
+                      className={styles.profileImage}
+                    />
+                  )}
+                  {userData.id === user_id && (
+                    <>
+                      <label htmlFor="upload-image">
+                        <Image
+                          src="/icon/edit-profile-image.svg"
+                          width={40}
+                          height={40}
+                          alt="프로필 이미지 수정"
+                          className={styles.addProfileImage}
+                        />
+                      </label>
+                      <input
+                        id="upload-image"
+                        type="file"
+                        accept="image/*"
+                        className={styles.hidden}
+                        onChange={handleFileChange}
+                      />
+                      <div className={styles.deleteImageBtn} onClick={handleDeleteProfileImage}>
+                        <IconComponent name="deleteProfile" width={40} height={40} isBtn />
+                      </div>
+                    </>
+                  )}
+                </div>
+              ) : (
+                <div className={styles.profileImageContainer}>
                   <Image
-                    src={profileImage}
+                    src="/image/default.svg"
                     width={140}
                     height={140}
                     alt="프로필 이미지"
                     className={styles.profileImage}
                   />
-                )}
-                {userData.id === user_id && (
-                  <>
-                    <label htmlFor="upload-image">
-                      <Image
-                        src="/icon/edit-profile-image.svg"
-                        width={40}
-                        height={40}
-                        alt="프로필 이미지 수정"
-                        className={styles.addProfileImage}
+                  {userData.id === user_id && (
+                    <>
+                      <label htmlFor="upload-image">
+                        <Image
+                          src="/icon/add-profile-image.svg"
+                          width={40}
+                          height={40}
+                          alt="프로필 이미지 추가"
+                          className={styles.addProfileImage}
+                        />
+                      </label>
+                      <input
+                        id="upload-image"
+                        type="file"
+                        accept="image/*"
+                        className={styles.hidden}
+                        onChange={handleFileChange}
                       />
-                    </label>
-                    <input
-                      id="upload-image"
-                      type="file"
-                      accept="image/*"
-                      className={styles.hidden}
-                      onChange={handleFileChange}
-                    />
-                    <div className={styles.deleteImageBtn} onClick={handleDeleteProfileImage}>
-                      <IconComponent name="deleteProfile" width={40} height={40} isBtn />
-                    </div>
-                  </>
-                )}
-              </div>
-            ) : (
-              <div className={styles.profileImageContainer}>
-                <Image
-                  src="/image/default.svg"
-                  width={140}
-                  height={140}
-                  alt="프로필 이미지"
-                  className={styles.profileImage}
-                />
-                {userData.id === user_id && (
-                  <>
-                    <label htmlFor="upload-image">
-                      <Image
-                        src="/icon/add-profile-image.svg"
-                        width={40}
-                        height={40}
-                        alt="프로필 이미지 추가"
-                        className={styles.addProfileImage}
-                      />
-                    </label>
-                    <input
-                      id="upload-image"
-                      type="file"
-                      accept="image/*"
-                      className={styles.hidden}
-                      onChange={handleFileChange}
-                    />
-                  </>
-                )}
-              </div>
-            )}
-            <div className={styles.leftContainer}>
-              <div className={styles.topContainer}>
-                <h2 className={styles.name}>{userData.name}</h2>
-              </div>
-              {userData.id === user_id ? (
-                <div className={styles.follow}>
-                  <div className={styles.myfollower} onClick={handleOpenFollowerModal}>
-                    팔로워
-                    <p className={styles.followerColor}>{formatCurrency(userData.followerCount)}</p>
-                  </div>
-                  <div className={styles.myfollower} onClick={handleOpenFollowingModal}>
-                    팔로잉
-                    <p className={styles.followerColor}>
-                      {formatCurrency(userData.followingCount)}
-                    </p>
-                  </div>
-                </div>
-              ) : (
-                <div className={styles.follow}>
-                  <div className={styles.follower}>
-                    팔로워
-                    <p className={styles.followerColor}>{formatCurrency(userData.followerCount)}</p>
-                  </div>
-                  <div className={styles.follower}>
-                    팔로잉
-                    <p className={styles.followerColor}>
-                      {formatCurrency(userData.followingCount)}
-                    </p>
-                  </div>
+                    </>
+                  )}
                 </div>
               )}
-              <div
-                className={styles.descriptionContainer}
-                style={{
-                  gap: userData.description && userData.links.length > 0 ? "20px" : "0",
-                }}
-              >
-                {userData.description !== "" && (
-                  <p className={styles.description}>{userData.description}</p>
+              <div className={styles.leftContainer}>
+                <div className={styles.topContainer}>
+                  <h2 className={styles.name}>{userData.name}</h2>
+                </div>
+                {userData.id === user_id ? (
+                  <div className={styles.follow}>
+                    <div className={styles.myfollower} onClick={handleOpenFollowerModal}>
+                      팔로워
+                      <p className={styles.followerColor}>
+                        {formatCurrency(userData.followerCount)}
+                      </p>
+                    </div>
+                    <div className={styles.myfollower} onClick={handleOpenFollowingModal}>
+                      팔로잉
+                      <p className={styles.followerColor}>
+                        {formatCurrency(userData.followingCount)}
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className={styles.follow}>
+                    <div className={styles.follower}>
+                      팔로워
+                      <p className={styles.followerColor}>
+                        {formatCurrency(userData.followerCount)}
+                      </p>
+                    </div>
+                    <div className={styles.follower}>
+                      팔로잉
+                      <p className={styles.followerColor}>
+                        {formatCurrency(userData.followingCount)}
+                      </p>
+                    </div>
+                  </div>
                 )}
-                <div className={styles.linkContainer}>
-                  {userData.links.map(({ linkName, link }, index) => {
-                    const isEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(link);
+                <div
+                  className={styles.descriptionContainer}
+                  style={{
+                    gap: userData.description && userData.links.length > 0 ? "20px" : "0",
+                  }}
+                >
+                  {userData.description !== "" && (
+                    <p className={styles.description}>{userData.description}</p>
+                  )}
+                  <div className={styles.linkContainer}>
+                    {userData.links.map(({ linkName, link }, index) => {
+                      const isEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(
+                        link
+                      );
 
-                    return (
-                      <div key={index} className={styles.linkWrapper}>
-                        <IconComponent name="link" width={20} height={20} />
-                        <a
-                          href={isEmail ? `mailto:${link}` : link}
-                          className={styles.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {linkName}
-                        </a>
-                      </div>
-                    );
-                  })}
+                      return (
+                        <div key={index} className={styles.linkWrapper}>
+                          <IconComponent name="link" width={20} height={20} />
+                          <a
+                            href={isEmail ? `mailto:${link}` : link}
+                            className={styles.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {linkName}
+                          </a>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
-              <div className={styles.followEdit}>
-                {isLoggedIn ? (
-                  isMyProfile ? (
+            </div>
+            <div className={styles.followEdit}>
+              {isLoggedIn ? (
+                isMyProfile ? (
+                  <div className={styles.editBtn}>
                     <Button size="l" type="outlined-assistive" onClick={handleOpenEditModal}>
                       프로필 편집
                     </Button>
-                  ) : userData.isFollowing ? (
-                    <Button size="l" type="outlined-assistive" onClick={handleUnfollowClick}>
-                      팔로잉
-                    </Button>
-                  ) : (
-                    <Button size="l" type="filled-primary" onClick={handleFollowClick}>
-                      팔로우
-                    </Button>
-                  )
-                ) : null}
-              </div>
+                  </div>
+                ) : userData.isFollowing ? (
+                  <>
+                    <div className={styles.followBtn}>
+                      <Button size="l" type="outlined-assistive" onClick={handleUnfollowClick}>
+                        팔로잉
+                      </Button>
+                    </div>
+                    <div className={styles.dropdown}>
+                      <Dropdown
+                        trigger={
+                          <div className={styles.menuBtn}>
+                            <Image
+                              src="/icon/meatball.svg"
+                              width={20}
+                              height={20}
+                              alt="메뉴 버튼 "
+                            />
+                          </div>
+                        }
+                        menuItems={[
+                          {
+                            label: "신고하기",
+                            onClick: handleOpenReportModal,
+                            isDelete: true,
+                          },
+                        ]}
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className={styles.followBtn}>
+                      <Button size="l" type="filled-primary" onClick={handleFollowClick}>
+                        팔로우
+                      </Button>
+                    </div>
+                    <div className={styles.dropdown}>
+                      <Dropdown
+                        trigger={
+                          <div className={styles.menuBtn}>
+                            <Image
+                              src="/icon/meatball.svg"
+                              width={20}
+                              height={20}
+                              alt="메뉴 버튼 "
+                            />
+                          </div>
+                        }
+                        menuItems={[
+                          {
+                            label: "신고하기",
+                            onClick: handleOpenReportModal,
+                            isDelete: true,
+                          },
+                        ]}
+                      />
+                    </div>
+                  </>
+                )
+              ) : null}
             </div>
           </section>
         </>

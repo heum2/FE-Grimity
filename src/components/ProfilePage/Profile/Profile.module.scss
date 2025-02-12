@@ -86,12 +86,20 @@
     margin-top: calc(400px - 73px);
     width: 100%;
     display: flex;
-    gap: 30px;
+    align-items: flex-start;
+    justify-content: space-between;
   }
 
   .infoContainerDefault {
     @extend .infoContainer;
     margin-top: calc(264px - 73px);
+  }
+
+  .imageLeft {
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+    gap: 30px;
   }
 
   .topContainer {
@@ -109,7 +117,6 @@
   .leftContainer {
     display: flex;
     flex-direction: column;
-    min-width: 785px;
 
     .descriptionContainer {
       display: flex;
@@ -123,12 +130,6 @@
       margin-top: 12px;
       white-space: pre-line;
     }
-  }
-
-  .followEdit {
-    display: flex;
-    align-items: center;
-    gap: 40px;
   }
 
   .follow {
@@ -177,8 +178,47 @@
 }
 
 .followEdit {
-  margin-top: 24px;
-  width: 125px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .editBtn {
+    width: 125px;
+  }
+
+  .followBtn {
+    width: 95px;
+  }
+
+  .menuBtn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    @include Drag;
+    border: 1px solid $gray30;
+    color: $gray70;
+    background-color: $gray0;
+    width: 100%;
+    padding: 14px 14px;
+    border-radius: 12px;
+    @include Btn1;
+
+    &:hover {
+      background-color: darken($gray0, 4%);
+    }
+
+    &:active {
+      background-color: darken($gray0, 8%);
+    }
+  }
+
+  .dropdown {
+    cursor: pointer;
+    position: relative;
+  }
 }
 
 .profileImageContainer {
@@ -213,6 +253,7 @@
     cursor: pointer;
   }
 }
+
 .hidden {
   display: none;
 }
