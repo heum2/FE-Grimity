@@ -136,6 +136,17 @@ export default function BoardWrite() {
                 skin_url: "/tinymce/skins/ui/oxide",
                 icons_url: "/tinymce/icons/default/icons.js",
                 statusbar: false,
+                indent: false,
+                indent_use_margin: true,
+                indent_size: 4,
+                setup: (editor) => {
+                  editor.on("keydown", (event) => {
+                    if (event.key === "Tab") {
+                      event.preventDefault();
+                      editor.execCommand("mceInsertContent", false, "&nbsp;&nbsp;&nbsp;&nbsp;");
+                    }
+                  });
+                },
                 images_upload_handler: async (
                   blobInfo: { filename: () => string; blob: () => Blob },
                   progress: (progress: number) => void
