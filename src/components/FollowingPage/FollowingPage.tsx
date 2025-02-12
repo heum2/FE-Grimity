@@ -65,7 +65,7 @@ export default function FollowingPage() {
 
   if (isUserDataLoading) return <Loader />;
 
-  if (isLoading || recommendIsLoading || !params) return <Loader />;
+  if (isLoading || recommendIsLoading) return <Loader />;
 
   const isFeedEmpty =
     !data || data.pages.length === 0 || data.pages.every((page) => page.feeds?.length === 0);
