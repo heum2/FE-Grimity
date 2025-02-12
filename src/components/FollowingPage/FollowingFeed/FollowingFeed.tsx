@@ -29,9 +29,10 @@ import { useMyData } from "@/api/users/getMe";
 
 interface FollowingFeedProps {
   id: string;
+  commentCount: number;
 }
 
-export default function FollowingFeed({ id }: FollowingFeedProps) {
+export default function FollowingFeed({ id, commentCount }: FollowingFeedProps) {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
   const { data: myData } = useMyData();
   const { data: details, isLoading } = useDetails(id);
@@ -46,7 +47,7 @@ export default function FollowingFeed({ id }: FollowingFeedProps) {
   const [overlayImage, setOverlayImage] = useState<string | null>(null);
   const router = useRouter();
   const [, setModal] = useRecoilState(modalState);
-  const { data: comments, refetch: refetchComments } = useGetFeedsComments({ feedId: id });
+  const { refetch: refetchComments } = useGetFeedsComments({ feedId: id });
   const [isContentTooLong, setIsContentTooLong] = useState(false);
   const contentRef = useRef<HTMLParagraphElement | null>(null);
 
@@ -86,7 +87,9 @@ export default function FollowingFeed({ id }: FollowingFeedProps) {
   }
 
   const handleCommentSubmitSuccess = () => {
-    refetchComments();
+    if (isCommentExpanded) {
+      refetchComments();
+    }
   };
 
   const handleShowMore = () => {
@@ -95,6 +98,9 @@ export default function FollowingFeed({ id }: FollowingFeedProps) {
 
   const handleCommentShowMore = () => {
     setIsCommentExpanded(!isCommentExpanded);
+    if (!isCommentExpanded) {
+      refetchComments();
+    }
   };
 
   const handleDelete = async () => {
@@ -422,9 +428,9 @@ export default function FollowingFeed({ id }: FollowingFeedProps) {
               showToast={showToast}
               onCommentSubmitSuccess={handleCommentSubmitSuccess}
             />
-            {comments?.commentCount !== 0 && (
+            {commentCount !== 0 && (
               <div onClick={handleCommentShowMore} className={styles.commentShowMore}>
-                {isCommentExpanded ? "댓글 숨기기" : `댓글 ${comments?.commentCount}개 보기`}
+                {isCommentExpanded ? "댓글 숨기기" : `댓글 ${commentCount}개 보기`}
                 {isCommentExpanded ? (
                   <IconComponent name="commentUp" width={16} height={16} isBtn />
                 ) : (

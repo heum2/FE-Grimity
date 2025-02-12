@@ -49,8 +49,12 @@ export async function getFeedsComments({
 }
 
 export function useGetFeedsComments({ feedId }: FeedsCommentsRequest) {
-  return useQuery<FeedsCommentsResponse>(["getFeedsComments", feedId], () =>
-    getFeedsComments({ feedId })
+  return useQuery<FeedsCommentsResponse>(
+    ["getFeedsComments", feedId],
+    () => getFeedsComments({ feedId }),
+    {
+      enabled: false,
+    }
   );
 }
 
@@ -101,7 +105,11 @@ export async function getFeedsChildComments({
 }
 
 export function useGetFeedsChildComments({ feedId, parentId }: FeedsChildCommentsRequest) {
-  return useQuery<FeedsChildComment[]>(["getFeedsChildComments", feedId, parentId], () =>
-    getFeedsChildComments({ feedId, parentId })
+  return useQuery<FeedsChildComment[]>(
+    ["getFeedsChildComments", feedId, parentId],
+    () => getFeedsChildComments({ feedId, parentId }),
+    {
+      enabled: false,
+    }
   );
 }

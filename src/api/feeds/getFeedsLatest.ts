@@ -1,5 +1,5 @@
 import BASE_URL from "@/constants/baseurl";
-import { useInfiniteQuery } from "react-query";
+import { useState } from "react";
 
 export interface FeedsLatestRequest {
   size?: number;
@@ -53,11 +53,31 @@ export async function getFeedsLatest({
 }
 
 export function useFeedsLatest({ size }: FeedsLatestRequest) {
-  return useInfiniteQuery<FeedsLatestResponse>(
-    "feedsLatest",
-    ({ pageParam = null }) => getFeedsLatest({ size, cursor: pageParam }),
-    {
-      getNextPageParam: (lastPage) => lastPage.nextCursor || null,
+  const [feeds, setFeeds] = useState<FeedsLatest[]>([]);
+  const [nextCursor, setNextCursor] = useState<string | undefined>(undefined);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+
+  const fetchFeedsLatest = async () => {
+    if (!hasMore || isLoading) return;
+
+    setIsLoading(true);
+    try {
+      const response = await getFeedsLatest({ size, cursor: nextCursor || undefined });
+      setFeeds((prev) => [...prev, ...response.feeds]);
+      setNextCursor(response.nextCursor || undefined);
+      setHasMore(!!response.nextCursor);
+    } catch (error) {
+      console.error("Failed to fetch feeds:", error);
+    } finally {
+      setIsLoading(false);
     }
-  );
+  };
+
+  return {
+    feeds,
+    fetchFeedsLatest,
+    isLoading,
+    hasMore,
+  };
 }

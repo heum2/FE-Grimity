@@ -5,15 +5,16 @@ import IconComponent from "@/components/Asset/Icon";
 import FeedCard from "./FeedCard/FeedCard";
 import { usePopularFeed } from "@/api/feeds/getPopular";
 import { useRef, useEffect } from "react";
+import Loader from "@/components/Layout/Loader/Loader";
 
 export default function PopularFeed() {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = usePopularFeed();
+  const { data, fetchNextPage, isLoading, hasMore } = usePopularFeed();
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
+        if (entry.isIntersecting && hasMore && !isLoading) {
           fetchNextPage();
         }
       },
@@ -31,7 +32,9 @@ export default function PopularFeed() {
         observer.unobserve(loadMoreRef.current);
       }
     };
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+  }, [fetchNextPage, hasMore, isLoading]);
+
+  if (isLoading) <Loader />;
 
   return (
     <div className={styles.container}>
@@ -48,7 +51,9 @@ export default function PopularFeed() {
         </div>
       </div>
       <section className={styles.feedContainer}>
-        {data?.pages.map((page) => page.feeds.map((feed) => <FeedCard key={feed.id} {...feed} />))}
+        {data.map((feed) => (
+          <FeedCard key={feed.id} {...feed} />
+        ))}
       </section>
       <div ref={loadMoreRef} />
     </div>
