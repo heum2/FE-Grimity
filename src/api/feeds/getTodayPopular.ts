@@ -79,7 +79,7 @@ export function useTodayPopular(size: number) {
   };
 
   return {
-    feeds,
+    data: { feeds },
     fetchTodayPopular,
     isLoading,
     hasMore,
