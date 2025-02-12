@@ -9,7 +9,7 @@ import IconComponent from "@/components/Asset/Icon";
 import Button from "@/components/Button/Button";
 import router from "next/router";
 import { authState } from "@/states/authState";
-import { useToast } from "@/utils/useToast";
+import { useToast } from "@/hooks/useToast";
 
 export default function Nickname() {
   const [nickname, setNickname] = useState("");

@@ -6,7 +6,7 @@ import { useMutation } from "react-query";
 import { authState } from "@/states/authState";
 import { modalState } from "@/states/modalState";
 import { useGoogleLogin } from "@react-oauth/google";
-import { useToast } from "@/utils/useToast";
+import { useToast } from "@/hooks/useToast";
 import IconComponent from "@/components/Asset/Icon";
 
 interface AuthObj {

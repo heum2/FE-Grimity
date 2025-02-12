@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useToast } from "@/utils/useToast";
+import { useToast } from "@/hooks/useToast";
 import styles from "./Report.module.scss";
 import { modalState } from "@/states/modalState";
 import { useRecoilState } from "recoil";

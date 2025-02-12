@@ -1,4 +1,4 @@
-import { useToast } from "@/utils/useToast";
+import { useToast } from "@/hooks/useToast";
 import Image from "next/image";
 import styles from "./SharePost.module.scss";
 import { modalState } from "@/states/modalState";

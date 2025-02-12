@@ -6,7 +6,7 @@ import { useRecoilState } from "recoil";
 import { modalState } from "@/states/modalState";
 import Button from "@/components/Button/Button";
 import styles from "./Background.module.scss";
-import { useToast } from "@/utils/useToast";
+import { useToast } from "@/hooks/useToast";
 import { postPresignedUrl } from "@/api/aws/postPresigned";
 import { putBackgroundImage } from "@/api/users/putMeImage";
 import router from "next/router";

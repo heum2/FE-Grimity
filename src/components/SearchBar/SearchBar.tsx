@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import IconComponent from "../Asset/Icon";
 import styles from "./SearchBar.module.scss";
 import { SearchBarProps } from "./SearchBar.types";
-import { useToast } from "@/utils/useToast";
+import { useToast } from "@/hooks/useToast";
 
 export default function SearchBar({ searchValue, setSearchValue, onSearch }: SearchBarProps) {
   const router = useRouter();

@@ -11,7 +11,7 @@ import {
   FeedsCommentsResponse,
 } from "@/api/feeds-comments/getFeedComments";
 import { CommentProps } from "./Comment.types";
-import { useToast } from "@/utils/useToast";
+import { useToast } from "@/hooks/useToast";
 import { deleteComments } from "@/api/feeds-comments/deleteFeedComment";
 import { useMutation, useQueryClient } from "react-query";
 import Link from "next/link";

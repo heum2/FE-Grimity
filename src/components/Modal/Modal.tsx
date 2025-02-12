@@ -3,7 +3,7 @@ import styles from "./Modal.module.scss";
 import { modalState } from "@/states/modalState";
 import Login from "./Login/Login";
 import Nickname from "./Nickname/Nickname";
-import { usePreventScroll } from "@/utils/usePreventScroll";
+import { usePreventScroll } from "@/hooks/usePreventScroll";
 import IconComponent from "../Asset/Icon";
 import Join from "./Join/Join";
 import ProfileEdit from "./ProfileEdit/ProfileEdit";

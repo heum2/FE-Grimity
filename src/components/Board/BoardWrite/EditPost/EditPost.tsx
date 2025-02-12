@@ -8,7 +8,7 @@ import TextField from "@/components/TextField/TextField";
 import { useMutation } from "react-query";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
-import { useToast } from "@/utils/useToast";
+import { useToast } from "@/hooks/useToast";
 import Loader from "@/components/Layout/Loader/Loader";
 import { EditPostsRequest, putEditPosts } from "@/api/posts/putPostsId";
 import { EditPostProps } from "./EditPost.types";

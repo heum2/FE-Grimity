@@ -11,7 +11,7 @@ import { getPostsLatest, getPostsNotices, PostsLatest } from "@/api/posts/getPos
 import { useRecoilValue } from "recoil";
 import { authState } from "@/states/authState";
 import { BoardAllProps } from "./BoardAll.types";
-import { useToast } from "@/utils/useToast";
+import { useToast } from "@/hooks/useToast";
 import Dropdown from "@/components/Dropdown/Dropdown";
 import { getPostSearch } from "@/api/posts/getPostsSearch";
 

@@ -3,7 +3,7 @@ import styles from "./Comment.module.scss";
 import Image from "next/image";
 import { authState } from "@/states/authState";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { useToast } from "@/utils/useToast";
+import { useToast } from "@/hooks/useToast";
 import { useMutation, useQueryClient } from "react-query";
 import Link from "next/link";
 import Loader from "@/components/Layout/Loader/Loader";

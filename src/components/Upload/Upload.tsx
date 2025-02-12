@@ -3,7 +3,7 @@ import Button from "../Button/Button";
 import styles from "./Upload.module.scss";
 import Image from "next/image";
 import IconComponent from "../Asset/Icon";
-import { useToast } from "@/utils/useToast";
+import { useToast } from "@/hooks/useToast";
 import { postPresignedUrls } from "@/api/aws/postPresigned";
 import router from "next/router";
 import { useMutation } from "react-query";

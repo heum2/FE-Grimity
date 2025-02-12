@@ -3,7 +3,7 @@ import Button from "../../Button/Button";
 import styles from "./EditFeeds.module.scss";
 import Image from "next/image";
 import IconComponent from "../../Asset/Icon";
-import { useToast } from "@/utils/useToast";
+import { useToast } from "@/hooks/useToast";
 import { postPresignedUrls } from "@/api/aws/postPresigned";
 import { useMutation } from "react-query";
 import { AxiosError } from "axios";

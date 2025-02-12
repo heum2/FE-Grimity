@@ -9,7 +9,7 @@ import { modalState } from "@/states/modalState";
 import { authState } from "@/states/authState";
 import { useMyData } from "@/api/users/getMe";
 import { useRouter } from "next/router";
-import { useToast } from "@/utils/useToast";
+import { useToast } from "@/hooks/useToast";
 import Notifications from "@/components/Notifications/Notifications";
 
 export default function Header() {

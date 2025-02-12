@@ -12,7 +12,7 @@ import Button from "@/components/Button/Button";
 import IconComponent from "@/components/Asset/Icon";
 import { modalState } from "@/states/modalState";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { useToast } from "@/utils/useToast";
+import { useToast } from "@/hooks/useToast";
 import { authState } from "@/states/authState";
 import { useEffect, useState } from "react";
 import { deletePostsSave, putPostsSave } from "@/api/posts/putDeletePostsIdSave";

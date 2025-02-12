@@ -9,7 +9,7 @@ import { useMutation } from "react-query";
 import { PostsRequest, PostsResponse, postPosts } from "@/api/posts/postPosts";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
-import { useToast } from "@/utils/useToast";
+import { useToast } from "@/hooks/useToast";
 import Loader from "@/components/Layout/Loader/Loader";
 
 const Editor = dynamic(() => import("@tinymce/tinymce-react").then((mod) => mod.Editor), {

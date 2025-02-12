@@ -8,7 +8,7 @@ import { ProfileProps } from "./Profile.types";
 import { useUserData } from "@/api/users/getId";
 import { deleteFollow } from "@/api/users/deleteIdFollow";
 import { putFollow } from "@/api/users/putIdFollow";
-import { useToast } from "@/utils/useToast";
+import { useToast } from "@/hooks/useToast";
 import { authState } from "@/states/authState";
 import IconComponent from "@/components/Asset/Icon";
 import { modalState } from "@/states/modalState";

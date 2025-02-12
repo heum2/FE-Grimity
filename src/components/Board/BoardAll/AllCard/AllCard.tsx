@@ -13,7 +13,7 @@ import { useRecoilState } from "recoil";
 import { modalState } from "@/states/modalState";
 import { deletePostsFeeds } from "@/api/posts/deletePostsId";
 import { useRouter } from "next/router";
-import { useToast } from "@/utils/useToast";
+import { useToast } from "@/hooks/useToast";
 
 export function getTypeLabel(type: string): string {
   switch (type) {

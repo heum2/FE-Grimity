@@ -4,7 +4,7 @@ import styles from "./User.module.scss";
 import Image from "next/image";
 import Button from "@/components/Button/Button";
 import Link from "next/link";
-import { useToast } from "@/utils/useToast";
+import { useToast } from "@/hooks/useToast";
 import { putFollow } from "@/api/users/putIdFollow";
 import { deleteFollow } from "@/api/users/deleteIdFollow";
 

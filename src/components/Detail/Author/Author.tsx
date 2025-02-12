@@ -6,7 +6,7 @@ import { authState } from "@/states/authState";
 import { useRecoilValue } from "recoil";
 import { putFollow } from "@/api/users/putIdFollow";
 import { deleteFollow } from "@/api/users/deleteIdFollow";
-import { useToast } from "@/utils/useToast";
+import { useToast } from "@/hooks/useToast";
 import Link from "next/link";
 import { AuthorProps } from "./Author.types";
 import { useUserData } from "@/api/users/getId";

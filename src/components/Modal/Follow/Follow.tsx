@@ -8,7 +8,7 @@ import { useRecoilState } from "recoil";
 import { modalState } from "@/states/modalState";
 import { deleteMyFollowers } from "@/api/users/deleteMeFollowers";
 import { deleteFollow } from "@/api/users/deleteIdFollow";
-import { useToast } from "@/utils/useToast";
+import { useToast } from "@/hooks/useToast";
 import { FollowProps } from "./Follow.types";
 
 export default function Follow({ initialTab }: FollowProps) {

@@ -1,5 +1,5 @@
 import styles from "./Toast.module.scss";
-import { useToast } from "@/utils/useToast";
+import { useToast } from "@/hooks/useToast";
 import Image from "next/image";
 
 export default function Toast() {

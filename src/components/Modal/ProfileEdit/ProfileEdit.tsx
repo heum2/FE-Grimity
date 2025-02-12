@@ -6,7 +6,7 @@ import { useMutation } from "react-query";
 import TextField from "@/components/TextField/TextField";
 import IconComponent from "@/components/Asset/Icon";
 import Button from "@/components/Button/Button";
-import { useToast } from "@/utils/useToast";
+import { useToast } from "@/hooks/useToast";
 import { useMyData } from "@/api/users/getMe";
 import { MyInfoRequest, putMyInfo } from "@/api/users/putMe";
 import { AxiosError } from "axios";

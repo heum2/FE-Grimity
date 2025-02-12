@@ -8,7 +8,7 @@ import { authState } from "@/states/authState";
 import { SearchProfileProps } from "./SearchProfile.types";
 import { deleteFollow } from "@/api/users/deleteIdFollow";
 import { putFollow } from "@/api/users/putIdFollow";
-import { useToast } from "@/utils/useToast";
+import { useToast } from "@/hooks/useToast";
 import Button from "@/components/Button/Button";
 
 export default function SearchProfile({

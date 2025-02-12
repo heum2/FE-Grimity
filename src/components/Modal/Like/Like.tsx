@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { modalState } from "@/states/modalState";
-import { useToast } from "@/utils/useToast";
+import { useToast } from "@/hooks/useToast";
 import { FeedsLikeResponse, getFeedsLike } from "@/api/feeds/getFeedsIdLike";
 import Loader from "@/components/Layout/Loader/Loader";
 
