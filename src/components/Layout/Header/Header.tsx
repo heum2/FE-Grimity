@@ -55,16 +55,21 @@ export default function Header() {
 
   const handleNavClick = (item: { name: string; path: string }) => {
     setActiveNav(item.name);
-    router.push(item.path);
+    if (router.pathname === item.path) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      router.push(item.path);
+    }
   };
 
   const handleLogout = () => {
+    router.push("/");
+    window.scrollTo({ top: 0, behavior: "smooth" });
     setAuth({
       access_token: "",
       isLoggedIn: false,
       user_id: "",
     });
-    router.push("/");
     localStorage.removeItem("access_token");
     localStorage.removeItem("user_id");
   };
@@ -113,7 +118,11 @@ export default function Header() {
   }, [showNotifications]);
 
   const handleClickLogo = () => {
-    router.push("/");
+    if (router.pathname === "/") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      router.push("/");
+    }
   };
 
   const handleSearchBarOpen = () => {
@@ -246,7 +255,13 @@ export default function Header() {
               {isDropdownOpen && (
                 <div className={styles.dropdown} ref={dropdownRef}>
                   <Link href={`/users/${myData.id}`}>
-                    <div className={styles.dropdownItem} onClick={() => setIsDropdownOpen(false)}>
+                    <div
+                      className={styles.dropdownItem}
+                      onClick={() => {
+                        setIsDropdownOpen(false);
+                        window.scrollTo(0, 0);
+                      }}
+                    >
                       {myData.image !== "https://image.grimity.com/null" ? (
                         <Image
                           src={myData.image}
@@ -273,17 +288,35 @@ export default function Header() {
                   </Link>
                   <div className={styles.divider} />
                   <Link href="/mypage?tab=liked-feeds">
-                    <div className={styles.dropdownItem} onClick={() => setIsDropdownOpen(false)}>
+                    <div
+                      className={styles.dropdownItem}
+                      onClick={() => {
+                        setIsDropdownOpen(false);
+                        window.scrollTo(0, 0);
+                      }}
+                    >
                       좋아요한 그림
                     </div>
                   </Link>
                   <Link href="/mypage?tab=saved-feeds">
-                    <div className={styles.dropdownItem} onClick={() => setIsDropdownOpen(false)}>
+                    <div
+                      className={styles.dropdownItem}
+                      onClick={() => {
+                        setIsDropdownOpen(false);
+                        window.scrollTo(0, 0);
+                      }}
+                    >
                       저장한 그림
                     </div>
                   </Link>
                   <Link href="/mypage?tab=saved-posts">
-                    <div className={styles.dropdownItem} onClick={() => setIsDropdownOpen(false)}>
+                    <div
+                      className={styles.dropdownItem}
+                      onClick={() => {
+                        setIsDropdownOpen(false);
+                        window.scrollTo(0, 0);
+                      }}
+                    >
                       저장한 글
                     </div>
                   </Link>
