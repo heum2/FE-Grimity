@@ -34,5 +34,6 @@ export function useMyData() {
 
   return useQuery<MyInfoResponse>("myInfo", getMyInfo, {
     enabled: Boolean(accessToken),
+    refetchOnWindowFocus: false,
   });
 }
