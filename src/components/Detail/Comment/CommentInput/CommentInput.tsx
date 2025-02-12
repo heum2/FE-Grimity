@@ -47,6 +47,8 @@ export default function CommentInput({
   };
 
   const handleEnterKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.nativeEvent.isComposing) return;
+
     if (event.key === "Enter" && !event.shiftKey) {
       handleCommentSubmit();
     }

@@ -273,12 +273,21 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
     };
   }, []);
 
-  const handleEnterKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleReplyEnterKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.nativeEvent.isComposing) return;
 
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
       handleReplySubmit();
+    }
+  };
+
+  const handleCommentEnterKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.nativeEvent.isComposing) return;
+
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      handleCommentSubmit();
     }
   };
 
@@ -380,7 +389,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
                   isChildReply={true}
                   replyText={replyText}
                   onReplyTextChange={handleReplyTextChange}
-                  onKeyDown={handleEnterKeyDown}
+                  onKeyDown={handleReplyEnterKeyDown}
                   isLoggedIn={isLoggedIn}
                   replyInputRef={replyInputRef}
                   showToast={showToast}
@@ -502,7 +511,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
                 isChildReply={false}
                 replyText={replyText}
                 onReplyTextChange={handleReplyTextChange}
-                onKeyDown={handleEnterKeyDown}
+                onKeyDown={handleReplyEnterKeyDown}
                 isLoggedIn={isLoggedIn}
                 replyInputRef={replyInputRef}
                 showToast={showToast}
@@ -527,6 +536,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
               showToast("회원만 댓글 달 수 있어요!", "error");
             }
           }}
+          onKeyDown={handleCommentEnterKeyDown}
         />
         <div className={styles.submitBtn}>
           <Button

@@ -210,6 +210,8 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
   }, []);
 
   const handleEnterKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.nativeEvent.isComposing) return;
+
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
       handleReplySubmit();
