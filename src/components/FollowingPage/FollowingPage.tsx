@@ -19,7 +19,8 @@ export default function FollowingPage() {
   const [randomUsers, setRandomUsers] = useState<any[]>([]);
 
   const params = isLoggedIn && myData && myData.followingCount > 0 ? { size: 3 } : null;
-  const { feeds, fetchFollowingFeeds, isLoading, hasMore } = useFollowingFeeds(params);
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useFollowingFeeds(params);
 
   const observer = useRef<IntersectionObserver | null>(null);
   const lastFeedElement = useRef<HTMLDivElement | null>(null);
@@ -31,34 +32,28 @@ export default function FollowingPage() {
   }, [isUserDataLoading, isLoggedIn, setModal]);
 
   useEffect(() => {
+    if (lastFeedElement.current && observer.current) {
+      observer.current.disconnect();
+    }
     if (lastFeedElement.current) {
-      observer.current?.disconnect();
-
       observer.current = new IntersectionObserver(
         (entries) => {
-          if (entries[0].isIntersecting && hasMore && !isLoading) {
-            fetchFollowingFeeds();
+          if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+            fetchNextPage();
           }
         },
-        {
-          threshold: 0.1,
-          rootMargin: "100px",
-        }
+        { threshold: 1.0 }
       );
 
       observer.current.observe(lastFeedElement.current);
     }
 
     return () => {
-      observer.current?.disconnect();
+      if (observer.current && lastFeedElement.current) {
+        observer.current.unobserve(lastFeedElement.current);
+      }
     };
-  }, [hasMore, isLoading, fetchFollowingFeeds]);
-
-  useEffect(() => {
-    if (params) {
-      fetchFollowingFeeds();
-    }
-  }, []);
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage, data?.pages.length]);
 
   useEffect(() => {
     if (recommendData) {
@@ -68,9 +63,9 @@ export default function FollowingPage() {
   }, [recommendData]);
 
   if (isUserDataLoading) return <Loader />;
-  if (recommendIsLoading) return <Loader />;
-
-  const isFeedEmpty = feeds.length === 0;
+  if (isLoading || recommendIsLoading) return <Loader />;
+  const isFeedEmpty =
+    !data || data.pages.length === 0 || data.pages.every((page) => page.feeds?.length === 0);
   const isFollowingEmpty = myData?.followingCount === 0;
 
   return (
@@ -133,12 +128,15 @@ export default function FollowingPage() {
         // 팔로잉 유저가 있고 피드도 있을 경우
         <div className={styles.center}>
           <div className={styles.feedsContainer}>
-            {feeds.map((feed) => (
-              <FollowingFeed key={feed.id} id={feed.id} commentCount={feed.commentCount} />
+            {data.pages.map((page, pageIndex) => (
+              <div key={pageIndex}>
+                {page.feeds.map((feed) => (
+                  <FollowingFeed key={feed.id} id={feed.id} commentCount={feed.commentCount} />
+                ))}
+              </div>
             ))}
           </div>
-          {hasMore && <div ref={lastFeedElement} style={{ height: "20px" }}></div>}
-          {isLoading && <Loader />}
+          {hasNextPage && <div ref={lastFeedElement} />}
         </div>
       )}
     </div>

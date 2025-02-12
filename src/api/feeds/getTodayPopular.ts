@@ -1,5 +1,5 @@
-import { useState } from "react";
 import BASE_URL from "@/constants/baseurl";
+import { useQuery } from "react-query";
 
 export interface Feed {
   id: string;
@@ -44,7 +44,7 @@ export async function getTodayPopular(
         thumbnail: `https://image.grimity.com/${feed.thumbnail}`,
         author: {
           ...feed.author,
-          image: feed.author.image ? `https://image.grimity.com/${feed.author.image}` : undefined,
+          image: `https://image.grimity.com/${feed.author.image}`,
         },
       })),
     };
@@ -56,32 +56,14 @@ export async function getTodayPopular(
   }
 }
 
-export function useTodayPopular(size: number) {
-  const [feeds, setFeeds] = useState<Feed[]>([]);
-  const [nextCursor, setNextCursor] = useState<string | undefined>(undefined);
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-
-  const fetchTodayPopular = async () => {
-    if (!hasMore || isLoading) return;
-
-    setIsLoading(true);
-    try {
-      const response = await getTodayPopular(nextCursor, size);
-      setFeeds((prev) => [...prev, ...response.feeds]);
-      setNextCursor(response.nextCursor || undefined);
-      setHasMore(!!response.nextCursor);
-    } catch (error) {
-      console.error("Failed to fetch TodayPopular:", error);
-    } finally {
-      setIsLoading(false);
+export function useTodayPopular(cursor?: string, size?: number) {
+  return useQuery<TodayPopularResponse>(
+    ["TodayPopular", cursor, size],
+    () => getTodayPopular(cursor, size),
+    {
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000,
+      cacheTime: 10 * 60 * 1000,
     }
-  };
-
-  return {
-    data: { feeds },
-    fetchTodayPopular,
-    isLoading,
-    hasMore,
-  };
+  );
 }

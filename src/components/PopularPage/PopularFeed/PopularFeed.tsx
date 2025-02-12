@@ -8,13 +8,13 @@ import { useRef, useEffect } from "react";
 import Loader from "@/components/Layout/Loader/Loader";
 
 export default function PopularFeed() {
-  const { data, fetchNextPage, isLoading, hasMore } = usePopularFeed();
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = usePopularFeed();
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && hasMore && !isLoading) {
+        if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
           fetchNextPage();
         }
       },
@@ -32,7 +32,7 @@ export default function PopularFeed() {
         observer.unobserve(loadMoreRef.current);
       }
     };
-  }, [fetchNextPage, hasMore, isLoading]);
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage, data?.pages.length]);
 
   if (isLoading) <Loader />;
 
@@ -51,11 +51,9 @@ export default function PopularFeed() {
         </div>
       </div>
       <section className={styles.feedContainer}>
-        {data.map((feed) => (
-          <FeedCard key={feed.id} {...feed} />
-        ))}
+        {data?.pages.map((page) => page.feeds.map((feed) => <FeedCard key={feed.id} {...feed} />))}
       </section>
-      <div ref={loadMoreRef} />
+      {hasNextPage && <div ref={loadMoreRef} />}
     </div>
   );
 }

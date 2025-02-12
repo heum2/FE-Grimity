@@ -1,6 +1,5 @@
 import BASE_URL from "@/constants/baseurl";
-import { useState } from "react";
-import { useQuery } from "react-query";
+import { useInfiniteQuery, useQuery } from "react-query";
 
 export interface FollowingFeedsRequest {
   size?: number;
@@ -67,34 +66,17 @@ export function useFollowingNew(params: FollowingFeedsRequest) {
 }
 
 export function useFollowingFeeds(params: FollowingFeedsRequest | null) {
-  const [feeds, setFeeds] = useState<FollowingFeed[]>([]);
-  const [nextCursor, setNextCursor] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-
-  const fetchFollowingFeeds = async () => {
-    if (!hasMore || isLoading || !params) return;
-
-    setIsLoading(true);
-    try {
-      const response = await getFollowingFeeds({
-        ...params,
-        cursor: nextCursor || undefined,
-      });
-      setFeeds((prev) => [...prev, ...response.feeds]);
-      setNextCursor(response.nextCursor);
-      setHasMore(!!response.nextCursor);
-    } catch (error) {
-      console.error("Failed to fetch following feeds:", error);
-    } finally {
-      setIsLoading(false);
+  return useInfiniteQuery<FollowingFeedsResponse>(
+    ["FollowingFeeds", params?.size],
+    ({ pageParam = undefined }) => getFollowingFeeds({ ...params, cursor: pageParam }),
+    {
+      enabled: !!params,
+      getNextPageParam: (lastPage) => {
+        return lastPage.nextCursor ? lastPage.nextCursor : undefined;
+      },
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000,
+      cacheTime: 10 * 60 * 1000,
     }
-  };
-
-  return {
-    feeds,
-    fetchFollowingFeeds,
-    isLoading,
-    hasMore,
-  };
+  );
 }

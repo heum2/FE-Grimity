@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import SquareCard from "../SquareCard/SquareCard";
 import Title from "../Title/Title";
 import IconComponent from "@/components/Asset/Icon";
@@ -9,11 +9,9 @@ import Image from "next/image";
 
 export default function Ranking() {
   const [pageIndex, setPageIndex] = useState(0);
-  const { data, fetchTodayPopular, isLoading, hasMore } = useTodayPopular(10);
+  const { data, isLoading } = useTodayPopular();
 
-  useEffect(() => {
-    fetchTodayPopular();
-  }, []);
+  if (isLoading) return <Loader />;
 
   const itemsPerPage = 3;
   const startIdx = pageIndex * itemsPerPage;
@@ -25,12 +23,7 @@ export default function Ranking() {
   };
 
   const handleNextClick = () => {
-    if (endIdx >= data?.feeds?.length && hasMore) {
-      fetchTodayPopular();
-    }
-    if (endIdx < data?.feeds?.length) {
-      setPageIndex((prev) => prev + 1);
-    }
+    if (data?.feeds && endIdx < data.feeds.length) setPageIndex((prev) => prev + 1);
   };
 
   const isEmpty = !data || !data.feeds || data.feeds.length === 0;
@@ -93,7 +86,7 @@ export default function Ranking() {
           <button
             className={`${styles.navButton} ${styles.right}`}
             onClick={handleNextClick}
-            disabled={!hasMore && endIdx >= (data?.feeds?.length || 0)}
+            disabled={endIdx >= (data?.feeds?.length || 0)}
           >
             <Image
               src="/icon/card-arrow-right.svg"

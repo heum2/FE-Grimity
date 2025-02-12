@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import BASE_URL from "@/constants/baseurl";
+import { useInfiniteQuery } from "react-query";
 
 export interface PopularFeed {
   id: string;
@@ -21,11 +21,11 @@ export interface PopularFeedResponse {
   nextCursor: string | null;
 }
 
-export async function getPopularFeed(cursor: string | null = null): Promise<PopularFeedResponse> {
+export async function getPopularFeed({ pageParam = null }): Promise<PopularFeedResponse> {
   try {
     const response = await BASE_URL.get("/feeds/popular", {
       params: {
-        cursor,
+        cursor: pageParam,
         size: 30,
       },
     });
@@ -48,33 +48,12 @@ export async function getPopularFeed(cursor: string | null = null): Promise<Popu
 }
 
 export function usePopularFeed() {
-  const [data, setData] = useState<PopularFeed[]>([]);
-  const [nextCursor, setNextCursor] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const fetchNextPage = async () => {
-    if (isLoading || nextCursor === undefined) return;
-    setIsLoading(true);
-
-    try {
-      const response = await getPopularFeed(nextCursor);
-      setData((prevData) => [...prevData, ...response.feeds]);
-      setNextCursor(response.nextCursor);
-    } catch (err: any) {
-      console.error("Error fetching next page:", err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchNextPage();
-  }, []);
-
-  return {
-    data,
-    fetchNextPage,
-    isLoading,
-    hasMore: nextCursor !== null,
-  };
+  return useInfiniteQuery<PopularFeedResponse>("PopularFeed", getPopularFeed, {
+    getNextPageParam: (lastPage) => {
+      return lastPage.nextCursor ? lastPage.nextCursor : undefined;
+    },
+    refetchOnWindowFocus: false,
+    staleTime: 5 * 60 * 1000,
+    cacheTime: 10 * 60 * 1000,
+  });
 }
