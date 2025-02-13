@@ -110,7 +110,7 @@ export default function SearchFeed() {
           )}
         </div>
       )}
-      <div ref={loadMoreRef} />
+      {hasNextPage && <div ref={loadMoreRef} />}
     </section>
   );
 }

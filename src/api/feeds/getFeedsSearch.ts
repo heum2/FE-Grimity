@@ -65,10 +65,15 @@ export async function getFeedSearch({
 export function useFeedSearch(params: FeedSearchRequest) {
   return useInfiniteQuery(
     ["FeedSearch", params.keyword, params.sort],
-    ({ pageParam = null }) => getFeedSearch({ ...params, cursor: pageParam }),
+    ({ pageParam = undefined }) => getFeedSearch({ ...params, cursor: pageParam }),
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
       enabled: !!params.keyword,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000,
+      cacheTime: 10 * 60 * 1000,
     }
   );
 }
