@@ -44,6 +44,11 @@ export function useMySavePost({ size, page }: MySavePostRequest) {
     () => getMySavePost({ size, page }),
     {
       enabled: Boolean(accessToken),
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000,
+      cacheTime: 10 * 60 * 1000,
     }
   );
 }
