@@ -75,29 +75,31 @@ export default function SearchFeed() {
   return (
     <section className={styles.results}>
       <div className={styles.sortWrapper}>
-        <Dropdown
-          menuItems={sortOptions.map((option) => ({
-            label: option.label,
-            value: option.value,
-            onClick: () => handleSortChange(option.value),
-          }))}
-          onOpenChange={handleDropdownToggle}
-          trigger={
-            <Button
-              type="text-assistive"
-              size="l"
-              rightIcon={
-                isDropdownOpen ? (
-                  <IconComponent name="arrowUp" width={20} height={20} isBtn />
-                ) : (
-                  <IconComponent name="arrowDown" width={20} height={20} isBtn />
-                )
-              }
-            >
-              {sortOptions.find((option) => option.value === sortBy)?.label || "정확도순"}
-            </Button>
-          }
-        />
+        <div className={styles.sort}>
+          <Dropdown
+            menuItems={sortOptions.map((option) => ({
+              label: option.label,
+              value: option.value,
+              onClick: () => handleSortChange(option.value),
+            }))}
+            onOpenChange={handleDropdownToggle}
+            trigger={
+              <Button
+                type="text-assistive"
+                size="l"
+                rightIcon={
+                  isDropdownOpen ? (
+                    <IconComponent name="arrowUp" width={20} height={20} isBtn />
+                  ) : (
+                    <IconComponent name="arrowDown" width={20} height={20} isBtn />
+                  )
+                }
+              >
+                {sortOptions.find((option) => option.value === sortBy)?.label || "정확도순"}
+              </Button>
+            }
+          />
+        </div>
       </div>
       {data?.pages.length === 0 || !data?.pages.some((page) => page.feeds.length > 0) ? (
         <p className={styles.noResult}>검색 결과가 없어요</p>
