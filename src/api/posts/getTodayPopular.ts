@@ -28,5 +28,9 @@ export async function getTodayPopularPosts(): Promise<TodayPopularPostsResponse[
 }
 
 export function useTodayPopularPosts() {
-  return useQuery<TodayPopularPostsResponse[]>(["TodayPopularPosts"], () => getTodayPopularPosts());
+  return useQuery<TodayPopularPostsResponse[]>(
+    ["TodayPopularPosts"],
+    () => getTodayPopularPosts(),
+    { refetchOnWindowFocus: false, staleTime: 5 * 60 * 1000, cacheTime: 10 * 60 * 1000 }
+  );
 }

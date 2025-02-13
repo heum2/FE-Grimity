@@ -1,4 +1,5 @@
 import BASE_URL from "@/constants/baseurl";
+import { useQuery } from "react-query";
 
 export interface PostsLatestRequest {
   size: number;
@@ -41,6 +42,15 @@ export async function getPostsLatest({
     throw new Error("Failed to fetch postsLatest");
   }
 }
+
+export const usePostsLatest = (params: PostsLatestRequest) => {
+  return useQuery<PostsLatestResponse>(["postsLatest", params], () => getPostsLatest(params), {
+    keepPreviousData: true,
+    refetchOnWindowFocus: false,
+    staleTime: 5 * 60 * 1000,
+    cacheTime: 10 * 60 * 1000,
+  });
+};
 
 export async function getPostsNotices(): Promise<PostsLatest[]> {
   try {

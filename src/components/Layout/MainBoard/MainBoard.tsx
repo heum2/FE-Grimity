@@ -1,39 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import BoardCard from "../BoardCard/BoardCard";
 import Title from "../Title/Title";
 import styles from "./MainBoard.module.scss";
 import Loader from "../Loader/Loader";
 import { MainBoardProps } from "./MainBoard.types";
-import { getPostsLatest, PostsLatest } from "@/api/posts/getPosts";
 import { useTodayPopularPosts } from "@/api/posts/getTodayPopular";
+import { usePostsLatest } from "@/api/posts/getPosts";
 
 export default function MainBoard({ type }: MainBoardProps) {
-  const [data, setData] = useState<PostsLatest[] | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: latestPosts, isLoading: isLatestLoading } =
+    type !== "POPULAR"
+      ? usePostsLatest({
+          size: 4,
+          page: 1,
+          type: type as "QUESTION" | "FEEDBACK" | "ALL",
+        })
+      : { data: null, isLoading: false };
+
   const { data: popularPosts, isLoading: isPopularLoading } = useTodayPopularPosts();
 
-  useEffect(() => {
-    if (type !== "POPULAR") {
-      const fetchPosts = async () => {
-        try {
-          const response = await getPostsLatest({
-            size: 4,
-            page: 1,
-            type: type,
-          });
-          setData(response.posts);
-        } catch (error) {
-          console.error("Error fetching posts:", error);
-        } finally {
-          setIsLoading(false);
-        }
-      };
-
-      fetchPosts();
-    }
-  }, [type]);
-
-  if ((type === "POPULAR" && isPopularLoading) || (type !== "POPULAR" && isLoading)) {
+  if ((type === "POPULAR" && isPopularLoading) || (type !== "POPULAR" && isLatestLoading)) {
     return <Loader />;
   }
 
@@ -78,8 +64,8 @@ export default function MainBoard({ type }: MainBoardProps) {
           ) : (
             <p className={styles.noPosts}>아직 올라온 글이 없어요</p>
           )
-        ) : data && data.length > 0 ? (
-          data.map((post, index, arr) => (
+        ) : latestPosts && latestPosts.posts.length > 0 ? (
+          latestPosts.posts.map((post, index, arr) => (
             <React.Fragment key={post.id}>
               <BoardCard {...post} />
               {index < arr.length - 1 && <div className={styles.bar} />}
