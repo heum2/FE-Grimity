@@ -32,44 +32,53 @@ export default function BoardPopular({ isDetail }: BoardPopularProps) {
   return (
     <div className={styles.container}>
       {isDetail ? <Title>자유게시판 인기글</Title> : <Title>오늘의 인기 글</Title>}
-      <div className={isDetail ? styles.cardListDetail : styles.cardList}>
-        {currentPageData?.map((post) => (
-          <PopularCard key={post.id} post={post} />
-        ))}
-      </div>
-      <div className={styles.pagination}>
-        <button
-          className={`${styles.navButton} ${styles.left}`}
-          onClick={handlePrevClick}
-          disabled={pageIndex === 0}
-        >
-          <Image
-            src="/icon/card-arrow-left.svg"
-            width={40}
-            height={40}
-            alt="왼쪽 버튼"
-            className={styles.arrowBtn}
-          />
-        </button>
-        <div className={styles.pageDots}>
-          {Array.from({ length: totalPages }).map((_, index) => (
-            <span key={index} className={`${styles.dot} ${index === pageIndex && styles.active}`} />
+      {currentPageData && currentPageData.length > 0 ? (
+        <div className={isDetail ? styles.cardListDetail : styles.cardList}>
+          {currentPageData?.map((post) => (
+            <PopularCard key={post.id} post={post} />
           ))}
         </div>
-        <button
-          className={`${styles.navButton} ${styles.right}`}
-          onClick={handleNextClick}
-          disabled={pageIndex === totalPages - 1}
-        >
-          <Image
-            src="/icon/card-arrow-right.svg"
-            width={40}
-            height={40}
-            alt="오른쪽 버튼"
-            className={styles.arrowBtn}
-          />
-        </button>
-      </div>
+      ) : (
+        <p className={styles.noResult}>아직 등록된 글이 없어요</p>
+      )}
+      {currentPageData && currentPageData.length > 0 && (
+        <div className={styles.pagination}>
+          <button
+            className={`${styles.navButton} ${styles.left}`}
+            onClick={handlePrevClick}
+            disabled={pageIndex === 0}
+          >
+            <Image
+              src="/icon/card-arrow-left.svg"
+              width={40}
+              height={40}
+              alt="왼쪽 버튼"
+              className={styles.arrowBtn}
+            />
+          </button>
+          <div className={styles.pageDots}>
+            {Array.from({ length: totalPages }).map((_, index) => (
+              <span
+                key={index}
+                className={`${styles.dot} ${index === pageIndex && styles.active}`}
+              />
+            ))}
+          </div>
+          <button
+            className={`${styles.navButton} ${styles.right}`}
+            onClick={handleNextClick}
+            disabled={pageIndex === totalPages - 1}
+          >
+            <Image
+              src="/icon/card-arrow-right.svg"
+              width={40}
+              height={40}
+              alt="오른쪽 버튼"
+              className={styles.arrowBtn}
+            />
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -67,19 +67,27 @@ export default function MainBoard({ type }: MainBoardProps) {
     <div className={styles.container}>
       <Title link={getLink()}>{getTitle()}</Title>
       <section className={styles.cardSection}>
-        {type === "POPULAR"
-          ? popularPosts?.slice(0, 4).map((post, index, arr) => (
+        {type === "POPULAR" ? (
+          popularPosts && popularPosts.length > 0 ? (
+            popularPosts.slice(0, 4).map((post, index, arr) => (
               <React.Fragment key={post.id}>
                 <BoardCard {...post} />
                 {index < arr.length - 1 && <div className={styles.bar} />}
               </React.Fragment>
             ))
-          : data?.map((post, index, arr) => (
-              <React.Fragment key={post.id}>
-                <BoardCard {...post} />
-                {index < arr.length - 1 && <div className={styles.bar} />}
-              </React.Fragment>
-            ))}
+          ) : (
+            <p className={styles.noPosts}>아직 올라온 글이 없어요</p>
+          )
+        ) : data && data.length > 0 ? (
+          data.map((post, index, arr) => (
+            <React.Fragment key={post.id}>
+              <BoardCard {...post} />
+              {index < arr.length - 1 && <div className={styles.bar} />}
+            </React.Fragment>
+          ))
+        ) : (
+          <p className={styles.noPosts}>아직 올라온 글이 없어요</p>
+        )}
       </section>
     </div>
   );

@@ -5,6 +5,16 @@
   display: flex;
   flex-direction: column;
 
+  .noResult {
+    @include Body1;
+    color: $gray80;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 40px 0;
+  }
+
   .cardList {
     width: 100%;
     display: grid;
