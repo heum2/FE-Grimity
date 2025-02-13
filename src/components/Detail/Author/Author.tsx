@@ -11,7 +11,7 @@ import Link from "next/link";
 import { AuthorProps } from "./Author.types";
 import { useUserData } from "@/api/users/getId";
 import Button from "@/components/Button/Button";
-import { useUserFeeds } from "@/api/users/getIdFeeds";
+import { useUserForDetail } from "@/api/users/getIdFeeds";
 import SquareCard from "@/components/Layout/SquareCard/SquareCard";
 import Loader from "@/components/Layout/Loader/Loader";
 
@@ -29,7 +29,7 @@ export default function Author({ authorId, feedId }: AuthorProps) {
     }
   }, [userData]);
 
-  const { data, isLoading } = useUserFeeds({
+  const { data, isLoading } = useUserForDetail({
     id: authorId,
     size: 4,
     sort: "latest",

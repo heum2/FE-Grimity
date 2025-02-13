@@ -1,6 +1,5 @@
 import BASE_URL from "@/constants/baseurl";
-import { useQuery } from "react-query";
-import { Feed } from "../feeds/getTodayPopular";
+import { useInfiniteQuery, useQuery } from "react-query";
 
 export interface UserFeedsRequest {
   id: string;
@@ -56,8 +55,37 @@ export async function getUserFeeds({
   }
 }
 
-export function useUserFeeds({ id, sort, cursor, size }: UserFeedsRequest) {
-  return useQuery<UserFeedsResponse>(["userFeeds", id, sort, cursor, size], () =>
-    getUserFeeds({ id, sort, cursor, size })
+export function useUserForDetail({ id, sort, cursor, size }: UserFeedsRequest) {
+  return useQuery<UserFeedsResponse>(
+    ["userFeeds", id, sort, cursor, size],
+    () => getUserFeeds({ id, sort, cursor, size }),
+    {
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000,
+      cacheTime: 10 * 60 * 1000,
+    }
+  );
+}
+
+export function useUserFeeds(params: UserFeedsRequest) {
+  return useInfiniteQuery<UserFeedsResponse>(
+    ["userFeeds", params.id, params.sort, params.size],
+    ({ pageParam = undefined }) =>
+      getUserFeeds({
+        ...params,
+        cursor: pageParam,
+      }),
+    {
+      getNextPageParam: (lastPage) => {
+        return lastPage.nextCursor ? lastPage.nextCursor : undefined;
+      },
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000,
+      cacheTime: 10 * 60 * 1000,
+    }
   );
 }

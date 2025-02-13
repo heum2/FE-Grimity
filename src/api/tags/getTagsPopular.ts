@@ -23,5 +23,11 @@ export async function getTagsPopular(): Promise<TagsPopularResponse[]> {
 }
 
 export function useTagsPopular() {
-  return useQuery<TagsPopularResponse[]>(["TagsPopular"], getTagsPopular);
+  return useQuery<TagsPopularResponse[]>(["TagsPopular"], getTagsPopular, {
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    staleTime: 5 * 60 * 1000,
+    cacheTime: 10 * 60 * 1000,
+  });
 }

@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { useInView } from "react-intersection-observer";
-import { useInfiniteQuery } from "react-query";
 import { useUserData } from "@/api/users/getId";
-import { getUserFeeds } from "@/api/users/getIdFeeds";
+import { useUserFeeds } from "@/api/users/getIdFeeds";
 import Profile from "./Profile/Profile";
 import styles from "./ProfilePage.module.scss";
 import { ProfilePageProps } from "./ProfilePage.types";
@@ -32,8 +30,7 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
   const feedsTabRef = useRef<HTMLDivElement>(null);
   const postsTabRef = useRef<HTMLDivElement>(null);
   const { data: userData } = useUserData(id);
-  const { ref, inView } = useInView();
-  const [feeds, setFeeds] = useState<any[]>([]);
+  const loadMoreRef = useRef(null);
   const [posts, setPosts] = useState<any[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const router = useRouter();
@@ -45,10 +42,65 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
     (query.tab as "feeds" | "posts") || "feeds"
   );
 
+  const {
+    data: feedsData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useUserFeeds({
+    id,
+    sort: sortBy,
+    size: PAGE_SIZE,
+  });
+
   useEffect(() => {
-    setFeeds([]);
-    setActiveTab("feeds");
-  }, [id]);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      {
+        rootMargin: "100px",
+      }
+    );
+
+    if (loadMoreRef.current) {
+      observer.observe(loadMoreRef.current);
+    }
+
+    return () => {
+      if (loadMoreRef.current) {
+        observer.unobserve(loadMoreRef.current);
+      }
+    };
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage, feedsData?.pages.length]);
+
+  useEffect(() => {
+    async function fetchPosts() {
+      try {
+        if (userData?.id) {
+          const data = await getUserPosts({ id, size: 10, page: currentPage });
+          setPosts(data);
+          setTotalCount(userData.postCount);
+        }
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    }
+
+    if (activeTab === "posts") {
+      fetchPosts();
+    }
+  }, [currentPage, userData?.id, activeTab]);
+
+  useEffect(() => {
+    const activeTabRef = activeTab === "feeds" ? feedsTabRef : postsTabRef;
+    if (!activeTabRef.current) return;
+
+    const { offsetWidth, offsetLeft } = activeTabRef.current;
+    setIndicatorStyle({ width: offsetWidth, left: offsetLeft });
+  }, [activeTab, feedsTabRef.current, postsTabRef.current]);
 
   useEffect(() => {
     if (query.tab && (query.tab === "feeds" || query.tab === "posts")) {
@@ -72,77 +124,6 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
     setIsDropdownOpen(isOpen);
   };
 
-  const {
-    data: feedsData,
-    fetchNextPage,
-    hasNextPage,
-  } = useInfiniteQuery(
-    ["userFeeds", id, sortBy],
-    async ({ pageParam = null }) => {
-      const data = await getUserFeeds({
-        id,
-        size: PAGE_SIZE,
-        sort: sortBy,
-        cursor: pageParam,
-      });
-      return {
-        items: data.feeds,
-        nextCursor: data.nextCursor,
-      };
-    },
-    {
-      getNextPageParam: (lastPage) => {
-        return lastPage.nextCursor ?? undefined;
-      },
-      keepPreviousData: true,
-    }
-  );
-
-  useEffect(() => {
-    if (inView && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, hasNextPage, fetchNextPage]);
-
-  useEffect(() => {
-    async function fetchPosts() {
-      try {
-        if (userData?.id) {
-          const data = await getUserPosts({ id, size: 10, page: currentPage });
-          setPosts(data);
-          setTotalCount(userData.postCount);
-        }
-      } catch (error) {
-        console.error("Error fetching posts:", error);
-      }
-    }
-
-    if (activeTab === "posts") {
-      fetchPosts();
-    }
-  }, [currentPage, userData?.id, activeTab]);
-
-  useEffect(() => {
-    if (feedsData?.pages) {
-      const newFeeds = feedsData.pages.flatMap((page) => page.items);
-      setFeeds((prevFeeds) => {
-        const uniqueFeeds = new Map();
-        [...prevFeeds, ...newFeeds].forEach((feed) => {
-          uniqueFeeds.set(feed.id, feed);
-        });
-        return Array.from(uniqueFeeds.values());
-      });
-    }
-  }, [feedsData]);
-
-  useEffect(() => {
-    const activeTabRef = activeTab === "feeds" ? feedsTabRef : postsTabRef;
-    if (!activeTabRef.current) return;
-
-    const { offsetWidth, offsetLeft } = activeTabRef.current;
-    setIndicatorStyle({ width: offsetWidth, left: offsetLeft });
-  }, [activeTab, feedsTabRef.current, postsTabRef.current]);
-
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
       router.push({ query: { ...query, page } }, undefined, { shallow: true });
@@ -153,7 +134,7 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
     setSortBy(option);
   };
 
-  const allFeeds = feeds;
+  const allFeeds = feedsData?.pages.flatMap((page) => page.feeds) || [];
 
   return (
     <div className={styles.container}>
@@ -245,7 +226,7 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
                     />
                   </div>
                 ))}
-                <div ref={ref} />
+                {hasNextPage && <div ref={loadMoreRef} />}
               </section>
             )
           ) : (
@@ -286,7 +267,7 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
                 <button
                   className={styles.paginationArrow}
                   onClick={() => handlePageChange(currentPage + 1)}
-                  disabled={currentPage === totalPages || posts.length === 0}
+                  disabled={currentPage === totalPages}
                 >
                   <Image src="/icon/pagination-right.svg" width={24} height={24} alt="" />
                 </button>
