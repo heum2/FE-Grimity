@@ -107,18 +107,20 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
   useEffect(() => {
     async function fetchPosts() {
       try {
-        const data = await getUserPosts({ id, size: 10, page: currentPage });
-
-        setPosts(data);
-        setTotalCount(userData?.postCount ?? 0);
+        if (userData?.id) {
+          const data = await getUserPosts({ id, size: 10, page: currentPage });
+          setPosts(data);
+          setTotalCount(userData.postCount);
+        }
       } catch (error) {
         console.error("Error fetching posts:", error);
       }
     }
-    if (isMyProfile) {
+
+    if (activeTab === "posts") {
       fetchPosts();
     }
-  }, [currentPage]);
+  }, [currentPage, userData?.id, activeTab]);
 
   useEffect(() => {
     if (feedsData?.pages) {
@@ -139,22 +141,7 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
 
     const { offsetWidth, offsetLeft } = activeTabRef.current;
     setIndicatorStyle({ width: offsetWidth, left: offsetLeft });
-
-    const observer = new MutationObserver(() => {
-      if (activeTabRef.current) {
-        const { offsetWidth, offsetLeft } = activeTabRef.current;
-        setIndicatorStyle({ width: offsetWidth, left: offsetLeft });
-      }
-    });
-
-    observer.observe(activeTabRef.current, {
-      attributes: true,
-      childList: true,
-      subtree: true,
-    });
-
-    return () => observer.disconnect();
-  }, [activeTab]);
+  }, [activeTab, feedsTabRef.current, postsTabRef.current]);
 
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
