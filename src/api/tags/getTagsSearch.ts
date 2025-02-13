@@ -38,9 +38,11 @@ export async function getTagsSearch(tagNames: string): Promise<TagsSearchRespons
 }
 
 export function useTagsSearch(tagNames: string) {
-  return useQuery<TagsSearchResponse[]>(
-    ["TagsSearch", tagNames],
-    () => getTagsSearch(tagNames),
-    {}
-  );
+  return useQuery<TagsSearchResponse[]>(["TagsSearch", tagNames], () => getTagsSearch(tagNames), {
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    staleTime: 5 * 60 * 1000,
+    cacheTime: 10 * 60 * 1000,
+  });
 }

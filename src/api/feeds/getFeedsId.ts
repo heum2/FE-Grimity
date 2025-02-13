@@ -49,5 +49,11 @@ export async function getDetails(id: string): Promise<DetailsResponse> {
 }
 
 export function useDetails(id: string) {
-  return useQuery<DetailsResponse>(["details", id], () => getDetails(id), {});
+  return useQuery<DetailsResponse>(["details", id], () => getDetails(id), {
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    staleTime: 5 * 60 * 1000,
+    cacheTime: 10 * 60 * 1000,
+  });
 }

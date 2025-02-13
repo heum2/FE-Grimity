@@ -19,11 +19,13 @@ export default function Author({ authorId, feedId }: AuthorProps) {
   const { data: userData } = useUserData(authorId);
   const { isLoggedIn, user_id } = useRecoilValue(authState);
   const [isFollowing, setIsFollowing] = useState(false);
+  const [followerCount, setFollowerCount] = useState(0);
   const { showToast } = useToast();
 
   useEffect(() => {
     if (userData && userData.isFollowing !== undefined) {
       setIsFollowing(userData.isFollowing);
+      setFollowerCount(userData.followerCount);
     }
   }, [userData]);
 
@@ -43,6 +45,7 @@ export default function Author({ authorId, feedId }: AuthorProps) {
     try {
       await putFollow(id);
       setIsFollowing(true);
+      setFollowerCount((prev) => prev + 1);
     } catch (error) {
       showToast("오류가 발생했습니다. 다시 시도해주세요.", "error");
     }
@@ -52,6 +55,7 @@ export default function Author({ authorId, feedId }: AuthorProps) {
     try {
       await deleteFollow(id);
       setIsFollowing(false);
+      setFollowerCount((prev) => prev - 1);
     } catch (error) {
       showToast("오류가 발생했습니다. 다시 시도해주세요.", "error");
     }
@@ -90,9 +94,7 @@ export default function Author({ authorId, feedId }: AuthorProps) {
                     <p className={styles.authorName}>{userData.name}</p>
                     <div className={styles.follower}>
                       팔로워
-                      <p className={styles.followerColor}>
-                        {formatCurrency(userData.followerCount)}
-                      </p>
+                      <p className={styles.followerColor}>{formatCurrency(followerCount)}</p>
                     </div>
                   </div>
                 </div>

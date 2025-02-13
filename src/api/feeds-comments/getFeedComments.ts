@@ -53,7 +53,11 @@ export function useGetFeedsComments({ feedId }: FeedsCommentsRequest) {
     ["getFeedsComments", feedId],
     () => getFeedsComments({ feedId }),
     {
-      enabled: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000,
+      cacheTime: 10 * 60 * 1000,
     }
   );
 }
@@ -109,7 +113,11 @@ export function useGetFeedsChildComments({ feedId, parentId }: FeedsChildComment
     ["getFeedsChildComments", feedId, parentId],
     () => getFeedsChildComments({ feedId, parentId }),
     {
-      enabled: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000,
+      cacheTime: 10 * 60 * 1000,
     }
   );
 }
