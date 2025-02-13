@@ -82,10 +82,10 @@ export default function BoardAll({ isDetail }: BoardAllProps) {
     fetchPosts();
   }, [currentType, currentPage, query.keyword]);
 
-  const handleTabChange = (type: "ALL" | "QUESTION" | "FEEDBACK") => {
+  const handleTabChange = (type: "all" | "question" | "feedback") => {
     const newQuery: { type: string; page: number; searchBy?: string; keyword?: string } = {
       ...query,
-      type: type.toLowerCase(),
+      type: type,
       page: 1,
     };
 
@@ -151,21 +151,21 @@ export default function BoardAll({ isDetail }: BoardAllProps) {
           <section className={styles.types}>
             <button
               className={`${styles.type} ${currentType === "all" ? styles.active : ""}`}
-              onClick={() => handleTabChange("ALL")}
+              onClick={() => handleTabChange("all")}
             >
               전체
             </button>
             <Image src="/icon/dot.svg" width={3} height={3} alt="" />
             <button
               className={`${styles.type} ${currentType === "question" ? styles.active : ""}`}
-              onClick={() => handleTabChange("QUESTION")}
+              onClick={() => handleTabChange("question")}
             >
               질문
             </button>
             <Image src="/icon/dot.svg" width={3} height={3} alt="" />
             <button
               className={`${styles.type} ${currentType === "feedback" ? styles.active : ""}`}
-              onClick={() => handleTabChange("FEEDBACK")}
+              onClick={() => handleTabChange("feedback")}
             >
               피드백
             </button>
