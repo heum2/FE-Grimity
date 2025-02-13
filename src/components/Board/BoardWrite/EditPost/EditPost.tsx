@@ -126,8 +126,8 @@ export default function EditPost({ id }: EditPostProps) {
   const { mutate: editPost } = useMutation((data: EditPostsRequest) => putEditPosts(id, data), {
     onSuccess: () => {
       hasUnsavedChangesRef.current = false;
-      showToast("수정이 완료되었습니다!", "success");
       router.push(`/posts/${id}`);
+      showToast("수정이 완료되었습니다!", "success");
     },
     onError: (error: AxiosError) => {
       showToast("수정 중 오류가 발생했습니다. 다시 시도해주세요.", "error");

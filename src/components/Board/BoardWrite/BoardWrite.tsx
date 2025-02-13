@@ -46,8 +46,8 @@ export default function BoardWrite() {
 
   const { mutate: createPost } = useMutation<PostsResponse, AxiosError, PostsRequest>(postPosts, {
     onSuccess: (response) => {
-      showToast("글이 등록되었어요.", "success");
       router.push(`/posts/${response.id}`);
+      showToast("글이 등록되었어요.", "success");
     },
     onError: () => {
       showToast("글 작성에 실패했습니다.", "error");
