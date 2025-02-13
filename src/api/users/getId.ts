@@ -37,5 +37,8 @@ export async function getUserInfo({ id }: UserInfoRequest): Promise<UserInfoResp
 export const useUserData = (userId: string | null) => {
   return useQuery(["userData", userId], () => getUserInfo({ id: userId! }), {
     enabled: Boolean(userId),
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
   });
 };

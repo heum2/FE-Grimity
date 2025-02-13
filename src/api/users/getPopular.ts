@@ -31,5 +31,11 @@ export async function getPopular(): Promise<PopularResponse[]> {
 }
 
 export function usePopular() {
-  return useQuery<PopularResponse[]>("popular", getPopular);
+  return useQuery<PopularResponse[]>("popular", getPopular, {
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    staleTime: 5 * 60 * 1000,
+    cacheTime: 10 * 60 * 1000,
+  });
 }
