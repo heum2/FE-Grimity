@@ -24,11 +24,9 @@ export async function getMyFollower({
   cursor,
 }: MyFollowerRequest): Promise<MyFollowerResponse> {
   try {
-    const params: MyFollowerRequest = {
-      size,
-      cursor,
-    };
-    const response = await BASE_URL.get("/users/me/followers", { params });
+    const response = await BASE_URL.get("/users/me/followers", {
+      params: { size, cursor },
+    });
 
     const updatedData = {
       ...response.data,
@@ -45,15 +43,22 @@ export async function getMyFollower({
   }
 }
 
-export function useMyFollower() {
+export function useMyFollower({ size }: MyFollowerRequest) {
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
 
   return useInfiniteQuery<MyFollowerResponse>(
     "myFollowers",
-    ({ pageParam = null }) => getMyFollower({ cursor: pageParam }),
+    ({ pageParam = undefined }) => getMyFollower({ size, cursor: pageParam }),
     {
       enabled: Boolean(accessToken),
-      getNextPageParam: (lastPage) => lastPage.nextCursor,
+      getNextPageParam: (lastPage) => {
+        return lastPage.nextCursor ? lastPage.nextCursor : undefined;
+      },
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000,
+      cacheTime: 10 * 60 * 1000,
     }
   );
 }
@@ -69,11 +74,9 @@ export async function getMyFollowing({
   cursor,
 }: MyFollowerRequest): Promise<MyFollowingResponse> {
   try {
-    const params: MyFollowerRequest = {
-      size,
-      cursor,
-    };
-    const response = await BASE_URL.get("/users/me/followings", { params });
+    const response = await BASE_URL.get("/users/me/followings", {
+      params: { size, cursor },
+    });
 
     const updatedData = {
       ...response.data,
@@ -90,15 +93,22 @@ export async function getMyFollowing({
   }
 }
 
-export function useMyFollowing() {
+export function useMyFollowing({ size }: MyFollowerRequest) {
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
 
   return useInfiniteQuery<MyFollowingResponse>(
     "myFollowings",
-    ({ pageParam = null }) => getMyFollowing({ cursor: pageParam }),
+    ({ pageParam = undefined }) => getMyFollowing({ size, cursor: pageParam }),
     {
       enabled: Boolean(accessToken),
-      getNextPageParam: (lastPage) => lastPage.nextCursor,
+      getNextPageParam: (lastPage) => {
+        return lastPage.nextCursor ? lastPage.nextCursor : undefined;
+      },
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000,
+      cacheTime: 10 * 60 * 1000,
     }
   );
 }

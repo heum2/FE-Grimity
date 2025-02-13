@@ -17,7 +17,7 @@ export default function Follow({ initialTab }: FollowProps) {
   const tabsRef = useRef<HTMLDivElement | null>(null);
   const observerRef = useRef<HTMLDivElement | null>(null);
   const [, setModal] = useRecoilState(modalState);
-  const [, setIsFetchingData] = useState(false);
+  const [isFetchingData, setIsFetchingData] = useState(false);
   const route = useRouter();
   const { showToast } = useToast();
 
@@ -27,7 +27,7 @@ export default function Follow({ initialTab }: FollowProps) {
     hasNextPage: hasNextFollowers,
     isFetching: isFetchingFollowers,
     refetch: refetchFollower,
-  } = useMyFollower();
+  } = useMyFollower({ size: 10 });
 
   const {
     data: followingData,
@@ -35,19 +35,21 @@ export default function Follow({ initialTab }: FollowProps) {
     hasNextPage: hasNextFollowings,
     isFetching: isFetchingFollowings,
     refetch: refetchFollowing,
-  } = useMyFollowing();
+  } = useMyFollowing({ size: 10 });
 
-  const handleFetchMoreFollowers = () => {
-    if (hasNextFollowers && !isFetchingFollowers) {
+  const handleFetchMoreFollowers = async () => {
+    if (hasNextFollowers && !isFetchingFollowers && !isFetchingData) {
       setIsFetchingData(true);
-      fetchMoreFollowers().finally(() => setIsFetchingData(false));
+      await fetchMoreFollowers();
+      setIsFetchingData(false);
     }
   };
 
-  const handleFetchMoreFollowings = () => {
-    if (hasNextFollowings && !isFetchingFollowings) {
+  const handleFetchMoreFollowings = async () => {
+    if (hasNextFollowings && !isFetchingFollowings && !isFetchingData) {
       setIsFetchingData(true);
-      fetchMoreFollowings().finally(() => setIsFetchingData(false));
+      await fetchMoreFollowings();
+      setIsFetchingData(false);
     }
   };
 
@@ -60,7 +62,8 @@ export default function Follow({ initialTab }: FollowProps) {
       ? followerData?.pages.flatMap((page) => page.followers) || []
       : followingData?.pages.flatMap((page) => page.followings) || [];
 
-  const fetchMore = activeTab === "follower" ? handleFetchMoreFollowers : handleFetchMoreFollowings;
+  const hasNextPage = activeTab === "follower" ? hasNextFollowers : hasNextFollowings;
+  const isFetching = activeTab === "follower" ? isFetchingFollowers : isFetchingFollowings;
 
   useEffect(() => {
     if (!tabsRef.current) return;
@@ -75,25 +78,30 @@ export default function Follow({ initialTab }: FollowProps) {
   }, [activeTab]);
 
   useEffect(() => {
-    if (!fetchMore || !observerRef.current) return;
-
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting) {
-          fetchMore();
+        if (entries[0].isIntersecting && hasNextPage && !isFetching && !isFetchingData) {
+          if (activeTab === "follower") {
+            handleFetchMoreFollowers();
+          } else {
+            handleFetchMoreFollowings();
+          }
         }
       },
-      { threshold: 1.0 }
+      { threshold: 0.1 }
     );
 
-    observer.observe(observerRef.current);
+    const currentObserverRef = observerRef.current;
+    if (currentObserverRef) {
+      observer.observe(currentObserverRef);
+    }
 
     return () => {
-      if (observerRef.current) {
-        observer.unobserve(observerRef.current);
+      if (currentObserverRef) {
+        observer.unobserve(currentObserverRef);
       }
     };
-  }, [fetchMore, activeTab]);
+  }, [activeTab, hasNextPage, isFetching, isFetchingData]);
 
   const handleClickUser = (id: string) => {
     route.push(`/users/${id}`);
@@ -205,7 +213,7 @@ export default function Follow({ initialTab }: FollowProps) {
             ))
           )}
         </ul>
-        <div ref={observerRef} />
+        {hasNextPage && <div ref={observerRef} style={{ height: "10px" }} />}
       </div>
     </div>
   );
