@@ -5,17 +5,12 @@ import Loader from "../Loader/Loader";
 import Image from "next/image";
 import RectangleCard from "../RectangleCard/RectangleCard";
 import { useFollowingNew } from "@/api/feeds/getFeedsFollowing";
-import { useUserData } from "@/api/users/getId";
-import { authState } from "@/states/authState";
-import { useRecoilValue } from "recoil";
 
 export default function FollowNewFeed() {
-  const { user_id } = useRecoilValue(authState);
   const [pageIndex, setPageIndex] = useState(0);
   const itemsPerPage = 2;
 
-  const { data, isLoading } = useFollowingNew({ size: 10 });
-  const { data: followingData } = useUserData(user_id);
+  const { data, isLoading } = useFollowingNew({ size: 8 });
 
   if (isLoading) return <Loader />;
 
@@ -33,15 +28,14 @@ export default function FollowNewFeed() {
 
   return (
     <div className={styles.container}>
-      {followingData && followingData?.followingCount === 0 ? (
-        <Title>팔로우하는 유저의 새 그림</Title>
+      {data?.feeds?.length === 0 ? (
+        <>
+          <Title>팔로우하는 유저의 새 그림</Title>
+          <p className={styles.message}>팔로우하는 유저가 없어요</p>
+        </>
       ) : (
-        <Title link="/following">팔로우하는 유저의 새 그림</Title>
-      )}
-      {followingData && followingData?.followingCount === 0 ? (
-        <p className={styles.message}>팔로우하는 유저가 없어요</p>
-      ) : (
-        data?.feeds && (
+        <>
+          <Title link="/following">팔로우하는 유저의 새 그림</Title>
           <div className={styles.rankingContainer}>
             <button
               className={`${styles.navButton} ${styles.left}`}
@@ -90,7 +84,7 @@ export default function FollowNewFeed() {
               />
             </button>
           </div>
-        )
+        </>
       )}
     </div>
   );

@@ -3,7 +3,6 @@ import styles from "./Comment.module.scss";
 import Image from "next/image";
 import { authState } from "@/states/authState";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { useUserData } from "@/api/users/getId";
 import { usePostFeedsComments } from "@/api/feeds-comments/postFeedComments";
 import {
   useGetFeedsComments,
@@ -24,10 +23,11 @@ import { deleteCommentLike, putCommentLike } from "@/api/feeds-comments/putDelet
 import { modalState } from "@/states/modalState";
 import CommentInput from "./CommentInput/CommentInput";
 import TextArea from "@/components/TextArea/TextArea";
+import { useMyData } from "@/api/users/getMe";
 
 export default function Comment({ feedId, feedWriterId, isFollowingPage }: CommentProps) {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
-  const { data: userData, isLoading } = useUserData(isLoggedIn ? user_id : null);
+  const { data: userData, isLoading } = useMyData();
   const { showToast } = useToast();
   const [, setModal] = useRecoilState(modalState);
   const queryClient = useQueryClient();
