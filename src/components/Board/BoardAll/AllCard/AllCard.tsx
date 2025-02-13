@@ -100,7 +100,9 @@ export default function AllCard({ post, case: cardCase }: AllCardProps) {
               <h2 className={post.type === "NOTICE" ? styles.noticeTitle : styles.title}>
                 {post.title}
               </h2>
-              {post.hasImage && <IconComponent name="boardAllImage" width={16} height={16} />}
+              {post.hasImage && (
+                <Image src="/icon/board-all-image.svg" width={16} height={16} alt="" />
+              )}
               <div className={styles.comment}>
                 <Image src="/icon/board-all-comment.svg" width={16} height={16} alt="" />
                 {post.commentCount}
