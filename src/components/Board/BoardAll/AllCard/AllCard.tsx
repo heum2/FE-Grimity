@@ -159,12 +159,12 @@ export default function AllCard({ post, case: cardCase }: AllCardProps) {
             </div>
           ) : (
             <div className={styles.createdAtView}>
-              <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
-              <Image src="/icon/dot.svg" width={3} height={3} alt="" />
               <div className={styles.viewCount}>
                 <Image src="/icon/board-all-view.svg" width={16} height={16} alt="" />
                 {post.viewCount}
               </div>
+              <Image src="/icon/dot.svg" width={3} height={3} alt="" />
+              <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
             </div>
           )}
           {post.type !== "NOTICE" && post.author && (

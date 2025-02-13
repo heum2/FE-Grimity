@@ -52,7 +52,7 @@
 
       .comment {
         @include Cap2;
-        color: $gray50;
+        color: #f5506c;
         display: flex;
         gap: 2px;
         align-items: center;
@@ -91,7 +91,7 @@
 
       .viewCount {
         @include Cap2;
-        color: $gray50;
+        color: $secandary1;
         display: flex;
         gap: 2px;
         align-items: center;

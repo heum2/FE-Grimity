@@ -29,12 +29,12 @@ export default function PopularCard({ post }: PopularCardProps) {
         <div className={styles.countContainer}>
           <Image src="/icon/dot.svg" width={3} height={3} alt="" />
           <div className={styles.likeContainer}>
-            <IconComponent name="commentCount" width={16} height={16} />
-            <p className={styles.count}>{formatCurrency(post.commentCount)}</p>
+            <IconComponent name="boardCommentCount" width={16} height={16} />
+            <p className={styles.commentCount}>{formatCurrency(post.commentCount)}</p>
           </div>
           <div className={styles.likeContainer}>
-            <IconComponent name="viewCount" width={16} height={16} />
-            <p className={styles.count}>{formatCurrency(post.viewCount)}</p>
+            <IconComponent name="boardViewCount" width={16} height={16} />
+            <p className={styles.viewCount}>{formatCurrency(post.viewCount)}</p>
           </div>
         </div>
       </div>

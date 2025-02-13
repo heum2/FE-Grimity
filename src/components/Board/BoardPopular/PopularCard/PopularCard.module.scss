@@ -59,9 +59,13 @@
         align-items: center;
         gap: 2px;
 
-        .count {
+        .commentCount {
           @include Label2;
-          color: $gray60;
+          color: #f5506c;
+        }
+        .viewCount {
+          @include Label2;
+          color: $secandary1;
         }
       }
     }

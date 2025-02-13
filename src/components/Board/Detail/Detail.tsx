@@ -109,7 +109,7 @@ export default function PostDetail({ id }: PostDetailProps) {
           onClick: async () => {
             try {
               await deletePostsFeeds(id);
-              router.push("/");
+              router.push("/board");
             } catch (err) {
               showToast("삭제 중 오류가 발생했습니다.", "error");
             }

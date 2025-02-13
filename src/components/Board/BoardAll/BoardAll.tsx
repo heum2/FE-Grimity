@@ -31,7 +31,7 @@ export default function BoardAll({ isDetail }: BoardAllProps) {
   const [keyword, setKeyword] = useState("");
   const router = useRouter();
   const { query } = router;
-  const currentType = (query.type as string) || "ALL";
+  const currentType = (query.type as string) || "all";
   const currentPage = Number(query.page) || 1;
   const totalPages = Math.ceil(totalCount / 10);
   const { showToast } = useToast();
