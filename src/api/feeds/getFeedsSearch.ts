@@ -67,7 +67,9 @@ export function useFeedSearch(params: FeedSearchRequest) {
     ["FeedSearch", params.keyword, params.sort],
     ({ pageParam = undefined }) => getFeedSearch({ ...params, cursor: pageParam }),
     {
-      getNextPageParam: (lastPage) => lastPage.nextCursor,
+      getNextPageParam: (lastPage) => {
+        return lastPage.nextCursor ? lastPage.nextCursor : undefined;
+      },
       enabled: !!params.keyword,
       refetchOnMount: false,
       refetchOnReconnect: false,

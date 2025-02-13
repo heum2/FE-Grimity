@@ -29,38 +29,36 @@ export default function SearchFeed() {
     }
   }, [router.query]);
 
-  const { data, isLoading, fetchNextPage, hasNextPage } = useFeedSearch({
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useFeedSearch({
     keyword: searchKeyword,
     sort: sortBy,
     size: 10,
   });
 
   const loadMoreRef = useRef(null);
-  const observer = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
-    const element = loadMoreRef.current;
-    if (!element) return;
-
-    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
-      const entry = entries[0];
-      if (entry.isIntersecting && hasNextPage) {
-        fetchNextPage();
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      {
+        rootMargin: "100px",
       }
-    };
+    );
 
-    observer.current = new IntersectionObserver(handleIntersection, {
-      rootMargin: "200px",
-    });
-
-    observer.current.observe(element);
+    if (loadMoreRef.current) {
+      observer.observe(loadMoreRef.current);
+    }
 
     return () => {
-      if (observer.current && element) {
-        observer.current.unobserve(element);
+      if (loadMoreRef.current) {
+        observer.unobserve(loadMoreRef.current);
       }
     };
-  }, [hasNextPage, fetchNextPage]);
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage, data?.pages.length]);
 
   const handleDropdownToggle = (isOpen: boolean) => {
     setIsDropdownOpen(isOpen);
