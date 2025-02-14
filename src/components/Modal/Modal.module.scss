@@ -65,6 +65,12 @@
   width: 404px;
   min-height: 200px;
 
+  @include Size("mobile") {
+    width: 100%;
+    margin: 0 16px;
+    padding: 40px 20px 20px;
+  }
+
   .titleContainer {
     display: flex;
     flex-direction: column;
@@ -80,6 +86,14 @@
     .subtitle {
       @include Sub4;
       color: $gray60;
+    }
+
+    @include Size("mobile") {
+      gap: 8px;
+
+      .title {
+        @include Title5;
+      }
     }
   }
 

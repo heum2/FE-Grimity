@@ -18,6 +18,13 @@
   transform: translate(-50%, -50%);
   z-index: 1000;
 
+  @include Size("mobile") {
+    padding: 12px 18px 12px 12px;
+    gap: 12px;
+    border-radius: 50px;
+    @include Sub4;
+  }
+
   &.success {
     border: 1px solid $secandary1;
   }
