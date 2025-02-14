@@ -1,51 +1,31 @@
-import { useState, useEffect, useRef } from "react";
 import styles from "./Like.module.scss";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { modalState } from "@/states/modalState";
-import { useToast } from "@/hooks/useToast";
-import { FeedsLikeResponse, getFeedsLike } from "@/api/feeds/getFeedsIdLike";
+import { useFeedsLike } from "@/api/feeds/getFeedsIdLike";
 import Loader from "@/components/Layout/Loader/Loader";
 
 export default function Like() {
-  const [data, setData] = useState<FeedsLikeResponse[]>([]);
-  const [loading, setLoading] = useState(true);
-  const observerRef = useRef<HTMLDivElement | null>(null);
   const [, setModal] = useRecoilState(modalState);
   const route = useRouter();
-  const toast = useToast();
+  const { data, isLoading } = useFeedsLike({ id: String(route.query.id) });
 
   const handleClickUser = (id: string) => {
     route.push(`/users/${id}`);
     setModal({ isOpen: false, type: null, data: null });
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (!route.query.id) return;
-        const id = String(route.query.id);
-        const response = await getFeedsLike({ id });
-        setData(response);
-      } catch (error) {
-        console.error("Error fetching like data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [route.query.id, toast]);
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <div className={styles.container}>
       <div className={styles.title}>좋아요</div>
       <div className={styles.content}>
         <ul>
-          {loading ? (
-            <Loader />
-          ) : data.length === 0 ? (
+          {!data || data.length === 0 ? (
             <p className={styles.noData}>아직 좋아요가 없어요</p>
           ) : (
             data.map((like, index) => (
@@ -83,7 +63,6 @@ export default function Like() {
             ))
           )}
         </ul>
-        <div ref={observerRef} />
       </div>
     </div>
   );
