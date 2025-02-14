@@ -7,6 +7,13 @@
   grid-template-columns: repeat(4, 1fr);
   row-gap: 40px;
   column-gap: 16px;
+
+  @include Size("mobile") {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 20px;
+    column-gap: 12px;
+    margin-top: 10px;
+  }
 }
 
 .noResult {

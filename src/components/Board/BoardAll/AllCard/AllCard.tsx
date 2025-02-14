@@ -121,24 +121,41 @@ export default function AllCard({ post, case: cardCase }: AllCardProps) {
         </Link>
         <div className={styles.rightContainer}>
           {cardCase === "saved-posts" ? (
-            <div className={styles.savedPosts}>
-              <div className={styles.savedCreatedAtView}>
-                <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
-                <div className={styles.viewCount}>
-                  <Image src="/icon/board-all-view.svg" width={16} height={16} alt="" />
-                  {post.viewCount}
+            isMobile ? (
+              <div className={styles.savedPosts}>
+                <div className={styles.savedCreatedAtView}>
+                  <div className={styles.viewCount}>
+                    <Image src="/icon/board-all-view.svg" width={16} height={16} alt="" />
+                    {post.viewCount}
+                  </div>
+                  <div className={styles.commentCount}>
+                    <Image src="/icon/board-all-comment.svg" width={16} height={16} alt="" />
+                    {post.commentCount}
+                  </div>
+                  <Image src="/icon/dot.svg" width={3} height={3} alt="" />
+                  <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
                 </div>
               </div>
-              <div onClick={handleSaveClick}>
-                <IconComponent
-                  name={isSaved ? "saveOn" : "saveOff"}
-                  width={20}
-                  height={20}
-                  padding={8}
-                  isBtn
-                />
+            ) : (
+              <div className={styles.savedPosts}>
+                <div className={styles.savedCreatedAtView}>
+                  <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
+                  <div className={styles.viewCount}>
+                    <Image src="/icon/board-all-view.svg" width={16} height={16} alt="" />
+                    {post.viewCount}
+                  </div>
+                </div>
+                <div onClick={handleSaveClick}>
+                  <IconComponent
+                    name={isSaved ? "saveOn" : "saveOff"}
+                    width={20}
+                    height={20}
+                    padding={8}
+                    isBtn
+                  />
+                </div>
               </div>
-            </div>
+            )
           ) : cardCase === "my-posts" ? (
             isMobile ? (
               <div className={styles.savedPosts}>
@@ -201,6 +218,17 @@ export default function AllCard({ post, case: cardCase }: AllCardProps) {
           )}
         </div>
       </div>
+      {isMobile && cardCase === "saved-posts" && (
+        <div onClick={handleSaveClick} className={styles.savedIcon}>
+          <IconComponent
+            name={isSaved ? "saveOn" : "saveOff"}
+            width={20}
+            height={20}
+            padding={8}
+            isBtn
+          />
+        </div>
+      )}
       {isMobile && cardCase === "my-posts" && (
         <div className={styles.dropdown}>
           <Dropdown
