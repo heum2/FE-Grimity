@@ -60,8 +60,16 @@ export async function getFollowingFeeds({
 }
 
 export function useFollowingNew(params: FollowingFeedsRequest) {
-  return useQuery<FollowingFeedsResponse>(["FollowingFeedsNew", params.cursor, params.size], () =>
-    getFollowingFeeds(params)
+  return useQuery<FollowingFeedsResponse>(
+    ["FollowingFeedsNew", params.cursor, params.size],
+    () => getFollowingFeeds(params),
+    {
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000,
+      cacheTime: 10 * 60 * 1000,
+    }
   );
 }
 
