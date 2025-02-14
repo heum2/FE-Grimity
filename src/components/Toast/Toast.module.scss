@@ -1,6 +1,7 @@
 @import "@/styles/globals.scss";
 
 .toast {
+  width: max-content;
   color: $gray70;
   @include Title5;
   background: $gray0;
@@ -15,7 +16,7 @@
   position: fixed;
   top: 130px;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%);
   z-index: 1000;
 
   @include Size("mobile") {
