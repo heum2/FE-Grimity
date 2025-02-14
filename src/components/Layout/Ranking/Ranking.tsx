@@ -3,32 +3,29 @@ import SquareCard from "../SquareCard/SquareCard";
 import Title from "../Title/Title";
 import IconComponent from "@/components/Asset/Icon";
 import styles from "./Ranking.module.scss";
-import { useTodayPopular } from "@/api/feeds/getTodayPopular";
+import { useTodayFeedPopular } from "@/api/feeds/getTodayPopular";
 import Loader from "../Loader/Loader";
 import Image from "next/image";
 
 export default function Ranking() {
   const [pageIndex, setPageIndex] = useState(0);
-  const { data, isLoading } = useTodayPopular();
+  const { data, isLoading } = useTodayFeedPopular();
 
   if (isLoading) return <Loader />;
 
   const itemsPerPage = 3;
   const startIdx = pageIndex * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
-  const paginatedFeeds = data?.feeds?.slice(startIdx, endIdx) || [];
+  const paginatedFeeds = data?.slice(startIdx, endIdx) || [];
+  const isEmpty = !data || data.length === 0;
 
   const handlePrevClick = () => {
     if (pageIndex > 0) setPageIndex((prev) => prev - 1);
   };
 
   const handleNextClick = () => {
-    if (data?.feeds && endIdx < data.feeds.length) setPageIndex((prev) => prev + 1);
+    if (endIdx < (data?.length || 0) && pageIndex < 3) setPageIndex((prev) => prev + 1);
   };
-
-  const isEmpty = !data || !data.feeds || data.feeds.length === 0;
-
-  if (isLoading && pageIndex === 0) return <Loader />;
 
   return (
     <div className={styles.container}>
@@ -86,7 +83,10 @@ export default function Ranking() {
           <button
             className={`${styles.navButton} ${styles.right}`}
             onClick={handleNextClick}
-            disabled={endIdx >= (data?.feeds?.length || 0)}
+            disabled={endIdx >= (data?.length || 0) || pageIndex === 3}
+            style={{
+              visibility: pageIndex === 3 ? "hidden" : "visible",
+            }}
           >
             <Image
               src="/icon/card-arrow-right.svg"
