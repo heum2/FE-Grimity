@@ -421,13 +421,7 @@ export default function Header() {
                           className={styles.navItem}
                           onClick={() => handleNavClick(item)}
                         >
-                          <p
-                            className={`${isUserPage ? styles.userPageitem : styles.item} ${
-                              isNavPage && (activeNav === item.name ? styles.active : "")
-                            }`}
-                          >
-                            {item.name}
-                          </p>
+                          <p className={styles.item}>{item.name}</p>
                         </div>
                       ))}
                     </nav>
