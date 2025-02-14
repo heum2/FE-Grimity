@@ -1,3 +1,5 @@
+@import "@/styles/globals.scss";
+
 .container {
   width: 100%;
 
@@ -7,8 +9,37 @@
     gap: 24px;
     justify-content: space-between;
 
+    @include Size("mobile") {
+      align-items: flex-end;
+    }
+
+    .sortBtnContainer {
+      width: 180px;
+
+      @include Size("mobile") {
+        width: 120px;
+      }
+    }
+
     .sortBtn {
-      flex-shrink: 0;
+      width: 100%;
+      padding: 16px 24px;
+      @include Btn1;
+      color: $primary4;
+      background-color: $gray0;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      outline: none;
+      border: none;
+      cursor: pointer;
+      @include Drag;
+
+      @include Size("mobile") {
+        padding: 16px 0;
+        @include Label1;
+      }
     }
   }
 
@@ -17,5 +48,11 @@
     grid-template-columns: repeat(3, 1fr);
     grid-column-gap: 16px;
     grid-row-gap: 20px;
+
+    @include Size("mobile") {
+      grid-template-columns: repeat(2, 1fr);
+      grid-column-gap: 12px;
+      grid-row-gap: 20px;
+    }
   }
 }

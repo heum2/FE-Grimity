@@ -5,10 +5,17 @@ import Loader from "@/components/Layout/Loader/Loader";
 import Tag from "./Tag/Tag";
 import Link from "next/link";
 import { useCallback, useEffect, useRef } from "react";
+import { isMobileState } from "@/states/isMobileState";
+import { useRecoilValue } from "recoil";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
 
 export default function PopularTag() {
   const { data, isLoading } = useTagsPopular();
   const containerRef = useRef<HTMLDivElement>(null);
+  const isMobile = useRecoilValue(isMobileState);
+  useIsMobile();
 
   // 가로 스크롤 시 세로 스크롤 막기
   const handleWheel = useCallback((e: WheelEvent) => {
@@ -24,6 +31,8 @@ export default function PopularTag() {
   }, []);
 
   useEffect(() => {
+    if (isMobile) return;
+
     const container = containerRef.current;
     if (!container) return;
 
@@ -32,22 +41,39 @@ export default function PopularTag() {
     return () => {
       container.removeEventListener("wheel", handleWheel);
     };
-  }, [handleWheel]);
+  }, [handleWheel, isMobile]);
 
   if (isLoading) return <Loader />;
 
   return (
     <div className={styles.container}>
       <Title>인기 태그</Title>
-      <div className={styles.cardContainer} ref={containerRef}>
-        {data?.map((tag) => (
-          <div key={tag.tagName} className={styles.slide}>
-            <Link href={`/search?tab=feed&keyword=${tag.tagName}`}>
-              <Tag tagName={tag.tagName} thumbnail={tag.thumbnail} />
-            </Link>
-          </div>
-        ))}
-      </div>
+      {isMobile ? (
+        <Swiper
+          spaceBetween={10}
+          slidesPerView={"auto"}
+          pagination={{ clickable: true }}
+          className={styles.swiper}
+        >
+          {data?.map((tag) => (
+            <SwiperSlide key={tag.tagName} className={styles.slide}>
+              <Link href={`/search?tab=feed&keyword=${tag.tagName}`}>
+                <Tag tagName={tag.tagName} thumbnail={tag.thumbnail} />
+              </Link>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      ) : (
+        <div className={styles.cardContainer} ref={containerRef}>
+          {data?.map((tag) => (
+            <div key={tag.tagName} className={styles.slide}>
+              <Link href={`/search?tab=feed&keyword=${tag.tagName}`}>
+                <Tag tagName={tag.tagName} thumbnail={tag.thumbnail} />
+              </Link>
+            </div>
+          ))}
+        </div>
+      )}
       <div className={styles.lastGradient} />
     </div>
   );

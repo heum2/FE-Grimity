@@ -4,6 +4,10 @@
   width: 180px;
   flex-shrink: 0;
 
+  @include Size("mobile") {
+    width: 127px;
+  }
+
   .imageWrapper {
     width: 100%;
     aspect-ratio: 3 / 4;
@@ -34,5 +38,10 @@
     color: $gray0;
     @include Sub4;
     @include Drag;
+
+    @include Size("mobile") {
+      bottom: 8px;
+      left: 8px;
+    }
   }
 }

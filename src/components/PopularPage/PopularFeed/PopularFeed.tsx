@@ -40,14 +40,10 @@ export default function PopularFeed() {
     <div className={styles.container}>
       <div className={styles.titleContainer}>
         <Title>인기 그림</Title>
-        <div className={styles.sortBtn}>
-          <Button
-            size="l"
-            type="text-assistive"
-            rightIcon={<IconComponent name="arrowDown" width={20} height={20} />}
-          >
-            좋아요 순
-          </Button>
+        <div className={styles.sortBtnContainer}>
+          <button className={styles.sortBtn}>
+            좋아요 순<IconComponent name="arrowDown" width={20} height={20} />
+          </button>
         </div>
       </div>
       <section className={styles.feedContainer}>
