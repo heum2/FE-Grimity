@@ -231,7 +231,16 @@ $positive: #00bf40;
 $cautionary: #ff9200;
 $negative: #ff4242;
 
-$mobile: 768px;
+$breakpoints: (
+  "mobile": 767px,
+  "tablet": 1024px,
+);
+
+@mixin Size($device) {
+  @media (max-width: map-get($breakpoints, $device)) {
+    @content;
+  }
+}
 
 @mixin Drag {
   -webkit-user-select: none;
