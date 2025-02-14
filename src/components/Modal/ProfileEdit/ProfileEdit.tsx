@@ -1,6 +1,6 @@
 import styles from "./ProfileEdit.module.scss";
 import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { modalState } from "@/states/modalState";
 import { useMutation } from "react-query";
 import TextField from "@/components/TextField/TextField";
@@ -12,6 +12,8 @@ import { MyInfoRequest, putMyInfo } from "@/api/users/putMe";
 import { AxiosError } from "axios";
 import Loader from "@/components/Layout/Loader/Loader";
 import router from "next/router";
+import { isMobileState } from "@/states/isMobileState";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 export default function ProfileEdit() {
   const { data: myData, isLoading, refetch } = useMyData();
@@ -24,6 +26,8 @@ export default function ProfileEdit() {
   const [isError, setIsError] = useState(false);
   const [, setModal] = useRecoilState(modalState);
   const { showToast } = useToast();
+  const isMobile = useRecoilValue(isMobileState);
+  useIsMobile();
 
   useEffect(() => {
     if (myData) {
@@ -102,9 +106,11 @@ export default function ProfileEdit() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.titleContainer}>
-        <h2 className={styles.title}>프로필 편집</h2>
-      </div>
+      {!isMobile && (
+        <div className={styles.titleContainer}>
+          <h2 className={styles.title}>프로필 편집</h2>
+        </div>
+      )}
       <div className={styles.textBtnContainer}>
         <div className={styles.textContainer}>
           <TextField

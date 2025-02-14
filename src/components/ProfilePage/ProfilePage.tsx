@@ -241,37 +241,39 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
                   </Link>
                 </div>
               ) : (
-                <div className={styles.postContainer}>
-                  {posts.map((post) => (
-                    <AllCard key={post.id} post={post} case="my-posts" />
-                  ))}
-                </div>
+                <>
+                  <div className={styles.postContainer}>
+                    {posts.map((post) => (
+                      <AllCard key={post.id} post={post} case="my-posts" />
+                    ))}
+                  </div>
+                  <section className={styles.pagination}>
+                    <button
+                      className={styles.paginationArrow}
+                      onClick={() => handlePageChange(currentPage - 1)}
+                      disabled={currentPage === 1}
+                    >
+                      <Image src="/icon/pagination-left.svg" width={24} height={24} alt="" />
+                    </button>
+                    {Array.from({ length: totalPages }, (_, index) => (
+                      <button
+                        key={index + 1}
+                        className={currentPage === index + 1 ? styles.active : ""}
+                        onClick={() => handlePageChange(index + 1)}
+                      >
+                        {index + 1}
+                      </button>
+                    ))}
+                    <button
+                      className={styles.paginationArrow}
+                      onClick={() => handlePageChange(currentPage + 1)}
+                      disabled={currentPage === totalPages}
+                    >
+                      <Image src="/icon/pagination-right.svg" width={24} height={24} alt="" />
+                    </button>
+                  </section>
+                </>
               )}
-              <section className={styles.pagination}>
-                <button
-                  className={styles.paginationArrow}
-                  onClick={() => handlePageChange(currentPage - 1)}
-                  disabled={currentPage === 1}
-                >
-                  <Image src="/icon/pagination-left.svg" width={24} height={24} alt="" />
-                </button>
-                {Array.from({ length: totalPages }, (_, index) => (
-                  <button
-                    key={index + 1}
-                    className={currentPage === index + 1 ? styles.active : ""}
-                    onClick={() => handlePageChange(index + 1)}
-                  >
-                    {index + 1}
-                  </button>
-                ))}
-                <button
-                  className={styles.paginationArrow}
-                  onClick={() => handlePageChange(currentPage + 1)}
-                  disabled={currentPage === totalPages}
-                >
-                  <Image src="/icon/pagination-right.svg" width={24} height={24} alt="" />
-                </button>
-              </section>
             </section>
           )}
         </div>

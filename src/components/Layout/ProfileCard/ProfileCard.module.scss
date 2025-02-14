@@ -6,6 +6,10 @@
   gap: 12px;
   width: 100%;
 
+  @include Size("mobile") {
+    gap: 8px;
+  }
+
   .imageContainer {
     width: 100%;
     aspect-ratio: 1 / 1;
@@ -50,6 +54,15 @@
       color: $gray80;
       text-overflow: ellipsis;
       @include Sub4;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+
+      @include Size("mobile") {
+        @include Label1;
+      }
     }
 
     .profileContainer {
@@ -60,6 +73,10 @@
       .author {
         @include Label1;
         color: $gray50;
+
+        @include Size("mobile") {
+          @include Cap2;
+        }
       }
     }
 
@@ -78,6 +95,10 @@
           font-size: 12px;
           line-height: 12px;
           color: $gray50;
+
+          @include Size("mobile") {
+            @include Cap2;
+          }
         }
       }
     }

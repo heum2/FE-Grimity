@@ -40,7 +40,6 @@ export default function ProfileCard({
           <h3 className={styles.title}>{title}</h3>
         </Link>
         <div className={styles.profileContainer}>
-          <p className={styles.author}>{formattedDate(createdAt)}</p>
           <div className={styles.countContainer}>
             <div className={styles.likeContainer}>
               <IconComponent name="likeCount" width={12} height={12} />
@@ -51,6 +50,7 @@ export default function ProfileCard({
               <p className={styles.count}>{formatCurrency(commentCount)}</p>
             </div>
           </div>
+          <p className={styles.author}>{formattedDate(createdAt)}</p>
         </div>
       </div>
     </div>

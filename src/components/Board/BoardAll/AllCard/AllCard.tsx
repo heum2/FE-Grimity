@@ -9,11 +9,13 @@ import Link from "next/link";
 import { deletePostsSave, putPostsSave } from "@/api/posts/putDeletePostsIdSave";
 import { useState } from "react";
 import Dropdown from "@/components/Dropdown/Dropdown";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { modalState } from "@/states/modalState";
 import { deletePostsFeeds } from "@/api/posts/deletePostsId";
 import { useRouter } from "next/router";
 import { useToast } from "@/hooks/useToast";
+import { isMobileState } from "@/states/isMobileState";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 export function getTypeLabel(type: string): string {
   switch (type) {
@@ -30,6 +32,8 @@ export function getTypeLabel(type: string): string {
 }
 
 export default function AllCard({ post, case: cardCase }: AllCardProps) {
+  const isMobile = useRecoilValue(isMobileState);
+  useIsMobile();
   const [, setModal] = useRecoilState(modalState);
   const { showToast } = useToast();
   let plainTextContent = striptags(post.content);
@@ -82,17 +86,19 @@ export default function AllCard({ post, case: cardCase }: AllCardProps) {
 
   return (
     <div className={styles.container}>
-      <div className={styles.chipContainer}>
-        {post.type === "NOTICE" ? (
-          <Chip size="s" type="filled-secondary">
-            {getTypeLabel(post.type)}
-          </Chip>
-        ) : (
-          <Chip size="s" type="filled-assistive">
-            {getTypeLabel(post.type)}
-          </Chip>
-        )}
-      </div>
+      {!isMobile && cardCase !== "my-posts" && cardCase !== "saved-posts" && (
+        <div className={styles.chipContainer}>
+          {post.type === "NOTICE" ? (
+            <Chip size="s" type="filled-secondary">
+              {getTypeLabel(post.type)}
+            </Chip>
+          ) : (
+            <Chip size="s" type="filled-assistive">
+              {getTypeLabel(post.type)}
+            </Chip>
+          )}
+        </div>
+      )}
       <div className={styles.spaceBetween}>
         <Link href={`/posts/${post.id}`}>
           <div className={styles.titleContent}>
@@ -103,10 +109,12 @@ export default function AllCard({ post, case: cardCase }: AllCardProps) {
               {post.hasImage && (
                 <Image src="/icon/board-all-image.svg" width={16} height={16} alt="" />
               )}
-              <div className={styles.comment}>
-                <Image src="/icon/board-all-comment.svg" width={16} height={16} alt="" />
-                {post.commentCount}
-              </div>
+              {!isMobile && (
+                <div className={styles.comment}>
+                  <Image src="/icon/board-all-comment.svg" width={16} height={16} alt="" />
+                  {post.commentCount}
+                </div>
+              )}
             </div>
             <p className={styles.content}>{plainTextContent}</p>
           </div>
@@ -132,33 +140,50 @@ export default function AllCard({ post, case: cardCase }: AllCardProps) {
               </div>
             </div>
           ) : cardCase === "my-posts" ? (
-            <div className={styles.savedPosts}>
-              <div className={styles.savedCreatedAtView}>
-                <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
-                <div className={styles.viewCount}>
-                  <Image src="/icon/board-all-view.svg" width={16} height={16} alt="" />
-                  {post.viewCount}
+            isMobile ? (
+              <div className={styles.savedPosts}>
+                <div className={styles.savedCreatedAtView}>
+                  <div className={styles.viewCount}>
+                    <Image src="/icon/board-all-view.svg" width={16} height={16} alt="" />
+                    {post.viewCount}
+                  </div>
+                  <div className={styles.commentCount}>
+                    <Image src="/icon/board-all-comment.svg" width={16} height={16} alt="" />
+                    {post.commentCount}
+                  </div>
+                  <Image src="/icon/dot.svg" width={3} height={3} alt="" />
+                  <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
                 </div>
               </div>
-              <div className={styles.dropdown}>
-                <Dropdown
-                  trigger={
-                    <IconComponent name="meatball" padding={8} width={24} height={24} isBtn />
-                  }
-                  menuItems={[
-                    {
-                      label: "공유하기",
-                      onClick: handleOpenShareModal,
-                    },
-                    {
-                      label: "삭제하기",
-                      onClick: handleDelete,
-                      isDelete: true,
-                    },
-                  ]}
-                />
+            ) : (
+              <div className={styles.savedPosts}>
+                <div className={styles.savedCreatedAtView}>
+                  <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
+                  <div className={styles.viewCount}>
+                    <Image src="/icon/board-all-view.svg" width={16} height={16} alt="" />
+                    {post.viewCount}
+                  </div>
+                </div>
+                <div className={styles.dropdown}>
+                  <Dropdown
+                    trigger={
+                      <IconComponent name="meatball" padding={8} width={24} height={24} isBtn />
+                    }
+                    menuItems={[
+                      {
+                        label: "공유하기",
+                        onClick: handleOpenShareModal,
+                      },
+                      {
+                        label: "삭제하기",
+                        onClick: handleDelete,
+                        isDelete: true,
+                      },
+                    ]}
+                  />
+                </div>
               </div>
-            </div>
+            )
           ) : (
             <div className={styles.createdAtView}>
               <div className={styles.viewCount}>
@@ -176,6 +201,25 @@ export default function AllCard({ post, case: cardCase }: AllCardProps) {
           )}
         </div>
       </div>
+      {isMobile && cardCase === "my-posts" && (
+        <div className={styles.dropdown}>
+          <Dropdown
+            isTopItem
+            trigger={<IconComponent name="meatball" padding={8} width={24} height={24} isBtn />}
+            menuItems={[
+              {
+                label: "공유하기",
+                onClick: handleOpenShareModal,
+              },
+              {
+                label: "삭제하기",
+                onClick: handleDelete,
+                isDelete: true,
+              },
+            ]}
+          />
+        </div>
+      )}
     </div>
   );
 }

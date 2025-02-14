@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import ReactCrop, { Crop, PercentCrop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import Image from "next/image";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { modalState } from "@/states/modalState";
 import Button from "@/components/Button/Button";
 import styles from "./Background.module.scss";
@@ -12,12 +12,16 @@ import { putBackgroundImage } from "@/api/users/putMeImage";
 import router from "next/router";
 import IconComponent from "@/components/Asset/Icon";
 import { useMutation } from "react-query";
+import { isMobileState } from "@/states/isMobileState";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 interface BackgroundProps {
   imageSrc: string;
 }
 
 export default function Background({ imageSrc }: BackgroundProps) {
+  const isMobile = useRecoilValue(isMobileState);
+  useIsMobile();
   const [, setModal] = useRecoilState(modalState);
   const { showToast } = useToast();
   const [crop, setCrop] = useState<Crop>({
@@ -51,8 +55,13 @@ export default function Background({ imageSrc }: BackgroundProps) {
     const scaleY = image.naturalHeight / image.height;
     const pixelRatio = window.devicePixelRatio;
 
-    canvas.width = viewportWidth * pixelRatio;
-    canvas.height = 400 * pixelRatio;
+    if (isMobile) {
+      canvas.width = viewportWidth * pixelRatio;
+      canvas.height = 240 * pixelRatio;
+    } else {
+      canvas.width = viewportWidth * pixelRatio;
+      canvas.height = 400 * pixelRatio;
+    }
 
     const ctx = canvas.getContext("2d");
     if (!ctx) {
@@ -67,7 +76,11 @@ export default function Background({ imageSrc }: BackgroundProps) {
     const cropWidth = ((crop.width * image.width) / 100) * scaleX;
     const cropHeight = ((crop.height * image.height) / 100) * scaleY;
 
-    ctx.drawImage(image, cropX, cropY, cropWidth, cropHeight, 0, 0, viewportWidth, 400);
+    if (isMobile) {
+      ctx.drawImage(image, cropX, cropY, cropWidth, cropHeight, 0, 0, viewportWidth, 240);
+    } else {
+      ctx.drawImage(image, cropX, cropY, cropWidth, cropHeight, 0, 0, viewportWidth, 400);
+    }
 
     return new Promise((resolve) => {
       canvas.toBlob(
@@ -123,7 +136,7 @@ export default function Background({ imageSrc }: BackgroundProps) {
 
   const onImageLoad = (img: HTMLImageElement) => {
     const { width, height } = img;
-    const aspectRatio = viewportWidth / 400;
+    const aspectRatio = isMobile ? width / 240 : viewportWidth / 400;
     const cropHeight = width / aspectRatio;
 
     const newCrop: Crop = {

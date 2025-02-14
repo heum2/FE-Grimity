@@ -59,6 +59,12 @@
     align-items: center;
     gap: 16px;
 
+    @include Size("mobile") {
+      gap: 8px;
+      right: 20px;
+      bottom: 16px;
+    }
+
     .coverEditBtn {
       border: 1px solid $gray30;
       color: $gray70;
@@ -71,6 +77,13 @@
       justify-content: center;
       gap: 8px;
       cursor: pointer;
+
+      @include Size("mobile") {
+        padding: 7px 14px;
+        border-radius: 8px;
+        @include Btn3;
+        gap: 4px;
+      }
 
       &:hover {
         background-color: darken($gray0, 4%);
@@ -88,11 +101,19 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
+
+    @include Size("mobile") {
+      margin-top: calc(240px - 140px);
+    }
   }
 
   .infoContainerDefault {
     @extend .infoContainer;
     margin-top: calc(264px - 73px);
+
+    @include Size("mobile") {
+      margin-top: calc(240px - 140px);
+    }
   }
 
   .imageLeft {
@@ -100,9 +121,24 @@
     width: 100%;
     align-items: flex-start;
     gap: 30px;
+
+    @include Size("mobile") {
+      flex-direction: column;
+      gap: 12px;
+    }
+  }
+
+  .spaceBetween {
+    @include Size("mobile") {
+      width: 100%;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
   }
 
   .topContainer {
+    width: 100%;
     display: flex;
     align-items: center;
     gap: 16px;
@@ -111,12 +147,17 @@
       @include Title2;
       color: $gray80;
       margin-bottom: 8px;
+
+      @include Size("mobile") {
+        @include Title4;
+      }
     }
   }
 
   .leftContainer {
     display: flex;
     flex-direction: column;
+    width: 100%;
 
     .descriptionContainer {
       display: flex;
@@ -145,6 +186,10 @@
     @include Sub4;
     color: $gray60;
     @include Drag;
+
+    @include Size("mobile") {
+      @include Body1;
+    }
   }
 
   .myfollower {
@@ -153,10 +198,19 @@
     @include Sub4;
     color: $gray60;
     cursor: pointer;
+
+    @include Size("mobile") {
+      @include Body1;
+    }
   }
 
   .followerColor {
+    @include Sub4;
     color: $gray70;
+
+    @include Size("mobile") {
+      @include Body1;
+    }
   }
 
   .linkContainer {
@@ -184,10 +238,18 @@
 
   .editBtn {
     width: 125px;
+
+    @include Size("mobile") {
+      width: auto;
+    }
   }
 
   .followBtn {
     width: 95px;
+
+    @include Size("mobile") {
+      width: auto;
+    }
   }
 
   .menuBtn {
@@ -213,6 +275,11 @@
     &:active {
       background-color: darken($gray0, 8%);
     }
+
+    @include Size("mobile") {
+      padding: 10px;
+      border-radius: 10px;
+    }
   }
 
   .dropdown {
@@ -226,6 +293,11 @@
   height: 140px;
   position: relative;
   @include Drag;
+
+  @include Size("mobile") {
+    width: 80px;
+    height: 80px;
+  }
 
   .deleteImageBtn {
     position: absolute;
@@ -244,6 +316,10 @@
     border-radius: 50%;
     overflow: hidden;
     border: 1px solid $gray30;
+
+    @include Size("mobile") {
+      border: 4px solid $gray0;
+    }
   }
 
   .addProfileImage {

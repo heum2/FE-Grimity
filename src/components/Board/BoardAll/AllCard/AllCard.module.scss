@@ -6,6 +6,11 @@
   padding-bottom: 20px;
   border-bottom: 1px solid $gray30;
 
+  @include Size("mobile") {
+    padding-bottom: 16px;
+    border-bottom: 1px solid $gray20;
+  }
+
   .chipContainer {
     width: 80px;
     flex-shrink: 0;
@@ -15,6 +20,12 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
+
+    @include Size("mobile") {
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 12px;
+    }
   }
 
   .titleContent {
@@ -24,6 +35,11 @@
     width: 100%;
     max-width: 600px;
     min-width: 400px;
+
+    @include Size("mobile") {
+      max-width: auto;
+      min-width: auto;
+    }
 
     .titleContainer {
       display: flex;
@@ -66,7 +82,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
-      -webkit-line-clamp: 1;
+      -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
     }
   }
@@ -79,6 +95,11 @@
     align-items: flex-end;
     gap: 4px;
 
+    @include Size("mobile") {
+      max-width: auto;
+      align-items: flex-start;
+    }
+
     .createdAtView {
       display: flex;
       align-items: center;
@@ -87,6 +108,10 @@
       .createdAt {
         @include Label2;
         color: $gray50;
+
+        @include Size("mobile") {
+          @include Cap2;
+        }
       }
 
       .viewCount {
@@ -95,6 +120,11 @@
         display: flex;
         gap: 2px;
         align-items: center;
+      }
+
+      .commentCount {
+        @extend .viewCount;
+        color: #f5506c;
       }
     }
 
@@ -110,10 +140,13 @@
         flex-direction: column;
         align-items: flex-end;
         @extend .createdAtView;
-      }
 
-      .dropdown {
-        position: relative;
+        @include Size("mobile") {
+          width: auto;
+          align-items: flex-start;
+          flex-direction: row;
+          align-items: center;
+        }
       }
     }
 
@@ -122,4 +155,7 @@
       color: $gray60;
     }
   }
+}
+.dropdown {
+  position: relative;
 }
