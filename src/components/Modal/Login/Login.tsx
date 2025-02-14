@@ -57,7 +57,6 @@ export default function Login() {
       setModal({ isOpen: false, type: null, data: null });
       localStorage.setItem("access_token", data.accessToken);
       localStorage.setItem("user_id", data.id);
-      route.reload();
     },
     onError: (error: ErrorResponse) => {
       showToast("오류가 발생했습니다. 다시 시도해주세요.", "error");
