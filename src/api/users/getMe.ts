@@ -37,6 +37,5 @@ export function useMyData() {
     refetchOnMount: true,
     refetchOnReconnect: true,
     refetchOnWindowFocus: true,
-    staleTime: 5 * 60 * 1000,
   });
 }
