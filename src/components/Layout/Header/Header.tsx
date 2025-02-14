@@ -81,6 +81,10 @@ export default function Header() {
     });
     localStorage.removeItem("access_token");
     localStorage.removeItem("user_id");
+
+    if (isMobile) {
+      setIsMenuOpen(false);
+    }
   };
 
   useEffect(() => {
