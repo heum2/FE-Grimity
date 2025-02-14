@@ -126,6 +126,8 @@ export default function BoardAll({ isDetail }: BoardAllProps) {
   };
 
   const handleSearchKeyDown = (e: React.KeyboardEvent) => {
+    if (e.nativeEvent.isComposing) return;
+
     if (e.key === "Enter") {
       handleSearch();
     }

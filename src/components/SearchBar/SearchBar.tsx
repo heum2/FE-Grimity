@@ -16,6 +16,8 @@ export default function SearchBar({ searchValue, setSearchValue, onSearch }: Sea
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.nativeEvent.isComposing) return;
+
     if (e.key === "Enter") {
       const currentTab = tab === "author" ? "author" : tab === "board" ? "board" : "feed";
       const trimmedKeyword = searchValue.trim();

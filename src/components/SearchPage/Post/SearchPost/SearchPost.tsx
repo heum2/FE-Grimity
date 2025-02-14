@@ -8,7 +8,6 @@ import Dropdown from "@/components/Dropdown/Dropdown";
 import Button from "@/components/Button/Button";
 import IconComponent from "@/components/Asset/Icon";
 import { useState } from "react";
-import Title from "@/components/Layout/Title/Title";
 
 type SortOption = "accuracy";
 

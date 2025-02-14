@@ -134,6 +134,8 @@ export default function Header() {
   };
 
   const handleSearchKeyDown = (e: React.KeyboardEvent) => {
+    if (e.nativeEvent.isComposing) return;
+
     if (e.key === "Enter") {
       const trimmedKeyword = keyword.trim();
       if (trimmedKeyword.length < 2) {
