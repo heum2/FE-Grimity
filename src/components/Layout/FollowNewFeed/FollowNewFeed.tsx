@@ -5,11 +5,17 @@ import Loader from "../Loader/Loader";
 import Image from "next/image";
 import RectangleCard from "../RectangleCard/RectangleCard";
 import { useFollowingNew } from "@/api/feeds/getFeedsFollowing";
+import { isMobileState } from "@/states/isMobileState";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { useRecoilValue } from "recoil";
+import Button from "@/components/Button/Button";
+import Link from "next/link";
 
 export default function FollowNewFeed() {
+  const isMobile = useRecoilValue(isMobileState);
   const [pageIndex, setPageIndex] = useState(0);
   const itemsPerPage = 2;
-
+  useIsMobile();
   const { data, isLoading } = useFollowingNew({ size: 8 });
 
   if (isLoading) return <Loader />;
@@ -36,54 +42,80 @@ export default function FollowNewFeed() {
       ) : (
         <>
           <Title link="/following">팔로우하는 유저의 새 그림</Title>
-          <div className={styles.rankingContainer}>
-            <button
-              className={`${styles.navButton} ${styles.left}`}
-              onClick={handlePrevClick}
-              disabled={pageIndex === 0}
-              style={{
-                visibility: pageIndex === 0 ? "hidden" : "visible",
-              }}
-            >
-              <Image
-                src="/icon/card-arrow-left.svg"
-                width={40}
-                height={40}
-                alt="왼쪽 버튼"
-                className={styles.arrowBtn}
-              />
-            </button>
-            <div className={styles.cardsContainer}>
-              {paginatedFeeds.map((feed) => (
-                <div key={feed.id} className={styles.cardWrapper}>
-                  <RectangleCard
-                    id={feed.id}
-                    title={feed.title}
-                    content={feed.content}
-                    thumbnail={feed.thumbnail}
-                    author={feed.author}
-                    likeCount={feed.likeCount}
-                    commentCount={feed.commentCount}
-                    createdAt={feed.createdAt}
-                    isLike={feed.isLike}
-                  />
-                </div>
-              ))}
+          {!isMobile ? (
+            <div className={styles.rankingContainer}>
+              <button
+                className={`${styles.navButton} ${styles.left}`}
+                onClick={handlePrevClick}
+                disabled={pageIndex === 0}
+                style={{
+                  visibility: pageIndex === 0 ? "hidden" : "visible",
+                }}
+              >
+                <Image
+                  src="/icon/card-arrow-left.svg"
+                  width={40}
+                  height={40}
+                  alt="왼쪽 버튼"
+                  className={styles.arrowBtn}
+                />
+              </button>
+              <div className={styles.cardsContainer}>
+                {paginatedFeeds.map((feed) => (
+                  <div key={feed.id} className={styles.cardWrapper}>
+                    <RectangleCard
+                      id={feed.id}
+                      title={feed.title}
+                      content={feed.content}
+                      thumbnail={feed.thumbnail}
+                      author={feed.author}
+                      likeCount={feed.likeCount}
+                      commentCount={feed.commentCount}
+                      createdAt={feed.createdAt}
+                      isLike={feed.isLike}
+                    />
+                  </div>
+                ))}
+              </div>
+              <button
+                className={`${styles.navButton} ${styles.right}`}
+                onClick={handleNextClick}
+                disabled={endIdx >= (data?.feeds?.length || 0)}
+              >
+                <Image
+                  src="/icon/card-arrow-right.svg"
+                  width={40}
+                  height={40}
+                  alt="오른쪽 버튼"
+                  className={styles.arrowBtn}
+                />
+              </button>
             </div>
-            <button
-              className={`${styles.navButton} ${styles.right}`}
-              onClick={handleNextClick}
-              disabled={endIdx >= (data?.feeds?.length || 0)}
-            >
-              <Image
-                src="/icon/card-arrow-right.svg"
-                width={40}
-                height={40}
-                alt="오른쪽 버튼"
-                className={styles.arrowBtn}
-              />
-            </button>
-          </div>
+          ) : (
+            <>
+              <div className={styles.mobileCard}>
+                <RectangleCard
+                  id={paginatedFeeds[0].id}
+                  title={paginatedFeeds[0].title}
+                  content={paginatedFeeds[0].content}
+                  thumbnail={paginatedFeeds[0].thumbnail}
+                  author={paginatedFeeds[0].author}
+                  likeCount={paginatedFeeds[0].likeCount}
+                  commentCount={paginatedFeeds[0].commentCount}
+                  createdAt={paginatedFeeds[0].createdAt}
+                  isLike={paginatedFeeds[0].isLike}
+                />
+                <div className={styles.gradient} />
+              </div>
+              <Link href="/following">
+                <div className={styles.showMore}>
+                  <Button size="l" type="outlined-assistive">
+                    더보기
+                  </Button>
+                </div>
+              </Link>
+            </>
+          )}
         </>
       )}
     </div>

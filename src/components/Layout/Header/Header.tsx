@@ -11,6 +11,10 @@ import { useMyData } from "@/api/users/getMe";
 import { useRouter } from "next/router";
 import { useToast } from "@/hooks/useToast";
 import Notifications from "@/components/Notifications/Notifications";
+import { isMobileState } from "@/states/isMobileState";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { usePreventScroll } from "@/hooks/usePreventScroll";
+import Dropdown from "@/components/Dropdown/Dropdown";
 
 export default function Header() {
   const [, setModal] = useRecoilState(modalState);
@@ -28,11 +32,14 @@ export default function Header() {
   const [showNotifications, setShowNotifications] = useState(false);
   const { showToast } = useToast();
   const router = useRouter();
+  const isMobile = useRecoilValue(isMobileState);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isUserPage = router.pathname.startsWith("/users/[id]");
   const isNavPage = ["/", "/popular", "/board", "/following", "/board/write"].includes(
     router.pathname
   );
   const hideBtn = ["/write", "/feeds/[id]/edit"].includes(router.pathname);
+  useIsMobile();
 
   const navItems = [
     { name: "홈", path: "/" },
@@ -55,6 +62,8 @@ export default function Header() {
 
   const handleNavClick = (item: { name: string; path: string }) => {
     setActiveNav(item.name);
+    if (isMobile) setIsMenuOpen(false);
+
     if (router.pathname === item.path) {
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
@@ -98,7 +107,7 @@ export default function Header() {
       indicatorRef.current.style.transform = "none";
       indicatorRef.current.style.width = "0px";
     }
-  }, [activeNav, isUserPage]);
+  }, [activeNav]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -133,6 +142,12 @@ export default function Header() {
     setShowNotifications((prev) => !prev);
   };
 
+  const toggleMenu = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
+
+  usePreventScroll(isMenuOpen);
+
   const handleSearchKeyDown = (e: React.KeyboardEvent) => {
     if (e.nativeEvent.isComposing) return;
 
@@ -166,37 +181,62 @@ export default function Header() {
               alt="logo"
             />
           </div>
-          <nav className={styles.nav}>
-            {navItems.map((item, index) => (
-              <div key={index} className={styles.navItem} onClick={() => handleNavClick(item)}>
-                <p
-                  className={`${isUserPage ? styles.userPageitem : styles.item} ${
-                    isNavPage && (activeNav === item.name ? styles.active : "")
-                  }`}
-                  ref={item.name === activeNav ? activeItemRef : null}
-                >
-                  {item.name}
-                </p>
-                {index < navItems.length - 1 && <div className={styles.bar} />}
-              </div>
-            ))}
-            {isNavPage && <div ref={indicatorRef} className={styles.indicator} />}
-          </nav>
+          {!isMobile && (
+            <nav className={styles.nav}>
+              {navItems.map((item, index) => (
+                <div key={index} className={styles.navItem} onClick={() => handleNavClick(item)}>
+                  <p
+                    className={`${isUserPage ? styles.userPageitem : styles.item} ${
+                      isNavPage && (activeNav === item.name ? styles.active : "")
+                    }`}
+                    ref={item.name === activeNav ? activeItemRef : null}
+                  >
+                    {item.name}
+                  </p>
+                  {index < navItems.length - 1 && <div className={styles.bar} />}
+                </div>
+              ))}
+              {isNavPage && <div ref={indicatorRef} className={styles.indicator} />}
+            </nav>
+          )}
         </div>
         <div className={styles.wrapper}>
+          {isMobile && !isLoggedIn && (
+            <div
+              className={styles.uploadBtn}
+              onClick={() => setModal({ isOpen: true, type: "LOGIN" })}
+            >
+              <Button size="s" type="filled-primary">
+                로그인
+              </Button>
+            </div>
+          )}
           <div className={styles.icons}>
-            {isSearchBarOpen ? (
-              <div className={styles.searchbarContainer}>
-                <input
-                  placeholder="그림, 작가, 관련 작품을 검색해보세요"
-                  className={styles.input}
-                  value={keyword}
-                  onChange={(e) => setKeyword(e.target.value)}
-                  onKeyDown={handleSearchKeyDown}
-                />
+            {!isMobile ? (
+              isSearchBarOpen ? (
+                <div className={styles.searchbarContainer}>
+                  <input
+                    placeholder="그림, 작가, 관련 작품을 검색해보세요"
+                    className={styles.input}
+                    value={keyword}
+                    onChange={(e) => setKeyword(e.target.value)}
+                    onKeyDown={handleSearchKeyDown}
+                  />
+                  <div onClick={handleSearchBarOpen}>
+                    <IconComponent
+                      name="searchGray"
+                      width={24}
+                      height={24}
+                      padding={8}
+                      isBtn
+                      alt="검색"
+                    />
+                  </div>
+                </div>
+              ) : (
                 <div onClick={handleSearchBarOpen}>
                   <IconComponent
-                    name="searchGray"
+                    name={isUserPage ? "searchWhite" : "search"}
                     width={24}
                     height={24}
                     padding={8}
@@ -204,9 +244,9 @@ export default function Header() {
                     alt="검색"
                   />
                 </div>
-              </div>
+              )
             ) : (
-              <div onClick={handleSearchBarOpen}>
+              <Link href="/search">
                 <IconComponent
                   name={isUserPage ? "searchWhite" : "search"}
                   width={24}
@@ -215,7 +255,7 @@ export default function Header() {
                   isBtn
                   alt="검색"
                 />
-              </div>
+              </Link>
             )}
             {isLoggedIn && myData && (
               <div className={styles.notificationWrapper} ref={notificationRef}>
@@ -226,131 +266,250 @@ export default function Header() {
               </div>
             )}
           </div>
-          {isLoggedIn && myData ? (
-            <div className={styles.profileSection}>
-              <div
-                className={styles.profileContainer}
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              >
-                {myData.image !== "https://image.grimity.com/null" ? (
-                  <Image
-                    src={myData.image}
-                    width={100}
-                    height={100}
-                    alt="프로필 이미지"
-                    className={styles.profileImage}
-                    quality={100}
-                    style={{ objectFit: "cover" }}
-                  />
-                ) : (
-                  <Image
-                    src="/image/default.svg"
-                    width={100}
-                    height={100}
-                    alt="프로필 이미지"
-                    className={styles.profileImage}
-                    quality={100}
-                    style={{ objectFit: "cover" }}
-                  />
+          {!isMobile ? (
+            isLoggedIn && myData ? (
+              <div className={styles.profileSection}>
+                <div
+                  className={styles.profileContainer}
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                >
+                  {myData.image !== "https://image.grimity.com/null" ? (
+                    <Image
+                      src={myData.image}
+                      width={100}
+                      height={100}
+                      alt="프로필 이미지"
+                      className={styles.profileImage}
+                      quality={100}
+                      style={{ objectFit: "cover" }}
+                    />
+                  ) : (
+                    <Image
+                      src="/image/default.svg"
+                      width={100}
+                      height={100}
+                      alt="프로필 이미지"
+                      className={styles.profileImage}
+                      quality={100}
+                      style={{ objectFit: "cover" }}
+                    />
+                  )}
+                </div>
+                {isDropdownOpen && (
+                  <div className={styles.dropdown} ref={dropdownRef}>
+                    <Link href={`/users/${myData.id}`}>
+                      <div
+                        className={styles.dropdownItem}
+                        onClick={() => {
+                          setIsDropdownOpen(false);
+                          window.scrollTo(0, 0);
+                        }}
+                      >
+                        {myData.image !== "https://image.grimity.com/null" ? (
+                          <Image
+                            src={myData.image}
+                            width={100}
+                            height={100}
+                            alt="프로필 이미지"
+                            className={styles.dropdownProfileImage}
+                            quality={100}
+                            style={{ objectFit: "cover" }}
+                          />
+                        ) : (
+                          <Image
+                            src="/image/default.svg"
+                            width={100}
+                            height={100}
+                            alt="프로필 이미지"
+                            className={styles.dropdownProfileImage}
+                            quality={100}
+                            style={{ objectFit: "cover" }}
+                          />
+                        )}
+                        <span>내 프로필</span>
+                      </div>
+                    </Link>
+                    <div className={styles.divider} />
+                    <Link href="/mypage?tab=liked-feeds">
+                      <div
+                        className={styles.dropdownItem}
+                        onClick={() => {
+                          setIsDropdownOpen(false);
+                          window.scrollTo(0, 0);
+                        }}
+                      >
+                        좋아요한 그림
+                      </div>
+                    </Link>
+                    <Link href="/mypage?tab=saved-feeds">
+                      <div
+                        className={styles.dropdownItem}
+                        onClick={() => {
+                          setIsDropdownOpen(false);
+                          window.scrollTo(0, 0);
+                        }}
+                      >
+                        저장한 그림
+                      </div>
+                    </Link>
+                    <Link href="/mypage?tab=saved-posts">
+                      <div
+                        className={styles.dropdownItem}
+                        onClick={() => {
+                          setIsDropdownOpen(false);
+                          window.scrollTo(0, 0);
+                        }}
+                      >
+                        저장한 글
+                      </div>
+                    </Link>
+                    <div className={styles.divider} />
+                    <div
+                      className={`${styles.dropdownItem} ${styles.logout}`}
+                      onClick={() => {
+                        handleLogout();
+                        setIsDropdownOpen(false);
+                      }}
+                    >
+                      로그아웃
+                    </div>
+                  </div>
+                )}
+                {!hideBtn && (
+                  <Link href="/write">
+                    <Button size="m" type="filled-primary">
+                      그림 업로드
+                    </Button>
+                  </Link>
                 )}
               </div>
-              {isDropdownOpen && (
-                <div className={styles.dropdown} ref={dropdownRef}>
-                  <Link href={`/users/${myData.id}`}>
-                    <div
-                      className={styles.dropdownItem}
-                      onClick={() => {
-                        setIsDropdownOpen(false);
-                        window.scrollTo(0, 0);
-                      }}
-                    >
-                      {myData.image !== "https://image.grimity.com/null" ? (
-                        <Image
-                          src={myData.image}
-                          width={100}
-                          height={100}
-                          alt="프로필 이미지"
-                          className={styles.dropdownProfileImage}
-                          quality={100}
-                          style={{ objectFit: "cover" }}
-                        />
-                      ) : (
-                        <Image
-                          src="/image/default.svg"
-                          width={100}
-                          height={100}
-                          alt="프로필 이미지"
-                          className={styles.dropdownProfileImage}
-                          quality={100}
-                          style={{ objectFit: "cover" }}
-                        />
-                      )}
-                      <span>내 프로필</span>
-                    </div>
-                  </Link>
-                  <div className={styles.divider} />
-                  <Link href="/mypage?tab=liked-feeds">
-                    <div
-                      className={styles.dropdownItem}
-                      onClick={() => {
-                        setIsDropdownOpen(false);
-                        window.scrollTo(0, 0);
-                      }}
-                    >
-                      좋아요한 그림
-                    </div>
-                  </Link>
-                  <Link href="/mypage?tab=saved-feeds">
-                    <div
-                      className={styles.dropdownItem}
-                      onClick={() => {
-                        setIsDropdownOpen(false);
-                        window.scrollTo(0, 0);
-                      }}
-                    >
-                      저장한 그림
-                    </div>
-                  </Link>
-                  <Link href="/mypage?tab=saved-posts">
-                    <div
-                      className={styles.dropdownItem}
-                      onClick={() => {
-                        setIsDropdownOpen(false);
-                        window.scrollTo(0, 0);
-                      }}
-                    >
-                      저장한 글
-                    </div>
-                  </Link>
-                  <div className={styles.divider} />
-                  <div
-                    className={`${styles.dropdownItem} ${styles.logout}`}
-                    onClick={() => {
-                      handleLogout();
-                      setIsDropdownOpen(false);
-                    }}
-                  >
-                    로그아웃
-                  </div>
-                </div>
-              )}
-              {!hideBtn && (
-                <Link href="/write">
-                  <Button size="m" type="filled-primary">
-                    그림 업로드
-                  </Button>
-                </Link>
-              )}
-            </div>
+            ) : (
+              <div
+                className={styles.uploadBtn}
+                onClick={() => setModal({ isOpen: true, type: "LOGIN" })}
+              >
+                <Button size="m" type="filled-primary">
+                  로그인
+                </Button>
+              </div>
+            )
           ) : (
-            <div
-              className={styles.uploadBtn}
-              onClick={() => setModal({ isOpen: true, type: "LOGIN" })}
-            >
-              <Button size="m" type="filled-primary">
-                로그인
-              </Button>
-            </div>
+            <>
+              <div onClick={toggleMenu}>
+                <IconComponent
+                  name={isUserPage ? "hamburgerWhite" : "hamburger"}
+                  width={24}
+                  height={24}
+                  padding={8}
+                  isBtn
+                />
+              </div>
+              <div
+                className={`${styles.overlay} ${isMenuOpen ? styles.open : ""}`}
+                onClick={toggleMenu}
+              >
+                <div className={`${styles.sideMenu} ${isMenuOpen ? styles.open : ""}`}>
+                  <div className={styles.navs}>
+                    <nav className={styles.nav}>
+                      {navItems.map((item, index) => (
+                        <div
+                          key={index}
+                          className={styles.navItem}
+                          onClick={() => handleNavClick(item)}
+                        >
+                          <p
+                            className={`${isUserPage ? styles.userPageitem : styles.item} ${
+                              isNavPage && (activeNav === item.name ? styles.active : "")
+                            }`}
+                          >
+                            {item.name}
+                          </p>
+                        </div>
+                      ))}
+                    </nav>
+                    <div
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleMenu();
+                      }}
+                    >
+                      <IconComponent name="x" width={24} height={24} padding={8} isBtn />
+                    </div>
+                  </div>
+                  {!isLoggedIn || !myData ? (
+                    <div
+                      className={styles.uploadBtn}
+                      onClick={() => setModal({ isOpen: true, type: "LOGIN" })}
+                    >
+                      <Button size="l" type="filled-primary">
+                        로그인
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className={styles.mobileProfile}>
+                      <Link href={`/users/${myData.id}`}>
+                        {myData.image !== "https://image.grimity.com/null" ? (
+                          <Image
+                            src={myData.image}
+                            width={100}
+                            height={100}
+                            alt="프로필 이미지"
+                            className={styles.profileImage}
+                            quality={100}
+                            style={{ objectFit: "cover" }}
+                          />
+                        ) : (
+                          <Image
+                            src="/image/default.svg"
+                            width={100}
+                            height={100}
+                            alt="프로필 이미지"
+                            className={styles.profileImage}
+                            quality={100}
+                            style={{ objectFit: "cover" }}
+                          />
+                        )}
+                        <span className={styles.name}>{myData.name}</span>
+                      </Link>
+                      <div className={styles.btns}>
+                        <Link href="/mypage?tab=liked-feeds">
+                          <Button
+                            size="m"
+                            type="outlined-assistive"
+                            leftIcon={
+                              <IconComponent name="bookmark" width={16} height={16} isBtn />
+                            }
+                          >
+                            저장한 컨텐츠
+                          </Button>
+                        </Link>
+                        <div className={styles.mobileDropdown} onClick={(e) => e.stopPropagation()}>
+                          <Dropdown
+                            isTopItem
+                            trigger={
+                              <div className={styles.itemBtn}>
+                                <Image
+                                  src="/icon/meatball.svg"
+                                  width={20}
+                                  height={20}
+                                  alt="메뉴 버튼 "
+                                />
+                              </div>
+                            }
+                            menuItems={[
+                              {
+                                label: "로그아웃",
+                                onClick: handleLogout,
+                              },
+                            ]}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </>
           )}
         </div>
       </div>

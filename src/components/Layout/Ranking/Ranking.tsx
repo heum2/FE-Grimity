@@ -6,17 +6,23 @@ import styles from "./Ranking.module.scss";
 import { useTodayFeedPopular } from "@/api/feeds/getTodayPopular";
 import Loader from "../Loader/Loader";
 import Image from "next/image";
+import { useRecoilValue } from "recoil";
+import { isMobileState } from "@/states/isMobileState";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 
 export default function Ranking() {
+  const isMobile = useRecoilValue(isMobileState);
   const [pageIndex, setPageIndex] = useState(0);
   const { data, isLoading } = useTodayFeedPopular();
 
   if (isLoading) return <Loader />;
 
   const itemsPerPage = 3;
-  const startIdx = pageIndex * itemsPerPage;
-  const endIdx = startIdx + itemsPerPage;
-  const paginatedFeeds = data?.slice(startIdx, endIdx) || [];
+  const totalSlides = Math.ceil((data?.length || 0) / itemsPerPage);
+  const paginatedFeeds = data || [];
   const isEmpty = !data || data.length === 0;
 
   const handlePrevClick = () => {
@@ -24,7 +30,7 @@ export default function Ranking() {
   };
 
   const handleNextClick = () => {
-    if (endIdx < (data?.length || 0) && pageIndex < 3) setPageIndex((prev) => prev + 1);
+    if (pageIndex < totalSlides - 1) setPageIndex((prev) => prev + 1);
   };
 
   return (
@@ -32,6 +38,39 @@ export default function Ranking() {
       <Title link="/popular">오늘의 인기 랭킹</Title>
       {isEmpty ? (
         <p className={styles.message}>아직 등록된 그림이 없어요</p>
+      ) : isMobile ? (
+        <div className={styles.rankingContainer}>
+          <Swiper
+            spaceBetween={12}
+            slidesPerView={1.5}
+            onSlideChange={(swiper) => setPageIndex(swiper.activeIndex)}
+          >
+            {paginatedFeeds.map((feed, idx) => (
+              <SwiperSlide key={feed.id}>
+                <div className={styles.cardWrapper}>
+                  {idx < 3 && (
+                    <div className={styles.rankingIconWrapper}>
+                      <IconComponent
+                        name={idx === 0 ? "ranking1" : idx === 1 ? "ranking2" : "ranking3"}
+                        width={30}
+                        height={30}
+                      />
+                    </div>
+                  )}
+                  <SquareCard
+                    id={feed.id}
+                    title={feed.title}
+                    thumbnail={feed.thumbnail}
+                    author={feed.author}
+                    likeCount={feed.likeCount}
+                    viewCount={feed.viewCount}
+                    isLike={feed.isLike}
+                  />
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
       ) : (
         <div className={styles.rankingContainer}>
           <button
@@ -51,41 +90,37 @@ export default function Ranking() {
             />
           </button>
           <div className={styles.cardsContainer}>
-            {paginatedFeeds.map((feed, idx) => (
-              <div key={feed.id} className={styles.cardWrapper}>
-                {startIdx + idx < 3 && (
-                  <div className={styles.rankingIconWrapper}>
-                    <IconComponent
-                      name={
-                        startIdx + idx === 0
-                          ? "ranking1"
-                          : startIdx + idx === 1
-                          ? "ranking2"
-                          : "ranking3"
-                      }
-                      width={30}
-                      height={30}
-                    />
-                  </div>
-                )}
-                <SquareCard
-                  id={feed.id}
-                  title={feed.title}
-                  thumbnail={feed.thumbnail}
-                  author={feed.author}
-                  likeCount={feed.likeCount}
-                  viewCount={feed.viewCount}
-                  isLike={feed.isLike}
-                />
-              </div>
-            ))}
+            {paginatedFeeds
+              .slice(pageIndex * itemsPerPage, (pageIndex + 1) * itemsPerPage)
+              .map((feed, idx) => (
+                <div key={feed.id} className={styles.cardWrapper}>
+                  {idx < 3 && (
+                    <div className={styles.rankingIconWrapper}>
+                      <IconComponent
+                        name={idx === 0 ? "ranking1" : idx === 1 ? "ranking2" : "ranking3"}
+                        width={30}
+                        height={30}
+                      />
+                    </div>
+                  )}
+                  <SquareCard
+                    id={feed.id}
+                    title={feed.title}
+                    thumbnail={feed.thumbnail}
+                    author={feed.author}
+                    likeCount={feed.likeCount}
+                    viewCount={feed.viewCount}
+                    isLike={feed.isLike}
+                  />
+                </div>
+              ))}
           </div>
           <button
             className={`${styles.navButton} ${styles.right}`}
             onClick={handleNextClick}
-            disabled={endIdx >= (data?.length || 0) || pageIndex === 3}
+            disabled={pageIndex === totalSlides - 1}
             style={{
-              visibility: pageIndex === 3 ? "hidden" : "visible",
+              visibility: pageIndex === totalSlides - 1 ? "hidden" : "visible",
             }}
           >
             <Image

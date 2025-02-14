@@ -6,12 +6,16 @@
   top: 0px;
   left: 0;
   padding: 0 80px;
-  z-index: 10;
+  z-index: 1500;
   display: flex;
   justify-content: center;
   background: $gray0;
   align-items: center;
   @include Drag;
+
+  @include Size("mobile") {
+    padding: 0;
+  }
 }
 
 .cursor {
@@ -19,15 +23,7 @@
 }
 
 .userPageHeader {
-  width: 100%;
-  position: fixed;
-  top: 0px;
-  left: 0;
-  padding: 0 80px;
-  z-index: 10;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @extend .header;
   background: rgba(152, 152, 152, 0.2);
   backdrop-filter: blur(75px);
   @include Drag;
@@ -40,56 +36,72 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @include Size("mobile") {
+    padding: 12px 16px;
+    max-width: 100%;
+  }
 }
 
 .leftSection {
   display: flex;
   align-items: center;
   gap: 50px;
+}
 
-  .nav {
+.nav {
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  @include Size("mobile") {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navItem {
     display: flex;
     align-items: center;
-    position: relative;
+    cursor: pointer;
 
-    .navItem {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
+    .item {
+      color: $gray60;
+      @include Sub2;
+      display: inline-block;
+      margin: 0;
+      transition: color 0.3s;
 
-      .item {
+      &.active {
+        color: $gray70;
+      }
+
+      @include Size("mobile") {
+        padding: 12px 0;
+        @include Title5;
         color: $gray60;
-        @include Sub2;
-        display: inline-block;
-        margin: 0;
-        transition: color 0.3s;
-
-        &.active {
-          color: $gray70;
-        }
-      }
-
-      .userPageitem {
-        @extend .item;
-        color: $gray0;
-      }
-
-      .bar {
-        width: 1px;
-        height: 20px;
-        background-color: $gray20;
-        transition: background 0.3s;
-        margin: 0 20px;
       }
     }
 
-    .indicator {
-      position: absolute;
-      height: 2px;
-      background-color: $gray80;
-      transition: transform 0.3s ease, width 0.3s ease;
-      bottom: -8px;
+    .userPageitem {
+      @extend .item;
+      color: $gray0;
     }
+
+    .bar {
+      width: 1px;
+      height: 20px;
+      background-color: $gray20;
+      transition: background 0.3s;
+      margin: 0 20px;
+    }
+  }
+
+  .indicator {
+    position: absolute;
+    height: 2px;
+    background-color: $gray80;
+    transition: transform 0.3s ease, width 0.3s ease;
+    bottom: -8px;
   }
 }
 
@@ -98,6 +110,10 @@
   align-items: center;
   gap: 20px;
   flex-shrink: 0;
+
+  @include Size("mobile") {
+    gap: 0;
+  }
 }
 
 .profileSection {
@@ -114,6 +130,11 @@
   border-radius: 50%;
   overflow: hidden;
   cursor: pointer;
+
+  @include Size("mobile") {
+    width: 40px;
+    height: 40px;
+  }
 }
 
 .dropdown {
@@ -167,6 +188,11 @@
   display: flex;
   align-items: center;
   gap: 8px;
+
+  @include Size("mobile") {
+    gap: 0;
+    margin-left: 8px;
+  }
 }
 
 .uploadBtn {
@@ -207,5 +233,104 @@
   .notification {
     cursor: pointer;
     position: relative;
+  }
+}
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.15);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
+  z-index: 1500;
+
+  &.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .sideMenu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 240px;
+    height: 100%;
+    padding: 16px 20px 24px;
+    background-color: $gray0;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1600;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    &.open {
+      transform: translateX(0);
+    }
+
+    .navs {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .mobileProfile {
+      padding-top: 20px;
+      border-top: 1px solid $gray30;
+      display: flex;
+      flex-direction: column;
+
+      .name {
+        @include Sub4;
+        color: $gray80;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        margin-top: 8px;
+      }
+
+      .btns {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 16px;
+      }
+
+      .itemBtn {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        outline: none;
+        border: none;
+        cursor: pointer;
+        @include Drag;
+        border: 1px solid $gray30;
+        color: $gray70;
+        background-color: $gray0;
+        width: 100%;
+        padding: 10px 10px;
+        border-radius: 12px;
+        @include Btn1;
+
+        &:hover {
+          background-color: darken($gray0, 4%);
+        }
+
+        &:active {
+          background-color: darken($gray0, 8%);
+        }
+      }
+
+      .mobileDropdown {
+        cursor: pointer;
+        position: relative;
+      }
+    }
   }
 }

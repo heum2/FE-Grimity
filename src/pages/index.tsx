@@ -10,6 +10,11 @@ import { authState } from "@/states/authState";
 import { useRecoilValue } from "recoil";
 import MainBoard from "@/components/Layout/MainBoard/MainBoard";
 import { useScrollRestoration } from "@/hooks/useScrollRestoration";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { isMobileState } from "@/states/isMobileState";
+import BoardPopular from "@/components/Board/BoardPopular/BoardPopular";
+import IconComponent from "@/components/Asset/Icon";
+import Link from "next/link";
 
 export default function Home() {
   const router = useRouter();
@@ -17,6 +22,10 @@ export default function Home() {
   const [OGUrl, setOGUrl] = useState(serviceUrl);
   const { isLoggedIn } = useRecoilValue(authState);
   const { restoreScrollPosition } = useScrollRestoration("home-scroll");
+  const [isScrollAbove, setIsScrollAbove] = useState(false);
+  const isMobile = useRecoilValue(isMobileState);
+
+  useIsMobile();
 
   useEffect(() => {
     setOGUrl(serviceUrl + router.asPath);
@@ -29,28 +38,75 @@ export default function Home() {
     }
   }, []);
 
+  // 스크롤 위치 감지
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY < 301) {
+        setIsScrollAbove(true);
+      } else {
+        setIsScrollAbove(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <>
       <InitialPageMeta title={OGTitle} url={OGUrl} />
       <div className={styles.container}>
-        <section className={styles.FeedSection}>
-          <Ranking />
-          <div className={styles.bar} />
-          {isLoggedIn && (
-            <>
-              <FollowNewFeed />
+        {!isMobile && (
+          <>
+            <section className={styles.FeedSection}>
+              <Ranking />
               <div className={styles.bar} />
-            </>
-          )}
-          <NewFeed />
-        </section>
-        <section className={styles.BoardSection}>
-          <MainBoard type="POPULAR" />
-          <div className={styles.bar} />
-          <MainBoard type="FEEDBACK" />
-          <div className={styles.bar} />
-          <MainBoard type="QUESTION" />
-        </section>
+              {isLoggedIn && (
+                <>
+                  <FollowNewFeed />
+                  <div className={styles.bar} />
+                </>
+              )}
+              <NewFeed />
+            </section>
+            <section className={styles.BoardSection}>
+              <MainBoard type="POPULAR" />
+              <div className={styles.bar} />
+              <MainBoard type="FEEDBACK" />
+              <div className={styles.bar} />
+              <MainBoard type="QUESTION" />
+            </section>
+          </>
+        )}
+
+        {isMobile && (
+          <>
+            <section className={styles.MobileSection}>
+              <Ranking />
+              <div className={styles.bar} />
+              {isLoggedIn && (
+                <>
+                  <FollowNewFeed />
+                  <div className={styles.bar} />
+                </>
+              )}
+              <BoardPopular isDetail />
+              <div className={styles.bar} />
+              <NewFeed />
+            </section>
+            <Link href="/write">
+              <div
+                className={`${styles.uploadButton} ${isScrollAbove && styles.slide}`}
+                role="button"
+                tabIndex={0}
+              >
+                <IconComponent name="mobileUpload" width={32} height={32} isBtn />
+              </div>
+            </Link>
+          </>
+        )}
       </div>
     </>
   );

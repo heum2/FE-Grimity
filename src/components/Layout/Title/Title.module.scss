@@ -8,14 +8,26 @@
   margin-bottom: 24px;
   @include Drag;
 
+  @include Size("mobile") {
+    margin-bottom: 20px;
+  }
+
   .title {
     @include Title4;
     color: $gray80;
+
+    @include Size("mobile") {
+      @include Sub2;
+    }
   }
 
   .btn {
     @include Sub2;
     color: $gray60;
     cursor: pointer;
+
+    @include Size("mobile") {
+      @include Sub4;
+    }
   }
 }

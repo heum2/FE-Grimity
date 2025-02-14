@@ -73,6 +73,14 @@ export default function SquareCard({
         </Link>
         <div className={styles.profileContainer}>
           <div className={styles.countContainer}>
+            {createdAt ? (
+              <p className={styles.createdAt}>{timeAgo(createdAt)}</p>
+            ) : (
+              <Link href={`/users/${author?.id}`}>
+                <p className={styles.author}>{author?.name}</p>
+              </Link>
+            )}
+            <Image src="/icon/dot.svg" width={3} height={3} alt="" />
             <div className={styles.likeContainer}>
               <IconComponent name="likeCount" width={16} height={16} />
               <p className={styles.count}>{formatCurrency(currentLikeCount)}</p>
@@ -82,14 +90,6 @@ export default function SquareCard({
               <p className={styles.count}>{formatCurrency(viewCount)}</p>
             </div>
           </div>
-          <Image src="/icon/dot.svg" width={3} height={3} alt="" />
-          {createdAt ? (
-            <p className={styles.createdAt}>{timeAgo(createdAt)}</p>
-          ) : (
-            <Link href={`/users/${author?.id}`}>
-              <p className={styles.author}>{author?.name}</p>
-            </Link>
-          )}
         </div>
       </div>
     </div>

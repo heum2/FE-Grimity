@@ -9,6 +9,17 @@
   border: 1px solid $gray30;
   border-radius: 12px;
 
+  @include Size("mobile") {
+    padding: 16px 0;
+    border: none;
+    border-bottom: 1px solid $gray30;
+    border-radius: 0;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
   .title {
     height: 22px;
     overflow: hidden;

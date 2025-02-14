@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Layout.module.scss";
 import Header from "./Header/Header";
-import { useRouter } from "next/router";
 import { LayoutProps } from "./Layout.types";
 import IconComponent from "../Asset/Icon";
 
 export default function Layout({ children }: LayoutProps) {
   const [isScrollAbove, setIsScrollAbove] = useState(false);
-  const router = useRouter();
 
   // 스크롤 위치 감지
   useEffect(() => {

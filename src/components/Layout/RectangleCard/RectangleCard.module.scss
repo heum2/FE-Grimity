@@ -115,4 +115,42 @@
       }
     }
   }
+
+  .mobileContainer {
+    width: 100%;
+    position: relative;
+
+    .cardData {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      .profile {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .profileImage {
+        object-fit: cover;
+        border-radius: 50%;
+        overflow: hidden;
+        @include Drag;
+      }
+
+      .author {
+        @include Label1;
+        color: $gray0;
+      }
+
+      .title {
+        width: 280px;
+        @include Sub4;
+        color: $gray0;
+      }
+    }
+  }
 }

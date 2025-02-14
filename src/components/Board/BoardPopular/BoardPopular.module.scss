@@ -28,6 +28,11 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-column-gap: 40px;
+
+    @include Size("mobile") {
+      display: flex;
+      flex-direction: column;
+    }
   }
 
   .pagination {

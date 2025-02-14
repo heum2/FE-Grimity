@@ -57,10 +57,17 @@
     gap: 4px;
 
     .title {
-      overflow: hidden;
       color: $gray80;
+      overflow: hidden;
       text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
       @include Sub4;
+
+      @include Size("mobile") {
+        @include Label1;
+      }
     }
 
     .profileContainer {
@@ -71,6 +78,11 @@
       .author {
         @include Label1;
         color: $gray50;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
       }
 
       .createdAt {
@@ -81,6 +93,7 @@
 
       .countContainer {
         display: flex;
+        align-items: center;
         gap: 6px;
         @include Drag;
 

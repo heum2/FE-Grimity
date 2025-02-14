@@ -77,4 +77,8 @@ export const ICONS = {
   notiBack: "/icon/noti-back.svg",
   saveOn: "/icon/detail-save-on.svg",
   saveOff: "/icon/detail-save.svg",
+  mobileUpload: "/icon/mobile-upload-btn.svg",
+  bookmark: "/icon/bookmark.svg",
+  hamburger: "/icon/hamburger.svg",
+  hamburgerWhite: "/icon/hamburger-white.svg",
 };
