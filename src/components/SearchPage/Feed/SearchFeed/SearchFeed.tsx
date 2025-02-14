@@ -73,6 +73,7 @@ export default function SearchFeed() {
   return (
     <section className={styles.results}>
       <div className={styles.sortWrapper}>
+        <h2 className={styles.title}>그림 {data?.pages?.[0]?.totalCount || 0}개</h2>
         <div className={styles.sort}>
           <Dropdown
             menuItems={sortOptions.map((option) => ({

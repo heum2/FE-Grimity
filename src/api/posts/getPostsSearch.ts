@@ -24,7 +24,7 @@ export interface PostSearch {
 }
 
 export interface PostSearchResponse {
-  totalCount: string | null;
+  totalCount: null;
   posts: PostSearch[];
 }
 
@@ -55,6 +55,12 @@ export function usePostSearch(params: PostSearchRequest) {
   return useQuery<PostSearchResponse>(
     ["PostSearch", params.searchBy, params.size, params.page, params.keyword],
     () => getPostSearch(params),
-    {}
+    {
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000,
+      cacheTime: 10 * 60 * 1000,
+    }
   );
 }

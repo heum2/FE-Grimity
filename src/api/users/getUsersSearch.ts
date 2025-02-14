@@ -19,6 +19,7 @@ export interface UserSearch {
 }
 
 export interface UserSearchResponse {
+  totalCount: number;
   nextCursor: string | null;
   users: UserSearch[];
 }
@@ -58,10 +59,17 @@ export async function getUserSearch({
 export function useUserSearch(params: UserSearchRequest) {
   return useInfiniteQuery(
     ["UserSearch", params.keyword, params.sort],
-    ({ pageParam = null }) => getUserSearch({ ...params, cursor: pageParam }),
+    ({ pageParam = undefined }) => getUserSearch({ ...params, cursor: pageParam }),
     {
-      getNextPageParam: (lastPage) => lastPage.nextCursor,
+      getNextPageParam: (lastPage) => {
+        return lastPage.nextCursor ? lastPage.nextCursor : undefined;
+      },
       enabled: !!params.keyword,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000,
+      cacheTime: 10 * 60 * 1000,
     }
   );
 }

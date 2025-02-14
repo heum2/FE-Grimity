@@ -24,6 +24,7 @@ export interface FeedSearch {
 }
 
 export interface FeedSearchResponse {
+  totalCount: number;
   nextCursor: string | null;
   feeds: FeedSearch[];
 }

@@ -2,6 +2,23 @@
 
 .results {
   width: 100%;
+
+  .sortWrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .title {
+    @include Title3;
+    color: $gray70;
+  }
+
+  .sort {
+    position: relative;
+  }
 }
 .cards {
   width: 100%;
