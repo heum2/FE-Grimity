@@ -8,6 +8,7 @@ import { modalState } from "@/states/modalState";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useToast } from "@/hooks/useToast";
 import IconComponent from "@/components/Asset/Icon";
+import { useRouter } from "next/router";
 
 interface AuthObj {
   access_token: string;
@@ -30,6 +31,7 @@ export default function Login() {
   const [, setAuth] = useRecoilState(authState);
   const [, setModal] = useRecoilState(modalState);
   const { showToast } = useToast();
+  const route = useRouter();
 
   const loginMutation = useMutation({
     mutationFn: async ({
@@ -55,6 +57,7 @@ export default function Login() {
       setModal({ isOpen: false, type: null, data: null });
       localStorage.setItem("access_token", data.accessToken);
       localStorage.setItem("user_id", data.id);
+      route.reload();
     },
     onError: (error: ErrorResponse) => {
       showToast("오류가 발생했습니다. 다시 시도해주세요.", "error");
