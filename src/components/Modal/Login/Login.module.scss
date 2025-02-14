@@ -7,6 +7,10 @@
   flex-direction: column;
   justify-content: space-between;
 
+  @include Size("mobile") {
+    height: 242px;
+  }
+
   .messageContainer {
     display: flex;
     flex-direction: column;

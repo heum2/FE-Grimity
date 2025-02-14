@@ -20,6 +20,13 @@
   width: 404px;
   min-height: 394px;
   position: relative;
+
+  @include Size("mobile") {
+    width: 100%;
+    margin: 0 16px;
+    min-height: 290px;
+    padding: 28px 20px 20px;
+  }
 }
 
 .profileEditModal {
@@ -40,6 +47,11 @@
   background: none;
   border: none;
   cursor: pointer;
+
+  @include Size("mobile") {
+    top: 28px;
+    right: 20px;
+  }
 }
 
 .comfirmModal {
