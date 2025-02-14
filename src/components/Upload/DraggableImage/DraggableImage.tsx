@@ -3,6 +3,9 @@ import { DraggableImageProps } from "./DraggableImage.types";
 import Image from "next/image";
 import styles from "./DraggableImage.module.scss";
 import { useState } from "react";
+import { isMobileState } from "@/states/isMobileState";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { useRecoilValue } from "recoil";
 
 export default function DraggableImage({
   image,
@@ -12,6 +15,8 @@ export default function DraggableImage({
   isThumbnail,
   onThumbnailSelect,
 }: DraggableImageProps) {
+  const isMobile = useRecoilValue(isMobileState);
+  useIsMobile();
   const [isLoading, setIsLoading] = useState(true);
 
   const handleImageLoad = () => {
@@ -62,7 +67,7 @@ export default function DraggableImage({
             <div className={styles.removeImage} onClick={() => removeImage(index)}>
               <Image src="/icon/upload-delete-image.svg" width={40} height={40} alt="사진 제거" />
             </div>
-            <p className={styles.fileName}>{name}</p>
+            {!isMobile && <p className={styles.fileName}>{name}</p>}
           </div>
         </div>
       )}

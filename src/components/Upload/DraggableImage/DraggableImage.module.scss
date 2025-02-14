@@ -1,7 +1,7 @@
 @import "@/styles/globals.scss";
 
 .imageWrapper {
-  height: 100%;
+  height: fit-content;
   position: relative;
   width: fit-content;
   transition: transform 0.2s ease, opacity 0.2s ease;
@@ -35,6 +35,10 @@
 
 .imageContainer {
   height: 100%;
+
+  @include Size("mobile") {
+    height: fit-content;
+  }
 
   .fileName {
     margin-top: 12px;

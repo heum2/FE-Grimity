@@ -81,4 +81,5 @@ export const ICONS = {
   bookmark: "/icon/bookmark.svg",
   hamburger: "/icon/hamburger.svg",
   hamburgerWhite: "/icon/hamburger-white.svg",
+  mobileAddImage: "/icon/mobile-add-image.svg",
 };

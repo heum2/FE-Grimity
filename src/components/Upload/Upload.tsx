@@ -9,11 +9,17 @@ import router from "next/router";
 import { useMutation } from "react-query";
 import { FeedsRequest, FeedsResponse, postFeeds } from "@/api/feeds/postFeeds";
 import { AxiosError } from "axios";
-import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
+import { DragDropContext, Draggable, Droppable, DropResult } from "@hello-pangea/dnd";
 import DraggableImage from "./DraggableImage/DraggableImage";
 import Chip from "../Chip/Chip";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { modalState } from "@/states/modalState";
+import { isMobileState } from "@/states/isMobileState";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 
 export default function Upload() {
   const [images, setImages] = useState<{ name: string; originalName: string; url: string }[]>([]);
@@ -29,6 +35,8 @@ export default function Upload() {
   const { showToast } = useToast();
   const hasUnsavedChangesRef = useRef(hasUnsavedChanges);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const isMobile = useRecoilValue(isMobileState);
+  useIsMobile();
 
   // 첫 번째 사진을 썸네일 기본값으로
   useEffect(() => {
@@ -335,11 +343,13 @@ export default function Upload() {
   return (
     <div className={styles.background}>
       <div className={styles.container}>
-        <div className={styles.uploadBtnContainer}>
-          <Button size="m" type="filled-primary" disabled={isDisabled} onClick={handleSubmit}>
-            업로드
-          </Button>
-        </div>
+        {!isMobile && (
+          <div className={styles.uploadBtnContainer}>
+            <Button size="m" type="filled-primary" disabled={isDisabled} onClick={handleSubmit}>
+              업로드
+            </Button>
+          </div>
+        )}
         <div className={styles.sectionContainer}>
           <section className={styles.imageSection} onDrop={handleDrop} onDragOver={handleDragOver}>
             <div className={styles.addBtnContainer}>
@@ -347,42 +357,108 @@ export default function Upload() {
                 <Droppable droppableId="images" direction="horizontal">
                   {(provided) => (
                     <div
-                      className={styles.imageContainer}
+                      className={isMobile ? styles.swiperContainer : styles.imageContainer}
                       ref={(el) => {
                         provided.innerRef(el);
                         containerRef.current = el;
                       }}
                       {...provided.droppableProps}
+                      onTouchStart={(e) => e.stopPropagation()}
                     >
-                      {images.map((image, index) => (
-                        <DraggableImage
-                          key={image.name}
-                          image={image}
-                          index={index}
-                          name={image.originalName}
-                          moveImage={moveImage}
-                          removeImage={removeImage}
-                          isThumbnail={thumbnailUrl === image.url}
-                          onThumbnailSelect={() => selectThumbnail(image.url)}
-                        />
-                      ))}
+                      {isMobile ? (
+                        <Swiper
+                          spaceBetween={10}
+                          slidesPerView={"auto"}
+                          pagination
+                          className={styles.swiper}
+                        >
+                          {images.map((image, index) => (
+                            <SwiperSlide key={index} className={styles.swiperSlide}>
+                              <Draggable draggableId={`${index}`} index={index}>
+                                {(dragProvided) => (
+                                  <div
+                                    ref={dragProvided.innerRef}
+                                    {...dragProvided.draggableProps}
+                                    {...dragProvided.dragHandleProps}
+                                  >
+                                    <DraggableImage
+                                      key={image.name}
+                                      image={image}
+                                      index={index}
+                                      name={image.originalName}
+                                      moveImage={moveImage}
+                                      removeImage={removeImage}
+                                      isThumbnail={thumbnailUrl === image.url}
+                                      onThumbnailSelect={() => selectThumbnail(image.url)}
+                                    />
+                                  </div>
+                                )}
+                              </Draggable>
+                            </SwiperSlide>
+                          ))}
+                        </Swiper>
+                      ) : (
+                        images.map((image, index) => (
+                          <Draggable key={index} draggableId={`${index}`} index={index}>
+                            {(dragProvided) => (
+                              <div
+                                ref={dragProvided.innerRef}
+                                {...dragProvided.draggableProps}
+                                {...dragProvided.dragHandleProps}
+                              >
+                                <DraggableImage
+                                  key={image.name}
+                                  image={image}
+                                  index={index}
+                                  name={image.originalName}
+                                  moveImage={moveImage}
+                                  removeImage={removeImage}
+                                  isThumbnail={thumbnailUrl === image.url}
+                                  onThumbnailSelect={() => selectThumbnail(image.url)}
+                                />
+                              </div>
+                            )}
+                          </Draggable>
+                        ))
+                      )}
                       {provided.placeholder}
                     </div>
                   )}
                 </Droppable>
               </DragDropContext>
-              <label htmlFor="file-upload" className={styles.uploadBtn}>
-                <div tabIndex={0}>
-                  <Image src="/image/upload.svg" width={240} height={240} alt="그림 추가" />
-                  <input
-                    id="file-upload"
-                    type="file"
-                    multiple
-                    hidden
-                    onChange={(e) => uploadImagesToServer(e.target.files!)}
-                  />
-                </div>
-              </label>
+
+              {/* PC */}
+              {!isMobile && (
+                <label htmlFor="file-upload" className={styles.uploadBtn}>
+                  <div tabIndex={0}>
+                    <Image src="/image/upload.svg" width={240} height={240} alt="그림 추가" />
+                    <input
+                      id="file-upload"
+                      type="file"
+                      multiple
+                      accept="image/png, image/jpeg, image/jpg, image/gif"
+                      hidden
+                      onChange={(e) => e.target.files && uploadImagesToServer(e.target.files)}
+                    />
+                  </div>
+                </label>
+              )}
+              {/* 모바일: 이미지 없을 때 */}
+              {isMobile && images.length === 0 && (
+                <label htmlFor="file-upload" className={styles.uploadBtn}>
+                  <div tabIndex={0}>
+                    <Image src="/image/upload.svg" width={240} height={240} alt="그림 추가" />
+                    <input
+                      id="file-upload"
+                      type="file"
+                      multiple
+                      accept="image/png, image/jpeg, image/jpg, image/gif"
+                      hidden
+                      onChange={(e) => e.target.files && uploadImagesToServer(e.target.files)}
+                    />
+                  </div>
+                </label>
+              )}
             </div>
             <input
               id="file-upload"
@@ -393,6 +469,23 @@ export default function Upload() {
               onChange={(e) => e.target.files && uploadImagesToServer(e.target.files)}
             />
           </section>
+          {/* 모바일: 이미지가 하나 이상일 때 */}
+          {isMobile && images.length > 0 && (
+            <label htmlFor="file-upload" style={{ width: "100%" }}>
+              <div className={styles.imageAddBtn}>
+                <IconComponent name="mobileAddImage" width={16} height={16} />
+                이미지 추가
+              </div>
+              <input
+                id="file-upload"
+                type="file"
+                multiple
+                accept="image/png, image/jpeg, image/jpg, image/gif"
+                hidden
+                onChange={(e) => e.target.files && uploadImagesToServer(e.target.files)}
+              />
+            </label>
+          )}
           <section className={styles.writeSection}>
             <div className={styles.textField}>
               <div className={styles.inputContainer}>
@@ -498,6 +591,11 @@ export default function Upload() {
             </div>
           </section>
         </div>
+        {isMobile && (
+          <Button size="l" type="filled-primary" disabled={isDisabled} onClick={handleSubmit}>
+            업로드
+          </Button>
+        )}
       </div>
     </div>
   );
