@@ -104,7 +104,18 @@ export default function BoardAll({ isDetail }: BoardAllProps) {
   const handleSearch = () => {
     const trimmedKeyword = keyword.trim();
     if (trimmedKeyword.length < 2) {
-      showToast("두 글자 이상 입력해주세요.", "warning");
+      if (!trimmedKeyword) {
+        router.push(
+          {
+            pathname: "/board",
+            query: { searchBy },
+          },
+          undefined,
+          { shallow: true }
+        );
+      } else {
+        showToast("두 글자 이상 입력해주세요.", "warning");
+      }
       return;
     }
 
@@ -121,8 +132,6 @@ export default function BoardAll({ isDetail }: BoardAllProps) {
       undefined,
       { shallow: true }
     );
-
-    setKeyword("");
   };
 
   const handleSearchKeyDown = (e: React.KeyboardEvent) => {
