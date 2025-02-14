@@ -37,6 +37,13 @@
   }
 }
 
+.topMenu {
+  @extend .menu;
+  top: -60px;
+  right: 0;
+  left: auto;
+}
+
 .menuItem {
   width: 100%;
   padding: 10px 16px;

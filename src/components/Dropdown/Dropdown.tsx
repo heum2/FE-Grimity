@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import styles from "./Dropdown.module.scss";
 import { DropdownProps } from "./Dropdown.types";
 
-export default function Dropdown({ menuItems, trigger, onOpenChange }: DropdownProps) {
+export default function Dropdown({ menuItems, trigger, onOpenChange, isTopItem }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -29,7 +29,7 @@ export default function Dropdown({ menuItems, trigger, onOpenChange }: DropdownP
         {trigger}
       </div>
       {isOpen && (
-        <ul className={styles.menu}>
+        <ul className={isTopItem ? styles.topMenu : styles.menu}>
           {menuItems.map((item, index) => (
             <li
               key={index}

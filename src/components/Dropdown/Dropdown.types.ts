@@ -10,4 +10,5 @@ export interface DropdownProps {
   menuItems: MenuItem[];
   trigger: ReactNode;
   onOpenChange?: (isOpen: boolean) => void;
+  isTopItem?: boolean;
 }
