@@ -357,35 +357,24 @@ export default function Upload() {
                 <Droppable droppableId="images" direction="horizontal">
                   {(provided) => (
                     <div
-                      className={isMobile ? styles.swiperContainer : styles.imageContainer}
+                      className={styles.imageContainer}
                       ref={(el) => {
                         provided.innerRef(el);
                         containerRef.current = el;
                       }}
                       {...provided.droppableProps}
-                      onTouchStart={(e) => e.stopPropagation()}
                     >
                       {images.map((image, index) => (
-                        <Draggable key={index} draggableId={`${index}`} index={index}>
-                          {(dragProvided) => (
-                            <div
-                              ref={dragProvided.innerRef}
-                              {...dragProvided.draggableProps}
-                              {...dragProvided.dragHandleProps}
-                            >
-                              <DraggableImage
-                                key={image.name}
-                                image={image}
-                                index={index}
-                                name={image.originalName}
-                                moveImage={moveImage}
-                                removeImage={removeImage}
-                                isThumbnail={thumbnailUrl === image.url}
-                                onThumbnailSelect={() => selectThumbnail(image.url)}
-                              />
-                            </div>
-                          )}
-                        </Draggable>
+                        <DraggableImage
+                          key={image.name}
+                          image={image}
+                          index={index}
+                          name={image.originalName}
+                          moveImage={moveImage}
+                          removeImage={removeImage}
+                          isThumbnail={thumbnailUrl === image.url}
+                          onThumbnailSelect={() => selectThumbnail(image.url)}
+                        />
                       ))}
                       {provided.placeholder}
                     </div>
