@@ -49,6 +49,16 @@
   gap: 50px;
 }
 
+.navUpload {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .mobileUploadBtn {
+    width: 125px;
+  }
+}
+
 .nav {
   display: flex;
   align-items: center;

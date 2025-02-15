@@ -413,35 +413,46 @@ export default function Header() {
                 onClick={toggleMenu}
               >
                 <div className={`${styles.sideMenu} ${isMenuOpen ? styles.open : ""}`}>
-                  <div className={styles.navs}>
-                    <nav className={styles.nav}>
-                      {navItems.map((item, index) => (
-                        <div
-                          key={index}
-                          className={styles.navItem}
-                          onClick={() => {
-                            handleNavClick(item);
-                            toggleMenu();
-                          }}
-                        >
-                          <p
-                            className={`${styles.item} ${
-                              isNavPage && (activeNav === item.name ? styles.active : "")
-                            }`}
+                  <div className={styles.navUpload}>
+                    <div className={styles.navs}>
+                      <nav className={styles.nav}>
+                        {navItems.map((item, index) => (
+                          <div
+                            key={index}
+                            className={styles.navItem}
+                            onClick={() => {
+                              handleNavClick(item);
+                              toggleMenu();
+                            }}
                           >
-                            {item.name}
-                          </p>
-                        </div>
-                      ))}
-                    </nav>
-                    <div
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleMenu();
-                      }}
-                    >
-                      <IconComponent name="x" width={24} height={24} padding={8} isBtn />
+                            <p
+                              className={`${styles.item} ${
+                                isNavPage && (activeNav === item.name ? styles.active : "")
+                              }`}
+                            >
+                              {item.name}
+                            </p>
+                          </div>
+                        ))}
+                      </nav>
+                      <div
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleMenu();
+                        }}
+                      >
+                        <IconComponent name="x" width={24} height={24} padding={8} isBtn />
+                      </div>
                     </div>
+                    {isLoggedIn && (
+                      <Link href="/write">
+                        <div className={styles.mobileUploadBtn}>
+                          <Button size="l" type="filled-primary">
+                            그림 업로드
+                          </Button>
+                        </div>
+                      </Link>
+                    )}
                   </div>
                   {!isLoggedIn || !myData ? (
                     <div
