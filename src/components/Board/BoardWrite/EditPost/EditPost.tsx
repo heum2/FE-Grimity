@@ -15,6 +15,9 @@ import { EditPostProps } from "./EditPost.types";
 import { usePostsDetails } from "@/api/posts/getPostsId";
 import { useRecoilState } from "recoil";
 import { modalState } from "@/states/modalState";
+import { useRecoilValue } from "recoil";
+import { isMobileState } from "@/states/isMobileState";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 const Editor = dynamic(() => import("@tinymce/tinymce-react").then((mod) => mod.Editor), {
   ssr: false,
@@ -22,6 +25,8 @@ const Editor = dynamic(() => import("@tinymce/tinymce-react").then((mod) => mod.
 });
 
 export default function EditPost({ id }: EditPostProps) {
+  const isMobile = useRecoilValue(isMobileState);
+  useIsMobile();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("일반");
@@ -214,9 +219,19 @@ export default function EditPost({ id }: EditPostProps) {
                 height: 600,
                 menubar: false,
                 plugins: ["image", "link", "autolink"],
-                toolbar:
-                  "undo redo | h1 h2 | bold italic underline strikethrough | forecolor backcolor | link image",
-                content_style: "body { font-family: Pretendard, sans-serif; font-size: 14px; }",
+                toolbar: isMobile
+                  ? "undo redo | h1 h2 link image | bold italic underline strikethrough | forecolor backcolor"
+                  : "undo redo | h1 h2 | bold italic underline strikethrough | forecolor backcolor | link image",
+                content_style: `
+                  body { 
+                    font-family: Pretendard, sans-serif; 
+                    font-size: 14px; 
+                  }
+                  img { 
+                    max-width: 100%; 
+                    height: auto !important;
+                  }
+                `,
                 base_url: "/tinymce",
                 skin_url: "/tinymce/skins/ui/oxide",
                 icons_url: "/tinymce/icons/default/icons.js",
@@ -238,48 +253,7 @@ export default function EditPost({ id }: EditPostProps) {
                 ): Promise<string> => {
                   try {
                     const file = blobInfo.blob() as File;
-                    const maxWidth = 800;
-                    const maxHeight = 600;
-
-                    const resizeImage = (file: File, maxWidth: number, maxHeight: number) =>
-                      new Promise<File>((resolve) => {
-                        const img = document.createElement("img");
-                        const reader = new FileReader();
-
-                        reader.onload = (e) => {
-                          img.src = e.target?.result as string;
-                          img.onload = () => {
-                            const canvas = document.createElement("canvas");
-                            const ctx = canvas.getContext("2d")!;
-                            let width = img.width;
-                            let height = img.height;
-
-                            if (width > maxWidth || height > maxHeight) {
-                              if (width > height) {
-                                height *= maxWidth / width;
-                                width = maxWidth;
-                              } else {
-                                width *= maxHeight / height;
-                                height = maxHeight;
-                              }
-                            }
-
-                            canvas.width = width;
-                            canvas.height = height;
-                            ctx.drawImage(img, 0, 0, width, height);
-
-                            canvas.toBlob((blob) => {
-                              resolve(new File([blob!], file.name, { type: file.type }));
-                            }, file.type);
-                          };
-                        };
-
-                        reader.readAsDataURL(file);
-                      });
-
-                    const resizedFile = await resizeImage(file, maxWidth, maxHeight);
-
-                    const ext = resizedFile.name.split(".").pop() as "jpg" | "jpeg" | "png" | "gif";
+                    const ext = file.name.split(".").pop() as "jpg" | "jpeg" | "png" | "gif";
                     const data = await postPresignedUrl({
                       type: "post",
                       ext,
@@ -287,9 +261,9 @@ export default function EditPost({ id }: EditPostProps) {
 
                     const uploadResponse = await fetch(data.url, {
                       method: "PUT",
-                      body: resizedFile,
+                      body: file,
                       headers: {
-                        "Content-Type": resizedFile.type,
+                        "Content-Type": file.type,
                       },
                     });
 

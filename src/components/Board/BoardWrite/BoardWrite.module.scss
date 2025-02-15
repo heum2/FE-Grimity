@@ -8,6 +8,10 @@
   flex-direction: column;
   align-items: center;
 
+  @include Size("mobile") {
+    padding-top: 16px;
+  }
+
   .center {
     max-width: 880px;
     width: 100%;
@@ -23,6 +27,10 @@
 
       .title {
         @include Title2;
+
+        @include Size("mobile") {
+          @include Title3;
+        }
       }
     }
 
@@ -31,6 +39,10 @@
       gap: 8px;
       margin-top: 32px;
       margin-bottom: 12px;
+
+      @include Size("mobile") {
+        margin-top: 20px;
+      }
     }
 
     .editor {
