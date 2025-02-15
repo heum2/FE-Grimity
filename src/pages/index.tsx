@@ -22,7 +22,6 @@ export default function Home() {
   const [OGUrl, setOGUrl] = useState(serviceUrl);
   const { isLoggedIn } = useRecoilValue(authState);
   const { restoreScrollPosition } = useScrollRestoration("home-scroll");
-  const [isScrollAbove, setIsScrollAbove] = useState(false);
   const isMobile = useRecoilValue(isMobileState);
 
   useIsMobile();
@@ -36,22 +35,6 @@ export default function Home() {
       restoreScrollPosition();
       sessionStorage.removeItem("home-scroll");
     }
-  }, []);
-
-  // 스크롤 위치 감지
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY < 301) {
-        setIsScrollAbove(true);
-      } else {
-        setIsScrollAbove(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
   }, []);
 
   return (
@@ -97,11 +80,7 @@ export default function Home() {
               <NewFeed />
             </section>
             <Link href="/write">
-              <div
-                className={`${styles.uploadButton} ${isScrollAbove && styles.slide}`}
-                role="button"
-                tabIndex={0}
-              >
+              <div className={styles.uploadButton} role="button" tabIndex={0}>
                 <IconComponent name="mobileUpload" width={32} height={32} isBtn />
               </div>
             </Link>

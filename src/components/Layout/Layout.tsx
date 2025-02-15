@@ -3,9 +3,14 @@ import styles from "./Layout.module.scss";
 import Header from "./Header/Header";
 import { LayoutProps } from "./Layout.types";
 import IconComponent from "../Asset/Icon";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { useRecoilValue } from "recoil";
+import { isMobileState } from "@/states/isMobileState";
 
 export default function Layout({ children }: LayoutProps) {
   const [isScrollAbove, setIsScrollAbove] = useState(false);
+  const isMobile = useRecoilValue(isMobileState);
+  useIsMobile();
 
   // 스크롤 위치 감지
   useEffect(() => {
@@ -32,14 +37,16 @@ export default function Layout({ children }: LayoutProps) {
       <div className={styles.children}>
         <Header />
         {children}
-        <div
-          className={`${styles.topButton} ${isScrollAbove && styles.show}`}
-          onClick={scrollToTop}
-          role="button"
-          tabIndex={0}
-        >
-          <IconComponent name="up" width={28} height={28} isBtn />
-        </div>
+        {!isMobile && (
+          <div
+            className={`${styles.topButton} ${isScrollAbove && styles.show}`}
+            onClick={scrollToTop}
+            role="button"
+            tabIndex={0}
+          >
+            <IconComponent name="up" width={28} height={28} isBtn />
+          </div>
+        )}
       </div>
     </div>
   );
