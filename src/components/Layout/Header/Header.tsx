@@ -150,7 +150,7 @@ export default function Header() {
     setIsMenuOpen((prev) => !prev);
   };
 
-  usePreventScroll(isMenuOpen);
+  usePreventScroll(isMenuOpen || (isMobile && showNotifications));
 
   const handleSearchKeyDown = (e: React.KeyboardEvent) => {
     if (e.nativeEvent.isComposing) return;

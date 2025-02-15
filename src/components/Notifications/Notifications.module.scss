@@ -1,5 +1,18 @@
 @import "@/styles/globals.scss";
 
+.mobileContainer {
+  margin-top: 64px;
+  width: 100vw;
+  height: calc(100vh - 64px);
+  border-radius: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: $gray0;
+  z-index: 15;
+  padding: 16px;
+}
+
 .container {
   min-width: 500px;
   height: 600px;
@@ -14,118 +27,140 @@
   top: 100%;
   right: -100%;
   transform: translateY(10px);
+}
 
-  .notification {
+.notification {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  @include Size("mobile") {
+    gap: 3px;
+  }
+
+  .topSection {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 12px;
 
-    .topSection {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-
-      .titleContainer {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        .title {
-          @include Title3;
-          color: $gray70;
-        }
-
-        .headerBtns {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-
-          .settingButton {
-            padding: 0;
-            background: none;
-            border: none;
-            cursor: pointer;
-          }
-
-          .closeButton {
-            padding: 0;
-            background: none;
-            border: none;
-            cursor: pointer;
-          }
-        }
-      }
-    }
-
-    .notiSection {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      height: 400px;
-      overflow-y: auto;
-
-      &::-webkit-scrollbar {
-        width: 5px;
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background: $gray20;
-        border-radius: 10px;
-        cursor: pointer;
-      }
-
-      &::-webkit-scrollbar-thumb:hover {
-        background: $gray30;
-      }
-    }
-
-    .noneNoti {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: $gray50;
-      @include Sub2;
-    }
-
-    .options {
-      width: 100%;
-      height: 40px;
+    .titleContainer {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
 
-      .option {
-        width: 100%;
-        border: 1px solid $gray30;
+      .title {
+        @include Title3;
         color: $gray70;
-        background-color: $gray0;
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        gap: 6px;
-        padding: 11px 20px;
-        border-radius: 10px;
-        @include Btn2;
-        line-height: 14px;
-        outline: none;
-        cursor: pointer;
-        @include Drag;
+      }
 
-        &:hover {
-          background-color: darken($gray0, 4%);
+      .headerBtns {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .settingButton {
+          padding: 0;
+          background: none;
+          border: none;
+          cursor: pointer;
         }
 
-        &:active {
-          background-color: darken($gray0, 8%);
+        .closeButton {
+          padding: 0;
+          background: none;
+          border: none;
+          cursor: pointer;
         }
       }
     }
+  }
+
+  .notiSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 400px;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: $gray20;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: $gray30;
+    }
+
+    @include Size("mobile") {
+      height: calc(100vh - 64px - 130px);
+    }
+  }
+
+  .noneNoti {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: $gray50;
+    @include Sub2;
+  }
+
+  .options {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    .option {
+      width: 100%;
+      border: 1px solid $gray30;
+      color: $gray70;
+      background-color: $gray0;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      padding: 11px 20px;
+      border-radius: 10px;
+      @include Btn2;
+      line-height: 14px;
+      outline: none;
+      cursor: pointer;
+      @include Drag;
+
+      &:hover {
+        background-color: darken($gray0, 4%);
+      }
+
+      &:active {
+        background-color: darken($gray0, 8%);
+      }
+    }
+  }
+}
+
+.mobileSetting {
+  @include Size("mobile") {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.15);
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 
@@ -134,6 +169,16 @@
   display: flex;
   flex-direction: column;
   gap: 32px;
+
+  @include Size("mobile") {
+    z-index: 15;
+    background: white;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 12px;
+    padding: 16px;
+    gap: 24px;
+  }
 
   .topSection {
     width: 100%;
