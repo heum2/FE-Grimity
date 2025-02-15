@@ -27,7 +27,12 @@ import { useMyData } from "@/api/users/getMe";
 import { isMobileState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
-export default function Comment({ feedId, feedWriterId, isFollowingPage }: CommentProps) {
+export default function Comment({
+  feedId,
+  feedWriterId,
+  isFollowingPage,
+  isExpanded = true,
+}: CommentProps) {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
   const { data: userData, isLoading } = useMyData();
   const { showToast } = useToast();
@@ -38,7 +43,10 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
   const [expandedComments, setExpandedComments] = useState<Set<string>>(new Set());
   const [isReplyToChild, setIsReplyToChild] = useState(false);
   const replyInputRef = useRef<HTMLTextAreaElement>(null);
-  const { data: commentsData, refetch: refetchComments } = useGetFeedsComments({ feedId });
+  const { data: commentsData, refetch: refetchComments } = useGetFeedsComments({
+    feedId,
+    enabled: isExpanded,
+  });
   const postCommentMutation = usePostFeedsComments();
   const [activeParentReplyId, setActiveParentReplyId] = useState<string | null>(null);
   const [activeChildReplyId, setActiveChildReplyId] = useState<string | null>(null);
@@ -53,6 +61,10 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
       showToast("댓글 삭제에 실패했습니다.", "error");
     },
   });
+
+  if (!isExpanded) {
+    return null;
+  }
 
   const handleCommentSubmitSuccess = () => {
     refetchComments();

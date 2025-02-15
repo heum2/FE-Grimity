@@ -76,9 +76,12 @@
       width: 100%;
       display: flex;
       justify-content: flex-start;
-      height: 44px;
+      height: 24px;
       overflow: hidden;
       text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
     }
   }
 }

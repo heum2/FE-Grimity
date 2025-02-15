@@ -118,6 +118,10 @@
         justify-content: flex-end;
         gap: 16px;
 
+        @include Size("mobile") {
+          gap: 0;
+        }
+
         .dropdown {
           position: relative;
           width: 24px;

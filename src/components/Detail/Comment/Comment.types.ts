@@ -5,6 +5,7 @@ export interface CommentProps {
   feedWriterId: string;
   commentsData?: FeedsCommentsResponse;
   isFollowingPage?: boolean;
+  isExpanded?: boolean;
 }
 
 export interface CommentWriter {

@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 /* 댓글 api */
 export interface FeedsCommentsRequest {
   feedId: string;
+  enabled?: boolean;
 }
 
 export interface FeedsCommentsResponse {
@@ -48,11 +49,12 @@ export async function getFeedsComments({
   }
 }
 
-export function useGetFeedsComments({ feedId }: FeedsCommentsRequest) {
+export function useGetFeedsComments({ feedId, enabled = true }: FeedsCommentsRequest) {
   return useQuery<FeedsCommentsResponse>(
     ["getFeedsComments", feedId],
     () => getFeedsComments({ feedId }),
     {
+      enabled: enabled,
       refetchOnMount: false,
       refetchOnReconnect: false,
       refetchOnWindowFocus: false,

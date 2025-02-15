@@ -49,7 +49,10 @@ export default function FollowingFeed({ id, commentCount }: FollowingFeedProps) 
   const [overlayImage, setOverlayImage] = useState<string | null>(null);
   const router = useRouter();
   const [, setModal] = useRecoilState(modalState);
-  const { refetch: refetchComments } = useGetFeedsComments({ feedId: id });
+  const { refetch: refetchComments } = useGetFeedsComments({
+    feedId: id,
+    enabled: isCommentExpanded,
+  });
   const [isContentTooLong, setIsContentTooLong] = useState(false);
   const contentRef = useRef<HTMLParagraphElement | null>(null);
   const isMobile = useRecoilValue(isMobileState);
@@ -94,6 +97,7 @@ export default function FollowingFeed({ id, commentCount }: FollowingFeedProps) 
     if (isCommentExpanded) {
       refetchComments();
     }
+    handleCommentShowMore();
   };
 
   const handleShowMore = () => {
@@ -101,10 +105,10 @@ export default function FollowingFeed({ id, commentCount }: FollowingFeedProps) 
   };
 
   const handleCommentShowMore = () => {
-    setIsCommentExpanded(!isCommentExpanded);
-    if (!isCommentExpanded) {
+    if (isCommentExpanded) {
       refetchComments();
     }
+    setIsCommentExpanded(!isCommentExpanded);
   };
 
   const handleDelete = async () => {
@@ -452,7 +456,12 @@ export default function FollowingFeed({ id, commentCount }: FollowingFeedProps) 
               </div>
             )}
             {isCommentExpanded && (
-              <Comment feedId={id} feedWriterId={details.author.id} isFollowingPage />
+              <Comment
+                feedId={id}
+                feedWriterId={details.author.id}
+                isFollowingPage
+                isExpanded={isCommentExpanded}
+              />
             )}
             <div className={styles.bar} />
           </>

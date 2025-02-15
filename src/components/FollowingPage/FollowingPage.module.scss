@@ -8,7 +8,7 @@
   align-items: center;
 
   .center {
-    width: 780px;
+    max-width: 780px;
     height: 100%;
     display: flex;
     align-items: center;
@@ -30,13 +30,28 @@
       align-items: center;
       gap: 16px;
 
+      @include Size("mobile") {
+        padding: 60px 0;
+      }
+
       .message {
         @include Title3;
         color: $gray70;
+
+        @include Size("mobile") {
+          @include Title4;
+        }
       }
       .submessage {
         @include Sub2;
         color: $gray50;
+
+        @include Size("mobile") {
+          width: 200px;
+          text-align: center;
+          text-wrap: wrap;
+          @include Sub4;
+        }
       }
     }
 
@@ -50,6 +65,12 @@
         grid-template-columns: repeat(4, 1fr);
         row-gap: 30px;
         column-gap: 20px;
+
+        @include Size("mobile") {
+          grid-template-columns: repeat(1, 1fr);
+          row-gap: 20px;
+          column-gap: 0px;
+        }
       }
     }
   }
