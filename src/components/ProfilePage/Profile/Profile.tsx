@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 import router from "next/router";
 import { postPresignedUrl } from "@/api/aws/postPresigned";
 import { useMutation } from "react-query";
-import { putProfileImage } from "@/api/users/putMeImage";
+import { putBackgroundImage, putProfileImage } from "@/api/users/putMeImage";
 import { AxiosError } from "axios";
 import { deleteMyBackgroundImage, deleteMyProfileImage } from "@/api/users/deleteMeImage";
 import Dropdown from "@/components/Dropdown/Dropdown";
@@ -33,6 +33,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
   const { showToast } = useToast();
   const isMobile = useRecoilValue(isMobileState);
   useIsMobile();
+  const CoverImageMutation = useMutation((imageName: string) => putBackgroundImage(imageName));
 
   useEffect(() => {
     if (id === myData?.id) {
@@ -126,14 +127,39 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
   const handleAddCover = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    const imageUrl = URL.createObjectURL(file);
 
     try {
-      const imageUrl = URL.createObjectURL(file);
-      setModal({
-        isOpen: true,
-        type: "BACKGROUND",
-        data: { imageSrc: imageUrl },
-      });
+      if (isMobile) {
+        const data = await postPresignedUrl({
+          type: "background",
+          ext: "jpg",
+        });
+
+        CoverImageMutation.mutate(data.imageName);
+
+        const uploadResponse = await fetch(data.url, {
+          method: "PUT",
+          body: file,
+          headers: {
+            "Content-Type": file.type,
+          },
+        });
+
+        if (!uploadResponse.ok) {
+          throw new Error(`Upload failed: ${uploadResponse.status}`);
+        }
+
+        showToast("커버 이미지가 변경되었습니다!", "success");
+        refetch();
+        refetchUserData();
+      } else {
+        setModal({
+          isOpen: true,
+          type: "BACKGROUND",
+          data: { imageSrc: imageUrl },
+        });
+      }
     } catch (error) {
       console.error("File change error:", error);
     }
