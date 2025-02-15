@@ -41,6 +41,10 @@
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+
+    @include Size("mobile") {
+      height: auto;
+    }
   }
 
   .footer {
@@ -49,9 +53,18 @@
     gap: 12px;
     margin-top: 10px;
 
+    @include Size("mobile") {
+      gap: 8px;
+    }
+
     .author {
       @include Label1;
       color: $gray60;
+
+      @include Size("mobile") {
+        @include Cap2;
+        color: $gray50;
+      }
     }
 
     .date {

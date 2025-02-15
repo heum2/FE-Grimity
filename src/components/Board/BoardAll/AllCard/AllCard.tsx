@@ -31,7 +31,7 @@ export function getTypeLabel(type: string): string {
   }
 }
 
-export default function AllCard({ post, case: cardCase }: AllCardProps) {
+export default function AllCard({ post, case: cardCase, hasChip = false }: AllCardProps) {
   const isMobile = useRecoilValue(isMobileState);
   useIsMobile();
   const [, setModal] = useRecoilState(modalState);
@@ -86,7 +86,7 @@ export default function AllCard({ post, case: cardCase }: AllCardProps) {
 
   return (
     <div className={styles.container}>
-      {!isMobile && cardCase !== "my-posts" && cardCase !== "saved-posts" && (
+      {cardCase === "board" && hasChip && !isMobile && (
         <div className={styles.chipContainer}>
           {post.type === "NOTICE" ? (
             <Chip size="s" type="filled-secondary">
@@ -103,9 +103,14 @@ export default function AllCard({ post, case: cardCase }: AllCardProps) {
         <Link href={`/posts/${post.id}`}>
           <div className={styles.titleContent}>
             <div className={styles.titleContainer}>
-              <h2 className={post.type === "NOTICE" ? styles.noticeTitle : styles.title}>
-                {post.title}
-              </h2>
+              {cardCase === "board" &&
+                isMobile &&
+                (post.type === "NOTICE" ? (
+                  <div className={styles.mobileChipNotice}>{getTypeLabel(post.type)}</div>
+                ) : (
+                  <div className={styles.mobileChip}>{getTypeLabel(post.type)}</div>
+                ))}
+              <h2 className={styles.title}>{post.title}</h2>
               {post.hasImage && (
                 <Image src="/icon/board-all-image.svg" width={16} height={16} alt="" />
               )}
@@ -213,6 +218,10 @@ export default function AllCard({ post, case: cardCase }: AllCardProps) {
               </div>
               <Image src="/icon/dot.svg" width={3} height={3} alt="" />
               <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
+              <Image src="/icon/dot.svg" width={3} height={3} alt="" />
+              <Link href={`/users/${post.author?.id}`}>
+                <p className={styles.author}>{post.author?.name}</p>
+              </Link>
             </div>
           ) : (
             <div className={styles.createdAtView}>

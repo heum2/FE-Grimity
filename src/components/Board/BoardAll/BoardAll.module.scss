@@ -12,6 +12,12 @@
     justify-content: space-between;
     margin-bottom: 32px;
 
+    @include Size("mobile") {
+      height: auto;
+      margin-top: 8px;
+      margin-bottom: 16px;
+    }
+
     .types {
       display: flex;
       align-items: center;
@@ -31,65 +37,80 @@
         color: $secandary1;
       }
     }
+  }
 
-    .search {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+  .search {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 
-      .dropdown {
-        position: relative;
+    @include Size("mobile") {
+      width: 100%;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
 
-        .dropdownBtn {
-          display: inline-flex;
-          justify-content: center;
-          align-items: center;
-          gap: 8px;
-          outline: none;
-          border: none;
-          cursor: pointer;
-          @include Drag;
-          border: 1px solid $gray30;
-          color: $gray70;
-          background-color: $gray0;
-          padding: 10px 12px 10px 16px;
-          border-radius: 12px;
-          @include Cap1;
-          line-height: 20px;
+    .dropdown {
+      position: relative;
+      flex-shrink: 0;
 
-          &:hover {
-            background-color: darken($gray0, 4%);
-          }
+      .dropdownBtn {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        outline: none;
+        border: none;
+        cursor: pointer;
+        @include Drag;
+        border: 1px solid $gray30;
+        color: $gray70;
+        background-color: $gray0;
+        padding: 10px 12px 10px 16px;
+        border-radius: 12px;
+        @include Label1;
+        line-height: 20px;
 
-          &:active {
-            background-color: darken($gray0, 8%);
-          }
+        @include Size("mobile") {
+          height: 40px;
+        }
+
+        &:hover {
+          background-color: darken($gray0, 4%);
+        }
+
+        &:active {
+          background-color: darken($gray0, 8%);
         }
       }
+    }
 
-      .searchbarContainer {
-        width: 250px;
-        height: 40px;
-        padding-left: 16px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 10px;
-        border-radius: 12px;
-        border: 1px solid $gray30;
-        background-color: $gray10;
+    .searchbarContainer {
+      width: 250px;
+      height: 40px;
+      padding-left: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      border-radius: 12px;
+      border: 1px solid $gray30;
+      background-color: $gray10;
 
-        .input {
-          width: 100%;
-          color: $gray70;
-          @include Label2;
-          background: none;
-          border: none;
-          outline: none;
+      @include Size("mobile") {
+        width: 100%;
+      }
 
-          &::placeholder {
-            color: $gray50;
-          }
+      .input {
+        width: 100%;
+        color: $gray70;
+        @include Label2;
+        background: none;
+        border: none;
+        outline: none;
+
+        &::placeholder {
+          color: $gray50;
         }
       }
     }
@@ -120,6 +141,10 @@
     justify-content: center;
     align-items: center;
     gap: 8px;
+
+    @include Size("mobile") {
+      margin-top: 28px;
+    }
 
     button {
       width: 24px;

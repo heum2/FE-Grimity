@@ -14,6 +14,8 @@ import { BoardAllProps } from "./BoardAll.types";
 import { useToast } from "@/hooks/useToast";
 import Dropdown from "@/components/Dropdown/Dropdown";
 import { getPostSearch } from "@/api/posts/getPostsSearch";
+import { isMobileState } from "@/states/isMobileState";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 type SortOption = "combined" | "name";
 
@@ -22,7 +24,7 @@ const sortOptions: { value: SortOption; label: string }[] = [
   { value: "name", label: "글쓴이" },
 ];
 
-export default function BoardAll({ isDetail }: BoardAllProps) {
+export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
   const { isLoggedIn } = useRecoilValue(authState);
   const [searchBy, setSearchBy] = useState<SortOption>("combined");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -35,6 +37,8 @@ export default function BoardAll({ isDetail }: BoardAllProps) {
   const currentPage = Number(query.page) || 1;
   const totalPages = Math.ceil(totalCount / 10);
   const { showToast } = useToast();
+  const isMobile = useRecoilValue(isMobileState);
+  useIsMobile();
 
   useEffect(() => {
     async function fetchSearchResults() {
@@ -156,6 +160,49 @@ export default function BoardAll({ isDetail }: BoardAllProps) {
 
   return (
     <div className={styles.container}>
+      {isMobile && currentType === "all" && (
+        <div className={styles.search}>
+          <div className={styles.dropdown}>
+            <Dropdown
+              menuItems={sortOptions.map((option) => ({
+                label: option.label,
+                value: option.value,
+                onClick: () => handleSortChange(option.value),
+              }))}
+              onOpenChange={handleDropdownToggle}
+              trigger={
+                <button className={styles.dropdownBtn}>
+                  {sortOptions.find((option) => option.value === searchBy)?.label || "제목+내용"}
+                  {isDropdownOpen ? (
+                    <IconComponent name="arrowUp" width={20} height={20} isBtn />
+                  ) : (
+                    <IconComponent name="arrowDown" width={20} height={20} isBtn />
+                  )}
+                </button>
+              }
+            />
+          </div>
+          <div className={styles.searchbarContainer}>
+            <input
+              placeholder="검색어를 입력해주세요"
+              className={styles.input}
+              value={keyword}
+              onChange={(e) => setKeyword(e.target.value)}
+              onKeyDown={handleSearchKeyDown}
+            />
+            <div onClick={handleSearch}>
+              <IconComponent
+                name="searchGray"
+                width={24}
+                height={24}
+                padding={8}
+                isBtn
+                alt="검색"
+              />
+            </div>
+          </div>
+        </div>
+      )}
       {isDetail ? <Title>자유게시판 최신글</Title> : <Title>전체 글</Title>}
       {!isDetail && (
         <div className={styles.header}>
@@ -181,7 +228,7 @@ export default function BoardAll({ isDetail }: BoardAllProps) {
               피드백
             </button>
           </section>
-          {currentType === "all" && (
+          {!isMobile && currentType === "all" && (
             <div className={styles.search}>
               <div className={styles.dropdown}>
                 <Dropdown
@@ -229,11 +276,11 @@ export default function BoardAll({ isDetail }: BoardAllProps) {
       )}
       <section className={styles.cards}>
         {posts.map((post) => (
-          <AllCard key={post.id} post={post} case="board" />
+          <AllCard key={post.id} post={post} case="board" hasChip={hasChip} />
         ))}
       </section>
       {posts.length === 0 && <div className={styles.noResults}>검색 결과가 없습니다</div>}
-      {isLoggedIn && !isDetail && (
+      {!isMobile && isLoggedIn && !isDetail && (
         <section className={styles.uploadBtn}>
           <Link href="/board/write">
             <Button

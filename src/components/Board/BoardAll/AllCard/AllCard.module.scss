@@ -14,6 +14,23 @@
   .chipContainer {
     width: 80px;
     flex-shrink: 0;
+
+    @include Size("mobile") {
+      width: auto;
+      margin-right: 8px;
+    }
+  }
+
+  .mobileChip {
+    @include Cap1;
+    color: $gray50;
+    padding: 2px 0;
+    flex-shrink: 0;
+  }
+
+  .mobileChipNotice {
+    @extend .mobileChip;
+    color: $secandary1;
   }
 
   .spaceBetween {
@@ -45,20 +62,13 @@
       display: flex;
       align-items: center;
       gap: 4px;
+      @include Size("mobile") {
+        width: 100%;
+      }
 
       .title {
         @include Sub4;
         color: $gray80;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 1;
-      }
-
-      .noticeTitle {
-        @include Sub4;
-        color: $secandary1;
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;
@@ -153,6 +163,11 @@
     .author {
       @include Label2;
       color: $gray60;
+
+      @include Size("mobile") {
+        @include Cap2;
+        color: $gray50;
+      }
     }
   }
 }

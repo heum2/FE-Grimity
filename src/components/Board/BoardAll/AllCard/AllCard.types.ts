@@ -11,4 +11,5 @@ export interface AllCardProps {
     author?: { name: string; id: string };
   };
   case: "saved-posts" | "my-posts" | "board";
+  hasChip?: boolean;
 }

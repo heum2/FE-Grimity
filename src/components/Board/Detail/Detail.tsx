@@ -317,7 +317,7 @@ export default function PostDetail({ id }: PostDetailProps) {
               </Link>
             </section>
           )}
-          <BoardAll isDetail />
+          <BoardAll isDetail hasChip={false} />
           <div className={styles.boardPopular}>
             <BoardPopular isDetail />
           </div>

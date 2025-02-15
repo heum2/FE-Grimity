@@ -21,6 +21,12 @@
     grid-template-columns: repeat(2, 1fr);
     grid-column-gap: 20px;
     grid-row-gap: 20px;
+
+    @include Size("mobile") {
+      grid-template-columns: repeat(1, 1fr);
+      grid-column-gap: 0px;
+      grid-row-gap: 0px;
+    }
   }
 
   .cardListDetail {

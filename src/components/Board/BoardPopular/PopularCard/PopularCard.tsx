@@ -59,6 +59,10 @@ export default function PopularCard({ post }: PopularCardProps) {
             <Image src="/icon/dot.svg" width={3} height={3} alt="" />
           </div>
           <p className={styles.date}>{timeAgo(post.createdAt)}</p>
+          <Image src="/icon/dot.svg" width={3} height={3} alt="" />
+          <Link href={`/users/${post.author.id}`}>
+            <p className={styles.author}>{post.author.name}</p>
+          </Link>
         </div>
       )}
     </div>
