@@ -184,11 +184,20 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
   };
 
   const handleOpenReportModal = () => {
-    setModal({
-      isOpen: true,
-      type: "REPORT",
-      data: { refType: "USER", refId: userData?.id },
-    });
+    if (isMobile) {
+      setModal({
+        isOpen: true,
+        type: "REPORT",
+        data: { refType: "USER", refId: userData?.id },
+        isFill: true,
+      });
+    } else {
+      setModal({
+        isOpen: true,
+        type: "REPORT",
+        data: { refType: "USER", refId: userData?.id },
+      });
+    }
   };
 
   return (

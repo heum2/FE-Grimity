@@ -25,6 +25,8 @@ import {
   useGetPostsComments,
 } from "@/api/posts-comments/getPostsComments";
 import { PostCommentProps, PostCommentWriter } from "./Comment.types";
+import { isMobileState } from "@/states/isMobileState";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 type ToastType = "success" | "error" | "warning" | "information";
 
@@ -93,6 +95,8 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
   const postCommentMutation = usePostPostsComments();
   const [activeParentReplyId, setActiveParentReplyId] = useState<string | null>(null);
   const [activeChildReplyId, setActiveChildReplyId] = useState<string | null>(null);
+  const isMobile = useRecoilValue(isMobileState);
+  useIsMobile();
 
   const deleteCommentMutation = useMutation(deletePostsComments, {
     onSuccess: () => {
@@ -186,11 +190,20 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
       return;
     }
 
-    setModal({
-      isOpen: true,
-      type: "REPORT",
-      data: { refType: "POST_COMMENT", refId: id },
-    });
+    if (isMobile) {
+      setModal({
+        isOpen: true,
+        type: "REPORT",
+        data: { refType: "POST_COMMENT", refId: id },
+        isFill: true,
+      });
+    } else {
+      setModal({
+        isOpen: true,
+        type: "REPORT",
+        data: { refType: "POST_COMMENT", refId: id },
+      });
+    }
   };
 
   const handleCommentDelete = async (id: string) => {

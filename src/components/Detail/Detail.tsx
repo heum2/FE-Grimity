@@ -27,6 +27,8 @@ import { deleteSave, putSave } from "@/api/feeds/putDeleteFeedsIdSave";
 import Similar from "./Similar/Similar";
 import Comment from "./Comment/Comment";
 import NewFeed from "../Layout/NewFeed/NewFeed";
+import { isMobileState } from "@/states/isMobileState";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 export default function Detail({ id }: DetailProps) {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
@@ -40,7 +42,8 @@ export default function Detail({ id }: DetailProps) {
   const [overlayImage, setOverlayImage] = useState<string | null>(null);
   const router = useRouter();
   const [, setModal] = useRecoilState(modalState);
-
+  const isMobile = useRecoilValue(isMobileState);
+  useIsMobile();
   usePreventScroll(!!overlayImage);
 
   useEffect(() => {
@@ -155,11 +158,20 @@ export default function Detail({ id }: DetailProps) {
   };
 
   const handleOpenReportModal = () => {
-    setModal({
-      isOpen: true,
-      type: "REPORT",
-      data: { refType: "FEED", refId: details?.author.id },
-    });
+    if (isMobile) {
+      setModal({
+        isOpen: true,
+        type: "REPORT",
+        data: { refType: "FEED", refId: details?.author.id },
+        isFill: true,
+      });
+    } else {
+      setModal({
+        isOpen: true,
+        type: "REPORT",
+        data: { refType: "FEED", refId: details?.author.id },
+      });
+    }
   };
 
   return (

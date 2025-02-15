@@ -26,6 +26,8 @@ import CommentInput from "@/components/Detail/Comment/CommentInput/CommentInput"
 import Comment from "@/components/Detail/Comment/Comment";
 import { useGetFeedsComments } from "@/api/feeds-comments/getFeedComments";
 import { useMyData } from "@/api/users/getMe";
+import { isMobileState } from "@/states/isMobileState";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 interface FollowingFeedProps {
   id: string;
@@ -50,7 +52,9 @@ export default function FollowingFeed({ id, commentCount }: FollowingFeedProps) 
   const { refetch: refetchComments } = useGetFeedsComments({ feedId: id });
   const [isContentTooLong, setIsContentTooLong] = useState(false);
   const contentRef = useRef<HTMLParagraphElement | null>(null);
+  const isMobile = useRecoilValue(isMobileState);
 
+  useIsMobile();
   usePreventScroll(!!overlayImage);
 
   useEffect(() => {
@@ -164,11 +168,20 @@ export default function FollowingFeed({ id, commentCount }: FollowingFeedProps) 
   };
 
   const handleOpenReportModal = () => {
-    setModal({
-      isOpen: true,
-      type: "REPORT",
-      data: { refType: "FEED", refId: details?.author.id },
-    });
+    if (isMobile) {
+      setModal({
+        isOpen: true,
+        type: "REPORT",
+        data: { refType: "FEED", refId: details?.author.id },
+        isFill: true,
+      });
+    } else {
+      setModal({
+        isOpen: true,
+        type: "REPORT",
+        data: { refType: "FEED", refId: details?.author.id },
+      });
+    }
   };
 
   return (

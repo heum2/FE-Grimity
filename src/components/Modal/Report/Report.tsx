@@ -91,9 +91,14 @@ export default function Report({ refType, refId }: ReportProps) {
         />
       </div>
       <div className={styles.btns}>
-        <Button size="l" type="outlined-assistive" onClick={() => router.back()}>
+        <Button
+          size="l"
+          type="outlined-assistive"
+          onClick={() => setModal({ isOpen: false, type: null, data: null, isComfirm: false })}
+        >
           취소
         </Button>
+
         <Button size="l" type="filled-primary" onClick={handleSubmit}>
           신고하기
         </Button>

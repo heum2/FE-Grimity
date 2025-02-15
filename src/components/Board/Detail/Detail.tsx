@@ -24,6 +24,8 @@ import BoardAll from "../BoardAll/BoardAll";
 import BoardPopular from "../BoardPopular/BoardPopular";
 import ShareBtn from "./ShareBtn/ShareBtn";
 import PostComment from "./Comment/Comment";
+import { isMobileState } from "@/states/isMobileState";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 export default function PostDetail({ id }: PostDetailProps) {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
@@ -33,6 +35,8 @@ export default function PostDetail({ id }: PostDetailProps) {
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const { data: posts, isLoading } = usePostsDetails(id as string);
+  const isMobile = useRecoilValue(isMobileState);
+  useIsMobile();
   const router = useRouter();
 
   useEffect(() => {
@@ -59,11 +63,20 @@ export default function PostDetail({ id }: PostDetailProps) {
   };
 
   const handleOpenReportModal = () => {
-    setModal({
-      isOpen: true,
-      type: "REPORT",
-      data: { refType: "POST", refId: posts?.author.id },
-    });
+    if (isMobile) {
+      setModal({
+        isOpen: true,
+        type: "REPORT",
+        data: { refType: "POST", refId: posts?.author.id },
+        isFill: true,
+      });
+    } else {
+      setModal({
+        isOpen: true,
+        type: "REPORT",
+        data: { refType: "POST", refId: posts?.author.id },
+      });
+    }
   };
 
   const handleLikeClick = async () => {

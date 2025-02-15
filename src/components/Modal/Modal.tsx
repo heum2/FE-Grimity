@@ -15,13 +15,9 @@ import UploadModal from "./Upload/Upload";
 import SharePost from "./SharePost/SharePost";
 import Like from "./Like/Like";
 import Report from "./Report/Report";
-import { isMobileState } from "@/states/isMobileState";
-import { useIsMobile } from "@/hooks/useIsMobile";
 
 export default function Modal() {
   const [modal, setModal] = useRecoilState(modalState);
-  const isMobile = useRecoilValue(isMobileState);
-  useIsMobile();
 
   usePreventScroll(modal.isOpen);
   if (!modal.isOpen) return null;

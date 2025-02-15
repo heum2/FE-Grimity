@@ -24,6 +24,8 @@ import { modalState } from "@/states/modalState";
 import CommentInput from "./CommentInput/CommentInput";
 import TextArea from "@/components/TextArea/TextArea";
 import { useMyData } from "@/api/users/getMe";
+import { isMobileState } from "@/states/isMobileState";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 export default function Comment({ feedId, feedWriterId, isFollowingPage }: CommentProps) {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
@@ -40,6 +42,8 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
   const postCommentMutation = usePostFeedsComments();
   const [activeParentReplyId, setActiveParentReplyId] = useState<string | null>(null);
   const [activeChildReplyId, setActiveChildReplyId] = useState<string | null>(null);
+  const isMobile = useRecoilValue(isMobileState);
+  useIsMobile();
   const deleteCommentMutation = useMutation(deleteComments, {
     onSuccess: () => {
       showToast("댓글이 삭제되었습니다.", "success");
@@ -129,11 +133,20 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
       return;
     }
 
-    setModal({
-      isOpen: true,
-      type: "REPORT",
-      data: { refType: "FEED_COMMENT", refId: id },
-    });
+    if (isMobile) {
+      setModal({
+        isOpen: true,
+        type: "REPORT",
+        data: { refType: "FEED_COMMENT", refId: id },
+        isFill: true,
+      });
+    } else {
+      setModal({
+        isOpen: true,
+        type: "REPORT",
+        data: { refType: "FEED_COMMENT", refId: id },
+      });
+    }
   };
 
   const handleCommentDelete = async (id: string) => {
