@@ -365,62 +365,28 @@ export default function Upload() {
                       {...provided.droppableProps}
                       onTouchStart={(e) => e.stopPropagation()}
                     >
-                      {isMobile ? (
-                        <Swiper
-                          spaceBetween={10}
-                          slidesPerView={"auto"}
-                          pagination
-                          className={styles.swiper}
-                        >
-                          {images.map((image, index) => (
-                            <SwiperSlide key={index} className={styles.swiperSlide}>
-                              <Draggable draggableId={`${index}`} index={index}>
-                                {(dragProvided) => (
-                                  <div
-                                    ref={dragProvided.innerRef}
-                                    {...dragProvided.draggableProps}
-                                    {...dragProvided.dragHandleProps}
-                                  >
-                                    <DraggableImage
-                                      key={image.name}
-                                      image={image}
-                                      index={index}
-                                      name={image.originalName}
-                                      moveImage={moveImage}
-                                      removeImage={removeImage}
-                                      isThumbnail={thumbnailUrl === image.url}
-                                      onThumbnailSelect={() => selectThumbnail(image.url)}
-                                    />
-                                  </div>
-                                )}
-                              </Draggable>
-                            </SwiperSlide>
-                          ))}
-                        </Swiper>
-                      ) : (
-                        images.map((image, index) => (
-                          <Draggable key={index} draggableId={`${index}`} index={index}>
-                            {(dragProvided) => (
-                              <div
-                                ref={dragProvided.innerRef}
-                                {...dragProvided.draggableProps}
-                                {...dragProvided.dragHandleProps}
-                              >
-                                <DraggableImage
-                                  key={image.name}
-                                  image={image}
-                                  index={index}
-                                  name={image.originalName}
-                                  moveImage={moveImage}
-                                  removeImage={removeImage}
-                                  isThumbnail={thumbnailUrl === image.url}
-                                  onThumbnailSelect={() => selectThumbnail(image.url)}
-                                />
-                              </div>
-                            )}
-                          </Draggable>
-                        ))
-                      )}
+                      {images.map((image, index) => (
+                        <Draggable key={index} draggableId={`${index}`} index={index}>
+                          {(dragProvided) => (
+                            <div
+                              ref={dragProvided.innerRef}
+                              {...dragProvided.draggableProps}
+                              {...dragProvided.dragHandleProps}
+                            >
+                              <DraggableImage
+                                key={image.name}
+                                image={image}
+                                index={index}
+                                name={image.originalName}
+                                moveImage={moveImage}
+                                removeImage={removeImage}
+                                isThumbnail={thumbnailUrl === image.url}
+                                onThumbnailSelect={() => selectThumbnail(image.url)}
+                              />
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
                       {provided.placeholder}
                     </div>
                   )}

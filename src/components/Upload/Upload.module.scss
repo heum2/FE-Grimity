@@ -64,17 +64,6 @@
           @include Drag;
         }
 
-        .swiperContainer {
-          width: 100%;
-        }
-
-        .swiperSlide {
-          display: flex;
-          justify-content: flex-start;
-          align-items: center;
-          width: auto;
-        }
-
         .imageContainer {
           width: 100%;
           max-width: 1020px;
