@@ -265,19 +265,63 @@ export default function PostDetail({ id }: PostDetailProps) {
             </div>
             {user_id === posts.author.id || !isLoggedIn ? (
               <div className={styles.dropdown}>
-                <Dropdown
-                  trigger={
-                    <div className={styles.menuBtn}>
-                      <Image src="/icon/meatball.svg" width={20} height={20} alt="메뉴 버튼 " />
-                    </div>
-                  }
-                  menuItems={[
-                    {
-                      label: "공유하기",
-                      onClick: handleOpenShareModal,
-                    },
-                  ]}
-                />
+                {!isMobile ? (
+                  <Dropdown
+                    trigger={
+                      <div className={styles.menuBtn}>
+                        <Image src="/icon/meatball.svg" width={20} height={20} alt="메뉴 버튼 " />
+                      </div>
+                    }
+                    menuItems={[
+                      {
+                        label: "공유하기",
+                        onClick: handleOpenShareModal,
+                      },
+                    ]}
+                  />
+                ) : user_id === posts.author.id ? (
+                  <Dropdown
+                    trigger={
+                      <div className={styles.menuBtn}>
+                        <Image src="/icon/meatball.svg" width={20} height={20} alt="메뉴 버튼 " />
+                      </div>
+                    }
+                    menuItems={[
+                      {
+                        label: "공유하기",
+                        onClick: handleOpenShareModal,
+                      },
+                      {
+                        label: "수정하기",
+                        onClick: handleOpenEditPage,
+                      },
+                      {
+                        label: "삭제하기",
+                        onClick: handleDelete,
+                        isDelete: true,
+                      },
+                    ]}
+                  />
+                ) : (
+                  <Dropdown
+                    trigger={
+                      <div className={styles.menuBtn}>
+                        <Image src="/icon/meatball.svg" width={20} height={20} alt="메뉴 버튼 " />
+                      </div>
+                    }
+                    menuItems={[
+                      {
+                        label: "공유하기",
+                        onClick: handleOpenShareModal,
+                      },
+                      {
+                        label: "신고하기",
+                        onClick: handleOpenReportModal,
+                        isDelete: true,
+                      },
+                    ]}
+                  />
+                )}
               </div>
             ) : (
               <div className={styles.dropdown}>
