@@ -39,7 +39,8 @@
 
 .topMenu {
   @extend .menu;
-  top: -70px;
+  top: auto;
+  bottom: 50px;
   right: 0;
   left: auto;
 }
