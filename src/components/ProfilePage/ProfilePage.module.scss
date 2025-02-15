@@ -158,6 +158,7 @@
     cursor: pointer;
     transition: all 0.3s ease;
     @include Label2;
+    color: $gray70;
 
     &:hover {
       background-color: $gray10;
