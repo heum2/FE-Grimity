@@ -156,60 +156,69 @@ export default function PostDetail({ id }: PostDetailProps) {
                   </Chip>
                 )}
               </div>
-              {posts.type !== "NOTICE" ? (
+              {isMobile ? (
+                <>
+                  <div className={styles.authorCreatedAt}>
+                    {posts.type !== "NOTICE" && (
+                      <p className={styles.author}>{posts.author.name}</p>
+                    )}
+                    <p className={styles.createdAt}>{timeAgo(posts.createdAt)}</p>
+                  </div>
+                  <h1 className={styles.title}>{posts.title}</h1>
+                </>
+              ) : (
                 <>
                   <h1 className={styles.title}>{posts.title}</h1>
                   <div className={styles.authorCreatedAt}>
-                    <p className={styles.author}>{posts.author.name}</p>
+                    {posts.type !== "NOTICE" && (
+                      <p className={styles.author}>{posts.author.name}</p>
+                    )}
                     <p className={styles.createdAt}>{timeAgo(posts.createdAt)}</p>
                   </div>
                 </>
-              ) : (
-                <div className={styles.notice}>
-                  <h1 className={styles.noticeTitle}>{posts.title}</h1>
-                  <p className={styles.noticeCreatedAt}>{timeAgo(posts.createdAt)}</p>
-                </div>
               )}
             </div>
-            <div className={styles.dropdownContainer}>
-              {isLoggedIn &&
-                (user_id === posts.author.id ? (
-                  <div className={styles.dropdown}>
-                    <Dropdown
-                      trigger={
-                        <IconComponent name="meatball" padding={8} width={24} height={24} isBtn />
-                      }
-                      menuItems={[
-                        {
-                          label: "수정하기",
-                          onClick: handleOpenEditPage,
-                        },
-                        {
-                          label: "삭제하기",
-                          onClick: handleDelete,
-                          isDelete: true,
-                        },
-                      ]}
-                    />
-                  </div>
-                ) : (
-                  <div className={styles.dropdown}>
-                    <Dropdown
-                      trigger={
-                        <IconComponent name="meatball" padding={8} width={24} height={24} isBtn />
-                      }
-                      menuItems={[
-                        {
-                          label: "신고하기",
-                          onClick: handleOpenReportModal,
-                          isDelete: true,
-                        },
-                      ]}
-                    />
-                  </div>
-                ))}
-              <ShareBtn postId={id} title={posts.title} />
-            </div>
+            {!isMobile && (
+              <div className={styles.dropdownContainer}>
+                {isLoggedIn &&
+                  (user_id === posts.author.id ? (
+                    <div className={styles.dropdown}>
+                      <Dropdown
+                        trigger={
+                          <IconComponent name="meatball" padding={8} width={24} height={24} isBtn />
+                        }
+                        menuItems={[
+                          {
+                            label: "수정하기",
+                            onClick: handleOpenEditPage,
+                          },
+                          {
+                            label: "삭제하기",
+                            onClick: handleDelete,
+                            isDelete: true,
+                          },
+                        ]}
+                      />
+                    </div>
+                  ) : (
+                    <div className={styles.dropdown}>
+                      <Dropdown
+                        trigger={
+                          <IconComponent name="meatball" padding={8} width={24} height={24} isBtn />
+                        }
+                        menuItems={[
+                          {
+                            label: "신고하기",
+                            onClick: handleOpenReportModal,
+                            isDelete: true,
+                          },
+                        ]}
+                      />
+                    </div>
+                  ))}
+                <ShareBtn postId={id} title={posts.title} />
+              </div>
+            )}
           </section>
           <div className={styles.bar} />
           <div className={styles.content} dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
