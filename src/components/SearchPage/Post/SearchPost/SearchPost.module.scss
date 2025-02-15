@@ -14,6 +14,10 @@
   .title {
     @include Title3;
     color: $gray70;
+
+    @include Size("mobile") {
+      @include Sub2;
+    }
   }
 
   .sort {

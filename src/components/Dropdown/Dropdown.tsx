@@ -1,10 +1,15 @@
 import { useState, useRef, useEffect } from "react";
 import styles from "./Dropdown.module.scss";
 import { DropdownProps } from "./Dropdown.types";
+import { isMobileState } from "@/states/isMobileState";
+import { useRecoilValue } from "recoil";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 export default function Dropdown({ menuItems, trigger, onOpenChange, isTopItem }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const isMobile = useRecoilValue(isMobileState);
+  useIsMobile();
 
   const toggleDropdown = (newState: boolean) => {
     setIsOpen(newState);
@@ -29,7 +34,7 @@ export default function Dropdown({ menuItems, trigger, onOpenChange, isTopItem }
         {trigger}
       </div>
       {isOpen && (
-        <ul className={isTopItem ? styles.topMenu : styles.menu}>
+        <ul className={isTopItem ? styles.topMenu : isMobile ? styles.mobileMenu : styles.menu}>
           {menuItems.map((item, index) => (
             <li
               key={index}

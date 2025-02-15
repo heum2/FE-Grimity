@@ -7,6 +7,10 @@
   flex-direction: column;
   padding-top: 60px;
 
+  @include Size("mobile") {
+    padding-top: 16px;
+  }
+
   .center {
     display: flex;
     flex-direction: column;
@@ -22,10 +26,20 @@
       gap: 24px;
       margin-bottom: 60px;
 
+      @include Size("mobile") {
+        margin-bottom: 30px;
+      }
+
       .recommend {
         display: flex;
         align-items: center;
         gap: 16px;
+
+        @include Size("mobile") {
+          width: 100%;
+          flex-direction: column;
+          align-items: flex-start;
+        }
 
         .recommendMessage {
           @include Sub2;
@@ -34,22 +48,42 @@
           @include Drag;
         }
 
+        .swiperContainer {
+          width: 100%;
+        }
+
+        .swiperSlide {
+          width: auto !important;
+          height: auto !important;
+        }
+
         .chips {
           display: flex;
           gap: 8px;
           align-items: center;
           width: 100%;
+          flex-wrap: wrap;
+        }
 
-          .chip {
-            display: flex;
-            padding: 10px 16px;
-            justify-content: center;
-            align-items: center;
-            border-radius: 50px;
-            background-color: $gray10;
-            @include Label1;
-            color: $gray60;
-            @include Drag;
+        .chipLink {
+          text-decoration: none;
+          -webkit-tap-highlight-color: transparent;
+        }
+
+        .chip {
+          display: flex;
+          padding: 10px 16px;
+          justify-content: center;
+          align-items: center;
+          border-radius: 50px;
+          background-color: $gray10;
+          @include Label1;
+          color: $gray60;
+          white-space: nowrap;
+          @include Drag;
+
+          &:active {
+            background-color: $gray20;
           }
         }
       }
@@ -82,6 +116,15 @@
         color: $gray70;
         padding: 0 12px 6px;
         transition: transform 0.3s ease, width 0.3s ease;
+
+        @include Size("mobile") {
+          padding: 0 0 6px;
+        }
+      }
+
+      @include Size("mobile") {
+        @include Sub4;
+        padding: 0 0 8px;
       }
     }
 

@@ -7,6 +7,13 @@ import Link from "next/link";
 import SearchFeed from "./Feed/SearchFeed/SearchFeed";
 import SearchAuthor from "./User/SearchAuthor/SearchAuthor";
 import SearchPost from "./Post/SearchPost/SearchPost";
+import { useRecoilValue } from "recoil";
+import { isMobileState } from "@/states/isMobileState";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { FreeMode } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/free-mode";
 
 export default function SearchPage() {
   const [searchValue, setSearchValue] = useState<string>("");
@@ -14,6 +21,8 @@ export default function SearchPage() {
   const { data: popularData } = useTagsPopular();
   const router = useRouter();
   const { tab } = router.query;
+  const isMobile = useRecoilValue(isMobileState);
+  useIsMobile();
 
   useEffect(() => {
     const keyword = router.query.keyword as string | undefined;
@@ -40,6 +49,44 @@ export default function SearchPage() {
     return tab === tabName ? styles.selected : "";
   };
 
+  const renderChips = () => {
+    if (!popularData?.length) return null;
+
+    if (isMobile) {
+      return (
+        <Swiper
+          modules={[FreeMode]}
+          spaceBetween={8}
+          slidesPerView="auto"
+          freeMode={true}
+          className={styles.swiperContainer}
+        >
+          {popularData.slice(0, 8).map((tag, index) => (
+            <SwiperSlide key={index} className={styles.swiperSlide}>
+              <Link href={`/search?tab=feed&keyword=${tag.tagName}`} className={styles.chipLink}>
+                <div className={styles.chip}>{tag.tagName}</div>
+              </Link>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      );
+    }
+
+    return (
+      <div className={styles.chips}>
+        {popularData.slice(0, 8).map((tag, index) => (
+          <Link
+            href={`/search?tab=feed&keyword=${tag.tagName}`}
+            key={index}
+            className={styles.chipLink}
+          >
+            <div className={styles.chip}>{tag.tagName}</div>
+          </Link>
+        ))}
+      </div>
+    );
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.center}>
@@ -51,15 +98,7 @@ export default function SearchPage() {
           />
           <div className={styles.recommend}>
             <p className={styles.recommendMessage}>추천 태그</p>
-            <div className={styles.chips}>
-              {popularData?.slice(0, 8).map((tag, index) => (
-                <Link href={`/search?tab=feed&keyword=${tag.tagName}`} key={index}>
-                  <div key={index} className={styles.chip}>
-                    {tag.tagName}
-                  </div>
-                </Link>
-              ))}
-            </div>
+            {renderChips()}
           </div>
         </section>
         <section className={styles.navContainer}>

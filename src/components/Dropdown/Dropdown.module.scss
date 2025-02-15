@@ -37,6 +37,13 @@
   }
 }
 
+.mobileMenu {
+  @extend .menu;
+  top: 50px;
+  right: 0;
+  left: auto;
+}
+
 .topMenu {
   @extend .menu;
   top: auto;
