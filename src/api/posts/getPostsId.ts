@@ -33,5 +33,11 @@ export async function getPostsDetails(id: string): Promise<PostsDetailsResponse>
 }
 
 export function usePostsDetails(id: string) {
-  return useQuery<PostsDetailsResponse>(["Postsdetails", id], () => getPostsDetails(id), {});
+  return useQuery<PostsDetailsResponse>(["Postsdetails", id], () => getPostsDetails(id), {
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    staleTime: 5 * 60 * 1000,
+    cacheTime: 10 * 60 * 1000,
+  });
 }

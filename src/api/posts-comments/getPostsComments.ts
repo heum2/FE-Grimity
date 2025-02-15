@@ -59,7 +59,15 @@ export async function getPostsComments({
 }
 
 export function useGetPostsComments({ postId }: PostsCommentsRequest) {
-  return useQuery<PostsCommentsResponse>(["getPostsComments", postId], () =>
-    getPostsComments({ postId })
+  return useQuery<PostsCommentsResponse>(
+    ["getPostsComments", postId],
+    () => getPostsComments({ postId }),
+    {
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000,
+      cacheTime: 10 * 60 * 1000,
+    }
   );
 }
