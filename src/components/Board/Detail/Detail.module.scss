@@ -108,6 +108,12 @@
       font-weight: 500;
       min-height: 120px;
 
+      img {
+        width: 100% !important;
+        height: auto !important;
+        object-fit: contain;
+      }
+
       h1 {
         font-size: 32px;
         font-weight: 700;
