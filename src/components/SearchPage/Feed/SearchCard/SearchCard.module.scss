@@ -5,6 +5,11 @@
   flex-direction: column;
   gap: 12px;
   width: 100%;
+  min-width: 0;
+
+  @include Size("mobile") {
+    gap: 8px;
+  }
 
   .imageContainer {
     width: 100%;
@@ -41,6 +46,10 @@
     max-width: 258px;
     height: 30px;
     overflow: hidden;
+
+    @include Size("mobile") {
+      max-width: none;
+    }
 
     :global(.swiper) {
       width: 100%;
@@ -80,6 +89,15 @@
       color: $gray80;
       text-overflow: ellipsis;
       @include Sub4;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+
+      @include Size("mobile") {
+        @include Label1;
+      }
     }
 
     .profileContainer {
@@ -90,6 +108,10 @@
       .author {
         @include Label1;
         color: $gray50;
+
+        @include Size("mobile") {
+          @include Cap2;
+        }
       }
 
       .countContainer {

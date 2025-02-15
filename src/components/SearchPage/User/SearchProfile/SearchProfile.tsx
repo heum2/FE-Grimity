@@ -49,20 +49,23 @@ export default function SearchProfile({
     <div className={styles.container}>
       <Link href={`/users/${id}`}>
         {backgroundImage !== "https://image.grimity.com/null" ? (
-          <Image
-            src={backgroundImage}
-            width={640}
-            height={178}
-            alt="배경이미지"
-            className={styles.cover}
-          />
+          <div className={styles.coverContainer}>
+            <Image
+              src={backgroundImage}
+              alt="배경이미지"
+              layout="responsive"
+              width={640}
+              height={178}
+              className={styles.cover}
+            />
+          </div>
         ) : (
           <Image
             src="/image/search-default-cover.svg"
             width={640}
             height={178}
             alt="배경이미지"
-            className={styles.cover}
+            className={styles.coverContainer}
           />
         )}
       </Link>

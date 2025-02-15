@@ -201,6 +201,19 @@ export default function AllCard({ post, case: cardCase }: AllCardProps) {
                 </div>
               </div>
             )
+          ) : isMobile ? (
+            <div className={styles.createdAtView}>
+              <div className={styles.viewCount}>
+                <Image src="/icon/board-all-view.svg" width={16} height={16} alt="" />
+                {post.viewCount}
+              </div>
+              <div className={styles.commentCount}>
+                <Image src="/icon/board-all-comment.svg" width={16} height={16} alt="" />
+                {post.commentCount}
+              </div>
+              <Image src="/icon/dot.svg" width={3} height={3} alt="" />
+              <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
+            </div>
           ) : (
             <div className={styles.createdAtView}>
               <div className={styles.viewCount}>
@@ -211,7 +224,7 @@ export default function AllCard({ post, case: cardCase }: AllCardProps) {
               <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
             </div>
           )}
-          {post.type !== "NOTICE" && post.author && (
+          {post.type !== "NOTICE" && post.author && !isMobile && (
             <Link href={`/users/${post.author.id}`}>
               <p className={styles.author}>{post.author.name}</p>
             </Link>

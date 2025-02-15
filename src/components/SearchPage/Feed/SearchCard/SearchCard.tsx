@@ -9,6 +9,7 @@ import { authState } from "@/states/authState";
 import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
 import { SearchCardProps } from "./SearchCard.types";
 import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
 
 export default function SearchCard({
   id,

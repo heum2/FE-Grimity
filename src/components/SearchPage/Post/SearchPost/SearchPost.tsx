@@ -7,7 +7,7 @@ import Image from "next/image";
 import Dropdown from "@/components/Dropdown/Dropdown";
 import Button from "@/components/Button/Button";
 import IconComponent from "@/components/Asset/Icon";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type SortOption = "accuracy";
 
@@ -18,26 +18,17 @@ const sortOptions: { value: SortOption; label: string }[] = [
 export default function SearchPost() {
   const router = useRouter();
   const { query } = router;
+  const keyword = query.keyword as string;
   const currentPage = Number(query.page) || 1;
   const [sortBy, setSortBy] = useState<SortOption>("accuracy");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [searchKeyword, setSearchKeyword] = useState<string>("");
 
-  useEffect(() => {
-    const keyword = router.query.keyword as string | undefined;
-    if (keyword) {
-      setSearchKeyword(keyword);
-    }
-  }, [router.query]);
-
-  const { data, isLoading } = searchKeyword
-    ? usePostSearch({
-        searchBy: "combined",
-        page: currentPage,
-        size: 10,
-        keyword: searchKeyword,
-      })
-    : { data: null, isLoading: false };
+  const { data, isLoading } = usePostSearch({
+    searchBy: "combined",
+    page: currentPage,
+    size: 10,
+    keyword: keyword,
+  });
 
   const posts = data?.posts || [];
   const totalPages = Math.ceil((data?.totalCount ? Number(data.totalCount) : 0) / 10);

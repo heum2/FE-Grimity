@@ -9,6 +9,10 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: 12px;
+
+    @include Size("mobile") {
+      margin-bottom: 8px;
+    }
   }
 
   .title {
@@ -25,10 +29,17 @@
   }
 
   .feedContainer {
+    width: 100%;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-column-gap: 16px;
     grid-row-gap: 40px;
+
+    @include Size("mobile") {
+      grid-template-columns: repeat(2, 1fr);
+      grid-column-gap: 12px;
+      grid-row-gap: 20px;
+    }
   }
 }
 

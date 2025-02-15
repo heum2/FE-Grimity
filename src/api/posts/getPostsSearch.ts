@@ -51,11 +51,12 @@ export async function getPostSearch({
   }
 }
 
-export function usePostSearch(params: PostSearchRequest) {
+export function usePostSearch(params: PostSearchRequest | null) {
   return useQuery<PostSearchResponse>(
-    ["PostSearch", params.searchBy, params.size, params.page, params.keyword],
-    () => getPostSearch(params),
+    params ? ["PostSearch", params.searchBy, params.size, params.page, params.keyword] : [],
+    () => (params ? getPostSearch(params) : Promise.reject(undefined)),
     {
+      enabled: !!params,
       refetchOnMount: false,
       refetchOnReconnect: false,
       refetchOnWindowFocus: false,
