@@ -372,16 +372,16 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
             {comment.writer.image !== "https://image.grimity.com/null" ? (
               <Image
                 src={comment.writer.image}
-                width={40}
-                height={40}
+                width={isMobile ? 24 : 40}
+                height={isMobile ? 24 : 40}
                 alt="댓글 프로필"
                 className={styles.writerImage}
               />
             ) : (
               <Image
                 src="/image/default.svg"
-                width={40}
-                height={40}
+                width={isMobile ? 24 : 40}
+                height={isMobile ? 24 : 40}
                 alt="댓글 프로필"
                 className={styles.writerImage}
               />
@@ -485,27 +485,28 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
             {/* 답글 입력창 */}
             {activeParentReplyId === comment.id && (
               <div className={styles.input}>
-                {isLoggedIn && userData ? (
-                  <Image
-                    src={
-                      userData.image !== "https://image.grimity.com/null"
-                        ? userData.image
-                        : "/image/default.svg"
-                    }
-                    width={24}
-                    height={24}
-                    alt="프로필 이미지"
-                    className={styles.writerImage}
-                  />
-                ) : (
-                  <Image
-                    src="/image/default.svg"
-                    width={24}
-                    height={24}
-                    alt="프로필 이미지"
-                    className={styles.writerImage}
-                  />
-                )}
+                {!isMobile &&
+                  (isLoggedIn && userData ? (
+                    <Image
+                      src={
+                        userData.image !== "https://image.grimity.com/null"
+                          ? userData.image
+                          : "/image/default.svg"
+                      }
+                      width={24}
+                      height={24}
+                      alt="프로필 이미지"
+                      className={styles.writerImage}
+                    />
+                  ) : (
+                    <Image
+                      src="/image/default.svg"
+                      width={24}
+                      height={24}
+                      alt="프로필 이미지"
+                      className={styles.writerImage}
+                    />
+                  ))}
                 <TextArea
                   ref={replyInputRef}
                   placeholder={isLoggedIn ? "답글 달기" : "회원만 답글 달 수 있어요!"}

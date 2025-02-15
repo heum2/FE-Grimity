@@ -8,6 +8,10 @@
   align-items: center;
   gap: 16px;
 
+  @include Size("mobile") {
+    margin-top: 40px;
+  }
+
   .writerImage {
     object-fit: cover;
     border-radius: 50%;

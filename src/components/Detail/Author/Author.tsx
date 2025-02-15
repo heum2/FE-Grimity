@@ -14,6 +14,7 @@ import Button from "@/components/Button/Button";
 import { useUserForDetail } from "@/api/users/getIdFeeds";
 import SquareCard from "@/components/Layout/SquareCard/SquareCard";
 import Loader from "@/components/Layout/Loader/Loader";
+import { isMobileState } from "@/states/isMobileState";
 
 export default function Author({ authorId, feedId }: AuthorProps) {
   const { data: userData } = useUserData(authorId);
@@ -21,6 +22,7 @@ export default function Author({ authorId, feedId }: AuthorProps) {
   const [isFollowing, setIsFollowing] = useState(false);
   const [followerCount, setFollowerCount] = useState(0);
   const { showToast } = useToast();
+  const isMobile = useRecoilValue(isMobileState);
 
   useEffect(() => {
     if (userData && userData.isFollowing !== undefined) {
@@ -28,10 +30,10 @@ export default function Author({ authorId, feedId }: AuthorProps) {
       setFollowerCount(userData.followerCount);
     }
   }, [userData]);
-
+  const size = isMobile ? 2 : 4;
   const { data, isLoading } = useUserForDetail({
     id: authorId,
-    size: 4,
+    size: size,
     sort: "latest",
   });
 
@@ -119,9 +121,11 @@ export default function Author({ authorId, feedId }: AuthorProps) {
                   </Button>
                 ))}
             </div>
-            <Link href={`/users/${authorId}`}>
-              <p className={styles.seeMore}>작품 더보기</p>
-            </Link>
+            {!isMobile && (
+              <Link href={`/users/${authorId}`}>
+                <p className={styles.seeMore}>작품 더보기</p>
+              </Link>
+            )}
           </div>
           <div className={styles.cardList}>
             {feeds.map((feed) => (
@@ -134,7 +138,6 @@ export default function Author({ authorId, feedId }: AuthorProps) {
                 author={userData}
                 likeCount={feed.likeCount}
                 viewCount={feed.viewCount}
-                createdAt={feed.createdAt}
                 isSame={feed.id === feedId}
               />
             ))}

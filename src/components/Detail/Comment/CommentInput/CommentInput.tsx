@@ -4,6 +4,8 @@ import styles from "./CommentInput.module.scss";
 import Button from "@/components/Button/Button";
 import { usePostFeedsComments } from "@/api/feeds-comments/postFeedComments";
 import TextArea from "@/components/TextArea/TextArea";
+import { useRecoilValue } from "recoil";
+import { isMobileState } from "@/states/isMobileState";
 
 interface CommentInputProps {
   feedId: string;
@@ -20,6 +22,7 @@ export default function CommentInput({
   showToast,
   onCommentSubmitSuccess,
 }: CommentInputProps) {
+  const isMobile = useRecoilValue(isMobileState);
   const [comment, setComment] = useState("");
   const postCommentMutation = usePostFeedsComments();
 
@@ -56,27 +59,28 @@ export default function CommentInput({
 
   return (
     <section className={styles.inputContainer}>
-      {isLoggedIn && userData ? (
-        <Image
-          src={
-            userData.image !== "https://image.grimity.com/null"
-              ? userData.image
-              : "/image/default.svg"
-          }
-          width={40}
-          height={40}
-          alt="프로필 이미지"
-          className={styles.writerImage}
-        />
-      ) : (
-        <Image
-          src="/image/default.svg"
-          width={40}
-          height={40}
-          alt="프로필 이미지"
-          className={styles.writerImage}
-        />
-      )}
+      {!isMobile &&
+        (isLoggedIn && userData ? (
+          <Image
+            src={
+              userData.image !== "https://image.grimity.com/null"
+                ? userData.image
+                : "/image/default.svg"
+            }
+            width={40}
+            height={40}
+            alt="프로필 이미지"
+            className={styles.writerImage}
+          />
+        ) : (
+          <Image
+            src="/image/default.svg"
+            width={40}
+            height={40}
+            alt="프로필 이미지"
+            className={styles.writerImage}
+          />
+        ))}
       <TextArea
         placeholder={isLoggedIn ? "댓글 달기" : "회원만 댓글 달 수 있어요!"}
         value={comment}
