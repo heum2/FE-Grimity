@@ -1,7 +1,7 @@
 import axios, { InternalAxiosRequestConfig } from "axios";
 
 const BASE_URL = axios.create({
-  baseURL: "https://api.grimity.com",
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
 });
 
 BASE_URL.interceptors.request.use(
