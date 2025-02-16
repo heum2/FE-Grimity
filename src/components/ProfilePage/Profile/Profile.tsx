@@ -22,6 +22,7 @@ import { deleteMyBackgroundImage, deleteMyProfileImage } from "@/api/users/delet
 import Dropdown from "@/components/Dropdown/Dropdown";
 import { isMobileState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { deleteMe } from "@/api/users/deleteMe";
 
 export default function Profile({ isMyProfile, id }: ProfileProps) {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
@@ -246,6 +247,32 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
     }
   };
 
+  const handleWithdrawal = async () => {
+    try {
+      setModal({
+        isOpen: true,
+        type: null,
+        data: {
+          title: "정말 탈퇴하시겠어요?",
+          subtitle: "계정 복구는 어려워요.",
+          confirmBtn: "탈퇴하기",
+          onClick: async () => {
+            try {
+              await deleteMe();
+              showToast("회원 탈퇴 되었습니다.", "success");
+              router.push("/");
+            } catch (err) {
+              showToast("탈퇴 중 오류가 발생했습니다.", "error");
+            }
+          },
+        },
+        isComfirm: true,
+      });
+    } catch (error) {
+      showToast("탈퇴 중 오류가 발생했습니다.", "error");
+    }
+  };
+
   return (
     <div className={styles.container}>
       {userData && (
@@ -447,15 +474,39 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                     <div className={styles.followEdit}>
                       {isLoggedIn ? (
                         isMyProfile ? (
-                          <div className={styles.editBtn}>
-                            <Button
-                              size="m"
-                              type="outlined-assistive"
-                              onClick={handleOpenEditModal}
-                            >
-                              프로필 편집
-                            </Button>
-                          </div>
+                          <>
+                            <div className={styles.editBtn}>
+                              <Button
+                                size="m"
+                                type="outlined-assistive"
+                                onClick={handleOpenEditModal}
+                              >
+                                프로필 편집
+                              </Button>
+                            </div>
+                            <div className={styles.dropdown}>
+                              <Dropdown
+                                isSide
+                                trigger={
+                                  <div className={styles.menuBtn}>
+                                    <Image
+                                      src="/icon/meatball.svg"
+                                      width={20}
+                                      height={20}
+                                      alt="메뉴 버튼 "
+                                    />
+                                  </div>
+                                }
+                                menuItems={[
+                                  {
+                                    label: "회원 탈퇴",
+                                    onClick: handleWithdrawal,
+                                    isDelete: true,
+                                  },
+                                ]}
+                              />
+                            </div>
+                          </>
                         ) : userData.isFollowing ? (
                           <>
                             <div className={styles.followBtn}>
@@ -562,11 +613,35 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
               <div className={styles.followEdit}>
                 {isLoggedIn ? (
                   isMyProfile ? (
-                    <div className={styles.editBtn}>
-                      <Button size="l" type="outlined-assistive" onClick={handleOpenEditModal}>
-                        프로필 편집
-                      </Button>
-                    </div>
+                    <>
+                      <div className={styles.editBtn}>
+                        <Button size="l" type="outlined-assistive" onClick={handleOpenEditModal}>
+                          프로필 편집
+                        </Button>
+                      </div>
+                      <div className={styles.dropdown}>
+                        <Dropdown
+                          isSide
+                          trigger={
+                            <div className={styles.menuBtn}>
+                              <Image
+                                src="/icon/meatball.svg"
+                                width={20}
+                                height={20}
+                                alt="메뉴 버튼 "
+                              />
+                            </div>
+                          }
+                          menuItems={[
+                            {
+                              label: "회원 탈퇴",
+                              onClick: handleWithdrawal,
+                              isDelete: true,
+                            },
+                          ]}
+                        />
+                      </div>
+                    </>
                   ) : userData.isFollowing ? (
                     <>
                       <div className={styles.followBtn}>
@@ -576,6 +651,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                       </div>
                       <div className={styles.dropdown}>
                         <Dropdown
+                          isSide
                           trigger={
                             <div className={styles.menuBtn}>
                               <Image
