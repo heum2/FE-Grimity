@@ -5,7 +5,13 @@ import { isMobileState } from "@/states/isMobileState";
 import { useRecoilValue } from "recoil";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
-export default function Dropdown({ menuItems, trigger, onOpenChange, isTopItem }: DropdownProps) {
+export default function Dropdown({
+  menuItems,
+  trigger,
+  onOpenChange,
+  isTopItem,
+  isSide,
+}: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const isMobile = useRecoilValue(isMobileState);
@@ -34,7 +40,17 @@ export default function Dropdown({ menuItems, trigger, onOpenChange, isTopItem }
         {trigger}
       </div>
       {isOpen && (
-        <ul className={isTopItem ? styles.topMenu : isMobile ? styles.mobileMenu : styles.menu}>
+        <ul
+          className={
+            isTopItem
+              ? styles.topMenu
+              : isMobile
+              ? styles.mobileMenu
+              : isSide
+              ? styles.isSideMenu
+              : styles.menu
+          }
+        >
           {menuItems.map((item, index) => (
             <li
               key={index}

@@ -120,6 +120,13 @@
   }
 }
 
+.profileContact {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
 .profileSection {
   display: flex;
   align-items: center;
@@ -239,6 +246,10 @@
     cursor: pointer;
     position: relative;
   }
+}
+
+.contactBtn {
+  position: relative;
 }
 
 .overlay {

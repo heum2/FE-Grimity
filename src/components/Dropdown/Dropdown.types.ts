@@ -11,4 +11,5 @@ export interface DropdownProps {
   trigger: ReactNode;
   onOpenChange?: (isOpen: boolean) => void;
   isTopItem?: boolean;
+  isSide?: boolean;
 }

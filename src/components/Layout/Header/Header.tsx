@@ -15,6 +15,7 @@ import { isMobileState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { usePreventScroll } from "@/hooks/usePreventScroll";
 import Dropdown from "@/components/Dropdown/Dropdown";
+import Contact from "./Contact/Contact";
 
 export default function Header() {
   const [, setModal] = useRecoilState(modalState);
@@ -30,6 +31,8 @@ export default function Header() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const notificationRef = useRef<HTMLDivElement>(null);
   const [showNotifications, setShowNotifications] = useState(false);
+  const contactRef = useRef<HTMLDivElement>(null);
+  const [showContact, setShowContact] = useState(false);
   const { showToast } = useToast();
   const router = useRouter();
   const isMobile = useRecoilValue(isMobileState);
@@ -128,6 +131,9 @@ export default function Header() {
       ) {
         setShowNotifications(false);
       }
+      if (contactRef.current && !contactRef.current.contains(event.target as Node) && showContact) {
+        setShowContact(false);
+      }
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsDropdownOpen(false);
       }
@@ -151,6 +157,10 @@ export default function Header() {
 
   const toggleNotifications = () => {
     setShowNotifications((prev) => !prev);
+  };
+
+  const toggleContact = () => {
+    setShowContact((prev) => !prev);
   };
 
   const toggleMenu = () => {
@@ -278,120 +288,140 @@ export default function Header() {
           </div>
           {!isMobile ? (
             isLoggedIn && myData ? (
-              <div className={styles.profileSection}>
-                <div
-                  className={styles.profileContainer}
-                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                >
-                  {myData.image !== "https://image.grimity.com/null" ? (
-                    <Image
-                      src={myData.image}
-                      width={100}
-                      height={100}
-                      alt="프로필 이미지"
-                      className={styles.profileImage}
-                      quality={100}
-                      style={{ objectFit: "cover" }}
-                    />
-                  ) : (
-                    <Image
-                      src="/image/default.svg"
-                      width={100}
-                      height={100}
-                      alt="프로필 이미지"
-                      className={styles.profileImage}
-                      quality={100}
-                      style={{ objectFit: "cover" }}
-                    />
+              <div className={styles.profileContact}>
+                <div className={styles.profileSection}>
+                  <div
+                    className={styles.profileContainer}
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  >
+                    {myData.image !== "https://image.grimity.com/null" ? (
+                      <Image
+                        src={myData.image}
+                        width={100}
+                        height={100}
+                        alt="프로필 이미지"
+                        className={styles.profileImage}
+                        quality={100}
+                        style={{ objectFit: "cover" }}
+                      />
+                    ) : (
+                      <Image
+                        src="/image/default.svg"
+                        width={100}
+                        height={100}
+                        alt="프로필 이미지"
+                        className={styles.profileImage}
+                        quality={100}
+                        style={{ objectFit: "cover" }}
+                      />
+                    )}
+                  </div>
+                  {isDropdownOpen && (
+                    <div className={styles.dropdown} ref={dropdownRef}>
+                      <Link href={`/users/${myData.id}`}>
+                        <div
+                          className={styles.dropdownItem}
+                          onClick={() => {
+                            setIsDropdownOpen(false);
+                            window.scrollTo(0, 0);
+                          }}
+                        >
+                          {myData.image !== "https://image.grimity.com/null" ? (
+                            <Image
+                              src={myData.image}
+                              width={100}
+                              height={100}
+                              alt="프로필 이미지"
+                              className={styles.dropdownProfileImage}
+                              quality={100}
+                              style={{ objectFit: "cover" }}
+                            />
+                          ) : (
+                            <Image
+                              src="/image/default.svg"
+                              width={100}
+                              height={100}
+                              alt="프로필 이미지"
+                              className={styles.dropdownProfileImage}
+                              quality={100}
+                              style={{ objectFit: "cover" }}
+                            />
+                          )}
+                          <span>내 프로필</span>
+                        </div>
+                      </Link>
+                      <div className={styles.divider} />
+                      <Link href="/mypage?tab=liked-feeds">
+                        <div
+                          className={styles.dropdownItem}
+                          onClick={() => {
+                            setIsDropdownOpen(false);
+                            window.scrollTo(0, 0);
+                          }}
+                        >
+                          좋아요한 그림
+                        </div>
+                      </Link>
+                      <Link href="/mypage?tab=saved-feeds">
+                        <div
+                          className={styles.dropdownItem}
+                          onClick={() => {
+                            setIsDropdownOpen(false);
+                            window.scrollTo(0, 0);
+                          }}
+                        >
+                          저장한 그림
+                        </div>
+                      </Link>
+                      <Link href="/mypage?tab=saved-posts">
+                        <div
+                          className={styles.dropdownItem}
+                          onClick={() => {
+                            setIsDropdownOpen(false);
+                            window.scrollTo(0, 0);
+                          }}
+                        >
+                          저장한 글
+                        </div>
+                      </Link>
+                      <div className={styles.divider} />
+                      <div
+                        className={`${styles.dropdownItem} ${styles.logout}`}
+                        onClick={() => {
+                          handleLogout();
+                          setIsDropdownOpen(false);
+                        }}
+                      >
+                        로그아웃
+                      </div>
+                    </div>
+                  )}
+                  {!hideBtn && (
+                    <Link href="/write">
+                      <Button size="m" type="filled-primary">
+                        그림 업로드
+                      </Button>
+                    </Link>
                   )}
                 </div>
-                {isDropdownOpen && (
-                  <div className={styles.dropdown} ref={dropdownRef}>
-                    <Link href={`/users/${myData.id}`}>
-                      <div
-                        className={styles.dropdownItem}
-                        onClick={() => {
+                <div className={styles.contactBtn} ref={notificationRef}>
+                  <Dropdown
+                    isSide
+                    trigger={
+                      <IconComponent name="contactKebab" padding={8} width={24} height={24} isBtn />
+                    }
+                    menuItems={[
+                      {
+                        label: "문의하기",
+                        onClick: () => {
+                          toggleContact();
                           setIsDropdownOpen(false);
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        {myData.image !== "https://image.grimity.com/null" ? (
-                          <Image
-                            src={myData.image}
-                            width={100}
-                            height={100}
-                            alt="프로필 이미지"
-                            className={styles.dropdownProfileImage}
-                            quality={100}
-                            style={{ objectFit: "cover" }}
-                          />
-                        ) : (
-                          <Image
-                            src="/image/default.svg"
-                            width={100}
-                            height={100}
-                            alt="프로필 이미지"
-                            className={styles.dropdownProfileImage}
-                            quality={100}
-                            style={{ objectFit: "cover" }}
-                          />
-                        )}
-                        <span>내 프로필</span>
-                      </div>
-                    </Link>
-                    <div className={styles.divider} />
-                    <Link href="/mypage?tab=liked-feeds">
-                      <div
-                        className={styles.dropdownItem}
-                        onClick={() => {
-                          setIsDropdownOpen(false);
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        좋아요한 그림
-                      </div>
-                    </Link>
-                    <Link href="/mypage?tab=saved-feeds">
-                      <div
-                        className={styles.dropdownItem}
-                        onClick={() => {
-                          setIsDropdownOpen(false);
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        저장한 그림
-                      </div>
-                    </Link>
-                    <Link href="/mypage?tab=saved-posts">
-                      <div
-                        className={styles.dropdownItem}
-                        onClick={() => {
-                          setIsDropdownOpen(false);
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        저장한 글
-                      </div>
-                    </Link>
-                    <div className={styles.divider} />
-                    <div
-                      className={`${styles.dropdownItem} ${styles.logout}`}
-                      onClick={() => {
-                        handleLogout();
-                        setIsDropdownOpen(false);
-                      }}
-                    >
-                      로그아웃
-                    </div>
-                  </div>
-                )}
-                {!hideBtn && (
-                  <Link href="/write">
-                    <Button size="m" type="filled-primary">
-                      그림 업로드
-                    </Button>
-                  </Link>
-                )}
+                        },
+                      },
+                    ]}
+                  />
+                </div>
+                {showContact && <Contact onClose={() => setShowContact(false)} />}
               </div>
             ) : (
               <div
