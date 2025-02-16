@@ -91,7 +91,7 @@ export default function BoardWrite() {
   return (
     <div className={styles.container}>
       <Script
-        src="/tinymce/tinymce.min.js"
+        src="https://public.grimity.com/tinymce/tinymce.min.js"
         onLoad={() => setIsScriptLoaded(true)}
         strategy="afterInteractive"
       />
@@ -148,9 +148,9 @@ export default function BoardWrite() {
                     height: auto !important;
                   }
                 `,
-                base_url: "/tinymce",
-                skin_url: "/tinymce/skins/ui/oxide",
-                icons_url: "/tinymce/icons/default/icons.js",
+                base_url: "https://public.grimity.com/tinymce",
+                skin_url: "https://public.grimity.com/tinymce/skins/ui/oxide",
+                icons_url: "https://public.grimity.com/tinymce/icons/default/icons.js",
                 statusbar: false,
                 indent: false,
                 indent_use_margin: true,
