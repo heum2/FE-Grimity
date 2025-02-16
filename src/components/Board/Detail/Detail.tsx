@@ -34,10 +34,14 @@ export default function PostDetail({ id }: PostDetailProps) {
   const [currentLikeCount, setCurrentLikeCount] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
-  const { data: posts, isLoading } = usePostsDetails(id as string);
+  const { data: posts, isLoading, refetch } = usePostsDetails(id as string);
   const isMobile = useRecoilValue(isMobileState);
   useIsMobile();
   const router = useRouter();
+  const { pathname } = useRouter();
+  useEffect(() => {
+    refetch();
+  }, [pathname]);
 
   useEffect(() => {
     if (!posts) return;

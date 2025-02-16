@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Title from "../Title/Title";
 import styles from "./FollowNewFeed.module.scss";
 import Loader from "../Loader/Loader";
@@ -10,13 +10,18 @@ import { useIsMobile } from "@/hooks/useIsMobile";
 import { useRecoilValue } from "recoil";
 import Button from "@/components/Button/Button";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function FollowNewFeed() {
   const isMobile = useRecoilValue(isMobileState);
   const [pageIndex, setPageIndex] = useState(0);
   const itemsPerPage = 2;
   useIsMobile();
-  const { data, isLoading } = useFollowingNew({ size: 8 });
+  const { data, isLoading, refetch } = useFollowingNew({ size: 8 });
+  const { pathname } = useRouter();
+  useEffect(() => {
+    refetch();
+  }, [pathname]);
 
   if (isLoading) return <Loader />;
 

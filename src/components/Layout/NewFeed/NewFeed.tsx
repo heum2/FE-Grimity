@@ -4,11 +4,17 @@ import Title from "../Title/Title";
 import styles from "./NewFeed.module.scss";
 import { useEffect, useRef } from "react";
 import { NewFeedProps } from "./NewFeed.types";
+import { useRouter } from "next/router";
 
 export default function NewFeed({ isDetail = false }: NewFeedProps) {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useFeedsLatest({
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } = useFeedsLatest({
     size: 20,
   });
+
+  const { pathname } = useRouter();
+  useEffect(() => {
+    refetch();
+  }, [pathname]);
 
   const observerRef = useRef<HTMLDivElement | null>(null);
 

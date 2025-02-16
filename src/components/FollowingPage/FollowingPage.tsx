@@ -10,6 +10,7 @@ import Title from "../Layout/Title/Title";
 import { usePopular } from "@/api/users/getPopular";
 import RecommendCard from "./RecommendCard/RecommendCard";
 import { useUserData } from "@/api/users/getId";
+import { useRouter } from "next/router";
 
 export default function FollowingPage() {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
@@ -17,10 +18,19 @@ export default function FollowingPage() {
   const setModal = useSetRecoilState(modalState);
   const { data: recommendData, isLoading: recommendIsLoading } = usePopular();
   const [randomUsers, setRandomUsers] = useState<any[]>([]);
-
   const params = isLoggedIn && myData && myData.followingCount > 0 ? { size: 3 } : null;
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useFollowingFeeds(params);
+  const {
+    data,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    refetch: feedRefetch,
+  } = useFollowingFeeds(params);
+  const { pathname } = useRouter();
+  useEffect(() => {
+    feedRefetch();
+  }, [pathname]);
 
   const observer = useRef<IntersectionObserver | null>(null);
   const lastFeedElement = useRef<HTMLDivElement | null>(null);

@@ -13,7 +13,7 @@ import { authState } from "@/states/authState";
 import IconComponent from "@/components/Asset/Icon";
 import { modalState } from "@/states/modalState";
 import { useEffect, useState } from "react";
-import router from "next/router";
+import router, { useRouter } from "next/router";
 import { postPresignedUrl } from "@/api/aws/postPresigned";
 import { useMutation } from "react-query";
 import { putBackgroundImage, putProfileImage } from "@/api/users/putMeImage";
@@ -34,6 +34,10 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
   const isMobile = useRecoilValue(isMobileState);
   useIsMobile();
   const CoverImageMutation = useMutation((imageName: string) => putBackgroundImage(imageName));
+  const { pathname } = useRouter();
+  useEffect(() => {
+    refetchUserData();
+  }, [pathname]);
 
   useEffect(() => {
     if (id === myData?.id) {

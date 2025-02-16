@@ -2,14 +2,17 @@ import { useToast } from "@/hooks/useToast";
 import Image from "next/image";
 import styles from "./Upload.module.scss";
 import { modalState } from "@/states/modalState";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import Button from "@/components/Button/Button";
 import { UploadModalProps } from "./Upload.types";
+import { isMobileState } from "@/states/isMobileState";
+import { serviceUrl } from "@/constants/serviceurl";
 
 export default function UploadModal({ feedId, title, image }: UploadModalProps) {
   const { showToast } = useToast();
   const [, setModal] = useRecoilState(modalState);
-  const url = `https://www.grimity.com/feeds/${feedId}`;
+  const url = `${serviceUrl}feeds/${feedId}`;
+  const isMobile = useRecoilValue(isMobileState);
 
   const copyToClipboard = async () => {
     try {
@@ -72,22 +75,26 @@ export default function UploadModal({ feedId, title, image }: UploadModalProps) 
         >
           링크 복사하기
         </Button>
-        <Button
-          size="l"
-          type="outlined-assistive"
-          onClick={handleTwitterShare}
-          leftIcon={<Image src="/icon/twitter.svg" width={20} height={20} alt="트위터 공유" />}
-        >
-          트위터에 공유
-        </Button>
-        <Button
-          size="l"
-          type="outlined-assistive"
-          onClick={handleKaKaoShare}
-          leftIcon={<Image src="/icon/kakaotalk.svg" width={20} height={20} alt="카카오톡 공유" />}
-        >
-          카톡으로 공유
-        </Button>
+        <div className={styles.sns}>
+          <Button
+            size="l"
+            type="outlined-assistive"
+            onClick={handleTwitterShare}
+            leftIcon={<Image src="/icon/twitter.svg" width={20} height={20} alt="트위터 공유" />}
+          >
+            {isMobile ? "트위터 공유" : "트위터에 공유"}
+          </Button>
+          <Button
+            size="l"
+            type="outlined-assistive"
+            onClick={handleKaKaoShare}
+            leftIcon={
+              <Image src="/icon/kakaotalk.svg" width={20} height={20} alt="카카오톡 공유" />
+            }
+          >
+            {isMobile ? "카톡 공유" : "카톡으로 공유"}
+          </Button>
+        </div>
       </div>
       <Button size="l" type="filled-primary" onClick={handleClose}>
         업로드 된 그림 보기

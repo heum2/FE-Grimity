@@ -4,12 +4,17 @@ import { useMyLikeList } from "@/api/users/getMeLikeFeeds";
 import ProfileCard from "@/components/Layout/ProfileCard/ProfileCard";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
+import { useRouter } from "next/router";
 
 export default function LikedFeeds() {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useMyLikeList({
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } = useMyLikeList({
     size: 20,
   });
   const observerRef = useRef<HTMLDivElement | null>(null);
+  const { pathname } = useRouter();
+  useEffect(() => {
+    refetch();
+  }, [pathname]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

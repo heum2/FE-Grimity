@@ -26,6 +26,7 @@ import TextArea from "@/components/TextArea/TextArea";
 import { useMyData } from "@/api/users/getMe";
 import { isMobileState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { useRouter } from "next/router";
 
 export default function Comment({
   feedId,
@@ -34,7 +35,7 @@ export default function Comment({
   isExpanded = true,
 }: CommentProps) {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
-  const { data: userData, isLoading } = useMyData();
+  const { data: userData, isLoading, refetch: userDataRefetch } = useMyData();
   const { showToast } = useToast();
   const [, setModal] = useRecoilState(modalState);
   const queryClient = useQueryClient();
@@ -51,7 +52,12 @@ export default function Comment({
   const [activeParentReplyId, setActiveParentReplyId] = useState<string | null>(null);
   const [activeChildReplyId, setActiveChildReplyId] = useState<string | null>(null);
   const isMobile = useRecoilValue(isMobileState);
-  useIsMobile();
+  const { pathname } = useRouter();
+  useEffect(() => {
+    refetchComments();
+    userDataRefetch();
+  }, [pathname]);
+
   const deleteCommentMutation = useMutation(deleteComments, {
     onSuccess: () => {
       showToast("댓글이 삭제되었습니다.", "success");

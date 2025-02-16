@@ -32,7 +32,7 @@ import { useIsMobile } from "@/hooks/useIsMobile";
 
 export default function Detail({ id }: DetailProps) {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
-  const { data: details, isLoading } = useDetails(id);
+  const { data: details, isLoading, refetch } = useDetails(id);
   const [isExpanded, setIsExpanded] = useState(false);
   const { showToast } = useToast();
   const [isLiked, setIsLiked] = useState(false);
@@ -45,6 +45,11 @@ export default function Detail({ id }: DetailProps) {
   const isMobile = useRecoilValue(isMobileState);
   useIsMobile();
   usePreventScroll(!!overlayImage);
+
+  const { pathname } = useRouter();
+  useEffect(() => {
+    refetch();
+  }, [pathname]);
 
   useEffect(() => {
     if (!details) return;

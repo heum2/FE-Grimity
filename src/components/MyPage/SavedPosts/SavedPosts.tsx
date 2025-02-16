@@ -12,11 +12,14 @@ export default function SavedPosts() {
   const router = useRouter();
   const currentPage = parseInt(router.query.page as string) || 1;
 
-  const { data, isLoading } = useMySavePost({
+  const { data, isLoading, refetch } = useMySavePost({
     size: 10,
     page: currentPage,
   });
-
+  const { pathname } = useRouter();
+  useEffect(() => {
+    refetch();
+  }, [pathname]);
   const posts = data?.posts || [];
   const totalPages = Math.ceil((data?.totalCount || 1) / 10);
 

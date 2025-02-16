@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SquareCard from "../SquareCard/SquareCard";
 import Title from "../Title/Title";
 import IconComponent from "@/components/Asset/Icon";
@@ -12,11 +12,16 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import { useRouter } from "next/router";
 
 export default function Ranking() {
   const isMobile = useRecoilValue(isMobileState);
   const [pageIndex, setPageIndex] = useState(0);
-  const { data, isLoading } = useTodayFeedPopular();
+  const { data, isLoading, refetch } = useTodayFeedPopular();
+  const { pathname } = useRouter();
+  useEffect(() => {
+    refetch();
+  }, [pathname]);
 
   if (isLoading) return <Loader />;
 

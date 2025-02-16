@@ -27,6 +27,7 @@ import {
 import { PostCommentProps, PostCommentWriter } from "./Comment.types";
 import { isMobileState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { useRouter } from "next/router";
 
 type ToastType = "success" | "error" | "warning" | "information";
 
@@ -96,7 +97,10 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
   const [activeParentReplyId, setActiveParentReplyId] = useState<string | null>(null);
   const [activeChildReplyId, setActiveChildReplyId] = useState<string | null>(null);
   const isMobile = useRecoilValue(isMobileState);
-  useIsMobile();
+  const { pathname } = useRouter();
+  useEffect(() => {
+    refetchComments();
+  }, [pathname]);
 
   const deleteCommentMutation = useMutation(deletePostsComments, {
     onSuccess: () => {
@@ -565,4 +569,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
       <section>{commentsData?.comments?.map((comment) => renderComment(comment))}</section>
     </div>
   );
+}
+function refetch() {
+  throw new Error("Function not implemented.");
 }

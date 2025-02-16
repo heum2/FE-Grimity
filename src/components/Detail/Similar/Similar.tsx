@@ -4,9 +4,15 @@ import Loader from "@/components/Layout/Loader/Loader";
 import { SimilarProps } from "./Similar.types";
 import { useTagsSearch } from "@/api/tags/getTagsSearch";
 import Title from "@/components/Layout/Title/Title";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 export default function Similar({ tagNames }: SimilarProps) {
-  const { data: Data, isLoading } = useTagsSearch(tagNames);
+  const { data: Data, isLoading, refetch } = useTagsSearch(tagNames);
+  const { pathname } = useRouter();
+  useEffect(() => {
+    refetch();
+  }, [pathname]);
 
   if (isLoading) {
     return <Loader />;

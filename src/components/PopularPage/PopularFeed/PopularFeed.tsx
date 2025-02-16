@@ -6,10 +6,16 @@ import FeedCard from "./FeedCard/FeedCard";
 import { usePopularFeed } from "@/api/feeds/getPopular";
 import { useRef, useEffect } from "react";
 import Loader from "@/components/Layout/Loader/Loader";
+import { useRouter } from "next/router";
 
 export default function PopularFeed() {
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = usePopularFeed();
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } =
+    usePopularFeed();
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
+  const { pathname } = useRouter();
+  useEffect(() => {
+    refetch();
+  }, [pathname]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

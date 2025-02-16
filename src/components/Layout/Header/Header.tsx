@@ -62,12 +62,18 @@ export default function Header() {
 
   const handleNavClick = (item: { name: string; path: string }) => {
     setActiveNav(item.name);
-    if (isMobile) setIsMenuOpen(false);
+    if (isMobile) {
+      setIsMenuOpen(false);
+    }
 
     if (router.pathname === item.path) {
+      router.reload();
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
       router.push(item.path);
+      if (isMobile) {
+        setModal({ isOpen: false, type: null, data: null });
+      }
     }
   };
 
@@ -132,6 +138,7 @@ export default function Header() {
 
   const handleClickLogo = () => {
     if (router.pathname === "/") {
+      router.reload();
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
       router.push("/");

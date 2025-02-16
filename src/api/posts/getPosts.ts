@@ -45,7 +45,8 @@ export async function getPostsLatest({
 
 export const usePostsLatest = (params: PostsLatestRequest) => {
   return useQuery<PostsLatestResponse>(["postsLatest", params], () => getPostsLatest(params), {
-    keepPreviousData: true,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     staleTime: 5 * 60 * 1000,
     cacheTime: 10 * 60 * 1000,
@@ -61,3 +62,13 @@ export async function getPostsNotices(): Promise<PostsLatest[]> {
     throw new Error("Failed to fetch postsNotices");
   }
 }
+
+export const usePostsNotices = () => {
+  return useQuery<PostsLatest[]>(["postsNotices"], () => getPostsNotices(), {
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    staleTime: 5 * 60 * 1000,
+    cacheTime: 10 * 60 * 1000,
+  });
+};

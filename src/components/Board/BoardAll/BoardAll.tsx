@@ -7,7 +7,13 @@ import Button from "@/components/Button/Button";
 import IconComponent from "@/components/Asset/Icon";
 import AllCard from "./AllCard/AllCard";
 import { useEffect, useState } from "react";
-import { getPostsLatest, getPostsNotices, PostsLatest } from "@/api/posts/getPosts";
+import {
+  getPostsLatest,
+  getPostsNotices,
+  PostsLatest,
+  usePostsLatest,
+  usePostsNotices,
+} from "@/api/posts/getPosts";
 import { useRecoilValue } from "recoil";
 import { authState } from "@/states/authState";
 import { BoardAllProps } from "./BoardAll.types";
@@ -16,6 +22,7 @@ import Dropdown from "@/components/Dropdown/Dropdown";
 import { getPostSearch } from "@/api/posts/getPostsSearch";
 import { isMobileState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import Loader from "@/components/Layout/Loader/Loader";
 
 type SortOption = "combined" | "name";
 
@@ -39,33 +46,34 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
   const { showToast } = useToast();
   const isMobile = useRecoilValue(isMobileState);
   useIsMobile();
+  const { pathname } = useRouter();
+
+  const { data: noticesData } = usePostsNotices();
+  const {
+    data: latestData,
+    isLoading,
+    refetch,
+  } = usePostsLatest({
+    type: currentType.toUpperCase() as "ALL" | "QUESTION" | "FEEDBACK",
+    page: currentPage,
+    size: 10,
+  });
+
+  useEffect(() => {
+    refetch();
+  }, [pathname]);
 
   useEffect(() => {
     if (!router.isReady || query.keyword) return;
 
-    async function fetchPosts() {
-      try {
-        const noticesResponse = await getPostsNotices();
-        const notices = noticesResponse;
+    if (noticesData && latestData) {
+      const mergedPosts =
+        currentPage === 1 ? [...noticesData, ...latestData.posts] : latestData.posts;
 
-        const latestResponse = await getPostsLatest({
-          type: currentType.toUpperCase() as "ALL" | "QUESTION" | "FEEDBACK",
-          page: currentPage,
-          size: 10,
-        });
-
-        const latestPosts = latestResponse.posts;
-        const mergedPosts = currentPage === 1 ? [...notices, ...latestPosts] : latestPosts;
-
-        setPosts(mergedPosts);
-        setTotalCount(latestResponse.totalCount + (currentPage === 1 ? notices.length : 0));
-      } catch (error) {
-        console.error("Error fetching posts:", error);
-      }
+      setPosts(mergedPosts);
+      setTotalCount(latestData.totalCount + (currentPage === 1 ? noticesData.length : 0));
     }
-
-    fetchPosts();
-  }, [currentType, currentPage, query.keyword, router.isReady]);
+  }, [currentType, currentPage, query.keyword, router.isReady, noticesData, latestData]);
 
   const handleTabChange = (type: "all" | "question" | "feedback") => {
     const newQuery: { type: string; page: number; searchBy?: string; keyword?: string } = {
@@ -138,6 +146,8 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
       query: { ...query, searchBy: option, page: 1 },
     });
   };
+
+  if (isLoading) <Loader />;
 
   return (
     <div className={styles.container}>

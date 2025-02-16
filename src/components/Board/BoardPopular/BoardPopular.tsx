@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Title from "@/components/Layout/Title/Title";
 import styles from "./BoardPopular.module.scss";
 import { useTodayPopularPosts } from "@/api/posts/getTodayPopular";
@@ -6,10 +6,15 @@ import PopularCard from "./PopularCard/PopularCard";
 import Loader from "@/components/Layout/Loader/Loader";
 import Image from "next/image";
 import { BoardPopularProps } from "./BoardPopular.types";
+import { useRouter } from "next/router";
 
 export default function BoardPopular({ isDetail }: BoardPopularProps) {
-  const { data, isLoading } = useTodayPopularPosts();
+  const { data, isLoading, refetch } = useTodayPopularPosts();
   const [pageIndex, setPageIndex] = useState(0);
+  const { pathname } = useRouter();
+  useEffect(() => {
+    refetch();
+  }, [pathname]);
 
   const POSTS_PER_PAGE = isDetail ? 3 : 4;
   const totalPages = Math.ceil((data?.length || 0) / POSTS_PER_PAGE);

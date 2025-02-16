@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import BoardCard from "../BoardCard/BoardCard";
 import Title from "../Title/Title";
 import styles from "./MainBoard.module.scss";
@@ -6,18 +6,28 @@ import Loader from "../Loader/Loader";
 import { MainBoardProps } from "./MainBoard.types";
 import { useTodayPopularPosts } from "@/api/posts/getTodayPopular";
 import { usePostsLatest } from "@/api/posts/getPosts";
+import { useRouter } from "next/router";
 
 export default function MainBoard({ type }: MainBoardProps) {
-  const { data: latestPosts, isLoading: isLatestLoading } =
-    type !== "POPULAR"
-      ? usePostsLatest({
-          size: 4,
-          page: 1,
-          type: type as "QUESTION" | "FEEDBACK" | "ALL",
-        })
-      : { data: null, isLoading: false };
+  const {
+    data: latestPosts,
+    isLoading: isLatestLoading,
+    refetch: latestRefetch,
+  } = type !== "POPULAR"
+    ? usePostsLatest({
+        size: 4,
+        page: 1,
+        type: type as "QUESTION" | "FEEDBACK" | "ALL",
+      })
+    : { data: null, isLoading: false };
 
-  const { data: popularPosts, isLoading: isPopularLoading } = useTodayPopularPosts();
+  const { data: popularPosts, isLoading: isPopularLoading, refetch } = useTodayPopularPosts();
+
+  const { pathname } = useRouter();
+  useEffect(() => {
+    refetch();
+    latestRefetch;
+  }, [pathname]);
 
   if ((type === "POPULAR" && isPopularLoading) || (type !== "POPULAR" && isLatestLoading)) {
     return <Loader />;

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useUserData } from "@/api/users/getId";
 import { useUserFeeds } from "@/api/users/getIdFeeds";
+import { useUserPosts } from "@/api/users/getIdPosts"; // Update import
 import Profile from "./Profile/Profile";
 import styles from "./ProfilePage.module.scss";
 import { ProfilePageProps } from "./ProfilePage.types";
@@ -9,7 +10,6 @@ import Dropdown from "../Dropdown/Dropdown";
 import Button from "../Button/Button";
 import IconComponent from "../Asset/Icon";
 import Link from "next/link";
-import { getUserPosts } from "@/api/users/getIdPosts";
 import { useRouter } from "next/router";
 import AllCard from "../Board/BoardAll/AllCard/AllCard";
 import Image from "next/image";
@@ -31,27 +31,39 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
   const postsTabRef = useRef<HTMLDivElement>(null);
   const { data: userData } = useUserData(id);
   const loadMoreRef = useRef(null);
-  const [posts, setPosts] = useState<any[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const router = useRouter();
   const { query } = router;
   const currentPage = Number(query.page) || 1;
-  const [totalCount, setTotalCount] = useState(0);
-  const totalPages = Math.ceil(totalCount / 10);
   const [activeTab, setActiveTab] = useState<"feeds" | "posts">(
     (query.tab as "feeds" | "posts") || "feeds"
   );
+  const { pathname } = useRouter();
+
+  const { data: postsData, refetch: postRefetch } = useUserPosts({
+    id,
+    size: 10,
+    page: currentPage,
+  });
 
   const {
     data: feedsData,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    refetch,
   } = useUserFeeds({
     id,
     sort: sortBy,
     size: PAGE_SIZE,
   });
+
+  const totalPages = Math.ceil((userData?.postCount || 0) / 10);
+
+  useEffect(() => {
+    refetch();
+    postRefetch();
+  }, [pathname]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -75,24 +87,6 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
       }
     };
   }, [hasNextPage, isFetchingNextPage, fetchNextPage, feedsData?.pages.length]);
-
-  useEffect(() => {
-    async function fetchPosts() {
-      try {
-        if (userData?.id) {
-          const data = await getUserPosts({ id, size: 10, page: currentPage });
-          setPosts(data);
-          setTotalCount(userData.postCount);
-        }
-      } catch (error) {
-        console.error("Error fetching posts:", error);
-      }
-    }
-
-    if (activeTab === "posts") {
-      fetchPosts();
-    }
-  }, [currentPage, userData?.id, activeTab]);
 
   useEffect(() => {
     const activeTabRef = activeTab === "feeds" ? feedsTabRef : postsTabRef;
@@ -231,7 +225,7 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
             )
           ) : (
             <section>
-              {posts.length === 0 ? (
+              {!postsData || postsData.length === 0 ? (
                 <div className={styles.empty}>
                   <p className={styles.message}>첫 글을 업로드해보세요</p>
                   <Link href="/board">
@@ -243,7 +237,7 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
               ) : (
                 <>
                   <div className={styles.postContainer}>
-                    {posts.map((post) => (
+                    {postsData.map((post) => (
                       <AllCard key={post.id} post={post} case="my-posts" />
                     ))}
                   </div>

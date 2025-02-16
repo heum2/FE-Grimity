@@ -15,6 +15,7 @@ import { useUserForDetail } from "@/api/users/getIdFeeds";
 import SquareCard from "@/components/Layout/SquareCard/SquareCard";
 import Loader from "@/components/Layout/Loader/Loader";
 import { isMobileState } from "@/states/isMobileState";
+import { useRouter } from "next/router";
 
 export default function Author({ authorId, feedId }: AuthorProps) {
   const { data: userData } = useUserData(authorId);
@@ -23,6 +24,7 @@ export default function Author({ authorId, feedId }: AuthorProps) {
   const [followerCount, setFollowerCount] = useState(0);
   const { showToast } = useToast();
   const isMobile = useRecoilValue(isMobileState);
+  const { pathname } = useRouter();
 
   useEffect(() => {
     if (userData && userData.isFollowing !== undefined) {
@@ -31,11 +33,15 @@ export default function Author({ authorId, feedId }: AuthorProps) {
     }
   }, [userData]);
   const size = isMobile ? 2 : 4;
-  const { data, isLoading } = useUserForDetail({
+  const { data, isLoading, refetch } = useUserForDetail({
     id: authorId,
     size: size,
     sort: "latest",
   });
+
+  useEffect(() => {
+    refetch();
+  }, [pathname]);
 
   const feeds = data?.feeds || [];
 
