@@ -86,6 +86,9 @@ export default function FollowNewFeed() {
                 className={`${styles.navButton} ${styles.right}`}
                 onClick={handleNextClick}
                 disabled={endIdx >= (data?.feeds?.length || 0)}
+                style={{
+                  visibility: endIdx >= (data?.feeds?.length || 0) ? "hidden" : "visible",
+                }}
               >
                 <Image
                   src="/icon/card-arrow-right.svg"
