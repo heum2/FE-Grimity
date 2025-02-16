@@ -4,6 +4,7 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
         <meta property="og:description" content="그림쟁이들을 위한 그림 커뮤니티, 그리미티" />
         <meta property="og:image" content="/image/grimity.png" />
         <meta property="og:type" content="website" />

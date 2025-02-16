@@ -171,3 +171,8 @@ a {
     font-style: italic !important;
   }
 }
+
+html,
+body {
+  touch-action: manipulation;
+}
