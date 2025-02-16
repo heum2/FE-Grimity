@@ -9,7 +9,7 @@
   padding-top: 80px;
 
   @include Size("mobile") {
-    padding-top: 16px;
+    padding-top: 0px;
   }
 
   .center {
@@ -28,9 +28,14 @@
   width: 100%;
   margin-bottom: 12px;
   border-bottom: 1px solid $gray30;
+  background-color: $gray0;
 
   @include Size("mobile") {
     gap: 16px;
+    padding: 16px 16px 0;
+    position: fixed;
+    left: 0;
+    z-index: 2;
   }
 
   .button {

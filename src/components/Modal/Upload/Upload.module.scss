@@ -38,7 +38,18 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
-    margin-top: 40px;
+    margin-top: 32px;
     margin-bottom: 24px;
+  }
+
+  .sns {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    @include Size("mobile") {
+      display: flex;
+      flex-direction: row;
+    }
   }
 }

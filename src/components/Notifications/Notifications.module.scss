@@ -121,6 +121,10 @@
     justify-content: center;
     color: $gray50;
     @include Sub2;
+
+    @include Size("mobile") {
+      height: 100px;
+    }
   }
 
   .options {

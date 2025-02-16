@@ -292,6 +292,7 @@
       border-top: 1px solid $gray30;
       display: flex;
       flex-direction: column;
+      padding-bottom: 60px;
 
       .name {
         @include Sub4;
