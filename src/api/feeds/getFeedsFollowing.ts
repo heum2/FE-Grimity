@@ -6,7 +6,7 @@ export interface FollowingFeedsRequest {
   cursor?: string;
 }
 
-export interface FollowingFeed {
+export interface FollowingFeeds {
   id: string;
   title: string;
   cards: string[];
@@ -24,12 +24,12 @@ export interface FollowingFeed {
   };
   isLike: boolean;
   isSave: boolean;
-  tags: string;
+  tags: string[];
 }
 
 export interface FollowingFeedsResponse {
   nextCursor: string | null;
-  feeds: FollowingFeed[];
+  feeds: FollowingFeeds[];
 }
 
 export async function getFollowingFeeds({
@@ -41,7 +41,7 @@ export async function getFollowingFeeds({
 
     const updatedData: FollowingFeedsResponse = {
       ...response.data,
-      feeds: response.data.feeds.map((feed: FollowingFeed) => ({
+      feeds: response.data.feeds.map((feed: FollowingFeeds) => ({
         ...feed,
         cards: feed.cards.map((card) => `https://image.grimity.com/${card}`),
         thumbnail: `https://image.grimity.com/${feed.thumbnail}`,

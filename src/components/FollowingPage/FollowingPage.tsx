@@ -131,7 +131,12 @@ export default function FollowingPage() {
             {data.pages.map((page, pageIndex) => (
               <div key={pageIndex}>
                 {page.feeds.map((feed) => (
-                  <FollowingFeed key={feed.id} id={feed.id} commentCount={feed.commentCount} />
+                  <FollowingFeed
+                    key={feed.id}
+                    id={feed.id}
+                    commentCount={feed.commentCount}
+                    details={feed}
+                  />
                 ))}
               </div>
             ))}

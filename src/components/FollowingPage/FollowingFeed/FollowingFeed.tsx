@@ -1,5 +1,4 @@
 import styles from "./FollowingFeed.module.scss";
-import { useDetails } from "@/api/feeds/getFeedsId";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { authState } from "@/states/authState";
@@ -16,7 +15,6 @@ import "react-medium-image-zoom/dist/styles.css";
 import { timeAgo } from "@/utils/timeAgo";
 import { modalState } from "@/states/modalState";
 import { deleteSave, putSave } from "@/api/feeds/putDeleteFeedsIdSave";
-import Loader from "@/components/Layout/Loader/Loader";
 import IconComponent from "@/components/Asset/Icon";
 import Dropdown from "@/components/Dropdown/Dropdown";
 import ShareBtn from "@/components/Detail/ShareBtn/ShareBtn";
@@ -28,16 +26,17 @@ import { useGetFeedsComments } from "@/api/feeds-comments/getFeedComments";
 import { useMyData } from "@/api/users/getMe";
 import { isMobileState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { FollowingFeeds } from "@/api/feeds/getFeedsFollowing";
 
 interface FollowingFeedProps {
   id: string;
   commentCount: number;
+  details: FollowingFeeds;
 }
 
-export default function FollowingFeed({ id, commentCount }: FollowingFeedProps) {
+export default function FollowingFeed({ id, commentCount, details }: FollowingFeedProps) {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
   const { data: myData } = useMyData();
-  const { data: details, isLoading } = useDetails(id);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isContentExpanded, setIsContentExpanded] = useState(false);
   const [isCommentExpanded, setIsCommentExpanded] = useState(false);
@@ -88,10 +87,6 @@ export default function FollowingFeed({ id, commentCount }: FollowingFeedProps) 
       setIsContentTooLong(isTooLong);
     }
   }, [details?.content]);
-
-  if (isLoading) {
-    return <Loader />;
-  }
 
   const handleCommentSubmitSuccess = () => {
     if (isCommentExpanded) {
