@@ -131,7 +131,8 @@ export default function BoardWrite() {
               licenseKey="gpl"
               onInit={(evt, editor) => (editorRef.current = editor)}
               init={{
-                height: 600,
+                height: isMobile ? 500 : 600,
+                resize: "both",
                 menubar: false,
                 plugins: ["image", "link", "autolink"],
                 toolbar: isMobile
