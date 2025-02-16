@@ -106,12 +106,14 @@
 }
 
 .fill {
-  width: 100%;
-  height: calc(100vh - 64px);
-  background: $gray0;
-  padding: 16px;
-  position: fixed;
-  top: 64px;
-  left: 0;
-  z-index: 20;
+  @include Size("mobile") {
+    width: 100%;
+    height: calc(100vh - 64px);
+    background: $gray0;
+    padding: 16px;
+    position: fixed;
+    top: 64px;
+    left: 0;
+    z-index: 20;
+  }
 }

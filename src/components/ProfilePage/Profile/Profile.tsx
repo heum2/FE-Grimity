@@ -185,21 +185,37 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
   };
 
   const handleOpenFollowerModal = () => {
-    setModal({
-      isOpen: true,
-      type: "FOLLOWER",
-      data: null,
-      isFill: true,
-    });
+    if (isMobile) {
+      setModal({
+        isOpen: true,
+        type: "FOLLOWER",
+        data: null,
+        isFill: true,
+      });
+    } else {
+      setModal({
+        isOpen: true,
+        type: "FOLLOWER",
+        data: null,
+      });
+    }
   };
 
   const handleOpenFollowingModal = () => {
-    setModal({
-      isOpen: true,
-      type: "FOLLOWING",
-      data: null,
-      isFill: true,
-    });
+    if (isMobile) {
+      setModal({
+        isOpen: true,
+        type: "FOLLOWING",
+        data: null,
+        isFill: true,
+      });
+    } else {
+      setModal({
+        isOpen: true,
+        type: "FOLLOWING",
+        data: null,
+      });
+    }
   };
 
   const handleDeleteProfileImage = async () => {
