@@ -224,11 +224,7 @@ export default function Notifications({ onClose }: NotificationsProps) {
     })
     .slice(0, 50);
 
-  const handleClose = () => {
-    setIsOpen(false);
-  };
-
-  useCustomBack(handleClose);
+  useCustomBack(onClose);
 
   const renderNotificationList = () => (
     <div className={styles.notification}>
