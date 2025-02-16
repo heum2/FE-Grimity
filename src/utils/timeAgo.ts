@@ -12,7 +12,7 @@ export function timeAgo(timestamp: string): string {
     const hours = Math.floor(minutes / 60);
     const days = Math.floor(hours / 24);
 
-    if (days < 30) {
+    if (days < 7) {
       if (minutes < 1) {
         return "방금 전";
       } else if (minutes < 60) {
@@ -29,7 +29,7 @@ export function timeAgo(timestamp: string): string {
       return `${year}.${month}.${day}`;
     }
   } catch (error) {
-    console.error("timeAgoOrFormattedDate error:", error);
+    console.error("timeAgo error:", error);
     return "시간 계산 오류";
   }
 }
