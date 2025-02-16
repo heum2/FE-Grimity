@@ -8,6 +8,7 @@
 
   @include Size("mobile") {
     gap: 24px;
+    height: calc(100vh - 64px - 20px);
   }
 }
 
@@ -75,9 +76,15 @@
   }
 
   @include Size("mobile") {
-    height: calc(100vh - 64px - 79px);
+    flex-grow: 1;
+    height: fit-content;
+
     &::-webkit-scrollbar {
-      width: 0;
+      display: none;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      display: none;
     }
   }
 
@@ -162,4 +169,8 @@
   width: 100%;
   display: flex;
   justify-content: center;
+
+  @include Size("mobile") {
+    @include Sub4;
+  }
 }
