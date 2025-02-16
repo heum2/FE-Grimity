@@ -7,6 +7,10 @@
   height: 100%;
   gap: 30px;
 
+  @include Size("mobile") {
+    overflow-y: auto;
+  }
+
   .titleContainer {
     display: flex;
     flex-direction: column;
@@ -79,6 +83,10 @@
       &:focus-within {
         border: 1px solid $secandary1;
         background-color: $gray0;
+      }
+
+      @include Size("mobile") {
+        height: 100px;
       }
 
       .textarea {
