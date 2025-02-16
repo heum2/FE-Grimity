@@ -29,6 +29,7 @@ import Comment from "./Comment/Comment";
 import NewFeed from "../Layout/NewFeed/NewFeed";
 import { isMobileState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { useCustomBack } from "@/hooks/useCustomBack";
 
 export default function Detail({ id }: DetailProps) {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
@@ -178,6 +179,12 @@ export default function Detail({ id }: DetailProps) {
       });
     }
   };
+
+  const handleClose = () => {
+    setOverlayImage(null);
+  };
+
+  useCustomBack(handleClose);
 
   return (
     <div className={styles.container}>
