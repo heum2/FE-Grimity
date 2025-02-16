@@ -14,6 +14,7 @@ import Loader from "@/components/Layout/Loader/Loader";
 import router from "next/router";
 import { isMobileState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { useCustomBack } from "@/hooks/useCustomBack";
 
 export default function ProfileEdit() {
   const { data: myData, isLoading, refetch } = useMyData();
@@ -99,6 +100,12 @@ export default function ProfileEdit() {
 
     mutation.mutate(updatedInfo);
   };
+
+  const handleClose = () => {
+    setModal({ isOpen: false, type: null, data: null });
+  };
+
+  useCustomBack(handleClose);
 
   if (isLoading || name === null) {
     return <Loader />;

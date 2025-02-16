@@ -7,6 +7,7 @@ import Button from "@/components/Button/Button";
 import { useRouter } from "next/router";
 import { ReportProps } from "./Report.types";
 import { postReports } from "@/api/reports/postReports";
+import { useCustomBack } from "@/hooks/useCustomBack";
 
 export default function Report({ refType, refId }: ReportProps) {
   const { showToast } = useToast();
@@ -47,6 +48,12 @@ export default function Report({ refType, refId }: ReportProps) {
       isComfirm: true,
     });
   };
+
+  const handleClose = () => {
+    setModal({ isOpen: false, type: null, data: null });
+  };
+
+  useCustomBack(handleClose);
 
   return (
     <div className={styles.container}>
