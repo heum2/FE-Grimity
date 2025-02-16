@@ -99,7 +99,16 @@
     }
 
     @include Size("mobile") {
-      height: calc(100vh - 64px - 130px);
+      height: auto;
+      max-height: calc(100vh - 64px - 150px);
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        display: none;
+      }
     }
   }
 
@@ -121,6 +130,14 @@
     align-items: center;
     justify-content: space-between;
     gap: 20px;
+
+    @include Size("mobile") {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      background-color: $gray0;
+      padding: 32px 16px 50px;
+    }
 
     .option {
       width: 100%;
@@ -156,7 +173,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh;
+    height: calc(100vh - 64px);
     background: rgba(0, 0, 0, 0.15);
     display: flex;
     justify-content: center;
@@ -176,8 +193,9 @@
     width: 90%;
     max-width: 400px;
     border-radius: 12px;
-    padding: 16px;
+    padding: 20px 20px 24px;
     gap: 24px;
+    margin-bottom: 64px;
   }
 
   .topSection {
@@ -253,6 +271,10 @@
       display: flex;
       align-items: flex-start;
       gap: 40px;
+
+      @include Size("mobile") {
+        gap: 20px;
+      }
 
       .topLabel {
         @include Sub4;
