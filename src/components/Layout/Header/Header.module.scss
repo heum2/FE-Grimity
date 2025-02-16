@@ -62,6 +62,7 @@
 .nav {
   display: flex;
   align-items: center;
+  gap: 28px;
   position: relative;
 
   @include Size("mobile") {
@@ -78,6 +79,7 @@
       color: $gray60;
       @include Sub2;
       display: inline-block;
+      gap: 28px;
       margin: 0;
       transition: color 0.3s;
 
@@ -95,14 +97,6 @@
     .userPageitem {
       @extend .item;
       color: $gray0;
-    }
-
-    .bar {
-      width: 1px;
-      height: 20px;
-      background-color: $gray20;
-      transition: background 0.3s;
-      margin: 0 20px;
     }
   }
 

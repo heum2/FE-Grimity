@@ -1,6 +1,7 @@
 @import "@/styles/globals.scss";
 
 .container {
+  min-width: 0;
   max-width: 480px;
   width: 100%;
   display: flex;
@@ -58,6 +59,11 @@
     }
 
     .author {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
       @include Label1;
       color: $gray60;
 
@@ -85,7 +91,7 @@
 
         .commentCount {
           @include Label2;
-          color: #f5506c;
+          color: $red;
         }
         .viewCount {
           @include Label2;

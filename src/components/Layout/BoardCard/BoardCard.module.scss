@@ -48,6 +48,11 @@
         line-height: 12px;
         color: $secandary1;
       }
+
+      .commentCount {
+        @extend .count;
+        color: $red;
+      }
     }
   }
 }

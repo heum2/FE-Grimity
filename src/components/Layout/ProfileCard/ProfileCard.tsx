@@ -14,6 +14,7 @@ export default function ProfileCard({
   commentCount,
   id,
   createdAt,
+  viewCount,
 }: ProfileCardProps) {
   const hasMultipleImages = cards && cards.length > 1;
 
@@ -42,12 +43,16 @@ export default function ProfileCard({
         <div className={styles.profileContainer}>
           <div className={styles.countContainer}>
             <div className={styles.likeContainer}>
-              <IconComponent name="likeCount" width={12} height={12} />
+              <IconComponent name="likeCount" width={16} height={16} />
               <p className={styles.count}>{formatCurrency(likeCount)}</p>
             </div>
             <div className={styles.likeContainer}>
-              <IconComponent name="commentCount" width={12} height={12} />
+              <IconComponent name="commentCount" width={16} height={16} />
               <p className={styles.count}>{formatCurrency(commentCount)}</p>
+            </div>
+            <div className={styles.likeContainer}>
+              <IconComponent name="viewCount" width={16} height={16} />
+              <p className={styles.count}>{formatCurrency(viewCount)}</p>
             </div>
           </div>
           <p className={styles.author}>{formattedDate(createdAt)}</p>

@@ -76,6 +76,10 @@
     background: $gray10;
     padding: 12px 16px;
 
+    &:focus-within {
+      background-color: $gray0;
+    }
+
     .textarea {
       width: 100%;
       min-height: 95px;
@@ -88,6 +92,10 @@
 
       &::placeholder {
         color: $gray50;
+      }
+
+      &:focus-within {
+        background-color: $gray0;
       }
     }
   }

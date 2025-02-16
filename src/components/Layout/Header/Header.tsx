@@ -204,7 +204,6 @@ export default function Header() {
                   >
                     {item.name}
                   </p>
-                  {index < navItems.length - 1 && <div className={styles.bar} />}
                 </div>
               ))}
               {isNavPage && <div ref={indicatorRef} className={styles.indicator} />}

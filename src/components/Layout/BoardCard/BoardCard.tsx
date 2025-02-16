@@ -21,8 +21,8 @@ export default function BoardCard({
           <div className={styles.bottomContainer}>
             <div className={styles.countContainer}>
               <div className={styles.likeContainer}>
-                <IconComponent name="boardComment" width={16} height={16} />
-                <p className={styles.count}>{formatCurrency(commentCount)}</p>
+                <IconComponent name="boardAllComment" width={16} height={16} />
+                <p className={styles.commentCount}>{formatCurrency(commentCount)}</p>
               </div>
               <div className={styles.likeContainer}>
                 <IconComponent name="boardView" width={16} height={16} />

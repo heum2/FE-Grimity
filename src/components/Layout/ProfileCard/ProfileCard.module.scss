@@ -72,7 +72,7 @@
 
       .author {
         @include Label1;
-        color: $gray50;
+        color: $gray40;
 
         @include Size("mobile") {
           @include Cap2;
@@ -91,10 +91,8 @@
         gap: 2px;
 
         .count {
-          @include MEDIUM;
-          font-size: 12px;
-          line-height: 12px;
-          color: $gray50;
+          @include Cap2;
+          color: $gray60;
 
           @include Size("mobile") {
             @include Cap2;

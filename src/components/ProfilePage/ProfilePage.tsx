@@ -215,6 +215,7 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
                       thumbnail={feed.thumbnail}
                       likeCount={feed.likeCount}
                       commentCount={feed.commentCount}
+                      viewCount={feed.viewCount}
                       createdAt={feed.createdAt}
                       id={feed.id}
                     />

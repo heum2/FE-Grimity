@@ -46,7 +46,7 @@ export default function SavedPosts() {
     <>
       <section className={styles.cardContainer}>
         {posts.length > 0 ? (
-          posts.map((post) => <AllCard key={post.id} post={post} case="saved-posts" />)
+          posts.map((post) => <AllCard key={post.id} post={post} case="saved-posts" hasChip />)
         ) : (
           <div className={styles.noResult}>
             아직 저장한 글이 없어요

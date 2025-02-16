@@ -357,7 +357,7 @@ export default function PostDetail({ id }: PostDetailProps) {
               <Link href="/board/write">
                 <Button
                   size="m"
-                  type="outlined-secondary"
+                  type="outlined-assistive"
                   leftIcon={<IconComponent name="detailWrite" width={16} height={16} />}
                 >
                   글쓰기
@@ -365,7 +365,7 @@ export default function PostDetail({ id }: PostDetailProps) {
               </Link>
             </section>
           )}
-          <BoardAll isDetail hasChip={false} />
+          <BoardAll isDetail hasChip={true} />
           <div className={styles.boardPopular}>
             <BoardPopular isDetail />
           </div>

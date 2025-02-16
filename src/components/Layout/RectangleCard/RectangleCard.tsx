@@ -75,11 +75,11 @@ export default function RectangleCard({
                 <Image src="/icon/card-dot.svg" width={2} height={2} alt="" />
                 <div className={styles.countContainer}>
                   <div className={styles.likeContainer}>
-                    <IconComponent name="likeCount" width={12} height={12} />
+                    <IconComponent name="likeCount" width={16} height={16} />
                     <p className={styles.count}>{formatCurrency(likeCount)}</p>
                   </div>
                   <div className={styles.likeContainer}>
-                    <IconComponent name="commentCount" width={12} height={12} />
+                    <IconComponent name="commentCount" width={16} height={16} />
                     <p className={styles.count}>{formatCurrency(commentCount)}</p>
                   </div>
                 </div>
