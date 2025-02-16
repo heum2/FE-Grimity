@@ -15,6 +15,10 @@ export interface MySavePost {
   commentCount: number;
   viewCount: number;
   createdAt: string;
+  author: {
+    id: string;
+    name: string;
+  };
 }
 
 export interface MySavePostResponse {

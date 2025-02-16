@@ -144,11 +144,17 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
             ) : (
               <div className={styles.savedPosts}>
                 <div className={styles.savedCreatedAtView}>
-                  <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
-                  <div className={styles.viewCount}>
-                    <Image src="/icon/board-all-view.svg" width={16} height={16} alt="" />
-                    {post.viewCount}
+                  <div className={styles.savedPc}>
+                    <div className={styles.viewCount}>
+                      <Image src="/icon/board-all-view.svg" width={16} height={16} alt="" />
+                      {post.viewCount}
+                    </div>
+                    <Image src="/icon/dot.svg" width={3} height={3} alt="" />
+                    <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
                   </div>
+                  <Link href={`/users/${post.author?.id}`}>
+                    <p className={styles.author}>{post.author?.name}</p>
+                  </Link>
                 </div>
                 <div onClick={handleSaveClick}>
                   <IconComponent
@@ -233,7 +239,7 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
               <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
             </div>
           )}
-          {post.type !== "NOTICE" && post.author && !isMobile && (
+          {post.type !== "NOTICE" && cardCase !== "saved-posts" && post.author && !isMobile && (
             <Link href={`/users/${post.author.id}`}>
               <p className={styles.author}>{post.author.name}</p>
             </Link>

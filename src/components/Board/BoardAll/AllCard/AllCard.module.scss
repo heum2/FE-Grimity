@@ -158,6 +158,12 @@
           align-items: center;
         }
       }
+
+      .savedPc {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
     }
 
     .author {
