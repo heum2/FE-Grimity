@@ -41,40 +41,20 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
   useIsMobile();
 
   useEffect(() => {
-    async function fetchSearchResults() {
-      if (!query.keyword) return;
-      try {
-        const searchResponse = await getPostSearch({
-          searchBy: (query.searchBy as "combined" | "name") || "combined",
-          page: currentPage,
-          keyword: query.keyword as string,
-        });
+    if (!router.isReady || query.keyword) return;
 
-        setPosts(searchResponse.posts);
-        setTotalCount(Number(searchResponse.totalCount) || 0);
-      } catch (error) {
-        console.error("Error fetching search results:", error);
-      }
-    }
-
-    fetchSearchResults();
-  }, [query.keyword, query.searchBy, currentPage]);
-
-  useEffect(() => {
     async function fetchPosts() {
-      if (query.keyword) return;
-
       try {
         const noticesResponse = await getPostsNotices();
         const notices = noticesResponse;
 
         const latestResponse = await getPostsLatest({
-          type: currentType as "ALL" | "QUESTION" | "FEEDBACK",
+          type: currentType.toUpperCase() as "ALL" | "QUESTION" | "FEEDBACK",
           page: currentPage,
           size: 10,
         });
-        const latestPosts = latestResponse.posts;
 
+        const latestPosts = latestResponse.posts;
         const mergedPosts = currentPage === 1 ? [...notices, ...latestPosts] : latestPosts;
 
         setPosts(mergedPosts);
@@ -83,8 +63,9 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
         console.error("Error fetching posts:", error);
       }
     }
+
     fetchPosts();
-  }, [currentType, currentPage, query.keyword]);
+  }, [currentType, currentPage, query.keyword, router.isReady]);
 
   const handleTabChange = (type: "all" | "question" | "feedback") => {
     const newQuery: { type: string; page: number; searchBy?: string; keyword?: string } = {
