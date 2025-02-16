@@ -6,5 +6,5 @@ export interface ProfileCardProps {
   createdAt: string;
   likeCount: number;
   commentCount: number;
-  viewCount: number;
+  viewCount?: number;
 }
