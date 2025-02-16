@@ -38,13 +38,18 @@ export async function getUserPosts({
   }
 }
 
-export const useUserPosts = ({ id, size = 10, page = 1 }: UserPostsRequest) => {
+export const useUserPosts = ({
+  id,
+  size,
+  page,
+  enabled = true,
+}: UserPostsRequest & { enabled?: boolean }) => {
   return useQuery(["userPosts", id, size, page], () => getUserPosts({ id, size, page }), {
-    enabled: !!id,
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     staleTime: 5 * 60 * 1000,
     cacheTime: 10 * 60 * 1000,
+    enabled,
   });
 };

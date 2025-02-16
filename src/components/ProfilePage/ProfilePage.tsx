@@ -40,10 +40,11 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
   );
   const { pathname } = useRouter();
 
-  const { data: postsData, refetch: postRefetch } = useUserPosts({
+  const { data: postsData } = useUserPosts({
     id,
     size: 10,
     page: currentPage,
+    enabled: isMyProfile && activeTab === "posts", // Add enabled option
   });
 
   const {
@@ -62,7 +63,6 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
 
   useEffect(() => {
     refetch();
-    postRefetch();
   }, [pathname]);
 
   useEffect(() => {
@@ -98,11 +98,24 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
 
   useEffect(() => {
     if (query.tab && (query.tab === "feeds" || query.tab === "posts")) {
-      setActiveTab(query.tab);
+      if (query.tab === "posts" && !isMyProfile) {
+        setActiveTab("feeds");
+        router.push(
+          {
+            query: { ...query, tab: "feeds" },
+          },
+          undefined,
+          { shallow: true }
+        );
+      } else {
+        setActiveTab(query.tab);
+      }
     }
-  }, [query.tab]);
+  }, [query.tab, isMyProfile]);
 
   const handleTabChange = (tab: "feeds" | "posts") => {
+    if (tab === "posts" && !isMyProfile) return;
+
     setActiveTab(tab);
     const { page, ...restQuery } = query;
     router.push(
@@ -225,51 +238,53 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
               </section>
             )
           ) : (
-            <section>
-              {!postsData || postsData.length === 0 ? (
-                <div className={styles.empty}>
-                  <p className={styles.message}>첫 글을 업로드해보세요</p>
-                  <Link href="/board">
-                    <Button size="m" type="filled-primary">
-                      자유게시판 바로가기
-                    </Button>
-                  </Link>
-                </div>
-              ) : (
-                <>
-                  <div className={styles.postContainer}>
-                    {postsData.map((post) => (
-                      <AllCard key={post.id} post={post} case="my-posts" />
-                    ))}
+            isMyProfile && (
+              <section>
+                {!postsData || postsData.length === 0 ? (
+                  <div className={styles.empty}>
+                    <p className={styles.message}>첫 글을 업로드해보세요</p>
+                    <Link href="/board">
+                      <Button size="m" type="filled-primary">
+                        자유게시판 바로가기
+                      </Button>
+                    </Link>
                   </div>
-                  <section className={styles.pagination}>
-                    <button
-                      className={styles.paginationArrow}
-                      onClick={() => handlePageChange(currentPage - 1)}
-                      disabled={currentPage === 1}
-                    >
-                      <Image src="/icon/pagination-left.svg" width={24} height={24} alt="" />
-                    </button>
-                    {Array.from({ length: totalPages }, (_, index) => (
+                ) : (
+                  <>
+                    <div className={styles.postContainer}>
+                      {postsData.map((post) => (
+                        <AllCard key={post.id} post={post} case="my-posts" />
+                      ))}
+                    </div>
+                    <section className={styles.pagination}>
                       <button
-                        key={index + 1}
-                        className={currentPage === index + 1 ? styles.active : ""}
-                        onClick={() => handlePageChange(index + 1)}
+                        className={styles.paginationArrow}
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
                       >
-                        {index + 1}
+                        <Image src="/icon/pagination-left.svg" width={24} height={24} alt="" />
                       </button>
-                    ))}
-                    <button
-                      className={styles.paginationArrow}
-                      onClick={() => handlePageChange(currentPage + 1)}
-                      disabled={currentPage === totalPages}
-                    >
-                      <Image src="/icon/pagination-right.svg" width={24} height={24} alt="" />
-                    </button>
-                  </section>
-                </>
-              )}
-            </section>
+                      {Array.from({ length: totalPages }, (_, index) => (
+                        <button
+                          key={index + 1}
+                          className={currentPage === index + 1 ? styles.active : ""}
+                          onClick={() => handlePageChange(index + 1)}
+                        >
+                          {index + 1}
+                        </button>
+                      ))}
+                      <button
+                        className={styles.paginationArrow}
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                      >
+                        <Image src="/icon/pagination-right.svg" width={24} height={24} alt="" />
+                      </button>
+                    </section>
+                  </>
+                )}
+              </section>
+            )
           )}
         </div>
       </div>
