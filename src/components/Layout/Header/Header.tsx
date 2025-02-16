@@ -37,13 +37,14 @@ export default function Header() {
   const router = useRouter();
   const isMobile = useRecoilValue(isMobileState);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
   const isUserPage = router.pathname.startsWith("/users/[id]");
   const isNavPage = ["/", "/popular", "/board", "/following", "/board/write"].includes(
     router.pathname
   );
   const hideBtn = ["/write", "/feeds/[id]/edit"].includes(router.pathname);
   useIsMobile();
-
+  const email = "grimity.official@gmail.com";
   const navItems = [
     { name: "홈", path: "/" },
     { name: "인기그림", path: "/popular" },
@@ -62,6 +63,16 @@ export default function Header() {
   } else {
     name = "bell";
   }
+
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(email);
+      showToast("이메일이 복사되었습니다!", "success");
+    } catch (error) {
+      console.error("클립보드 복사 실패:", error);
+      showToast("복사에 실패했습니다.", "success");
+    }
+  };
 
   const handleNavClick = (item: { name: string; path: string }) => {
     setActiveNav(item.name);
@@ -165,6 +176,10 @@ export default function Header() {
 
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
+  };
+
+  const toggleSubmenu = () => {
+    setIsSubMenuOpen((prev) => !prev);
   };
 
   usePreventScroll(isMenuOpen || (isMobile && showNotifications));
@@ -404,23 +419,31 @@ export default function Header() {
                     </Link>
                   )}
                 </div>
-                <div className={styles.contactBtn} ref={notificationRef}>
-                  <Dropdown
-                    isSide
-                    trigger={
-                      <IconComponent name="contactKebab" padding={8} width={24} height={24} isBtn />
-                    }
-                    menuItems={[
-                      {
-                        label: "문의하기",
-                        onClick: () => {
-                          toggleContact();
-                          setIsDropdownOpen(false);
+                {!isMobile && (
+                  <div className={styles.contactBtn} ref={notificationRef}>
+                    <Dropdown
+                      isSide
+                      trigger={
+                        <IconComponent
+                          name="contactKebab"
+                          padding={8}
+                          width={24}
+                          height={24}
+                          isBtn
+                        />
+                      }
+                      menuItems={[
+                        {
+                          label: "문의하기",
+                          onClick: () => {
+                            toggleContact();
+                            setIsDropdownOpen(false);
+                          },
                         },
-                      },
-                    ]}
-                  />
-                </div>
+                      ]}
+                    />
+                  </div>
+                )}
                 {showContact && <Contact onClose={() => setShowContact(false)} />}
               </div>
             ) : (
@@ -449,8 +472,17 @@ export default function Header() {
                 onClick={toggleMenu}
               >
                 <div className={`${styles.sideMenu} ${isMenuOpen ? styles.open : ""}`}>
-                  <div className={styles.navUpload}>
-                    <div className={styles.navs}>
+                  <div>
+                    <div className={styles.navUpload}>
+                      <div
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleMenu();
+                        }}
+                        className={styles.closeBtn}
+                      >
+                        <IconComponent name="x" width={24} height={24} padding={8} isBtn />
+                      </div>
                       <nav className={styles.nav}>
                         {navItems.map((item, index) => (
                           <div
@@ -471,96 +503,130 @@ export default function Header() {
                           </div>
                         ))}
                       </nav>
-                      <div
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleMenu();
-                        }}
-                      >
-                        <IconComponent name="x" width={24} height={24} padding={8} isBtn />
-                      </div>
                     </div>
-                    {isLoggedIn && (
-                      <Link href="/write">
-                        <div className={styles.mobileUploadBtn}>
-                          <Button size="l" type="filled-primary">
-                            그림 업로드
-                          </Button>
+                    {!isLoggedIn || !myData ? (
+                      <div
+                        className={styles.uploadBtn}
+                        onClick={() => setModal({ isOpen: true, type: "LOGIN" })}
+                      >
+                        <Button size="l" type="filled-primary">
+                          로그인
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className={styles.mobileProfile}>
+                        <div className={styles.bar} />
+                        <div className={styles.profileSubmenu}>
+                          <Link href={`/users/${myData.id}`}>
+                            <div className={styles.mobileMyInfo}>
+                              {myData.image !== "https://image.grimity.com/null" ? (
+                                <Image
+                                  src={myData.image}
+                                  width={32}
+                                  height={32}
+                                  alt="프로필 이미지"
+                                  className={styles.profileImage}
+                                  quality={50}
+                                  style={{ objectFit: "cover" }}
+                                />
+                              ) : (
+                                <Image
+                                  src="/image/default.svg"
+                                  width={32}
+                                  height={32}
+                                  alt="프로필 이미지"
+                                  className={styles.profileImage}
+                                  quality={50}
+                                  style={{ objectFit: "cover" }}
+                                />
+                              )}
+                              <span className={styles.name}>{myData.name}</span>
+                            </div>
+                          </Link>
+                          <div
+                            className={styles.submenu}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleSubmenu();
+                            }}
+                          >
+                            <IconComponent
+                              name={isSubMenuOpen ? "menuUp" : "menuDown"}
+                              width={20}
+                              height={20}
+                            />
+                          </div>
                         </div>
-                      </Link>
+                        {isSubMenuOpen && (
+                          <div className={styles.btns}>
+                            <Link href="/mypage?tab=liked-feeds">
+                              <button className={styles.itemBtn}>
+                                <IconComponent name="menuSave" width={24} height={24} isBtn />
+                                저장한 컨텐츠
+                              </button>
+                            </Link>
+                            <button className={styles.itemBtn} onClick={handleLogout}>
+                              <IconComponent name="menuLogout" width={24} height={24} isBtn />
+                              로그아웃
+                            </button>
+                          </div>
+                        )}
+                        {isLoggedIn && (
+                          <Link href="/write">
+                            <Button
+                              size="l"
+                              type="filled-primary"
+                              leftIcon={
+                                <Image src="/icon/menu-upload.svg" width={20} height={20} alt="" />
+                              }
+                            >
+                              그림 업로드
+                            </Button>
+                          </Link>
+                        )}
+                      </div>
                     )}
                   </div>
-                  {!isLoggedIn || !myData ? (
-                    <div
-                      className={styles.uploadBtn}
-                      onClick={() => setModal({ isOpen: true, type: "LOGIN" })}
-                    >
-                      <Button size="l" type="filled-primary">
-                        로그인
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className={styles.mobileProfile}>
-                      <Link href={`/users/${myData.id}`}>
-                        {myData.image !== "https://image.grimity.com/null" ? (
-                          <Image
-                            src={myData.image}
-                            width={100}
-                            height={100}
-                            alt="프로필 이미지"
-                            className={styles.profileImage}
-                            quality={100}
-                            style={{ objectFit: "cover" }}
-                          />
-                        ) : (
-                          <Image
-                            src="/image/default.svg"
-                            width={100}
-                            height={100}
-                            alt="프로필 이미지"
-                            className={styles.profileImage}
-                            quality={100}
-                            style={{ objectFit: "cover" }}
-                          />
-                        )}
-                        <span className={styles.name}>{myData.name}</span>
-                      </Link>
-                      <div className={styles.btns}>
-                        <Link href="/mypage?tab=liked-feeds">
-                          <Button
-                            size="m"
-                            type="outlined-assistive"
-                            leftIcon={
-                              <IconComponent name="bookmark" width={16} height={16} isBtn />
-                            }
-                          >
-                            저장한 컨텐츠
-                          </Button>
-                        </Link>
-                        <div className={styles.mobileDropdown} onClick={(e) => e.stopPropagation()}>
-                          <Dropdown
-                            isTopItem
-                            trigger={
-                              <div className={styles.itemBtn}>
-                                <Image
-                                  src="/icon/meatball.svg"
-                                  width={20}
-                                  height={20}
-                                  alt="메뉴 버튼 "
-                                />
-                              </div>
-                            }
-                            menuItems={[
-                              {
-                                label: "로그아웃",
-                                onClick: handleLogout,
-                              },
-                            ]}
-                          />
-                        </div>
+                  <section className={styles.footer}>
+                    <div className={styles.contact}>
+                      <div className={styles.content}>
+                        <label className={styles.label}>제휴/광고 문의</label>
+                        <button onClick={copyToClipboard} className={styles.link}>
+                          메일쓰기
+                        </button>
+                      </div>
+                      <div className={styles.content}>
+                        <label className={styles.label}>불편신고/건의</label>
+                        <a
+                          href="https://open.kakao.com/o/sKYFewgh"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.link}
+                        >
+                          카카오톡 오픈채팅
+                        </a>
                       </div>
                     </div>
-                  )}
+                    <div className={styles.bar} />
+                    <div className={styles.links}>
+                      <a
+                        href="https://nostalgic-patch-498.notion.site/1930ac6bf29881b9aa19ff623c69b8e6?pvs=74"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.subLink}
+                      >
+                        개인정보취급방침
+                      </a>
+                      <a
+                        href="https://nostalgic-patch-498.notion.site/1930ac6bf29881e9a3e4c405e7f49f2b?pvs=73"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.subLink}
+                      >
+                        이용약관
+                      </a>
+                    </div>
+                  </section>
                 </div>
               </div>
             </>
