@@ -158,6 +158,10 @@
 
     .linkName {
       min-width: 160px;
+
+      @include Size("mobile") {
+        min-width: 100px;
+      }
     }
 
     .removeLinkButton {
