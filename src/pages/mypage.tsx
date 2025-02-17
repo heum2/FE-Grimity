@@ -2,8 +2,10 @@ import { InitialPageMeta } from "@/components/MetaData/MetaData";
 import MyPage from "@/components/MyPage/MyPage";
 import { serviceUrl } from "@/constants/serviceurl";
 import { useScrollRestoration } from "@/hooks/useScrollRestoration";
+import { authState } from "@/states/authState";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 
 export default function Mypage() {
   const router = useRouter();
@@ -27,6 +29,7 @@ export default function Mypage() {
   const [OGTitle, setOGTitle] = useState<string>(getTabData());
   const [OGUrl, setOGUrl] = useState<string>(serviceUrl);
   const { restoreScrollPosition } = useScrollRestoration("mypage-scroll");
+  const { isLoggedIn } = useRecoilValue(authState);
 
   useEffect(() => {
     setOGUrl(serviceUrl + router.asPath);
@@ -42,6 +45,12 @@ export default function Mypage() {
       sessionStorage.removeItem("mypage-scroll");
     }
   }, []);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.push("/");
+    }
+  }, [isLoggedIn, router]);
 
   return (
     <>

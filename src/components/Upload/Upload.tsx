@@ -16,8 +16,10 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { modalState } from "@/states/modalState";
 import { isMobileState, isTabletState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { authState } from "@/states/authState";
 
 export default function Upload() {
+  const { isLoggedIn } = useRecoilValue(authState);
   const [images, setImages] = useState<{ name: string; originalName: string; url: string }[]>([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -34,6 +36,13 @@ export default function Upload() {
   const isMobile = useRecoilValue(isMobileState);
   const isTablet = useRecoilValue(isTabletState);
   useIsMobile();
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      showToast("로그인 후 작성 가능합니다.", "warning");
+      router.push("/");
+    }
+  }, [isLoggedIn, router]);
 
   // 첫 번째 사진을 썸네일 기본값으로
   useEffect(() => {

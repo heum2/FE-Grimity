@@ -18,6 +18,7 @@ import { modalState } from "@/states/modalState";
 import { useRecoilValue } from "recoil";
 import { isMobileState, isTabletState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { authState } from "@/states/authState";
 
 const Editor = dynamic(() => import("@tinymce/tinymce-react").then((mod) => mod.Editor), {
   ssr: false,
@@ -25,6 +26,7 @@ const Editor = dynamic(() => import("@tinymce/tinymce-react").then((mod) => mod.
 });
 
 export default function EditPost({ id }: EditPostProps) {
+  const { isLoggedIn, user_id } = useRecoilValue(authState);
   const isMobile = useRecoilValue(isMobileState);
   const isTablet = useRecoilValue(isTabletState);
   useIsMobile();
@@ -51,6 +53,15 @@ export default function EditPost({ id }: EditPostProps) {
       setIsScriptLoaded(true);
     }
   }, []);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      showToast("로그인 후 작성 가능합니다.", "warning");
+      router.push("/");
+    } else if (user_id !== posts?.author.id) {
+      router.push("/");
+    }
+  }, [isLoggedIn, router, user_id, posts]);
 
   useEffect(() => {
     if (posts) {

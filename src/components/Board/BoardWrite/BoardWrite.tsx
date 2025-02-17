@@ -14,6 +14,7 @@ import Loader from "@/components/Layout/Loader/Loader";
 import { useRecoilValue } from "recoil";
 import { isMobileState, isTabletState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { authState } from "@/states/authState";
 
 const Editor = dynamic(() => import("@tinymce/tinymce-react").then((mod) => mod.Editor), {
   ssr: false,
@@ -21,6 +22,7 @@ const Editor = dynamic(() => import("@tinymce/tinymce-react").then((mod) => mod.
 });
 
 export default function BoardWrite() {
+  const { isLoggedIn } = useRecoilValue(authState);
   const isMobile = useRecoilValue(isMobileState);
   const isTablet = useRecoilValue(isTabletState);
   useIsMobile();
@@ -37,6 +39,13 @@ export default function BoardWrite() {
       setIsScriptLoaded(true);
     }
   }, []);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      showToast("로그인 후 작성 가능합니다.", "warning");
+      router.push("/");
+    }
+  }, [isLoggedIn, router]);
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);

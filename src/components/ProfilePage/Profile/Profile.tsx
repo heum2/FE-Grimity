@@ -56,7 +56,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
       await putFollow(id);
       refetchUserData();
     } catch (error) {
-      showToast("오류가 발생했습니다. 다시 시도해주세요.", "error");
+      showToast("로그인 후 가능합니다.", "warning");
     }
   };
 
@@ -65,7 +65,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
       await deleteFollow(id);
       refetchUserData();
     } catch (error) {
-      showToast("오류가 발생했습니다. 다시 시도해주세요.", "error");
+      showToast("로그인 후 가능합니다.", "warning");
     }
   };
 
@@ -232,19 +232,23 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
   };
 
   const handleOpenReportModal = () => {
-    if (isMobile) {
-      setModal({
-        isOpen: true,
-        type: "REPORT",
-        data: { refType: "USER", refId: userData?.id },
-        isFill: true,
-      });
+    if (!isLoggedIn) {
+      showToast("로그인 후 가능합니다.", "warning");
     } else {
-      setModal({
-        isOpen: true,
-        type: "REPORT",
-        data: { refType: "USER", refId: userData?.id },
-      });
+      if (isMobile) {
+        setModal({
+          isOpen: true,
+          type: "REPORT",
+          data: { refType: "USER", refId: userData?.id },
+          isFill: true,
+        });
+      } else {
+        setModal({
+          isOpen: true,
+          type: "REPORT",
+          data: { refType: "USER", refId: userData?.id },
+        });
+      }
     }
   };
 
@@ -606,98 +610,96 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
             </div>
             {!isMobile && (
               <div className={styles.followEdit}>
-                {isLoggedIn ? (
-                  isMyProfile ? (
-                    <>
-                      <div className={styles.editBtn}>
-                        <Button size="l" type="outlined-assistive" onClick={handleOpenEditModal}>
-                          프로필 편집
-                        </Button>
-                      </div>
-                      <div className={styles.dropdown}>
-                        <Dropdown
-                          isSide
-                          trigger={
-                            <div className={styles.menuBtn}>
-                              <Image
-                                src="/icon/meatball.svg"
-                                width={20}
-                                height={20}
-                                alt="메뉴 버튼 "
-                              />
-                            </div>
-                          }
-                          menuItems={[
-                            {
-                              label: "회원 탈퇴",
-                              onClick: handleWithdrawal,
-                              isDelete: true,
-                            },
-                          ]}
-                        />
-                      </div>
-                    </>
-                  ) : userData.isFollowing ? (
-                    <>
-                      <div className={styles.followBtn}>
-                        <Button size="l" type="outlined-assistive" onClick={handleUnfollowClick}>
-                          팔로잉
-                        </Button>
-                      </div>
-                      <div className={styles.dropdown}>
-                        <Dropdown
-                          isSide
-                          trigger={
-                            <div className={styles.menuBtn}>
-                              <Image
-                                src="/icon/meatball.svg"
-                                width={20}
-                                height={20}
-                                alt="메뉴 버튼 "
-                              />
-                            </div>
-                          }
-                          menuItems={[
-                            {
-                              label: "신고하기",
-                              onClick: handleOpenReportModal,
-                              isDelete: true,
-                            },
-                          ]}
-                        />
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className={styles.followBtn}>
-                        <Button size="l" type="filled-primary" onClick={handleFollowClick}>
-                          팔로우
-                        </Button>
-                      </div>
-                      <div className={styles.dropdown}>
-                        <Dropdown
-                          trigger={
-                            <div className={styles.menuBtn}>
-                              <Image
-                                src="/icon/meatball.svg"
-                                width={20}
-                                height={20}
-                                alt="메뉴 버튼 "
-                              />
-                            </div>
-                          }
-                          menuItems={[
-                            {
-                              label: "신고하기",
-                              onClick: handleOpenReportModal,
-                              isDelete: true,
-                            },
-                          ]}
-                        />
-                      </div>
-                    </>
-                  )
-                ) : null}
+                {isMyProfile ? (
+                  <>
+                    <div className={styles.editBtn}>
+                      <Button size="l" type="outlined-assistive" onClick={handleOpenEditModal}>
+                        프로필 편집
+                      </Button>
+                    </div>
+                    <div className={styles.dropdown}>
+                      <Dropdown
+                        isSide
+                        trigger={
+                          <div className={styles.menuBtn}>
+                            <Image
+                              src="/icon/meatball.svg"
+                              width={20}
+                              height={20}
+                              alt="메뉴 버튼 "
+                            />
+                          </div>
+                        }
+                        menuItems={[
+                          {
+                            label: "회원 탈퇴",
+                            onClick: handleWithdrawal,
+                            isDelete: true,
+                          },
+                        ]}
+                      />
+                    </div>
+                  </>
+                ) : userData.isFollowing ? (
+                  <>
+                    <div className={styles.followBtn}>
+                      <Button size="l" type="outlined-assistive" onClick={handleUnfollowClick}>
+                        팔로잉
+                      </Button>
+                    </div>
+                    <div className={styles.dropdown}>
+                      <Dropdown
+                        isSide
+                        trigger={
+                          <div className={styles.menuBtn}>
+                            <Image
+                              src="/icon/meatball.svg"
+                              width={20}
+                              height={20}
+                              alt="메뉴 버튼 "
+                            />
+                          </div>
+                        }
+                        menuItems={[
+                          {
+                            label: "신고하기",
+                            onClick: handleOpenReportModal,
+                            isDelete: true,
+                          },
+                        ]}
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className={styles.followBtn}>
+                      <Button size="l" type="filled-primary" onClick={handleFollowClick}>
+                        팔로우
+                      </Button>
+                    </div>
+                    <div className={styles.dropdown}>
+                      <Dropdown
+                        trigger={
+                          <div className={styles.menuBtn}>
+                            <Image
+                              src="/icon/meatball.svg"
+                              width={20}
+                              height={20}
+                              alt="메뉴 버튼 "
+                            />
+                          </div>
+                        }
+                        menuItems={[
+                          {
+                            label: "신고하기",
+                            onClick: handleOpenReportModal,
+                            isDelete: true,
+                          },
+                        ]}
+                      />
+                    </div>
+                  </>
+                )}
               </div>
             )}
           </section>

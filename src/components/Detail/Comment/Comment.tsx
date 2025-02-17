@@ -25,7 +25,6 @@ import CommentInput from "./CommentInput/CommentInput";
 import TextArea from "@/components/TextArea/TextArea";
 import { useMyData } from "@/api/users/getMe";
 import { isMobileState } from "@/states/isMobileState";
-import { useIsMobile } from "@/hooks/useIsMobile";
 import { useRouter } from "next/router";
 
 export default function Comment({
@@ -55,7 +54,6 @@ export default function Comment({
   const { pathname } = useRouter();
   useEffect(() => {
     refetchComments();
-    userDataRefetch();
   }, [pathname]);
 
   const deleteCommentMutation = useMutation(deleteComments, {

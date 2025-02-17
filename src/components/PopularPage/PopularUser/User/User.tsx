@@ -26,7 +26,7 @@ export default function User({
       setIsFollowing(true);
       setFollowerCount(followerCount + 1);
     } catch (error) {
-      showToast("로그인 후 가능합니다.", "error");
+      showToast("로그인 후 가능합니다.", "warning");
     }
   };
 
@@ -36,7 +36,7 @@ export default function User({
       setIsFollowing(false);
       setFollowerCount(followerCount - 1);
     } catch (error) {
-      showToast("로그인 후 가능합니다.", "error");
+      showToast("로그인 후 가능합니다.", "warning");
     }
   };
 

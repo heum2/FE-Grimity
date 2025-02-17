@@ -19,6 +19,7 @@ export default function FollowingPage() {
   const { data: recommendData, isLoading: recommendIsLoading } = usePopular();
   const [randomUsers, setRandomUsers] = useState<any[]>([]);
   const params = isLoggedIn && myData && myData.followingCount > 0 ? { size: 3 } : null;
+  const router = useRouter();
   const {
     data,
     isLoading,
@@ -29,14 +30,23 @@ export default function FollowingPage() {
   } = useFollowingFeeds(params);
   const { pathname } = useRouter();
   useEffect(() => {
-    feedRefetch();
+    if (isLoggedIn) {
+      feedRefetch();
+    }
   }, [pathname]);
+
+  if (!isLoggedIn) {
+    setModal({ isOpen: true, type: "LOGIN" });
+    router.push("/");
+  }
 
   const observer = useRef<IntersectionObserver | null>(null);
   const lastFeedElement = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (isUserDataLoading && !isLoggedIn) {
+      setModal({ isOpen: true, type: "LOGIN" });
+    } else if (!isLoggedIn) {
       setModal({ isOpen: true, type: "LOGIN" });
     }
   }, [isUserDataLoading, isLoggedIn, setModal]);

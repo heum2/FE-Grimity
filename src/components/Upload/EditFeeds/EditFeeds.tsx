@@ -19,8 +19,10 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { modalState } from "@/states/modalState";
 import { isMobileState, isTabletState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { authState } from "@/states/authState";
 
 export default function EditFeeds({ id }: EditFeedsProps) {
+  const { isLoggedIn, user_id } = useRecoilValue(authState);
   const { data: feedData, isLoading } = useDetails(id);
   const router = useRouter();
   const [images, setImages] = useState<{ name: string; originalName: string; url: string }[]>([]);
@@ -39,6 +41,15 @@ export default function EditFeeds({ id }: EditFeedsProps) {
   const isMobile = useRecoilValue(isMobileState);
   const isTablet = useRecoilValue(isTabletState);
   useIsMobile();
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      showToast("로그인 후 작성 가능합니다.", "warning");
+      router.push("/");
+    } else if (user_id !== feedData?.author.id) {
+      router.push("/");
+    }
+  }, [isLoggedIn, router, user_id, feedData]);
 
   // 첫 번째 사진을 썸네일 기본값으로
   useEffect(() => {

@@ -353,8 +353,8 @@ export default function PostDetail({ id }: PostDetailProps) {
           </div>
           <PostComment postId={id} postWriterId={posts.author.id} />
           {!posts.commentCount && <div className={styles.bar} />}
-          {isLoggedIn && (
-            <section className={styles.uploadBtn}>
+          <section className={styles.uploadBtn}>
+            {isLoggedIn && (
               <Link href="/board/write">
                 <Button
                   size="m"
@@ -364,8 +364,8 @@ export default function PostDetail({ id }: PostDetailProps) {
                   글쓰기
                 </Button>
               </Link>
-            </section>
-          )}
+            )}
+          </section>
           <BoardAll isDetail hasChip={true} />
           <div className={styles.boardPopular}>
             {isTablet ? <BoardPopular /> : <BoardPopular isDetail />}

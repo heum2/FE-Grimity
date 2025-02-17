@@ -74,11 +74,13 @@ export function useFollowingNew(params: FollowingFeedsRequest) {
 }
 
 export function useFollowingFeeds(params: FollowingFeedsRequest | null) {
+  const accessToken = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
+
   return useInfiniteQuery<FollowingFeedsResponse>(
     ["FollowingFeeds", params?.size],
     ({ pageParam = undefined }) => getFollowingFeeds({ ...params, cursor: pageParam }),
     {
-      enabled: !!params,
+      enabled: !!params || Boolean(accessToken),
       getNextPageParam: (lastPage) => {
         return lastPage.nextCursor ? lastPage.nextCursor : undefined;
       },
