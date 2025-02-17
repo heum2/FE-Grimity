@@ -462,12 +462,6 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                             {formatCurrency(userData.followerCount)}
                           </p>
                         </div>
-                        <div className={styles.follower}>
-                          팔로잉
-                          <p className={styles.followerColor}>
-                            {formatCurrency(userData.followingCount)}
-                          </p>
-                        </div>
                       </div>
                     )}
                   </div>
