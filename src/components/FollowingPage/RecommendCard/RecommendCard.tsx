@@ -9,7 +9,6 @@ import { putFollow } from "@/api/users/putIdFollow";
 import { deleteFollow } from "@/api/users/deleteIdFollow";
 import IconComponent from "@/components/Asset/Icon";
 import { useRecoilValue } from "recoil";
-import { isMobileState } from "@/states/isMobileState";
 import { authState } from "@/states/authState";
 
 export default function RecommendCard({
@@ -25,7 +24,6 @@ export default function RecommendCard({
   const { showToast } = useToast();
   const [isFollowing, setIsFollowing] = useState(initialIsFollowing);
   const [followerCount, setFollowerCount] = useState(initialFollowerCount);
-  const isMobile = useRecoilValue(isMobileState);
 
   const handleFollowClick = async () => {
     try {
@@ -51,40 +49,40 @@ export default function RecommendCard({
     <div className={styles.container}>
       <Link href={`/users/${id}`}>
         <div className={styles.imageWrapper}>
-          {thumbnails[0] ? (
-            <Image
-              src={thumbnails[0]}
-              width={isMobile ? 180 : 128}
-              height={isMobile ? 180 : 128}
-              alt="인기 유저 헤더 이미지"
-              className={styles.backgroundLeft}
-            />
-          ) : (
-            <Image
-              src="/image/thumbnail.png"
-              width={isMobile ? 180 : 128}
-              height={isMobile ? 180 : 128}
-              alt="인기 유저 헤더 이미지"
-              className={styles.backgroundLeft}
-            />
-          )}
-          {thumbnails[1] ? (
-            <Image
-              src={thumbnails[1]}
-              width={isMobile ? 180 : 128}
-              height={isMobile ? 180 : 128}
-              alt="인기 유저 헤더 이미지"
-              className={styles.backgroundRight}
-            />
-          ) : (
-            <Image
-              src="/image/thumbnail.png"
-              width={isMobile ? 180 : 128}
-              height={isMobile ? 180 : 128}
-              alt="인기 유저 헤더 이미지"
-              className={styles.backgroundRight}
-            />
-          )}
+          <div className={styles.imageContainer}>
+            {thumbnails[0] ? (
+              <Image
+                src={thumbnails[0]}
+                fill
+                alt="인기 유저 헤더 이미지"
+                className={styles.backgroundLeft}
+              />
+            ) : (
+              <Image
+                src="/image/thumbnail.png"
+                fill
+                alt="인기 유저 헤더 이미지"
+                className={styles.backgroundLeft}
+              />
+            )}
+          </div>
+          <div className={styles.imageContainer}>
+            {thumbnails[1] ? (
+              <Image
+                src={thumbnails[1]}
+                fill
+                alt="인기 유저 헤더 이미지"
+                className={styles.backgroundRight}
+              />
+            ) : (
+              <Image
+                src="/image/thumbnail.png"
+                fill
+                alt="인기 유저 헤더 이미지"
+                className={styles.backgroundRight}
+              />
+            )}
+          </div>
         </div>
       </Link>
       <div className={styles.profileWrapper}>

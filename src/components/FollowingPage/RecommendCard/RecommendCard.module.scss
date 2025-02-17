@@ -10,17 +10,22 @@
     width: 100%;
     display: flex;
     @include Drag;
+    aspect-ratio: 2/1;
 
-    .backgroundLeft {
-      object-fit: cover;
-      border-radius: 12px 0 0 0;
-      overflow: hidden;
+    .imageContainer {
       position: relative;
-    }
+      width: 50%;
+      height: 100%;
 
-    .backgroundRight {
-      @extend .backgroundLeft;
-      border-radius: 0 12px 0 0;
+      .backgroundLeft {
+        object-fit: cover;
+        border-radius: 12px 0 0 0;
+      }
+
+      .backgroundRight {
+        object-fit: cover;
+        border-radius: 0 12px 0 0;
+      }
     }
   }
 
