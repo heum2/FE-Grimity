@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import { useFollowingFeeds } from "@/api/feeds/getFeedsFollowing";
 import styles from "./FollowingPage.module.scss";
 import FollowingFeed from "./FollowingFeed/FollowingFeed";
@@ -35,10 +35,12 @@ export default function FollowingPage() {
     }
   }, [pathname]);
 
-  if (!isLoggedIn) {
-    setModal({ isOpen: true, type: "LOGIN" });
-    router.push("/");
-  }
+  useEffect(() => {
+    if (!isLoggedIn) {
+      setModal({ isOpen: true, type: "LOGIN" });
+      router.push("/");
+    }
+  }, [isLoggedIn, router]);
 
   const observer = useRef<IntersectionObserver | null>(null);
   const lastFeedElement = useRef<HTMLDivElement | null>(null);
