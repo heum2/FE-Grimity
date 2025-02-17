@@ -50,7 +50,7 @@ const NotificationSettings = ({
         </div>
       ) : (
         <div className={styles.titleContainer}>
-          <button className={styles.backButton} onClick={onBack}>
+          <button className={styles.backButton} onClick={onBack} data-setting-button="true">
             <IconComponent name="notiBack" width={24} height={24} isBtn padding={8} />
           </button>
           <h2 className={styles.title}>알림 설정</h2>
@@ -232,7 +232,11 @@ export default function Notifications({ onClose }: NotificationsProps) {
         <div className={styles.titleContainer}>
           <h2 className={styles.title}>알림</h2>
           <div className={styles.headerBtns}>
-            <button className={styles.settingButton} onClick={() => setIsOpen((prev) => !prev)}>
+            <button
+              className={styles.settingButton}
+              onClick={() => setIsOpen((prev) => !prev)}
+              data-setting-button="true"
+            >
               <IconComponent name="notiSetting" width={24} height={24} isBtn padding={8} />
             </button>
             {!isMobile && (
@@ -305,5 +309,13 @@ export default function Notifications({ onClose }: NotificationsProps) {
     </>
   );
 
-  return <div className={isMobile ? styles.mobileContainer : styles.container}>{content}</div>;
+  return (
+    <div
+      onClick={(e) => e.stopPropagation()}
+      data-setting-button="true"
+      className={isMobile ? styles.mobileContainer : styles.container}
+    >
+      {content}
+    </div>
+  );
 }

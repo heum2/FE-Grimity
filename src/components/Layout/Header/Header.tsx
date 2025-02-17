@@ -135,6 +135,12 @@ export default function Header() {
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
+      const targetElement = event.target as HTMLElement;
+      const isSettingButton = targetElement.closest('[data-setting-button="true"]');
+      if (isSettingButton) {
+        return;
+      }
+
       if (
         notificationRef.current &&
         !notificationRef.current.contains(event.target as Node) &&
@@ -151,7 +157,7 @@ export default function Header() {
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [showNotifications]);
+  }, [showNotifications, showContact]);
 
   const handleClickLogo = () => {
     if (router.pathname === "/") {
