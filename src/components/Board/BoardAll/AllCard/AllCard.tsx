@@ -233,10 +233,14 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
               </div>
               <Image src="/icon/dot.svg" width={3} height={3} alt="" />
               <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
-              <Image src="/icon/dot.svg" width={3} height={3} alt="" />
-              <Link href={`/users/${post.author?.id}`}>
-                <p className={styles.author}>{post.author?.name}</p>
-              </Link>
+              {post.type !== "NOTICE" && (
+                <>
+                  <Image src="/icon/dot.svg" width={3} height={3} alt="" />
+                  <Link href={`/users/${post.author?.id}`}>
+                    <p className={styles.author}>{post.author?.name}</p>
+                  </Link>
+                </>
+              )}
             </div>
           ) : (
             <div className={styles.createdAtView}>
