@@ -16,6 +16,7 @@ import Dropdown from "@/components/Dropdown/Dropdown";
 import { isMobileState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import Loader from "@/components/Layout/Loader/Loader";
+import { usePostSearch } from "@/api/posts/getPostsSearch";
 
 type SortOption = "combined" | "name";
 
@@ -52,21 +53,45 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
     size: 10,
   });
 
+  const { data: searchData, isLoading: isSearchLoading } = usePostSearch(
+    query.keyword
+      ? {
+          searchBy: (query.searchBy as "combined" | "name") || "combined",
+          size: 10,
+          page: currentPage,
+          keyword: query.keyword as string,
+        }
+      : null
+  );
+
   useEffect(() => {
     refetch();
   }, [pathname]);
 
   useEffect(() => {
-    if (!router.isReady || query.keyword) return;
+    if (!router.isReady) return;
 
-    if (noticesData && latestData) {
+    if (query.keyword) {
+      if (searchData) {
+        setPosts(searchData.posts);
+        setTotalCount(searchData.totalCount);
+      }
+    } else if (noticesData && latestData) {
       const mergedPosts =
         currentPage === 1 ? [...noticesData, ...latestData.posts] : latestData.posts;
 
       setPosts(mergedPosts);
       setTotalCount(latestData.totalCount + (currentPage === 1 ? noticesData.length : 0));
     }
-  }, [currentType, currentPage, query.keyword, router.isReady, noticesData, latestData]);
+  }, [
+    currentType,
+    currentPage,
+    query.keyword,
+    router.isReady,
+    noticesData,
+    latestData,
+    searchData,
+  ]);
 
   const handleTabChange = (type: "all" | "question" | "feedback") => {
     const newQuery: { type: string; page: number; searchBy?: string; keyword?: string } = {
@@ -105,7 +130,11 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
         router.push(
           {
             pathname: "/board",
-            query: { searchBy },
+            query: {
+              ...query,
+              type: currentType,
+              page: 1,
+            },
           },
           undefined,
           { shallow: true }
@@ -121,6 +150,7 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
         pathname: "/board",
         query: {
           ...query,
+          type: currentType,
           searchBy,
           keyword: trimmedKeyword,
           page: 1,
@@ -151,7 +181,7 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
     });
   };
 
-  if (isLoading) <Loader />;
+  if (isLoading || isSearchLoading) return <Loader />;
 
   return (
     <div className={styles.container}>

@@ -24,14 +24,14 @@ export interface PostSearch {
 }
 
 export interface PostSearchResponse {
-  totalCount: null;
+  totalCount: number;
   posts: PostSearch[];
 }
 
 export async function getPostSearch({
-  searchBy = "combined",
-  size = 10,
-  page = 1,
+  searchBy,
+  size,
+  page,
   keyword,
 }: PostSearchRequest): Promise<PostSearchResponse> {
   try {
