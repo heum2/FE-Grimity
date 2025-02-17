@@ -54,9 +54,5 @@
     top: 0;
     background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #fff 100%);
     pointer-events: none;
-
-    @include Size("mobile") {
-      display: none;
-    }
   }
 }

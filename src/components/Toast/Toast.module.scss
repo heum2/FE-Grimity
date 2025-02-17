@@ -26,6 +26,13 @@
     @include Sub4;
   }
 
+  @include Size("tablet") {
+    padding: 14px 20px 14px 14px;
+    gap: 14px;
+    border-radius: 50px;
+    @include Sub4;
+  }
+
   &.success {
     border: 1px solid $secandary1;
   }

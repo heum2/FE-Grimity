@@ -5,7 +5,7 @@ import Title from "@/components/Layout/Title/Title";
 import Loader from "@/components/Layout/Loader/Loader";
 import User from "./User/User";
 import { useRecoilValue } from "recoil";
-import { isMobileState } from "@/states/isMobileState";
+import { isMobileState, isTabletState } from "@/states/isMobileState";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { authState } from "@/states/authState";
@@ -16,6 +16,7 @@ export default function PopularUser() {
   const [randomUsers, setRandomUsers] = useState<any[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const isMobile = useRecoilValue(isMobileState);
+  const isTablet = useRecoilValue(isTabletState);
 
   // 가로 스크롤 시 세로 스크롤 막기
   const handleWheel = useCallback((e: WheelEvent) => {
@@ -32,6 +33,7 @@ export default function PopularUser() {
 
   useEffect(() => {
     if (isMobile) return;
+    if (isTablet) return;
 
     const container = containerRef.current;
     if (!container) return;
@@ -56,9 +58,9 @@ export default function PopularUser() {
   return (
     <div className={styles.container}>
       <Title>인기 유저</Title>
-      {isMobile ? (
+      {isMobile || isTablet ? (
         <Swiper
-          spaceBetween={10}
+          spaceBetween={isMobile ? 10 : 14}
           slidesPerView={"auto"}
           pagination={{ clickable: true }}
           className={styles.swiper}

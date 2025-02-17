@@ -21,6 +21,10 @@
     }
   }
 
+  @include Size("tablet") {
+    padding: 18px;
+  }
+
   .title {
     height: 22px;
     overflow: hidden;
@@ -45,6 +49,11 @@
 
     @include Size("mobile") {
       height: auto;
+    }
+
+    @include Size("tablet") {
+      height: auto;
+      -webkit-line-clamp: 1;
     }
   }
 

@@ -5,7 +5,7 @@ import Loader from "@/components/Layout/Loader/Loader";
 import Tag from "./Tag/Tag";
 import Link from "next/link";
 import { useCallback, useEffect, useRef } from "react";
-import { isMobileState } from "@/states/isMobileState";
+import { isMobileState, isTabletState } from "@/states/isMobileState";
 import { useRecoilValue } from "recoil";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -15,6 +15,7 @@ export default function PopularTag() {
   const { data, isLoading } = useTagsPopular();
   const containerRef = useRef<HTMLDivElement>(null);
   const isMobile = useRecoilValue(isMobileState);
+  const isTablet = useRecoilValue(isTabletState);
   useIsMobile();
 
   // 가로 스크롤 시 세로 스크롤 막기
@@ -32,6 +33,7 @@ export default function PopularTag() {
 
   useEffect(() => {
     if (isMobile) return;
+    if (isTablet) return;
 
     const container = containerRef.current;
     if (!container) return;
@@ -48,9 +50,9 @@ export default function PopularTag() {
   return (
     <div className={styles.container}>
       <Title>인기 태그</Title>
-      {isMobile ? (
+      {isMobile || isTablet ? (
         <Swiper
-          spaceBetween={10}
+          spaceBetween={isMobile ? 10 : 14}
           slidesPerView={"auto"}
           pagination={{ clickable: true }}
           className={styles.swiper}

@@ -61,6 +61,12 @@
         row-gap: 20px;
         column-gap: 12px;
       }
+
+      @include Size("tablet") {
+        grid-template-columns: repeat(3, 1fr);
+        row-gap: 30px;
+        column-gap: 16px;
+      }
     }
   }
 }

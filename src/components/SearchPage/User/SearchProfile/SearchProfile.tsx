@@ -10,7 +10,7 @@ import { deleteFollow } from "@/api/users/deleteIdFollow";
 import { putFollow } from "@/api/users/putIdFollow";
 import { useToast } from "@/hooks/useToast";
 import Button from "@/components/Button/Button";
-import { isMobileState } from "@/states/isMobileState";
+import { isMobileState, isTabletState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
 export default function SearchProfile({
@@ -27,6 +27,7 @@ export default function SearchProfile({
   const [isFollowing, setIsFollowing] = useState(initialIsFollowing);
   const [followerCount, setFollowerCount] = useState(initialFollowerCount);
   const isMobile = useRecoilValue(isMobileState);
+  const isTablet = useRecoilValue(isTabletState);
   useIsMobile();
 
   const handleFollowClick = async () => {
@@ -57,12 +58,11 @@ export default function SearchProfile({
             <Image
               src={backgroundImage}
               alt="배경이미지"
-              // className={styles.cover}
               width={630}
-              height={isMobile ? 130 : 178}
+              height={isMobile ? 130 : isTablet ? 140 : 178}
               style={{
                 width: "100%",
-                height: isMobile ? "130px" : "178px",
+                height: isMobile ? "130px" : isTablet ? "140px" : "178px",
                 objectFit: "cover",
               }}
             />
@@ -70,12 +70,11 @@ export default function SearchProfile({
             <Image
               src="/image/search-default-cover.svg"
               alt="배경이미지"
-              // className={styles.cover}
               width={630}
-              height={isMobile ? 130 : 178}
+              height={isMobile ? 130 : isTablet ? 140 : 178}
               style={{
                 width: "100%",
-                height: isMobile ? "130px" : "178px",
+                height: isMobile ? "130px" : isTablet ? "140px" : "178px",
                 objectFit: "cover",
               }}
             />

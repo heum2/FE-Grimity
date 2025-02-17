@@ -7,7 +7,7 @@ import { useTodayFeedPopular } from "@/api/feeds/getTodayPopular";
 import Loader from "../Loader/Loader";
 import Image from "next/image";
 import { useRecoilValue } from "recoil";
-import { isMobileState } from "@/states/isMobileState";
+import { isMobileState, isTabletState } from "@/states/isMobileState";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 
 export default function Ranking() {
   const isMobile = useRecoilValue(isMobileState);
+  const isTablet = useRecoilValue(isTabletState);
   const [pageIndex, setPageIndex] = useState(0);
   const { data, isLoading, refetch } = useTodayFeedPopular();
   const { pathname } = useRouter();
@@ -43,11 +44,11 @@ export default function Ranking() {
       <Title link="/popular">오늘의 인기 랭킹</Title>
       {isEmpty ? (
         <p className={styles.message}>아직 등록된 그림이 없어요</p>
-      ) : isMobile ? (
+      ) : isMobile || isTablet ? (
         <div className={styles.rankingContainer}>
           <Swiper
             spaceBetween={12}
-            slidesPerView={1.5}
+            slidesPerView={isMobile ? 1.5 : 3}
             onSlideChange={(swiper) => setPageIndex(swiper.activeIndex)}
           >
             {paginatedFeeds.map((feed, idx) => (

@@ -30,6 +30,10 @@
       padding-top: 16px;
     }
 
+    @include Size("tablet") {
+      padding-top: 32px;
+    }
+
     .uploadBtnContainer {
       width: 100%;
       display: flex;
@@ -48,6 +52,10 @@
         gap: 0px;
       }
 
+      @include Size("tablet") {
+        gap: 0px;
+      }
+
       .imageSection {
         width: 100%;
         display: flex;
@@ -55,6 +63,10 @@
         gap: 28px;
 
         @include Size("mobile") {
+          justify-content: flex-start;
+        }
+
+        @include Size("tablet") {
           justify-content: flex-start;
         }
 
@@ -114,6 +126,19 @@
               display: none;
             }
           }
+
+          @include Size("tablet") {
+            min-width: 0;
+            max-width: 100vw;
+
+            &::-webkit-scrollbar {
+              display: none;
+            }
+
+            &::-webkit-scrollbar-thumb {
+              display: none;
+            }
+          }
         }
 
         .imageWrapper {
@@ -130,6 +155,10 @@
           height: 290px;
 
           @include Size("mobile") {
+            height: 256px;
+          }
+
+          @include Size("tablet") {
             height: 256px;
           }
         }

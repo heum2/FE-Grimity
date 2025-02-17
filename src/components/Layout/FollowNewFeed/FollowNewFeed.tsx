@@ -5,20 +5,26 @@ import Loader from "../Loader/Loader";
 import Image from "next/image";
 import RectangleCard from "../RectangleCard/RectangleCard";
 import { useFollowingNew } from "@/api/feeds/getFeedsFollowing";
-import { isMobileState } from "@/states/isMobileState";
+import { isMobileState, isTabletState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useRecoilValue } from "recoil";
 import Button from "@/components/Button/Button";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import { Navigation } from "swiper/modules";
 
 export default function FollowNewFeed() {
   const isMobile = useRecoilValue(isMobileState);
+  const isTablet = useRecoilValue(isTabletState);
   const [pageIndex, setPageIndex] = useState(0);
   const itemsPerPage = 2;
   useIsMobile();
   const { data, isLoading, refetch } = useFollowingNew({ size: 8 });
   const { pathname } = useRouter();
+
   useEffect(() => {
     refetch();
   }, [pathname]);
@@ -47,59 +53,86 @@ export default function FollowNewFeed() {
       ) : (
         <>
           <Title link="/following">팔로우하는 유저의 새 그림</Title>
-          {!isMobile ? (
-            <div className={styles.rankingContainer}>
-              <button
-                className={`${styles.navButton} ${styles.left}`}
-                onClick={handlePrevClick}
-                disabled={pageIndex === 0}
-                style={{
-                  visibility: pageIndex === 0 ? "hidden" : "visible",
-                }}
-              >
-                <Image
-                  src="/icon/card-arrow-left.svg"
-                  width={40}
-                  height={40}
-                  alt="왼쪽 버튼"
-                  className={styles.arrowBtn}
-                />
-              </button>
-              <div className={styles.cardsContainer}>
-                {paginatedFeeds.map((feed) => (
-                  <div key={feed.id} className={styles.cardWrapper}>
-                    <RectangleCard
-                      id={feed.id}
-                      title={feed.title}
-                      content={feed.content}
-                      thumbnail={feed.thumbnail}
-                      author={feed.author}
-                      likeCount={feed.likeCount}
-                      commentCount={feed.commentCount}
-                      createdAt={feed.createdAt}
-                      isLike={feed.isLike}
-                    />
-                  </div>
-                ))}
+          {!isMobile && isTablet && (
+            <Swiper
+              modules={[Navigation]}
+              spaceBetween={16}
+              slidesPerView={2}
+              className={styles.rankingContainer}
+            >
+              {data?.feeds.map((feed) => (
+                <SwiperSlide key={feed.id} className={styles.swiperSlide}>
+                  <RectangleCard
+                    id={feed.id}
+                    title={feed.title}
+                    content={feed.content}
+                    thumbnail={feed.thumbnail}
+                    author={feed.author}
+                    likeCount={feed.likeCount}
+                    commentCount={feed.commentCount}
+                    createdAt={feed.createdAt}
+                    isLike={feed.isLike}
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          )}
+          {!isTablet && !isMobile && (
+            <>
+              <div className={styles.rankingContainer}>
+                <button
+                  className={`${styles.navButton} ${styles.left}`}
+                  onClick={handlePrevClick}
+                  disabled={pageIndex === 0}
+                  style={{
+                    visibility: pageIndex === 0 ? "hidden" : "visible",
+                  }}
+                >
+                  <Image
+                    src="/icon/card-arrow-left.svg"
+                    width={40}
+                    height={40}
+                    alt="왼쪽 버튼"
+                    className={styles.arrowBtn}
+                  />
+                </button>
+                <div className={styles.cardsContainer}>
+                  {paginatedFeeds.map((feed) => (
+                    <div key={feed.id} className={styles.cardWrapper}>
+                      <RectangleCard
+                        id={feed.id}
+                        title={feed.title}
+                        content={feed.content}
+                        thumbnail={feed.thumbnail}
+                        author={feed.author}
+                        likeCount={feed.likeCount}
+                        commentCount={feed.commentCount}
+                        createdAt={feed.createdAt}
+                        isLike={feed.isLike}
+                      />
+                    </div>
+                  ))}
+                </div>
+                <button
+                  className={`${styles.navButton} ${styles.right}`}
+                  onClick={handleNextClick}
+                  disabled={endIdx >= (data?.feeds?.length || 0)}
+                  style={{
+                    visibility: endIdx >= (data?.feeds?.length || 0) ? "hidden" : "visible",
+                  }}
+                >
+                  <Image
+                    src="/icon/card-arrow-right.svg"
+                    width={40}
+                    height={40}
+                    alt="오른쪽 버튼"
+                    className={styles.arrowBtn}
+                  />
+                </button>
               </div>
-              <button
-                className={`${styles.navButton} ${styles.right}`}
-                onClick={handleNextClick}
-                disabled={endIdx >= (data?.feeds?.length || 0)}
-                style={{
-                  visibility: endIdx >= (data?.feeds?.length || 0) ? "hidden" : "visible",
-                }}
-              >
-                <Image
-                  src="/icon/card-arrow-right.svg"
-                  width={40}
-                  height={40}
-                  alt="오른쪽 버튼"
-                  className={styles.arrowBtn}
-                />
-              </button>
-            </div>
-          ) : (
+            </>
+          )}
+          {isMobile && (
             <>
               <div className={styles.mobileCard}>
                 <RectangleCard

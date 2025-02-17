@@ -12,12 +12,20 @@
     margin-bottom: 16px;
   }
 
+  @include Size("tablet") {
+    margin-bottom: 16px;
+  }
+
   .title {
     @include Title4;
     color: $gray80;
 
     @include Size("mobile") {
       @include Sub2;
+    }
+
+    @include Size("tablet") {
+      @include Sub1;
     }
   }
 
@@ -27,6 +35,10 @@
     cursor: pointer;
 
     @include Size("mobile") {
+      @include Sub4;
+    }
+
+    @include Size("tablet") {
       @include Sub4;
     }
   }

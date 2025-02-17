@@ -16,6 +16,10 @@
     height: 250px;
   }
 
+  @include Size("tablet") {
+    height: 300px;
+  }
+
   .coverContainer {
     width: 100%;
     height: 178px;
@@ -27,6 +31,10 @@
 
     @include Size("mobile") {
       height: 130px;
+    }
+
+    @include Size("tablet") {
+      height: 140px;
     }
   }
 
@@ -45,6 +53,10 @@
     @include Size("mobile") {
       height: 130px;
     }
+
+    @include Size("tablet") {
+      height: 140px;
+    }
   }
 
   .profile {
@@ -55,13 +67,16 @@
     flex-direction: column;
     gap: 20px;
     position: absolute;
-    // top: 125px;
     bottom: 60px;
 
     @include Size("mobile") {
       top: 130px;
       flex-direction: row;
       padding: 16px;
+    }
+
+    @include Size("tablet") {
+      top: 80px;
     }
 
     .image {

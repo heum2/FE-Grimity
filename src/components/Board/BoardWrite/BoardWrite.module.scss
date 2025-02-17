@@ -12,6 +12,10 @@
     padding-top: 16px;
   }
 
+  @include Size("tablet") {
+    padding-top: 32px;
+  }
+
   .center {
     max-width: 880px;
     width: 100%;
@@ -52,6 +56,10 @@
 
       @include Size("mobile") {
         min-height: 500px;
+      }
+
+      @include Size("tablet") {
+        min-height: 700px;
       }
     }
 

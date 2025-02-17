@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import styles from "./Dropdown.module.scss";
 import { DropdownProps } from "./Dropdown.types";
-import { isMobileState } from "@/states/isMobileState";
+import { isMobileState, isTabletState } from "@/states/isMobileState";
 import { useRecoilValue } from "recoil";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
@@ -15,6 +15,7 @@ export default function Dropdown({
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const isMobile = useRecoilValue(isMobileState);
+  const isTablet = useRecoilValue(isTabletState);
   useIsMobile();
 
   const toggleDropdown = (newState: boolean) => {
@@ -44,7 +45,7 @@ export default function Dropdown({
           className={
             isTopItem
               ? styles.topMenu
-              : isMobile
+              : isMobile || isTablet
               ? styles.mobileMenu
               : isSide
               ? styles.isSideMenu

@@ -23,10 +23,23 @@
     opacity: 0.5;
   }
 
+  &:last-child {
+    border: none;
+  }
+
+  @include Size("tablet") {
+    padding: 12px 0;
+    gap: 6px;
+  }
+
   .content {
     display: flex;
     align-items: center;
     gap: 16px;
+
+    @include Size("tablet") {
+      gap: 12px;
+    }
 
     .messageWrapper {
       width: 100%;
@@ -37,16 +50,19 @@
       .message {
         color: $gray80;
         @include Sub4;
-        // overflow: hidden;
-        // text-overflow: ellipsis;
-        // display: -webkit-box;
-        // -webkit-line-clamp: 1;
-        // -webkit-box-orient: vertical;
+
+        @include Size("tablet") {
+          @include Label1;
+        }
       }
 
       .date {
         @include Label1;
         color: $gray50;
+
+        @include Size("tablet") {
+          @include Cap1;
+        }
       }
     }
 

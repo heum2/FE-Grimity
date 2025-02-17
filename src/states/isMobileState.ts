@@ -4,3 +4,8 @@ export const isMobileState = atom({
   key: "isMobileState",
   default: false,
 });
+
+export const isTabletState = atom({
+  key: "isTabletState",
+  default: false,
+});

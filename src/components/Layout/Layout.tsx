@@ -5,11 +5,12 @@ import { LayoutProps } from "./Layout.types";
 import IconComponent from "../Asset/Icon";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useRecoilValue } from "recoil";
-import { isMobileState } from "@/states/isMobileState";
+import { isMobileState, isTabletState } from "@/states/isMobileState";
 
 export default function Layout({ children }: LayoutProps) {
   const [isScrollAbove, setIsScrollAbove] = useState(false);
   const isMobile = useRecoilValue(isMobileState);
+  const isTablet = useRecoilValue(isTabletState);
   useIsMobile();
 
   // 스크롤 위치 감지
@@ -37,7 +38,7 @@ export default function Layout({ children }: LayoutProps) {
       <div className={styles.children}>
         <Header />
         {children}
-        {!isMobile && (
+        {!isMobile && !isTablet && (
           <div
             className={`${styles.topButton} ${isScrollAbove && styles.show}`}
             onClick={scrollToTop}

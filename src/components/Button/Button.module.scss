@@ -107,6 +107,13 @@
     line-height: 19.6px !important;
     font-weight: 600 !important;
   }
+
+  @include Size("tablet") {
+    padding: 16px 0 !important;
+    font-size: 14px !important;
+    line-height: 19.6px !important;
+    font-weight: 600 !important;
+  }
 }
 
 .text-assistive .disabled {

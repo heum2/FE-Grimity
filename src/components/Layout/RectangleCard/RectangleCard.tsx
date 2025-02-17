@@ -9,7 +9,7 @@ import { timeAgo } from "@/utils/timeAgo";
 import { useRecoilValue } from "recoil";
 import { authState } from "@/states/authState";
 import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
-import { isMobileState } from "@/states/isMobileState";
+import { isMobileState, isTabletState } from "@/states/isMobileState";
 
 export default function RectangleCard({
   id,
@@ -24,6 +24,7 @@ export default function RectangleCard({
 }: RectangleCardProps) {
   const { isLoggedIn } = useRecoilValue(authState);
   const isMobile = useRecoilValue(isMobileState);
+  const isTablet = useRecoilValue(isTabletState);
   const [isLiked, setIsLiked] = useState(initialIsLike);
   const [likeCount, setLikeCount] = useState(initialLikeCount);
 
@@ -64,26 +65,58 @@ export default function RectangleCard({
               />
             </Link>
           </div>
-          <div className={styles.infoContainer}>
-            <Link href={`/feeds/${id}`}>
-              <h3 className={styles.title}>{title}</h3>
-            </Link>
-            <p className={styles.content}>{content}</p>
-            <div className={styles.profileContainer}>
-              <div className={styles.informationContainer}>
-                <p className={styles.createdAt}>{timeAgo(createdAt)}</p>
-                <Image src="/icon/card-dot.svg" width={2} height={2} alt="" />
-                <div className={styles.countContainer}>
-                  <div className={styles.likeContainer}>
-                    <IconComponent name="likeCount" width={16} height={16} />
-                    <p className={styles.count}>{formatCurrency(likeCount)}</p>
-                  </div>
-                  <div className={styles.likeContainer}>
-                    <IconComponent name="commentCount" width={16} height={16} />
-                    <p className={styles.count}>{formatCurrency(commentCount)}</p>
+          {!isTablet ? (
+            <div className={styles.infoContainer}>
+              <Link href={`/feeds/${id}`}>
+                <h3 className={styles.title}>{title}</h3>
+              </Link>
+              <p className={styles.content}>{content}</p>
+              <div className={styles.profileContainer}>
+                <div className={styles.informationContainer}>
+                  <p className={styles.createdAt}>{timeAgo(createdAt)}</p>
+                  <Image src="/icon/card-dot.svg" width={2} height={2} alt="" />
+                  <div className={styles.countContainer}>
+                    <div className={styles.likeContainer}>
+                      <IconComponent name="likeCount" width={16} height={16} />
+                      <p className={styles.count}>{formatCurrency(likeCount)}</p>
+                    </div>
+                    <div className={styles.likeContainer}>
+                      <IconComponent name="commentCount" width={16} height={16} />
+                      <p className={styles.count}>{formatCurrency(commentCount)}</p>
+                    </div>
                   </div>
                 </div>
+                {author && (
+                  <Link href={`/users/${author.id}`}>
+                    <div className={styles.profile}>
+                      {author.image !== "https://image.grimity.com/null" ? (
+                        <Image
+                          src={author.image}
+                          alt={author.name}
+                          width={24}
+                          height={24}
+                          className={styles.profileImage}
+                        />
+                      ) : (
+                        <Image
+                          src="/image/default.svg"
+                          width={24}
+                          height={24}
+                          alt="프로필 이미지"
+                          className={styles.profileImage}
+                        />
+                      )}
+                      <p className={styles.author}>{author.name}</p>
+                    </div>
+                  </Link>
+                )}
               </div>
+            </div>
+          ) : (
+            <div className={styles.tablet}>
+              <Link href={`/feeds/${id}`}>
+                <h3 className={styles.title}>{title}</h3>
+              </Link>
               {author && (
                 <Link href={`/users/${author.id}`}>
                   <div className={styles.profile}>
@@ -109,7 +142,7 @@ export default function RectangleCard({
                 </Link>
               )}
             </div>
-          </div>
+          )}
         </>
       ) : (
         <div className={styles.mobileContainer}>

@@ -20,7 +20,7 @@ import { putBackgroundImage, putProfileImage } from "@/api/users/putMeImage";
 import { AxiosError } from "axios";
 import { deleteMyBackgroundImage, deleteMyProfileImage } from "@/api/users/deleteMeImage";
 import Dropdown from "@/components/Dropdown/Dropdown";
-import { isMobileState } from "@/states/isMobileState";
+import { isMobileState, isTabletState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { deleteMe } from "@/api/users/deleteMe";
 
@@ -33,6 +33,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
   const [, setCoverImage] = useState<string>("");
   const { showToast } = useToast();
   const isMobile = useRecoilValue(isMobileState);
+  const isTablet = useRecoilValue(isTabletState);
   useIsMobile();
   const CoverImageMutation = useMutation((imageName: string) => putBackgroundImage(imageName));
   const { pathname } = useRouter();
@@ -135,7 +136,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
     const imageUrl = URL.createObjectURL(file);
 
     try {
-      if (isMobile) {
+      if (isMobile || isTablet) {
         const data = await postPresignedUrl({
           type: "background",
           ext: "jpg",
@@ -282,11 +283,11 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
               <Image
                 src={userData.backgroundImage}
                 width={1400} // 임의 지정
-                height={isMobile ? 240 : 400}
+                height={isMobile ? 240 : isTablet ? 300 : 400}
                 alt="backgroundImage"
                 style={{
                   width: "100%",
-                  height: isMobile ? "240px" : "400px",
+                  height: isMobile ? "240px" : isTablet ? "300px" : "400px",
                   objectFit: "cover",
                 }}
               />

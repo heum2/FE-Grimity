@@ -9,10 +9,13 @@ import { useToast } from "@/hooks/useToast";
 import axios from "axios";
 import { useRouter } from "next/router";
 import BASE_URL from "@/constants/baseurl";
+import { useRecoilValue } from "recoil";
+import { isTabletState } from "@/states/isMobileState";
 
 export default function Noti({ notification, onClose, onRefetch }: NotiProps) {
   const { showToast } = useToast();
   const router = useRouter();
+  const isTablet = useRecoilValue(isTabletState);
 
   const renderMessage = () => {
     switch (notification.data.type) {
@@ -43,8 +46,8 @@ export default function Noti({ notification, onClose, onRefetch }: NotiProps) {
       return (
         <Image
           src={`https://image.grimity.com/${notification.data.thumbnail}`}
-          width={40}
-          height={40}
+          width={isTablet ? 32 : 40}
+          height={isTablet ? 32 : 40}
           alt="Thumbnail Image"
           className={styles.thumbnail}
         />
@@ -57,8 +60,8 @@ export default function Noti({ notification, onClose, onRefetch }: NotiProps) {
               ? `https://image.grimity.com/${notification.data.actor.image}`
               : "/image/default.svg"
           }
-          width={40}
-          height={40}
+          width={isTablet ? 32 : 40}
+          height={isTablet ? 32 : 40}
           alt="Actor Image"
           className={styles.actorImage}
         />

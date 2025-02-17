@@ -18,6 +18,10 @@
       margin-bottom: 16px;
     }
 
+    @include Size("tablet") {
+      height: auto;
+    }
+
     .types {
       display: flex;
       align-items: center;

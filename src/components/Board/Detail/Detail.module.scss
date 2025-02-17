@@ -12,6 +12,10 @@
     padding-top: 16px;
   }
 
+  @include Size("tablet") {
+    padding-top: 24px;
+  }
+
   .center {
     width: 100%;
     max-width: 880px;
@@ -198,6 +202,11 @@
       width: 100%;
       display: flex;
       justify-content: flex-end;
+
+      @include Size("tablet") {
+        margin-top: 14px;
+        margin-bottom: 30px;
+      }
     }
 
     .boardPopular {

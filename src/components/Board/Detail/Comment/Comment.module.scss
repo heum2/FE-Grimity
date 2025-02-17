@@ -15,6 +15,10 @@
     .submitBtn {
       flex-shrink: 0;
     }
+
+    @include Size("tablet") {
+      margin-top: 20px;
+    }
   }
 
   .childComments {

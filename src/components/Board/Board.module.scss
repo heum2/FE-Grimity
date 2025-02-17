@@ -11,6 +11,10 @@
     margin-top: 24px;
   }
 
+  @include Size("tablet") {
+    margin-top: 24px;
+  }
+
   .center {
     max-width: 980px;
     width: 100%;
@@ -25,6 +29,11 @@
     @include Size("mobile") {
       background: $gray0;
       margin: 30px 0;
+    }
+
+    @include Size("tablet") {
+      background: $gray0;
+      margin: 15px 0;
     }
   }
 

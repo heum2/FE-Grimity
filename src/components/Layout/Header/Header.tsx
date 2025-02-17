@@ -11,7 +11,7 @@ import { useMyData } from "@/api/users/getMe";
 import { useRouter } from "next/router";
 import { useToast } from "@/hooks/useToast";
 import Notifications from "@/components/Notifications/Notifications";
-import { isMobileState } from "@/states/isMobileState";
+import { isMobileState, isTabletState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { usePreventScroll } from "@/hooks/usePreventScroll";
 import Dropdown from "@/components/Dropdown/Dropdown";
@@ -36,6 +36,7 @@ export default function Header() {
   const { showToast } = useToast();
   const router = useRouter();
   const isMobile = useRecoilValue(isMobileState);
+  const isTablet = useRecoilValue(isTabletState);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
   const isUserPage = router.pathname.startsWith("/users/[id]");
@@ -76,7 +77,7 @@ export default function Header() {
 
   const handleNavClick = (item: { name: string; path: string }) => {
     setActiveNav(item.name);
-    if (isMobile) {
+    if (isMobile || isTablet) {
       setIsMenuOpen(false);
     }
 
@@ -85,7 +86,7 @@ export default function Header() {
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
       router.push(item.path);
-      if (isMobile) {
+      if (isMobile || isTablet) {
         setModal({ isOpen: false, type: null, data: null });
       }
     }
@@ -102,7 +103,7 @@ export default function Header() {
     localStorage.removeItem("access_token");
     localStorage.removeItem("user_id");
 
-    if (isMobile) {
+    if (isMobile || isTablet) {
       setIsMenuOpen(false);
     }
   };
@@ -223,7 +224,7 @@ export default function Header() {
               alt="logo"
             />
           </div>
-          {!isMobile && (
+          {!isMobile && !isTablet && (
             <nav className={styles.nav}>
               {navItems.map((item, index) => (
                 <div key={index} className={styles.navItem} onClick={() => handleNavClick(item)}>
@@ -242,7 +243,7 @@ export default function Header() {
           )}
         </div>
         <div className={styles.wrapper}>
-          {isMobile && !isLoggedIn && (
+          {(isMobile || isTablet) && !isLoggedIn && (
             <div
               className={styles.uploadBtn}
               onClick={() => setModal({ isOpen: true, type: "LOGIN" })}
@@ -253,7 +254,7 @@ export default function Header() {
             </div>
           )}
           <div className={styles.icons}>
-            {!isMobile ? (
+            {!isMobile && !isTablet ? (
               isSearchBarOpen ? (
                 <div className={styles.searchbarContainer}>
                   <input
@@ -307,7 +308,7 @@ export default function Header() {
               </div>
             )}
           </div>
-          {!isMobile ? (
+          {!isMobile && !isTablet ? (
             isLoggedIn && myData ? (
               <div className={styles.profileContact}>
                 <div className={styles.profileSection}>
@@ -425,8 +426,8 @@ export default function Header() {
                     </Link>
                   )}
                 </div>
-                {!isMobile && (
-                  <div className={styles.contactBtn} ref={notificationRef}>
+                {!isMobile && !isTablet && (
+                  <div className={styles.contactBtn} ref={contactRef}>
                     <Dropdown
                       isSide
                       trigger={

@@ -66,6 +66,12 @@
     gap: 0;
   }
 
+  @include Size("tablet") {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+
   .navItem {
     display: flex;
     align-items: center;
@@ -86,6 +92,12 @@
       @include Size("mobile") {
         padding: 10px 0;
         @include Title5;
+        color: $gray60;
+      }
+
+      @include Size("tablet") {
+        padding: 14px 0;
+        @include Title3;
         color: $gray60;
       }
     }
@@ -114,6 +126,9 @@
   @include Size("mobile") {
     gap: 0;
   }
+  @include Size("tablet") {
+    gap: 0;
+  }
 }
 
 .profileContact {
@@ -139,6 +154,10 @@
   cursor: pointer;
 
   @include Size("mobile") {
+    width: 40px;
+    height: 40px;
+  }
+  @include Size("tablet") {
     width: 40px;
     height: 40px;
   }
@@ -197,6 +216,10 @@
   gap: 8px;
 
   @include Size("mobile") {
+    gap: 0;
+    margin-left: 8px;
+  }
+  @include Size("tablet") {
     gap: 0;
     margin-left: 8px;
   }
@@ -280,6 +303,10 @@
     flex-direction: column;
     justify-content: space-between;
 
+    @include Size("tablet") {
+      width: 300px;
+    }
+
     &.open {
       transform: translateX(0);
     }
@@ -355,6 +382,10 @@
         background: none;
         border: none;
         padding: 10px 0;
+
+        @include Size("tablet") {
+          @include Sub2;
+        }
       }
 
       .mobileDropdown {

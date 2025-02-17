@@ -9,17 +9,13 @@ import router from "next/router";
 import { useMutation } from "react-query";
 import { FeedsRequest, FeedsResponse, postFeeds } from "@/api/feeds/postFeeds";
 import { AxiosError } from "axios";
-import { DragDropContext, Draggable, Droppable, DropResult } from "@hello-pangea/dnd";
+import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
 import DraggableImage from "./DraggableImage/DraggableImage";
 import Chip from "../Chip/Chip";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { modalState } from "@/states/modalState";
-import { isMobileState } from "@/states/isMobileState";
+import { isMobileState, isTabletState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
 
 export default function Upload() {
   const [images, setImages] = useState<{ name: string; originalName: string; url: string }[]>([]);
@@ -36,6 +32,7 @@ export default function Upload() {
   const hasUnsavedChangesRef = useRef(hasUnsavedChanges);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const isMobile = useRecoilValue(isMobileState);
+  const isTablet = useRecoilValue(isTabletState);
   useIsMobile();
 
   // 첫 번째 사진을 썸네일 기본값으로
@@ -383,7 +380,7 @@ export default function Upload() {
               </DragDropContext>
 
               {/* PC */}
-              {!isMobile && (
+              {!isMobile && !isTablet && (
                 <label htmlFor="file-upload" className={styles.uploadBtn}>
                   <div tabIndex={0}>
                     <Image src="/image/upload.svg" width={240} height={240} alt="그림 추가" />
@@ -398,8 +395,8 @@ export default function Upload() {
                   </div>
                 </label>
               )}
-              {/* 모바일: 이미지 없을 때 */}
-              {isMobile && images.length === 0 && (
+              {/* 모바일, 태블릿: 이미지 없을 때 */}
+              {(isMobile || isTablet) && images.length === 0 && (
                 <label htmlFor="file-upload" className={styles.uploadBtn}>
                   <div tabIndex={0}>
                     <Image src="/image/upload.svg" width={240} height={240} alt="그림 추가" />
@@ -424,8 +421,8 @@ export default function Upload() {
               onChange={(e) => e.target.files && uploadImagesToServer(e.target.files)}
             />
           </section>
-          {/* 모바일: 이미지가 하나 이상일 때 */}
-          {isMobile && images.length > 0 && (
+          {/* 모바일, 태블릿: 이미지가 하나 이상일 때 */}
+          {(isMobile || isTablet) && images.length > 0 && (
             <label htmlFor="file-upload" style={{ width: "100%" }}>
               <div className={styles.imageAddBtn}>
                 <IconComponent name="mobileAddImage" width={16} height={16} />

@@ -44,7 +44,7 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
     id,
     size: 10,
     page: currentPage,
-    enabled: isMyProfile && activeTab === "posts", // Add enabled option
+    enabled: isMyProfile && activeTab === "posts",
   });
 
   const {

@@ -27,6 +27,11 @@
       grid-column-gap: 0px;
       grid-row-gap: 0px;
     }
+
+    @include Size("tablet") {
+      grid-column-gap: 14px;
+      grid-row-gap: 12px;
+    }
   }
 
   .cardListDetail {

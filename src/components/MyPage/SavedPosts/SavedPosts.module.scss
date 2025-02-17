@@ -12,6 +12,11 @@
     margin-top: 68px;
     margin-bottom: 16px;
   }
+
+  @include Size("tablet") {
+    margin-top: 20px;
+    margin-bottom: 16px;
+  }
 }
 
 .pagination {

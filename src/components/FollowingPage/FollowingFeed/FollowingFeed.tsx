@@ -375,9 +375,11 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
               {details.tags.length > 0 && (
                 <div className={styles.tags}>
                   {details.tags.map((tag, index) => (
-                    <Chip key={index} size="m" type="filled-assistive">
-                      {tag}
-                    </Chip>
+                    <Link href={`/search?tab=feed&keyword=${tag}`} key={index}>
+                      <Chip size="m" type="filled-assistive">
+                        {tag}
+                      </Chip>
+                    </Link>
                   ))}
                 </div>
               )}

@@ -24,7 +24,7 @@ import BoardAll from "../BoardAll/BoardAll";
 import BoardPopular from "../BoardPopular/BoardPopular";
 import ShareBtn from "./ShareBtn/ShareBtn";
 import PostComment from "./Comment/Comment";
-import { isMobileState } from "@/states/isMobileState";
+import { isMobileState, isTabletState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
 export default function PostDetail({ id }: PostDetailProps) {
@@ -36,6 +36,7 @@ export default function PostDetail({ id }: PostDetailProps) {
   const [isSaved, setIsSaved] = useState(false);
   const { data: posts, isLoading, refetch } = usePostsDetails(id as string);
   const isMobile = useRecoilValue(isMobileState);
+  const isTablet = useRecoilValue(isTabletState);
   useIsMobile();
   const router = useRouter();
   const { pathname } = useRouter();
@@ -367,7 +368,7 @@ export default function PostDetail({ id }: PostDetailProps) {
           )}
           <BoardAll isDetail hasChip={true} />
           <div className={styles.boardPopular}>
-            <BoardPopular isDetail />
+            {isTablet ? <BoardPopular /> : <BoardPopular isDetail />}
           </div>
         </div>
       )}

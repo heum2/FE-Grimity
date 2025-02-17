@@ -27,6 +27,13 @@
   top: 100%;
   right: -100%;
   transform: translateY(10px);
+
+  @include Size("tablet") {
+    right: 0;
+    min-width: 350px;
+    height: 500px;
+    padding: 20px;
+  }
 }
 
 .notification {
@@ -37,6 +44,10 @@
 
   @include Size("mobile") {
     gap: 3px;
+  }
+
+  @include Size("tablet") {
+    gap: 6px;
   }
 
   .topSection {
@@ -53,6 +64,10 @@
       .title {
         @include Title3;
         color: $gray70;
+
+        @include Size("tablet") {
+          @include Title5;
+        }
       }
 
       .headerBtns {
@@ -109,6 +124,10 @@
       &::-webkit-scrollbar-thumb {
         display: none;
       }
+    }
+
+    @include Size("tablet") {
+      height: 365px;
     }
   }
 
@@ -216,6 +235,10 @@
       .title {
         @include Title3;
         color: $gray70;
+
+        @include Size("tablet") {
+          @include Title5;
+        }
       }
 
       .backButton {
@@ -284,6 +307,11 @@
         @include Sub4;
         color: $gray60;
         width: 100px;
+        flex-shrink: 0;
+
+        @include Size("tablet") {
+          width: 70px;
+        }
       }
 
       .optionsContainer {

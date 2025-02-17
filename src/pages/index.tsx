@@ -11,7 +11,7 @@ import { useRecoilValue } from "recoil";
 import MainBoard from "@/components/Layout/MainBoard/MainBoard";
 import { useScrollRestoration } from "@/hooks/useScrollRestoration";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { isMobileState } from "@/states/isMobileState";
+import { isMobileState, isTabletState } from "@/states/isMobileState";
 import BoardPopular from "@/components/Board/BoardPopular/BoardPopular";
 import IconComponent from "@/components/Asset/Icon";
 import Link from "next/link";
@@ -23,7 +23,7 @@ export default function Home() {
   const { isLoggedIn } = useRecoilValue(authState);
   const { restoreScrollPosition } = useScrollRestoration("home-scroll");
   const isMobile = useRecoilValue(isMobileState);
-
+  const isTablet = useRecoilValue(isTabletState);
   useIsMobile();
 
   useEffect(() => {
@@ -41,7 +41,7 @@ export default function Home() {
     <>
       <InitialPageMeta title={OGTitle} url={OGUrl} />
       <div className={styles.container}>
-        {!isMobile && (
+        {!isMobile && !isTablet && (
           <>
             <section className={styles.FeedSection}>
               <Ranking />
@@ -63,8 +63,7 @@ export default function Home() {
             </section>
           </>
         )}
-
-        {isMobile && (
+        {(isMobile || isTablet) && (
           <>
             <section className={styles.MobileSection}>
               <Ranking />
@@ -75,7 +74,7 @@ export default function Home() {
                   <div className={styles.bar} />
                 </>
               )}
-              <BoardPopular isDetail />
+              {isMobile ? <BoardPopular isDetail /> : <BoardPopular />}
               <div className={styles.bar} />
               <NewFeed />
             </section>

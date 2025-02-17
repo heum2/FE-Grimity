@@ -17,7 +17,7 @@ import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
 import DraggableImage from "../DraggableImage/DraggableImage";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { modalState } from "@/states/modalState";
-import { isMobileState } from "@/states/isMobileState";
+import { isMobileState, isTabletState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
 export default function EditFeeds({ id }: EditFeedsProps) {
@@ -37,6 +37,7 @@ export default function EditFeeds({ id }: EditFeedsProps) {
   const hasUnsavedChangesRef = useRef(hasUnsavedChanges);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const isMobile = useRecoilValue(isMobileState);
+  const isTablet = useRecoilValue(isTabletState);
   useIsMobile();
 
   // 첫 번째 사진을 썸네일 기본값으로
@@ -405,7 +406,7 @@ export default function EditFeeds({ id }: EditFeedsProps) {
                 </Droppable>
               </DragDropContext>
               {/* PC */}
-              {!isMobile && (
+              {!isMobile && !isTablet && (
                 <label htmlFor="file-upload" className={styles.uploadBtn}>
                   <div tabIndex={0}>
                     <Image src="/image/upload.svg" width={240} height={240} alt="그림 추가" />
@@ -420,8 +421,8 @@ export default function EditFeeds({ id }: EditFeedsProps) {
                   </div>
                 </label>
               )}
-              {/* 모바일: 이미지 없을 때 */}
-              {isMobile && images.length === 0 && (
+              {/* 모바일, 태블릿: 이미지 없을 때 */}
+              {(isMobile || isTablet) && images.length === 0 && (
                 <label htmlFor="file-upload" className={styles.uploadBtn}>
                   <div tabIndex={0}>
                     <Image src="/image/upload.svg" width={240} height={240} alt="그림 추가" />
@@ -446,8 +447,8 @@ export default function EditFeeds({ id }: EditFeedsProps) {
               onChange={(e) => e.target.files && uploadImagesToServer(e.target.files)}
             />
           </section>
-          {/* 모바일: 이미지가 하나 이상일 때 */}
-          {isMobile && images.length > 0 && (
+          {/* 모바일, 태블릿: 이미지가 하나 이상일 때 */}
+          {(isMobile || isTablet) && images.length > 0 && (
             <label htmlFor="file-upload" style={{ width: "100%" }}>
               <div className={styles.imageAddBtn}>
                 <IconComponent name="mobileAddImage" width={16} height={16} />

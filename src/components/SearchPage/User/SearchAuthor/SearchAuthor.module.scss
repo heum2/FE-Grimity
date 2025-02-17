@@ -22,6 +22,10 @@
     @include Size("mobile") {
       @include Sub2;
     }
+
+    @include Size("tablet") {
+      @include Title4;
+    }
   }
 
   .sort {

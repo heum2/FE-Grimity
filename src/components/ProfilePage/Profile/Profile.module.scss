@@ -65,6 +65,11 @@
       bottom: 16px;
     }
 
+    @include Size("tablet") {
+      right: 24px;
+      bottom: 24px;
+    }
+
     .coverEditBtn {
       border: 1px solid $gray30;
       color: $gray70;
@@ -105,6 +110,10 @@
     @include Size("mobile") {
       margin-top: calc(240px - 140px);
     }
+
+    @include Size("tablet") {
+      margin-top: calc(240px - 15px);
+    }
   }
 
   .infoContainerDefault {
@@ -113,6 +122,10 @@
 
     @include Size("mobile") {
       margin-top: calc(240px - 140px);
+    }
+
+    @include Size("tablet") {
+      margin-top: calc(240px - 50px);
     }
   }
 

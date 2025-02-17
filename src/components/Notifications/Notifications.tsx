@@ -311,8 +311,8 @@ export default function Notifications({ onClose }: NotificationsProps) {
 
   return (
     <div
-      onClick={(e) => e.stopPropagation()}
-      data-setting-button="true"
+      // onClick={(e) => e.stopPropagation()}
+      // data-setting-button="true"
       className={isMobile ? styles.mobileContainer : styles.container}
     >
       {content}

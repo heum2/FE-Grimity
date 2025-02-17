@@ -34,17 +34,44 @@
     }
   }
 
+  .tablet {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .title {
+    overflow: hidden;
+    color: $gray80;
+    @include Sub4;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+
+  .profileContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .informationContainer {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .createdAt {
+        @include Label2;
+        color: $gray50;
+        @include Drag;
+      }
+    }
+  }
+
   .infoContainer {
     display: flex;
     flex-direction: column;
     gap: 4px;
-
-    .title {
-      overflow: hidden;
-      color: $gray80;
-      text-overflow: ellipsis;
-      @include Sub4;
-    }
 
     .content {
       overflow: hidden;
@@ -56,24 +83,6 @@
       @include Body1;
       min-height: 24px;
       margin-top: 4px;
-    }
-
-    .profileContainer {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-
-      .informationContainer {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-
-        .createdAt {
-          @include Label2;
-          color: $gray50;
-          @include Drag;
-        }
-      }
     }
 
     .countContainer {
@@ -95,24 +104,29 @@
         color: $gray50;
       }
     }
+  }
 
-    .profile {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+  .profile {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 
-      .profileImage {
-        object-fit: cover;
-        border-radius: 50%;
-        overflow: hidden;
-        border: 1px solid $gray30;
-        @include Drag;
-      }
+    .profileImage {
+      object-fit: cover;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 1px solid $gray30;
+      @include Drag;
+    }
 
-      .author {
-        @include Label1;
-        color: $gray60;
-      }
+    .author {
+      @include Label1;
+      color: $gray60;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
     }
   }
 

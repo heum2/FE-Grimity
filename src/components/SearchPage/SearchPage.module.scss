@@ -11,6 +11,10 @@
     padding-top: 16px;
   }
 
+  @include Size("tablet") {
+    padding-top: 32px;
+  }
+
   .center {
     display: flex;
     flex-direction: column;
@@ -28,6 +32,10 @@
 
       @include Size("mobile") {
         margin-bottom: 30px;
+      }
+
+      @include Size("tablet") {
+        margin-bottom: 40px;
       }
 
       .recommend {

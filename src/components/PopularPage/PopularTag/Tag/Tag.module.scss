@@ -8,6 +8,10 @@
     width: 127px;
   }
 
+  @include Size("tablet") {
+    width: 150px;
+  }
+
   .imageWrapper {
     width: 100%;
     aspect-ratio: 3 / 4;

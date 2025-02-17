@@ -19,6 +19,10 @@
     @include Size("mobile") {
       padding-top: 16px;
     }
+
+    @include Size("tablet") {
+      padding-top: 16px;
+    }
   }
 
   .contentSection {
@@ -31,6 +35,10 @@
 
     @include Size("mobile") {
       gap: 40px;
+    }
+
+    @include Size("tablet") {
+      gap: 50px;
     }
   }
 }

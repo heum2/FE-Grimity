@@ -16,7 +16,7 @@ import { usePostsDetails } from "@/api/posts/getPostsId";
 import { useRecoilState } from "recoil";
 import { modalState } from "@/states/modalState";
 import { useRecoilValue } from "recoil";
-import { isMobileState } from "@/states/isMobileState";
+import { isMobileState, isTabletState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
 const Editor = dynamic(() => import("@tinymce/tinymce-react").then((mod) => mod.Editor), {
@@ -26,6 +26,7 @@ const Editor = dynamic(() => import("@tinymce/tinymce-react").then((mod) => mod.
 
 export default function EditPost({ id }: EditPostProps) {
   const isMobile = useRecoilValue(isMobileState);
+  const isTablet = useRecoilValue(isTabletState);
   useIsMobile();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -216,7 +217,7 @@ export default function EditPost({ id }: EditPostProps) {
               licenseKey="gpl"
               onInit={(evt, editor) => (editorRef.current = editor)}
               init={{
-                height: isMobile ? 500 : 600,
+                height: isMobile ? 500 : isTablet ? 700 : 600,
                 resize: "both",
                 menubar: false,
                 plugins: ["image", "link", "autolink"],
