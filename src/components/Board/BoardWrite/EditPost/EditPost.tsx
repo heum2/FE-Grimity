@@ -228,6 +228,7 @@ export default function EditPost({ id }: EditPostProps) {
                   body { 
                     font-family: Pretendard, sans-serif; 
                     font-size: 14px; 
+                    line-height: 11.2px;
                   }
                   img { 
                     max-width: 100%; 

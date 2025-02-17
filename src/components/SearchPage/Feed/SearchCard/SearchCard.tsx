@@ -61,17 +61,19 @@ export default function SearchCard({
           />
         </Link>
       </div>
-      <div className={styles.chips}>
-        <Swiper spaceBetween={8} slidesPerView="auto" grabCursor={true} className={styles.swiper}>
-          {tags.map((tag: string, index: number) => (
-            <SwiperSlide key={index} className={styles.slide}>
-              <Link href={`/search?tab=feed&keyword=${tag}`}>
-                <div className={styles.chip}>{tag}</div>
-              </Link>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
+      {tags.length > 0 && (
+        <div className={styles.chips}>
+          <Swiper spaceBetween={8} slidesPerView="auto" grabCursor={true} className={styles.swiper}>
+            {tags.map((tag: string, index: number) => (
+              <SwiperSlide key={index} className={styles.slide}>
+                <Link href={`/search?tab=feed&keyword=${tag}`}>
+                  <div className={styles.chip}>{tag}</div>
+                </Link>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      )}
       <div className={styles.infoContainer}>
         <Link href={`/feeds/${id}`}>
           <h3 className={styles.title}>{title}</h3>

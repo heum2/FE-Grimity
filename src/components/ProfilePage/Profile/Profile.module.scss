@@ -17,6 +17,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    overflow-x: hidden;
   }
 
   .backgroundDefaultImageContainer {
@@ -27,6 +28,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    width: 100vw;
+    overflow-x: hidden;
   }
 
   .backgroundDefaultImage {
@@ -108,7 +111,7 @@
     justify-content: space-between;
 
     @include Size("mobile") {
-      margin-top: calc(240px - 140px);
+      margin-top: calc(240px - 140px) !important;
     }
 
     @include Size("tablet") {
@@ -121,7 +124,7 @@
     margin-top: calc(264px - 73px);
 
     @include Size("mobile") {
-      margin-top: calc(240px - 140px);
+      margin-top: calc(240px - 140px) !important;
     }
 
     @include Size("tablet") {

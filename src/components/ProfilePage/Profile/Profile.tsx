@@ -286,7 +286,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                 height={isMobile ? 240 : isTablet ? 300 : 400}
                 alt="backgroundImage"
                 style={{
-                  width: "100%",
+                  width: "100vw",
                   height: isMobile ? "240px" : isTablet ? "300px" : "400px",
                   objectFit: "cover",
                 }}
@@ -337,7 +337,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                 height={isMobile ? 240 : 264}
                 alt="backgroundImage"
                 style={{
-                  width: "100%",
+                  width: "100vw",
                   height: isMobile ? "240px" : "264px",
                   objectFit: "cover",
                 }}

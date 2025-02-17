@@ -303,6 +303,7 @@ export default function Upload() {
       }
 
       setTag("");
+      if (event.nativeEvent.isComposing) return;
     }
   };
 
@@ -380,7 +381,7 @@ export default function Upload() {
               </DragDropContext>
 
               {/* PC */}
-              {!isMobile && !isTablet && (
+              {!isMobile && !isTablet && images.length < 10 && (
                 <label htmlFor="file-upload" className={styles.uploadBtn}>
                   <div tabIndex={0}>
                     <Image src="/image/upload.svg" width={240} height={240} alt="그림 추가" />
@@ -396,7 +397,7 @@ export default function Upload() {
                 </label>
               )}
               {/* 모바일, 태블릿: 이미지 없을 때 */}
-              {(isMobile || isTablet) && images.length === 0 && (
+              {(isMobile || isTablet) && images.length === 0 && images.length < 10 && (
                 <label htmlFor="file-upload" className={styles.uploadBtn}>
                   <div tabIndex={0}>
                     <Image src="/image/upload.svg" width={240} height={240} alt="그림 추가" />
@@ -422,7 +423,7 @@ export default function Upload() {
             />
           </section>
           {/* 모바일, 태블릿: 이미지가 하나 이상일 때 */}
-          {(isMobile || isTablet) && images.length > 0 && (
+          {(isMobile || isTablet) && images.length > 0 && images.length < 10 && (
             <label htmlFor="file-upload" style={{ width: "100%" }}>
               <div className={styles.imageAddBtn}>
                 <IconComponent name="mobileAddImage" width={16} height={16} />
