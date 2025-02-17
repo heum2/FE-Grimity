@@ -1,4 +1,5 @@
 import BASE_URL from "@/constants/baseurl";
+import axios from "axios";
 import { useQuery } from "react-query";
 
 export interface DetailsResponse {
@@ -43,8 +44,13 @@ export async function getDetails(id: string): Promise<DetailsResponse> {
 
     return updatedData;
   } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.response?.status === 404) {
+        throw new Error("DELETED_FEED");
+      }
+    }
     console.error("Error fetching details:", error);
-    throw new Error("Failed to fetch details");
+    throw error;
   }
 }
 

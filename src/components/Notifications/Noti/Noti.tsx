@@ -5,8 +5,15 @@ import { timeAgo } from "@/utils/timeAgo";
 import { deleteNotificationsId } from "@/api/notifications/deleteNotifications";
 import Image from "next/image";
 import { putNotificationsId } from "@/api/notifications/putNotifications";
+import { useToast } from "@/hooks/useToast";
+import axios from "axios";
+import { useRouter } from "next/router";
+import BASE_URL from "@/constants/baseurl";
 
 export default function Noti({ notification, onClose, onRefetch }: NotiProps) {
+  const { showToast } = useToast();
+  const router = useRouter();
+
   const renderMessage = () => {
     switch (notification.data.type) {
       case "FOLLOW":
@@ -96,9 +103,28 @@ export default function Noti({ notification, onClose, onRefetch }: NotiProps) {
 
   const handleNotificationClick = async (e: React.MouseEvent) => {
     e.preventDefault();
-    await handleReadNotification();
-    onClose();
-    window.location.href = renderId();
+
+    try {
+      await BASE_URL.head(`${renderId()}`);
+      await handleReadNotification();
+      router.push(renderId());
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 404) {
+        if (notification.data.type === "FOLLOW") {
+          showToast("탈퇴한 회원입니다.", "warning");
+        } else {
+          showToast("삭제된 게시물입니다.", "warning");
+        }
+        try {
+          await handleDeleteNotification();
+          onRefetch();
+        } catch (deleteError) {
+          console.error("알림 삭제 실패:", deleteError);
+        }
+      }
+    } finally {
+      onClose();
+    }
   };
 
   return (

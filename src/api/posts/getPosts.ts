@@ -1,4 +1,5 @@
 import BASE_URL from "@/constants/baseurl";
+import axios from "axios";
 import { useQuery } from "react-query";
 
 export interface PostsLatestRequest {
@@ -38,6 +39,11 @@ export async function getPostsLatest({
     });
     return response.data;
   } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.response?.status === 404) {
+        throw new Error("DELETED_POST");
+      }
+    }
     console.error("Error fetching postsLatest:", error);
     throw new Error("Failed to fetch postsLatest");
   }
