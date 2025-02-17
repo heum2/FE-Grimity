@@ -137,6 +137,17 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
     }
   };
 
+  const getPageRange = (currentPage: number, totalPages: number) => {
+    let start = Math.max(1, currentPage - 4);
+    let end = Math.min(start + 9, totalPages);
+
+    if (end === totalPages) {
+      start = Math.max(1, end - 9);
+    }
+
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  };
+
   const handleSortChange = (option: SortOption) => {
     setSortBy(option);
   };
@@ -264,13 +275,13 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
                       >
                         <Image src="/icon/pagination-left.svg" width={24} height={24} alt="" />
                       </button>
-                      {Array.from({ length: totalPages }, (_, index) => (
+                      {getPageRange(currentPage, totalPages).map((pageNum) => (
                         <button
-                          key={index + 1}
-                          className={currentPage === index + 1 ? styles.active : ""}
-                          onClick={() => handlePageChange(index + 1)}
+                          key={pageNum}
+                          className={currentPage === pageNum ? styles.active : ""}
+                          onClick={() => handlePageChange(pageNum)}
                         >
-                          {index + 1}
+                          {pageNum}
                         </button>
                       ))}
                       <button

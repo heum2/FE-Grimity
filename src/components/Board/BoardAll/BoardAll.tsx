@@ -7,19 +7,12 @@ import Button from "@/components/Button/Button";
 import IconComponent from "@/components/Asset/Icon";
 import AllCard from "./AllCard/AllCard";
 import { useEffect, useState } from "react";
-import {
-  getPostsLatest,
-  getPostsNotices,
-  PostsLatest,
-  usePostsLatest,
-  usePostsNotices,
-} from "@/api/posts/getPosts";
+import { PostsLatest, usePostsLatest, usePostsNotices } from "@/api/posts/getPosts";
 import { useRecoilValue } from "recoil";
 import { authState } from "@/states/authState";
 import { BoardAllProps } from "./BoardAll.types";
 import { useToast } from "@/hooks/useToast";
 import Dropdown from "@/components/Dropdown/Dropdown";
-import { getPostSearch } from "@/api/posts/getPostsSearch";
 import { isMobileState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import Loader from "@/components/Layout/Loader/Loader";
@@ -92,6 +85,17 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
     if (page >= 1 && page <= totalPages) {
       router.push({ query: { ...query, page } });
     }
+  };
+
+  const getPageRange = (currentPage: number, totalPages: number) => {
+    let start = Math.max(1, currentPage - 4);
+    let end = Math.min(start + 9, totalPages);
+
+    if (end === totalPages) {
+      start = Math.max(1, end - 9);
+    }
+
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
   };
 
   const handleSearch = () => {
@@ -292,13 +296,13 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
         >
           <Image src="/icon/pagination-left.svg" width={24} height={24} alt="" />
         </button>
-        {Array.from({ length: totalPages }, (_, index) => (
+        {getPageRange(currentPage, totalPages).map((pageNum) => (
           <button
-            key={index + 1}
-            className={currentPage === index + 1 ? styles.active : ""}
-            onClick={() => handlePageChange(index + 1)}
+            key={pageNum}
+            className={currentPage === pageNum ? styles.active : ""}
+            onClick={() => handlePageChange(pageNum)}
           >
-            {index + 1}
+            {pageNum}
           </button>
         ))}
         <button
