@@ -26,7 +26,6 @@ import {
 } from "@/api/posts-comments/getPostsComments";
 import { PostCommentProps, PostCommentWriter } from "./Comment.types";
 import { isMobileState } from "@/states/isMobileState";
-import { useIsMobile } from "@/hooks/useIsMobile";
 import { useRouter } from "next/router";
 
 type ToastType = "success" | "error" | "warning" | "information";
@@ -319,15 +318,24 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
               <div className={styles.writerReply}>
                 <div className={styles.writerLeft}>
                   <div className={styles.writerCreatedAt}>
-                    <Link href={`/users/${reply.writer?.id}`}>
-                      <div className={styles.writerName}>
-                        {reply.writer?.name}
-                        {reply.writer?.id === postWriterId && (
-                          <div className={styles.feedWriter}>작성자</div>
-                        )}
-                      </div>
-                    </Link>
-                    <p className={styles.createdAt}>{timeAgo(reply.createdAt)}</p>
+                    {reply.writer ? (
+                      <>
+                        <Link href={`/users/${reply.writer?.id}`}>
+                          <div className={styles.writerName}>
+                            {reply.writer?.name}
+                            {reply.writer?.id === postWriterId && (
+                              <div className={styles.feedWriter}>작성자</div>
+                            )}
+                          </div>
+                        </Link>
+                        <p className={styles.createdAt}>{timeAgo(reply.createdAt)}</p>
+                      </>
+                    ) : (
+                      <>
+                        <div className={styles.writerName}>(탈퇴한 유저)</div>
+                        <p className={styles.createdAt}>{timeAgo(reply.createdAt)}</p>
+                      </>
+                    )}
                   </div>
                   <div className={styles.commentText}>
                     {reply.mentionedUser && (
@@ -356,7 +364,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
                       />
                       {reply.likeCount}
                     </div>
-                    {!reply.isDeleted && (
+                    {!reply.isDeleted && reply.writer && (
                       <p
                         onClick={(e) => {
                           e.stopPropagation();
@@ -429,7 +437,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
             <div className={styles.writerReply}>
               <div className={styles.writerLeft}>
                 <div className={styles.writerCreatedAt}>
-                  {comment.writer && (
+                  {comment.writer ? (
                     <>
                       <Link href={`/users/${comment.writer.id}`}>
                         <div className={styles.writerName}>
@@ -441,9 +449,16 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
                       </Link>
                       <p className={styles.createdAt}>{timeAgo(comment.createdAt)}</p>
                     </>
+                  ) : comment.isDeleted ? (
+                    <p className={styles.deleteComment}>삭제된 댓글입니다.</p>
+                  ) : (
+                    <>
+                      <div className={styles.writerName}>(탈퇴한 유저)</div>
+                      <p className={styles.createdAt}>{timeAgo(comment.createdAt)}</p>
+                    </>
                   )}
                 </div>
-                {comment.writer ? (
+                {!comment.isDeleted && (
                   <>
                     <p className={styles.commentText}>{comment.content}</p>
                     <div className={styles.likeReplyBtn}>
@@ -467,7 +482,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
                         />
                         {comment.likeCount}
                       </div>
-                      {!comment.isDeleted && (
+                      {!comment.isDeleted && comment.writer && (
                         <p
                           onClick={(e) => {
                             e.stopPropagation();
@@ -482,8 +497,6 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
                       )}
                     </div>
                   </>
-                ) : (
-                  <p className={styles.deleteComment}>삭제된 댓글입니다.</p>
                 )}
               </div>
               {isLoggedIn && comment.writer && (
