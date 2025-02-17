@@ -517,31 +517,29 @@ export default function Header() {
                       <div className={styles.mobileProfile}>
                         <div className={styles.bar} />
                         <div className={styles.profileSubmenu}>
-                          <Link href={`/users/${myData.id}`}>
-                            <div className={styles.mobileMyInfo}>
-                              {myData.image !== "https://image.grimity.com/null" ? (
-                                <Image
-                                  src={myData.image}
-                                  width={32}
-                                  height={32}
-                                  alt="프로필 이미지"
-                                  className={styles.profileImage}
-                                  quality={50}
-                                  style={{ objectFit: "cover" }}
-                                />
-                              ) : (
-                                <Image
-                                  src="/image/default.svg"
-                                  width={32}
-                                  height={32}
-                                  alt="프로필 이미지"
-                                  className={styles.profileImage}
-                                  quality={50}
-                                  style={{ objectFit: "cover" }}
-                                />
-                              )}
-                              <span className={styles.name}>{myData.name}</span>
-                            </div>
+                          <Link href={`/users/${myData.id}`} className={styles.mobileMyInfo}>
+                            {myData.image !== "https://image.grimity.com/null" ? (
+                              <Image
+                                src={myData.image}
+                                width={32}
+                                height={32}
+                                alt="프로필 이미지"
+                                className={styles.profileImage}
+                                quality={50}
+                                style={{ objectFit: "cover" }}
+                              />
+                            ) : (
+                              <Image
+                                src="/image/default.svg"
+                                width={32}
+                                height={32}
+                                alt="프로필 이미지"
+                                className={styles.profileImage}
+                                quality={50}
+                                style={{ objectFit: "cover" }}
+                              />
+                            )}
+                            <span className={styles.name}>{myData.name}</span>
                           </Link>
                           <div
                             className={styles.submenu}
