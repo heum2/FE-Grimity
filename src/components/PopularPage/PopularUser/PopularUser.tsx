@@ -8,8 +8,10 @@ import { useRecoilValue } from "recoil";
 import { isMobileState } from "@/states/isMobileState";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import { authState } from "@/states/authState";
 
 export default function PopularUser() {
+  const { user_id } = useRecoilValue(authState);
   const { data, isLoading } = usePopular();
   const [randomUsers, setRandomUsers] = useState<any[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -43,10 +45,11 @@ export default function PopularUser() {
 
   useEffect(() => {
     if (data) {
-      const randomData = [...data].sort(() => Math.random() - 0.5).slice(0, 5);
+      const filteredData = data.filter((user) => user.id !== user_id); // 내 계정 제외
+      const randomData = [...filteredData].sort(() => Math.random() - 0.5).slice(0, 5);
       setRandomUsers(randomData);
     }
-  }, [data]);
+  }, [data, user_id]);
 
   if (isLoading) return <Loader />;
 

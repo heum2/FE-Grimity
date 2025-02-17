@@ -10,6 +10,7 @@ import { deleteFollow } from "@/api/users/deleteIdFollow";
 import IconComponent from "@/components/Asset/Icon";
 import { useRecoilValue } from "recoil";
 import { isMobileState } from "@/states/isMobileState";
+import { authState } from "@/states/authState";
 
 export default function RecommendCard({
   id,
@@ -20,6 +21,7 @@ export default function RecommendCard({
   isFollowing: initialIsFollowing,
   thumbnails,
 }: PopularResponse) {
+  const { user_id } = useRecoilValue(authState);
   const { showToast } = useToast();
   const [isFollowing, setIsFollowing] = useState(initialIsFollowing);
   const [followerCount, setFollowerCount] = useState(initialFollowerCount);
@@ -114,7 +116,7 @@ export default function RecommendCard({
           </div>
         </Link>
         <p className={styles.description}>{description}</p>
-        {isFollowing ? (
+        {id !== user_id && isFollowing ? (
           <Button size="m" type="outlined-assistive" onClick={handleUnfollowClick}>
             팔로잉
           </Button>

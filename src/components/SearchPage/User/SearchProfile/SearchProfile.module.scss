@@ -23,6 +23,7 @@
     object-fit: cover;
     overflow: hidden;
     @include Drag;
+    position: relative;
 
     @include Size("mobile") {
       height: 130px;
@@ -30,18 +31,32 @@
   }
 
   .cover {
-    object-fit: cover;
-    object-position: center;
+    border-radius: 12px 12px 0 0;
+    overflow: hidden;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    @include Size("mobile") {
+      height: 130px;
+    }
   }
 
   .profile {
     width: 100%;
+    height: 220px;
     padding: 30px;
     display: flex;
     flex-direction: column;
     gap: 20px;
     position: absolute;
-    top: 125px;
+    // top: 125px;
+    bottom: 60px;
 
     @include Size("mobile") {
       top: 130px;

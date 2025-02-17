@@ -10,6 +10,8 @@ import { deleteFollow } from "@/api/users/deleteIdFollow";
 import { putFollow } from "@/api/users/putIdFollow";
 import { useToast } from "@/hooks/useToast";
 import Button from "@/components/Button/Button";
+import { isMobileState } from "@/states/isMobileState";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 export default function SearchProfile({
   id,
@@ -20,10 +22,12 @@ export default function SearchProfile({
   followerCount: initialFollowerCount,
   isFollowing: initialIsFollowing,
 }: SearchProfileProps) {
-  const { isLoggedIn } = useRecoilValue(authState);
+  const { isLoggedIn, user_id } = useRecoilValue(authState);
   const { showToast } = useToast();
   const [isFollowing, setIsFollowing] = useState(initialIsFollowing);
   const [followerCount, setFollowerCount] = useState(initialFollowerCount);
+  const isMobile = useRecoilValue(isMobileState);
+  useIsMobile();
 
   const handleFollowClick = async () => {
     try {
@@ -48,26 +52,35 @@ export default function SearchProfile({
   return (
     <div className={styles.container}>
       <Link href={`/users/${id}`}>
-        {backgroundImage !== "https://image.grimity.com/null" ? (
-          <div className={styles.coverContainer}>
+        <div className={styles.cover}>
+          {backgroundImage !== "https://image.grimity.com/null" ? (
             <Image
               src={backgroundImage}
               alt="배경이미지"
-              layout="responsive"
-              width={640}
-              height={178}
-              className={styles.cover}
+              // className={styles.cover}
+              width={630}
+              height={isMobile ? 130 : 178}
+              style={{
+                width: "100%",
+                height: isMobile ? "130px" : "178px",
+                objectFit: "cover",
+              }}
             />
-          </div>
-        ) : (
-          <Image
-            src="/image/search-default-cover.svg"
-            width={640}
-            height={178}
-            alt="배경이미지"
-            className={styles.coverContainer}
-          />
-        )}
+          ) : (
+            <Image
+              src="/image/search-default-cover.svg"
+              alt="배경이미지"
+              // className={styles.cover}
+              width={630}
+              height={isMobile ? 130 : 178}
+              style={{
+                width: "100%",
+                height: isMobile ? "130px" : "178px",
+                objectFit: "cover",
+              }}
+            />
+          )}
+        </div>
       </Link>
       <div className={styles.profile}>
         <Link href={`/users/${id}`}>
@@ -94,6 +107,7 @@ export default function SearchProfile({
               </div>
             </div>
             {isLoggedIn &&
+              id !== user_id &&
               (isFollowing ? (
                 <Button size="s" type="outlined-assistive" onClick={handleUnfollowClick}>
                   팔로잉
