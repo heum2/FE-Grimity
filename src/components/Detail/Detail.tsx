@@ -74,6 +74,19 @@ export default function Detail({ id }: DetailProps) {
     incrementViewCount();
   }, [id, viewCounted]);
 
+  useEffect(() => {
+    if (overlayImage) {
+      history.pushState(null, "", location.href);
+      const handlePopstate = () => {
+        setOverlayImage(null);
+      };
+      window.addEventListener("popstate", handlePopstate);
+      return () => {
+        window.removeEventListener("popstate", handlePopstate);
+      };
+    }
+  }, [overlayImage]);
+
   if (isLoading) {
     return <Loader />;
   }
@@ -179,12 +192,6 @@ export default function Detail({ id }: DetailProps) {
       });
     }
   };
-
-  const handleClose = () => {
-    setOverlayImage(null);
-  };
-
-  useCustomBack(handleClose);
 
   return (
     <div className={styles.container}>

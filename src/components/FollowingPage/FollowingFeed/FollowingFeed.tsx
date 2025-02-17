@@ -60,6 +60,19 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
   usePreventScroll(!!overlayImage);
 
   useEffect(() => {
+    if (overlayImage) {
+      history.pushState(null, "", location.href);
+      const handlePopstate = () => {
+        setOverlayImage(null);
+      };
+      window.addEventListener("popstate", handlePopstate);
+      return () => {
+        window.removeEventListener("popstate", handlePopstate);
+      };
+    }
+  }, [overlayImage]);
+
+  useEffect(() => {
     if (!details) return;
     setIsLiked(details.isLike ?? false);
     setCurrentLikeCount(details.likeCount ?? 0);
