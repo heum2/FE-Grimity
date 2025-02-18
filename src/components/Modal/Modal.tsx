@@ -1,15 +1,17 @@
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import styles from "./Modal.module.scss";
 import { modalState } from "@/states/modalState";
-import Login from "./Login/Login";
-import Nickname from "./Nickname/Nickname";
 import { usePreventScroll } from "@/hooks/usePreventScroll";
 import IconComponent from "../Asset/Icon";
+import Button from "../Button/Button";
+import Login from "./Login/Login";
+import Nickname from "./Nickname/Nickname";
 import Join from "./Join/Join";
 import ProfileEdit from "./ProfileEdit/ProfileEdit";
 import Background from "./Background/Background";
 import Follow from "./Follow/Follow";
-import Button from "../Button/Button";
 import Share from "./Share/Share";
 import UploadModal from "./Upload/Upload";
 import SharePost from "./SharePost/SharePost";
@@ -18,13 +20,43 @@ import Report from "./Report/Report";
 
 export default function Modal() {
   const [modal, setModal] = useRecoilState(modalState);
+  const router = useRouter();
 
   usePreventScroll(modal.isOpen);
-  if (!modal.isOpen) return null;
+
+  useEffect(() => {
+    if (modal.isOpen && modal.isFill) {
+      window.history.pushState({ isModalOpen: true }, "", window.location.href);
+    }
+
+    const handlePopState = () => {
+      setModal({ isOpen: false, type: null, data: null });
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [modal.isOpen, setModal]);
+
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setModal({ isOpen: false, type: null, data: null });
+    };
+
+    router.events.on("routeChangeStart", handleRouteChange);
+
+    return () => {
+      router.events.off("routeChangeStart", handleRouteChange);
+    };
+  }, [router, setModal]);
 
   const closeModal = () => {
     setModal({ isOpen: false, type: null, data: null, isComfirm: false });
   };
+
+  if (!modal.isOpen) return null;
 
   const renderModalContent = () => {
     switch (modal.type) {

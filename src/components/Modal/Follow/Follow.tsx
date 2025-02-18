@@ -10,7 +10,6 @@ import { deleteMyFollowers } from "@/api/users/deleteMeFollowers";
 import { deleteFollow } from "@/api/users/deleteIdFollow";
 import { useToast } from "@/hooks/useToast";
 import { FollowProps } from "./Follow.types";
-import { useCustomBack } from "@/hooks/useCustomBack";
 import { isMobileState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
@@ -129,12 +128,6 @@ export default function Follow({ initialTab }: FollowProps) {
       showToast("삭제에 실패했습니다.", "error");
     }
   };
-
-  const handleClose = () => {
-    setModal({ isOpen: false, type: null, data: null });
-  };
-
-  useCustomBack(handleClose);
 
   return (
     <div className={styles.container}>

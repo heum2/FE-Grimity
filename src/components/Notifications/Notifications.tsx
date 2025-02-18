@@ -11,7 +11,6 @@ import { getSubscribe, putSubscribe, SubscriptionType } from "@/api/users/subscr
 import { useRecoilValue } from "recoil";
 import { isMobileState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { useCustomBack } from "@/hooks/useCustomBack";
 
 const ALL_SUBSCRIPTION_TYPES: SubscriptionType[] = [
   "FOLLOW",
@@ -224,8 +223,6 @@ export default function Notifications({ onClose }: NotificationsProps) {
     })
     .slice(0, 50);
 
-  useCustomBack(onClose);
-
   const renderNotificationList = () => (
     <div className={styles.notification}>
       <section className={styles.topSection}>
@@ -309,13 +306,5 @@ export default function Notifications({ onClose }: NotificationsProps) {
     </>
   );
 
-  return (
-    <div
-      // onClick={(e) => e.stopPropagation()}
-      // data-setting-button="true"
-      className={isMobile ? styles.mobileContainer : styles.container}
-    >
-      {content}
-    </div>
-  );
+  return <div className={isMobile ? styles.mobileContainer : styles.container}>{content}</div>;
 }

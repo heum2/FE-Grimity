@@ -65,6 +65,22 @@ export default function Header() {
     name = "bell";
   }
 
+  useEffect(() => {
+    if (showNotifications) {
+      window.history.pushState({ isNotificationOpen: true }, "", window.location.href);
+
+      function handlePopState(event: PopStateEvent) {
+        setShowNotifications(false);
+      }
+
+      window.addEventListener("popstate", handlePopState);
+
+      return () => {
+        window.removeEventListener("popstate", handlePopState);
+      };
+    }
+  }, [isMobile, showNotifications]);
+
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(email);
@@ -86,9 +102,6 @@ export default function Header() {
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
       router.push(item.path);
-      if (isMobile || isTablet) {
-        setModal({ isOpen: false, type: null, data: null });
-      }
     }
   };
 
