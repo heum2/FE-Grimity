@@ -4,13 +4,15 @@ import { useMyFollower, useMyFollowing } from "@/api/users/getMeFollow";
 import Image from "next/image";
 import Button from "@/components/Button/Button";
 import { useRouter } from "next/router";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { modalState } from "@/states/modalState";
 import { deleteMyFollowers } from "@/api/users/deleteMeFollowers";
 import { deleteFollow } from "@/api/users/deleteIdFollow";
 import { useToast } from "@/hooks/useToast";
 import { FollowProps } from "./Follow.types";
 import { useCustomBack } from "@/hooks/useCustomBack";
+import { isMobileState } from "@/states/isMobileState";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 export default function Follow({ initialTab }: FollowProps) {
   const [activeTab, setActiveTab] = useState<"follower" | "following">(initialTab);
@@ -21,6 +23,8 @@ export default function Follow({ initialTab }: FollowProps) {
   const [isFetchingData, setIsFetchingData] = useState(false);
   const route = useRouter();
   const { showToast } = useToast();
+  const isMobile = useRecoilValue(isMobileState);
+  useIsMobile();
 
   const {
     data: followerData,
@@ -166,8 +170,8 @@ export default function Follow({ initialTab }: FollowProps) {
                 {follow.image !== "https://image.grimity.com/null" ? (
                   <Image
                     src={follow.image}
-                    width={50}
-                    height={50}
+                    width={isMobile ? 40 : 50}
+                    height={isMobile ? 40 : 50}
                     onClick={() => handleClickUser(follow.id)}
                     className={styles.image}
                     alt={`${activeTab === "follower" ? "팔로워" : "팔로잉"} 프로필 이미지`}
@@ -175,8 +179,8 @@ export default function Follow({ initialTab }: FollowProps) {
                 ) : (
                   <Image
                     src="/image/default.svg"
-                    width={50}
-                    height={50}
+                    width={isMobile ? 40 : 50}
+                    height={isMobile ? 40 : 50}
                     onClick={() => handleClickUser(follow.id)}
                     className={styles.image}
                     alt={`${activeTab === "follower" ? "팔로워" : "팔로잉"} 프로필 이미지`}

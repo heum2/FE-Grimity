@@ -151,12 +151,20 @@ export default function BoardWrite() {
                 content_style: `
                   body { 
                     font-family: Pretendard, sans-serif; 
-                    font-size: 14px; 
-                    line-height: 11.2px;
+                    font-size: 14px;                     
                   }
                   img { 
                     max-width: 100%; 
                     height: auto !important;
+                  }
+                  h1 {
+                    margin: 14px 0;
+                  }
+                  h2 {
+                    margin: 14px 0;
+                  }
+                  p {
+                    line-height: 11.2px;
                   }
                 `,
                 base_url: "https://public.grimity.com/tinymce",

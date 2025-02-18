@@ -46,10 +46,13 @@
     gap: 4px;
 
     .title {
-      overflow: hidden;
       color: $gray80;
-      text-overflow: ellipsis;
       @include Sub4;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
     }
 
     .profileContainer {

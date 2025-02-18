@@ -10,12 +10,11 @@
 
   @include Size("mobile") {
     margin-top: 68px;
-    margin-bottom: 16px;
+    margin-bottom: 70px;
   }
 
   @include Size("tablet") {
     margin-top: 20px;
-    margin-bottom: 16px;
   }
 }
 
@@ -25,6 +24,11 @@
   justify-content: center;
   align-items: center;
   gap: 8px;
+
+  @include Size("mobile") {
+    margin-top: 28px;
+    gap: 4px;
+  }
 
   button {
     width: 24px;
@@ -45,7 +49,6 @@
   }
 
   .paginationArrow {
-    padding: 6px;
     background-color: transparent;
     border: none;
 

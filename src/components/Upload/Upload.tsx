@@ -312,7 +312,6 @@ export default function Upload() {
       }
 
       setTag("");
-      if (event.nativeEvent.isComposing) return;
     }
   };
 
@@ -497,6 +496,8 @@ export default function Upload() {
                       value={tag}
                       onChange={(e) => setTag(e.target.value)}
                       onKeyDown={handleKeyDown}
+                      enterKeyHint="done"
+                      autoComplete="off"
                     />
                     {tag && (
                       <div className={styles.countTotal}>

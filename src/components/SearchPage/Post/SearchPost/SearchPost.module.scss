@@ -54,6 +54,12 @@
   align-items: center;
   gap: 8px;
 
+  @include Size("mobile") {
+    margin-top: 28px;
+    margin-bottom: 80px;
+    gap: 4px;
+  }
+
   button {
     width: 24px;
     height: 24px;
@@ -73,7 +79,6 @@
   }
 
   .paginationArrow {
-    padding: 6px;
     background-color: transparent;
     border: none;
 

@@ -92,13 +92,13 @@
       @include Size("mobile") {
         padding: 10px 0;
         @include Title5;
-        color: $gray60;
+        font-size: 20px;
+        line-height: 28px;
       }
 
       @include Size("tablet") {
         padding: 14px 0;
         @include Title3;
-        color: $gray60;
       }
     }
 
@@ -288,13 +288,17 @@
     pointer-events: auto;
   }
 
+  .uploadBtnContainer {
+    margin-top: 10px;
+  }
+
   .sideMenu {
     position: fixed;
     top: 0;
     right: 0;
     width: 240px;
     height: 100vh;
-    padding: 16px 20px 84px;
+    padding: 16px 20px;
     background-color: $gray0;
     transform: translateX(100%);
     transition: transform 0.3s ease-in-out;
@@ -302,6 +306,11 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
+    @include Size("mobile") {
+      width: 240px;
+      padding: 16px 20px 104px;
+    }
 
     @include Size("tablet") {
       width: 300px;
@@ -340,7 +349,7 @@
         align-items: center;
         justify-content: space-between;
         margin-top: 12px;
-        margin-bottom: 16px;
+        margin-bottom: 14px;
       }
 
       .name {

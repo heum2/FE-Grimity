@@ -111,7 +111,7 @@
     justify-content: space-between;
 
     @include Size("mobile") {
-      margin-top: calc(240px - 140px) !important;
+      margin-top: calc(240px - 140px);
     }
 
     @include Size("tablet") {
@@ -124,7 +124,7 @@
     margin-top: calc(264px - 73px);
 
     @include Size("mobile") {
-      margin-top: calc(240px - 140px) !important;
+      margin-top: calc(240px - 140px);
     }
 
     @include Size("tablet") {

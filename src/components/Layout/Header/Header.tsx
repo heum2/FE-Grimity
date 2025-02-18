@@ -513,7 +513,7 @@ export default function Header() {
                     </div>
                     {!isLoggedIn || !myData ? (
                       <div
-                        className={styles.uploadBtn}
+                        className={isMobile ? styles.uploadBtnContainer : styles.uploadBtn}
                         onClick={() => setModal({ isOpen: true, type: "LOGIN" })}
                       >
                         <Button size="l" type="filled-primary">
@@ -577,7 +577,7 @@ export default function Header() {
                           </div>
                         )}
                         {isLoggedIn && (
-                          <Link href="/write">
+                          <Link href="/write" className={styles.uploadBtnContainer}>
                             <Button
                               size="l"
                               type="filled-primary"

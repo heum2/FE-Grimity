@@ -113,15 +113,15 @@
       min-height: 120px;
 
       img {
-        width: 100% !important;
-        height: auto !important;
+        width: 100%;
+        height: auto;
         object-fit: contain;
       }
 
       h1 {
         font-size: 32px;
         font-weight: 700;
-        line-height: 11.2px;
+        line-height: 34px;
         padding-bottom: 14px;
       }
 
@@ -129,7 +129,6 @@
         font-size: 24px;
         font-weight: 600;
         line-height: 26px;
-        line-height: 11.2px;
         padding-bottom: 14px;
       }
 
