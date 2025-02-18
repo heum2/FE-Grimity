@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import Button from "../../Button/Button";
 import styles from "./EditFeeds.module.scss";
-import Image from "next/image";
 import IconComponent from "../../Asset/Icon";
 import { useToast } from "@/hooks/useToast";
 import { postPresignedUrls } from "@/api/aws/postPresigned";
@@ -421,7 +420,13 @@ export default function EditFeeds({ id }: EditFeedsProps) {
               {!isMobile && !isTablet && images.length < 10 && (
                 <label htmlFor="file-upload" className={styles.uploadBtn}>
                   <div tabIndex={0}>
-                    <Image src="/image/upload.svg" width={240} height={240} alt="그림 추가" />
+                    <img
+                      src="/image/upload.svg"
+                      width={240}
+                      height={240}
+                      alt="그림 추가"
+                      loading="lazy"
+                    />
                     <input
                       id="file-upload"
                       type="file"
@@ -437,7 +442,13 @@ export default function EditFeeds({ id }: EditFeedsProps) {
               {(isMobile || isTablet) && images.length === 0 && images.length < 10 && (
                 <label htmlFor="file-upload" className={styles.uploadBtn}>
                   <div tabIndex={0}>
-                    <Image src="/image/upload.svg" width={240} height={240} alt="그림 추가" />
+                    <img
+                      src="/image/upload.svg"
+                      width={240}
+                      height={240}
+                      alt="그림 추가"
+                      loading="lazy"
+                    />
                     <input
                       id="file-upload"
                       type="file"

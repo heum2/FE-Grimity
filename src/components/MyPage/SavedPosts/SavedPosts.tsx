@@ -1,7 +1,6 @@
 import { useMySavePost } from "@/api/users/getMeSavePosts";
 import styles from "./SavedPosts.module.scss";
 import AllCard from "@/components/Board/BoardAll/AllCard/AllCard";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import Loader from "@/components/Layout/Loader/Loader";
@@ -78,7 +77,13 @@ export default function SavedPosts() {
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
           >
-            <Image src="/icon/pagination-left.svg" width={24} height={24} alt="Previous" />
+            <img
+              src="/icon/pagination-left.svg"
+              width={24}
+              height={24}
+              alt="Previous"
+              loading="lazy"
+            />
           </button>
           {getPageRange(currentPage, totalPages).map((pageNum) => (
             <button
@@ -94,7 +99,13 @@ export default function SavedPosts() {
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
           >
-            <Image src="/icon/pagination-right.svg" width={24} height={24} alt="Next" />
+            <img
+              src="/icon/pagination-right.svg"
+              width={24}
+              height={24}
+              alt="Next"
+              loading="lazy"
+            />
           </button>
         </section>
       )}

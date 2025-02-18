@@ -165,6 +165,7 @@ export default function Follow({ initialTab }: FollowProps) {
                     src={follow.image}
                     width={isMobile ? 40 : 50}
                     height={isMobile ? 40 : 50}
+                    quality={50}
                     onClick={() => handleClickUser(follow.id)}
                     className={styles.image}
                     alt={`${activeTab === "follower" ? "팔로워" : "팔로잉"} 프로필 이미지`}
@@ -174,6 +175,7 @@ export default function Follow({ initialTab }: FollowProps) {
                     src="/image/default.svg"
                     width={isMobile ? 40 : 50}
                     height={isMobile ? 40 : 50}
+                    quality={50}
                     onClick={() => handleClickUser(follow.id)}
                     className={styles.image}
                     alt={`${activeTab === "follower" ? "팔로워" : "팔로잉"} 프로필 이미지`}

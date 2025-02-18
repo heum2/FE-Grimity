@@ -56,13 +56,7 @@ export default function RectangleCard({
               </div>
             )}
             <Link href={`/feeds/${id}`}>
-              <Image
-                src={thumbnail}
-                alt={title}
-                layout="fill"
-                objectFit="cover"
-                className={styles.image}
-              />
+              <img src={thumbnail} alt={title} loading="lazy" className={styles.image} />
             </Link>
           </div>
           {!isTablet ? (
@@ -74,7 +68,7 @@ export default function RectangleCard({
               <div className={styles.profileContainer}>
                 <div className={styles.informationContainer}>
                   <p className={styles.createdAt}>{timeAgo(createdAt)}</p>
-                  <Image src="/icon/card-dot.svg" width={2} height={2} alt="" />
+                  <img src="/icon/card-dot.svg" width={2} height={2} alt="" loading="lazy" />
                   <div className={styles.countContainer}>
                     <div className={styles.likeContainer}>
                       <IconComponent name="likeCount" width={16} height={16} />
@@ -95,6 +89,7 @@ export default function RectangleCard({
                           alt={author.name}
                           width={24}
                           height={24}
+                          quality={50}
                           className={styles.profileImage}
                         />
                       ) : (
@@ -102,6 +97,7 @@ export default function RectangleCard({
                           src="/image/default.svg"
                           width={24}
                           height={24}
+                          quality={50}
                           alt="프로필 이미지"
                           className={styles.profileImage}
                         />
@@ -126,6 +122,7 @@ export default function RectangleCard({
                         alt={author.name}
                         width={24}
                         height={24}
+                        quality={50}
                         className={styles.profileImage}
                       />
                     ) : (
@@ -133,6 +130,7 @@ export default function RectangleCard({
                         src="/image/default.svg"
                         width={24}
                         height={24}
+                        quality={50}
                         alt="프로필 이미지"
                         className={styles.profileImage}
                       />
@@ -158,13 +156,7 @@ export default function RectangleCard({
               </div>
             )}
             <Link href={`/feeds/${id}`}>
-              <Image
-                src={thumbnail}
-                alt={title}
-                layout="fill"
-                objectFit="cover"
-                className={styles.image}
-              />
+              <img src={thumbnail} alt={title} loading="lazy" className={styles.image} />
             </Link>
           </div>
           <div className={styles.cardData}>
@@ -176,6 +168,7 @@ export default function RectangleCard({
                     alt={author.name}
                     width={24}
                     height={24}
+                    quality={50}
                     className={styles.profileImage}
                   />
                 ) : (
@@ -184,6 +177,7 @@ export default function RectangleCard({
                     width={24}
                     height={24}
                     alt="프로필 이미지"
+                    quality={50}
                     className={styles.profileImage}
                   />
                 )}

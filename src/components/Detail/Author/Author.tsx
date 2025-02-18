@@ -82,19 +82,19 @@ export default function Author({ authorId, feedId }: AuthorProps) {
                       src={userData.image}
                       alt={userData.name}
                       className={styles.authorImage}
-                      width={100}
-                      height={100}
-                      quality={100}
+                      width={40}
+                      height={40}
+                      quality={50}
                       style={{ objectFit: "cover" }}
                     />
                   ) : (
                     <Image
                       src="/image/default.svg"
-                      width={100}
-                      height={100}
+                      width={40}
+                      height={40}
                       alt="프로필 이미지"
                       className={styles.authorImage}
-                      quality={100}
+                      quality={50}
                       style={{ objectFit: "cover" }}
                     />
                   )}

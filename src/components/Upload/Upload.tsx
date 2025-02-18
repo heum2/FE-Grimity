@@ -392,7 +392,13 @@ export default function Upload() {
               {!isMobile && !isTablet && images.length < 10 && (
                 <label htmlFor="file-upload" className={styles.uploadBtn}>
                   <div tabIndex={0}>
-                    <Image src="/image/upload.svg" width={240} height={240} alt="그림 추가" />
+                    <img
+                      src="/image/upload.svg"
+                      width={240}
+                      height={240}
+                      alt="그림 추가"
+                      loading="lazy"
+                    />
                     <input
                       id="file-upload"
                       type="file"
@@ -408,7 +414,13 @@ export default function Upload() {
               {(isMobile || isTablet) && images.length === 0 && images.length < 10 && (
                 <label htmlFor="file-upload" className={styles.uploadBtn}>
                   <div tabIndex={0}>
-                    <Image src="/image/upload.svg" width={240} height={240} alt="그림 추가" />
+                    <img
+                      src="/image/upload.svg"
+                      width={240}
+                      height={240}
+                      alt="그림 추가"
+                      loading="lazy"
+                    />
                     <input
                       id="file-upload"
                       type="file"

@@ -1,6 +1,5 @@
 import { Draggable } from "@hello-pangea/dnd";
 import { DraggableImageProps } from "./DraggableImage.types";
-import Image from "next/image";
 import styles from "./DraggableImage.module.scss";
 import { useState } from "react";
 import { isMobileState } from "@/states/isMobileState";
@@ -46,26 +45,32 @@ export default function DraggableImage({
           )}
           <div className={`${styles.imageContainer} ${isLoading ? styles.hidden : ""}`}>
             <div className={styles.thumbnail} onClick={onThumbnailSelect}>
-              <Image
+              <img
                 src={isThumbnail ? "/icon/thumbnail-on.svg" : "/icon/thumbnail-off.svg"}
                 width={67}
                 height={32}
                 alt="사진 썸네일 지정"
+                loading="lazy"
               />
             </div>
-            <Image
+            <img
               src={image.url}
               width={240}
               height={240}
-              layout="fixed"
-              objectFit="contain"
+              loading="lazy"
               alt="Uploaded"
               className={styles.image}
               onLoad={handleImageLoad}
               {...provided.dragHandleProps}
             />
             <div className={styles.removeImage} onClick={() => removeImage(index)}>
-              <Image src="/icon/upload-delete-image.svg" width={40} height={40} alt="사진 제거" />
+              <img
+                src="/icon/upload-delete-image.svg"
+                width={40}
+                height={40}
+                alt="사진 제거"
+                loading="lazy"
+              />
             </div>
             {!isMobile && <p className={styles.fileName}>{name}</p>}
           </div>

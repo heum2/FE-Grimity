@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useGetNotifications } from "@/api/notifications/getNotifications";
 import IconComponent from "../Asset/Icon";
 import Noti from "./Noti/Noti";
-import Image from "next/image";
 import styles from "./Notifications.module.scss";
 import { NotificationsProps } from "./Notifications.types";
 import { deleteNotifications } from "@/api/notifications/deleteNotifications";
@@ -120,13 +119,14 @@ interface ToggleOptionProps {
 const ToggleOption = ({ label, isEnabled, onChange }: ToggleOptionProps) => (
   <div className={styles.column}>
     <label className={styles.label}>{label}</label>
-    <Image
+    <img
       src={isEnabled ? "/icon/noti-option-on.svg" : "/icon/noti-option-off.svg"}
       width={39}
       height={24}
       alt=""
       onClick={onChange}
       className={styles.toggle}
+      loading="lazy"
     />
   </div>
 );

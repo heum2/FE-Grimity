@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import { ICONS } from "@/constants/asset";
 
 export interface IconComponentProps {
@@ -37,9 +36,10 @@ export default function IconComponent({
           cursor: isBtn ? "pointer" : "default",
         }}
       >
-        <Image
+        <img
           src={iconSrc as string}
           alt={alt}
+          loading="lazy"
           width={width}
           height={height}
           style={{ objectFit: "cover" }}

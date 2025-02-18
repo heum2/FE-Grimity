@@ -4,7 +4,6 @@ import styles from "./Report.module.scss";
 import { modalState } from "@/states/modalState";
 import { useRecoilState } from "recoil";
 import Button from "@/components/Button/Button";
-import { useRouter } from "next/router";
 import { ReportProps } from "./Report.types";
 import { postReports } from "@/api/reports/postReports";
 
@@ -97,7 +96,6 @@ export default function Report({ refType, refId }: ReportProps) {
         >
           취소
         </Button>
-
         <Button size="l" type="filled-primary" onClick={handleSubmit}>
           신고하기
         </Button>

@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import ReactCrop, { Crop, PercentCrop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
-import Image from "next/image";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { modalState } from "@/states/modalState";
 import Button from "@/components/Button/Button";
@@ -162,16 +161,13 @@ export default function Background({ imageSrc }: BackgroundProps) {
           aspect={viewportWidth / 400}
           minWidth={100}
         >
-          <Image
+          <img
             ref={imgRef}
             src={imageSrc}
             alt="Crop me"
-            style={{ transform: `scale(${scale})` }}
-            width={viewportWidth}
-            height={0}
-            layout="intrinsic"
-            onLoadingComplete={onImageLoad}
-            unoptimized
+            style={{ transform: `scale(${scale})`, width: `${viewportWidth}px`, height: "auto" }}
+            onLoad={(event) => onImageLoad(event.currentTarget)}
+            loading="lazy"
           />
         </ReactCrop>
       </div>

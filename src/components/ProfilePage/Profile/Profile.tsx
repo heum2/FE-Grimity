@@ -284,11 +284,12 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
         <>
           {userData.backgroundImage !== "https://image.grimity.com/null" ? (
             <div className={styles.backgroundImage}>
-              <Image
+              <img
                 src={userData.backgroundImage}
                 width={1400} // 임의 지정
                 height={isMobile ? 240 : isTablet ? 300 : 400}
                 alt="backgroundImage"
+                loading="lazy"
                 style={{
                   width: "100vw",
                   height: isMobile ? "240px" : isTablet ? "300px" : "400px",
@@ -335,10 +336,11 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
             </div>
           ) : (
             <div className={styles.backgroundDefaultImageContainer}>
-              <Image
+              <img
                 src="/image/default-cover.png"
                 width={1400} // 임의 지정
                 height={isMobile ? 240 : 264}
+                loading="lazy"
                 alt="backgroundImage"
                 style={{
                   width: "100vw",
@@ -349,7 +351,13 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
               {userData.id === user_id && (
                 <>
                   <label htmlFor="upload-cover" className={styles.backgroundAddMessage}>
-                    <Image src="/icon/add-cover.svg" width={20} height={20} alt="커버 추가하기" />
+                    <img
+                      src="/icon/add-cover.svg"
+                      width={20}
+                      height={20}
+                      alt="커버 추가하기"
+                      loading="lazy"
+                    />
                     커버 추가하기
                   </label>
                   <input
@@ -378,6 +386,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                       src={profileImage}
                       width={isMobile ? 80 : 140}
                       height={isMobile ? 80 : 140}
+                      quality={75}
                       alt="프로필 이미지"
                       className={styles.profileImage}
                     />
@@ -385,10 +394,11 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                   {userData.id === user_id && (
                     <>
                       <label htmlFor="upload-image">
-                        <Image
+                        <img
                           src="/icon/edit-profile-image.svg"
                           width={40}
                           height={40}
+                          loading="lazy"
                           alt="프로필 이미지 수정"
                           className={styles.addProfileImage}
                         />
@@ -413,15 +423,17 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                     width={isMobile ? 80 : 140}
                     height={isMobile ? 80 : 140}
                     alt="프로필 이미지"
+                    quality={75}
                     className={styles.profileImage}
                   />
                   {userData.id === user_id && (
                     <>
                       <label htmlFor="upload-image">
-                        <Image
+                        <img
                           src="/icon/add-profile-image.svg"
                           width={40}
                           height={40}
+                          loading="lazy"
                           alt="프로필 이미지 추가"
                           className={styles.addProfileImage}
                         />
@@ -488,11 +500,12 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                                 isSide
                                 trigger={
                                   <div className={styles.menuBtn}>
-                                    <Image
+                                    <img
                                       src="/icon/meatball.svg"
                                       width={20}
                                       height={20}
                                       alt="메뉴 버튼 "
+                                      loading="lazy"
                                     />
                                   </div>
                                 }
@@ -522,11 +535,12 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                                 isTopItem
                                 trigger={
                                   <div className={styles.menuBtn}>
-                                    <Image
+                                    <img
                                       src="/icon/meatball.svg"
                                       width={20}
                                       height={20}
                                       alt="메뉴 버튼 "
+                                      loading="lazy"
                                     />
                                   </div>
                                 }
@@ -552,11 +566,12 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                                 isTopItem
                                 trigger={
                                   <div className={styles.menuBtn}>
-                                    <Image
+                                    <img
                                       src="/icon/meatball.svg"
                                       width={20}
                                       height={20}
                                       alt="메뉴 버튼 "
+                                      loading="lazy"
                                     />
                                   </div>
                                 }
@@ -622,11 +637,12 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                         isSide
                         trigger={
                           <div className={styles.menuBtn}>
-                            <Image
+                            <img
                               src="/icon/meatball.svg"
                               width={20}
                               height={20}
                               alt="메뉴 버튼 "
+                              loading="lazy"
                             />
                           </div>
                         }
@@ -652,11 +668,12 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                         isSide
                         trigger={
                           <div className={styles.menuBtn}>
-                            <Image
+                            <img
                               src="/icon/meatball.svg"
                               width={20}
                               height={20}
                               alt="메뉴 버튼 "
+                              loading="lazy"
                             />
                           </div>
                         }
@@ -681,11 +698,12 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                       <Dropdown
                         trigger={
                           <div className={styles.menuBtn}>
-                            <Image
+                            <img
                               src="/icon/meatball.svg"
                               width={20}
                               height={20}
                               alt="메뉴 버튼 "
+                              loading="lazy"
                             />
                           </div>
                         }

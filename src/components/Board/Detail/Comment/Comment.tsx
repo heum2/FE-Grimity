@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, memo } from "react";
 import styles from "./Comment.module.scss";
-import Image from "next/image";
 import { authState } from "@/states/authState";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useToast } from "@/hooks/useToast";
@@ -351,7 +350,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
                         handleLikeClick(reply.id, reply.isLike);
                       }}
                     >
-                      <Image
+                      <img
                         src={
                           reply.isLike
                             ? "/icon/board-like-count-on.svg"
@@ -361,6 +360,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
                         height={24}
                         alt="좋아요"
                         className={styles.likeIcon}
+                        loading="lazy"
                       />
                       {reply.likeCount}
                     </div>
@@ -469,7 +469,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
                           handleLikeClick(comment.id, comment.isLike);
                         }}
                       >
-                        <Image
+                        <img
                           src={
                             comment.isLike
                               ? "/icon/board-like-count-on.svg"
@@ -479,6 +479,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
                           height={24}
                           alt="좋아요"
                           className={styles.likeIcon}
+                          loading="lazy"
                         />
                         {comment.likeCount}
                       </div>

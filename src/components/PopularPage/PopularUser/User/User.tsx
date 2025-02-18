@@ -45,35 +45,39 @@ export default function User({
       <Link href={`/users/${id}`}>
         <div className={styles.imageWrapper}>
           {thumbnails[0] ? (
-            <Image
+            <img
               src={thumbnails[0]}
               width={150}
               height={150}
+              loading="lazy"
               alt="인기 유저 헤더 이미지"
               className={styles.backgroundLeft}
             />
           ) : (
-            <Image
+            <img
               src="/image/thumbnail.png"
               width={150}
               height={150}
+              loading="lazy"
               alt="인기 유저 헤더 이미지"
               className={styles.backgroundLeft}
             />
           )}
           {thumbnails[1] ? (
-            <Image
+            <img
               src={thumbnails[1]}
               width={150}
               height={150}
+              loading="lazy"
               alt="인기 유저 헤더 이미지"
               className={styles.backgroundRight}
             />
           ) : (
-            <Image
+            <img
               src="/image/thumbnail.png"
               width={150}
               height={150}
+              loading="lazy"
               alt="인기 유저 헤더 이미지"
               className={styles.backgroundRight}
             />
@@ -86,16 +90,18 @@ export default function User({
             {image !== "https://image.grimity.com/null" ? (
               <Image
                 src={image}
-                width={50}
-                height={50}
+                width={24}
+                height={24}
+                quality={50}
                 alt="인기 유저 프로필 이미지"
                 className={styles.profileImage}
               />
             ) : (
               <Image
                 src="/image/default.svg"
-                width={50}
-                height={50}
+                width={24}
+                height={24}
+                quality={50}
                 alt="인기 유저 프로필 이미지"
                 className={styles.profileImage}
               />

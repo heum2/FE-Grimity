@@ -2,12 +2,10 @@ import { useState } from "react";
 import IconComponent from "@/components/Asset/Icon";
 import styles from "./FeedCard.module.scss";
 import { formatCurrency } from "@/utils/formatCurrency";
-import Image from "next/image";
 import Link from "next/link";
 import { useRecoilValue } from "recoil";
 import { authState } from "@/states/authState";
 import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
-import { timeAgo } from "@/utils/timeAgo";
 import { FeedCardProps } from "./FeedCard.types";
 
 export default function FeedCard({
@@ -49,13 +47,7 @@ export default function FeedCard({
           </div>
         )}
         <Link href={`/feeds/${id}`}>
-          <Image
-            src={thumbnail}
-            alt={title}
-            layout="fill"
-            objectFit="cover"
-            className={styles.image}
-          />
+          <img src={thumbnail} alt={title} loading="lazy" className={styles.image} />
         </Link>
       </div>
       <div className={styles.infoContainer}>
@@ -66,7 +58,7 @@ export default function FeedCard({
           <Link href={`/users/${author?.id}`}>
             <p className={styles.author}>{author?.name}</p>
           </Link>
-          <Image src="/icon/dot.svg" width={3} height={3} alt="" />
+          <img src="/icon/dot.svg" width={3} height={3} alt="" loading="lazy" />
           <div className={styles.countContainer}>
             <div className={styles.likeContainer}>
               <IconComponent name="likeCount" width={16} height={16} />

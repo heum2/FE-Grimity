@@ -6,7 +6,6 @@ import { timeAgo } from "@/utils/timeAgo";
 import DOMPurify from "dompurify";
 import Chip from "@/components/Chip/Chip";
 import { getTypeLabel } from "../BoardAll/AllCard/AllCard";
-import Image from "next/image";
 import Link from "next/link";
 import Button from "@/components/Button/Button";
 import IconComponent from "@/components/Asset/Icon";
@@ -229,15 +228,15 @@ export default function PostDetail({ id }: PostDetailProps) {
           <div className={styles.content} dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
           <div className={styles.counts}>
             <div className={styles.count}>
-              <Image src="/icon/board-like-count.svg" width={16} height={16} alt="" />
+              <img src="/icon/board-like-count.svg" width={16} height={16} alt="" loading="lazy" />
               {posts.likeCount}
             </div>
             <div className={styles.count}>
-              <Image src="/icon/comment-count.svg" width={16} height={16} alt="" />
+              <img src="/icon/comment-count.svg" width={16} height={16} alt="" loading="lazy" />
               {posts.commentCount}
             </div>
             <div className={styles.count}>
-              <Image src="/icon/view-count.svg" width={16} height={16} alt="" />
+              <img src="/icon/view-count.svg" width={16} height={16} alt="" loading="lazy" />
               {posts.viewCount}
             </div>
           </div>
@@ -247,13 +246,14 @@ export default function PostDetail({ id }: PostDetailProps) {
                 size="l"
                 type="outlined-assistive"
                 leftIcon={
-                  <Image
+                  <img
                     src={
                       isLiked ? "/icon/board-like-count-on.svg" : "/icon/board-like-count-off.svg"
                     }
                     width={20}
                     height={20}
                     alt="좋아요"
+                    loading="lazy"
                   />
                 }
               >
@@ -261,11 +261,12 @@ export default function PostDetail({ id }: PostDetailProps) {
               </Button>
             </div>
             <div className={styles.saveBtn} onClick={handleSaveClick}>
-              <Image
+              <img
                 src={isSaved ? "/icon/detail-save-on.svg" : "/icon/detail-save-off.svg"}
                 width={20}
                 height={20}
                 alt="저장"
+                loading="lazy"
               />
             </div>
             {user_id === posts.author.id || !isLoggedIn ? (
@@ -274,7 +275,13 @@ export default function PostDetail({ id }: PostDetailProps) {
                   <Dropdown
                     trigger={
                       <div className={styles.menuBtn}>
-                        <Image src="/icon/meatball.svg" width={20} height={20} alt="메뉴 버튼 " />
+                        <img
+                          src="/icon/meatball.svg"
+                          width={20}
+                          height={20}
+                          alt="메뉴 버튼 "
+                          loading="lazy"
+                        />
                       </div>
                     }
                     menuItems={[
@@ -288,7 +295,13 @@ export default function PostDetail({ id }: PostDetailProps) {
                   <Dropdown
                     trigger={
                       <div className={styles.menuBtn}>
-                        <Image src="/icon/meatball.svg" width={20} height={20} alt="메뉴 버튼 " />
+                        <img
+                          src="/icon/meatball.svg"
+                          width={20}
+                          height={20}
+                          alt="메뉴 버튼 "
+                          loading="lazy"
+                        />
                       </div>
                     }
                     menuItems={[
@@ -311,7 +324,13 @@ export default function PostDetail({ id }: PostDetailProps) {
                   <Dropdown
                     trigger={
                       <div className={styles.menuBtn}>
-                        <Image src="/icon/meatball.svg" width={20} height={20} alt="메뉴 버튼 " />
+                        <img
+                          src="/icon/meatball.svg"
+                          width={20}
+                          height={20}
+                          alt="메뉴 버튼 "
+                          loading="lazy"
+                        />
                       </div>
                     }
                     menuItems={[
@@ -333,7 +352,13 @@ export default function PostDetail({ id }: PostDetailProps) {
                 <Dropdown
                   trigger={
                     <div className={styles.menuBtn}>
-                      <Image src="/icon/meatball.svg" width={20} height={20} alt="메뉴 버튼 " />
+                      <img
+                        src="/icon/meatball.svg"
+                        width={20}
+                        height={20}
+                        alt="메뉴 버튼 "
+                        loading="lazy"
+                      />
                     </div>
                   }
                   menuItems={[

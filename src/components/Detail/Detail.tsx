@@ -205,19 +205,19 @@ export default function Detail({ id }: DetailProps) {
                       src={details.author.image}
                       alt={details.author.name}
                       className={styles.authorImage}
-                      width={100}
-                      height={100}
-                      quality={100}
+                      width={40}
+                      height={40}
+                      quality={50}
                       style={{ objectFit: "cover" }}
                     />
                   ) : (
                     <Image
                       src="/image/default.svg"
-                      width={100}
-                      height={100}
+                      width={40}
+                      height={40}
                       alt="프로필 이미지"
                       className={styles.authorImage}
-                      quality={100}
+                      quality={50}
                       style={{ objectFit: "cover" }}
                     />
                   )}
@@ -228,25 +228,26 @@ export default function Detail({ id }: DetailProps) {
                   </Link>
                   <div className={styles.stats}>
                     <p className={styles.createdAt}>{timeAgo(details.createdAt)}</p>
-                    <Image src="/icon/dot.svg" width={3} height={3} alt="" />
+                    <img src="/icon/dot.svg" width={3} height={3} alt="" loading="lazy" />
                     <div className={styles.stat}>
-                      <Image
+                      <img
                         src="/icon/like-count.svg"
                         width={16}
                         height={0}
                         alt="좋아요 수"
                         className={styles.statIcon}
+                        loading="lazy"
                       />
                       {currentLikeCount}
                     </div>
                     <div className={styles.stat}>
-                      <Image
+                      <img
                         src="/icon/view-count.svg"
                         width={16}
                         height={0}
-                        layout="intrinsic"
                         alt="조회수"
                         className={styles.statIcon}
+                        loading="lazy"
                       />
                       {details.viewCount}
                     </div>
@@ -296,12 +297,12 @@ export default function Detail({ id }: DetailProps) {
             <section className={styles.imageGallery}>
               {details.cards.slice(0, 2).map((card, index) => (
                 <div key={index} className={styles.imageWrapper}>
-                  <Image
+                  <img
                     src={card}
                     alt={`Card image ${index + 1}`}
                     width={880}
                     height={0}
-                    layout="intrinsic"
+                    loading="lazy"
                     className={styles.cardImage}
                     onClick={() => handleImageClick(card)}
                   />
@@ -321,12 +322,12 @@ export default function Detail({ id }: DetailProps) {
             {isExpanded &&
               details.cards.slice(2).map((card, index) => (
                 <div key={index + 2} className={styles.imageWrapper2}>
-                  <Image
+                  <img
                     src={card}
                     alt={`Card image ${index + 3}`}
                     width={600}
                     height={0}
-                    layout="intrinsic"
+                    loading="lazy"
                     className={styles.cardImage}
                     onClick={() => handleImageClick(card)}
                   />
@@ -343,6 +344,7 @@ export default function Detail({ id }: DetailProps) {
                         height: "90vh",
                         objectFit: "cover",
                       }}
+                      loading="lazy"
                       onClick={(event) => event.stopPropagation()}
                     />
                   </Zoom>
@@ -355,31 +357,32 @@ export default function Detail({ id }: DetailProps) {
               <p className={styles.content}>{details.content}</p>
               {details.isAI && (
                 <div className={styles.aiBtn}>
-                  <Image src="/icon/ai-message.svg" width={20} height={20} alt="" />
+                  <img src="/icon/ai-message.svg" width={20} height={20} alt="" loading="lazy" />
                   해당 컨텐츠는 AI로 생성되었어요
                 </div>
               )}
               <div className={styles.stats}>
                 <p className={styles.createdAt}>{timeAgo(details.createdAt)}</p>
-                <Image src="/icon/dot.svg" width={3} height={3} alt="" />
+                <img src="/icon/dot.svg" width={3} height={3} alt="" loading="lazy" />
                 <div className={styles.stat}>
-                  <Image
+                  <img
                     src="/icon/like-count.svg"
                     width={16}
                     height={0}
                     alt="좋아요 수"
                     className={styles.statIcon}
+                    loading="lazy"
                   />
                   {currentLikeCount}
                 </div>
                 <div className={styles.stat}>
-                  <Image
+                  <img
                     src="/icon/view-count.svg"
                     width={16}
                     height={0}
-                    layout="intrinsic"
                     alt="조회수"
                     className={styles.statIcon}
+                    loading="lazy"
                   />
                   {details.viewCount}
                 </div>
@@ -402,11 +405,12 @@ export default function Detail({ id }: DetailProps) {
                   size="l"
                   type="outlined-assistive"
                   leftIcon={
-                    <Image
+                    <img
                       src={isLiked ? "/icon/detail-like-on.svg" : "/icon/detail-like-off.svg"}
                       width={20}
                       height={20}
                       alt="좋아요"
+                      loading="lazy"
                     />
                   }
                 >
@@ -414,11 +418,12 @@ export default function Detail({ id }: DetailProps) {
                 </Button>
               </div>
               <div className={styles.saveBtn} onClick={handleSaveClick}>
-                <Image
+                <img
                   src={isSaved ? "/icon/detail-save-on.svg" : "/icon/detail-save-off.svg"}
                   width={20}
                   height={20}
                   alt="저장"
+                  loading="lazy"
                 />
               </div>
               {user_id === details.author.id || !isLoggedIn ? (
@@ -426,7 +431,13 @@ export default function Detail({ id }: DetailProps) {
                   <Dropdown
                     trigger={
                       <div className={styles.menuBtn}>
-                        <Image src="/icon/meatball.svg" width={20} height={20} alt="메뉴 버튼 " />
+                        <img
+                          src="/icon/meatball.svg"
+                          width={20}
+                          height={20}
+                          alt="메뉴 버튼 "
+                          loading="lazy"
+                        />
                       </div>
                     }
                     menuItems={[
@@ -442,7 +453,13 @@ export default function Detail({ id }: DetailProps) {
                   <Dropdown
                     trigger={
                       <div className={styles.menuBtn}>
-                        <Image src="/icon/meatball.svg" width={20} height={20} alt="메뉴 버튼 " />
+                        <img
+                          src="/icon/meatball.svg"
+                          width={20}
+                          height={20}
+                          alt="메뉴 버튼 "
+                          loading="lazy"
+                        />
                       </div>
                     }
                     menuItems={[

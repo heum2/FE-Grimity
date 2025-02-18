@@ -3,7 +3,6 @@ import styles from "./AllCard.module.scss";
 import Chip from "@/components/Chip/Chip";
 import { timeAgo } from "@/utils/timeAgo";
 import { AllCardProps } from "./AllCard.types";
-import Image from "next/image";
 import striptags from "striptags";
 import Link from "next/link";
 import { deletePostsSave, putPostsSave } from "@/api/posts/putDeletePostsIdSave";
@@ -112,11 +111,11 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
                 ))}
               <h2 className={styles.title}>{post.title}</h2>
               {post.thumbnail !== null && (
-                <Image src="/icon/board-all-image.svg" width={16} height={16} alt="" />
+                <img src="/icon/board-all-image.svg" width={16} height={16} alt="" loading="lazy" />
               )}
               {!isMobile && (
                 <div className={cardCase === "my-posts" ? styles.myCount : styles.comment}>
-                  <Image
+                  <img
                     src={
                       cardCase === "my-posts"
                         ? "/icon/comment-count.svg"
@@ -125,6 +124,7 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
                     width={16}
                     height={16}
                     alt=""
+                    loading="lazy"
                   />
                   {post.commentCount}
                 </div>
@@ -139,14 +139,26 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
               <div className={styles.savedPosts}>
                 <div className={styles.savedCreatedAtView}>
                   <div className={styles.viewCount}>
-                    <Image src="/icon/board-all-view.svg" width={16} height={16} alt="" />
+                    <img
+                      src="/icon/board-all-view.svg"
+                      width={16}
+                      height={16}
+                      alt=""
+                      loading="lazy"
+                    />
                     {post.viewCount}
                   </div>
                   <div className={styles.commentCount}>
-                    <Image src="/icon/board-all-comment.svg" width={16} height={16} alt="" />
+                    <img
+                      src="/icon/board-all-comment.svg"
+                      width={16}
+                      height={16}
+                      alt=""
+                      loading="lazy"
+                    />
                     {post.commentCount}
                   </div>
-                  <Image src="/icon/dot.svg" width={3} height={3} alt="" />
+                  <img src="/icon/dot.svg" width={3} height={3} alt="" loading="lazy" />
                   <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
                 </div>
               </div>
@@ -155,10 +167,16 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
                 <div className={styles.savedCreatedAtView}>
                   <div className={styles.savedPc}>
                     <div className={styles.viewCount}>
-                      <Image src="/icon/board-all-view.svg" width={16} height={16} alt="" />
+                      <img
+                        src="/icon/board-all-view.svg"
+                        width={16}
+                        height={16}
+                        alt=""
+                        loading="lazy"
+                      />
                       {post.viewCount}
                     </div>
-                    <Image src="/icon/dot.svg" width={3} height={3} alt="" />
+                    <img src="/icon/dot.svg" width={3} height={3} alt="" loading="lazy" />
                     <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
                   </div>
                   <Link href={`/users/${post.author?.id}`}>
@@ -181,14 +199,20 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
               <div className={styles.savedPosts}>
                 <div className={styles.savedCreatedAtView}>
                   <div className={styles.myCount}>
-                    <Image src="/icon/view-count.svg" width={16} height={16} alt="" />
+                    <img src="/icon/view-count.svg" width={16} height={16} alt="" loading="lazy" />
                     {post.viewCount}
                   </div>
                   <div className={styles.myCount}>
-                    <Image src="/icon/comment-count.svg" width={16} height={16} alt="" />
+                    <img
+                      src="/icon/comment-count.svg"
+                      width={16}
+                      height={16}
+                      alt=""
+                      loading="lazy"
+                    />
                     {post.commentCount}
                   </div>
-                  <Image src="/icon/dot.svg" width={3} height={3} alt="" />
+                  <img src="/icon/dot.svg" width={3} height={3} alt="" loading="lazy" />
                   <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
                 </div>
               </div>
@@ -197,7 +221,7 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
                 <div className={styles.savedCreatedAtView}>
                   <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
                   <div className={styles.myCount}>
-                    <Image src="/icon/view-count.svg" width={16} height={16} alt="" />
+                    <img src="/icon/view-count.svg" width={16} height={16} alt="" loading="lazy" />
                     {post.viewCount}
                   </div>
                 </div>
@@ -224,18 +248,24 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
           ) : isMobile ? (
             <div className={styles.createdAtView}>
               <div className={styles.viewCount}>
-                <Image src="/icon/board-all-view.svg" width={16} height={16} alt="" />
+                <img src="/icon/board-all-view.svg" width={16} height={16} alt="" loading="lazy" />
                 {post.viewCount}
               </div>
               <div className={styles.commentCount}>
-                <Image src="/icon/board-all-comment.svg" width={16} height={16} alt="" />
+                <img
+                  src="/icon/board-all-comment.svg"
+                  width={16}
+                  height={16}
+                  alt=""
+                  loading="lazy"
+                />
                 {post.commentCount}
               </div>
-              <Image src="/icon/dot.svg" width={3} height={3} alt="" />
+              <img src="/icon/dot.svg" width={3} height={3} alt="" loading="lazy" />
               <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
               {post.type !== "NOTICE" && (
                 <>
-                  <Image src="/icon/dot.svg" width={3} height={3} alt="" />
+                  <img src="/icon/dot.svg" width={3} height={3} alt="" loading="lazy" />
                   <Link href={`/users/${post.author?.id}`}>
                     <p className={styles.author}>{post.author?.name}</p>
                   </Link>
@@ -245,10 +275,10 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
           ) : (
             <div className={styles.createdAtView}>
               <div className={styles.viewCount}>
-                <Image src="/icon/board-all-view.svg" width={16} height={16} alt="" />
+                <img src="/icon/board-all-view.svg" width={16} height={16} alt="" loading="lazy" />
                 {post.viewCount}
               </div>
-              <Image src="/icon/dot.svg" width={3} height={3} alt="" />
+              <img src="/icon/dot.svg" width={3} height={3} alt="" loading="lazy" />
               <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
             </div>
           )}

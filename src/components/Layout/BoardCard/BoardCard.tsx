@@ -1,7 +1,6 @@
 import IconComponent from "@/components/Asset/Icon";
 import styles from "./BoardCard.module.scss";
 import { formatCurrency } from "@/utils/formatCurrency";
-import Image from "next/image";
 import { BoardCardProps } from "./BoardCard.types";
 import Link from "next/link";
 import { timeAgo } from "@/utils/timeAgo";
@@ -29,7 +28,7 @@ export default function BoardCard({
                 <p className={styles.count}>{formatCurrency(viewCount)}</p>
               </div>
             </div>
-            <Image src="/icon/card-dot.svg" width={3} height={3} alt="dot" />
+            <img src="/icon/card-dot.svg" width={3} height={3} alt="dot" loading="lazy" />
             <p className={styles.createdAt}>{timeAgo(createdAt)}</p>
           </div>
         </Link>

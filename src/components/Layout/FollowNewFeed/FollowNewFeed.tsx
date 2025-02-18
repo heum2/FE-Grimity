@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import Title from "../Title/Title";
 import styles from "./FollowNewFeed.module.scss";
 import Loader from "../Loader/Loader";
-import Image from "next/image";
 import RectangleCard from "../RectangleCard/RectangleCard";
 import { useFollowingNew } from "@/api/feeds/getFeedsFollowing";
 import { isMobileState, isTabletState } from "@/states/isMobileState";
@@ -88,12 +87,13 @@ export default function FollowNewFeed() {
                     visibility: pageIndex === 0 ? "hidden" : "visible",
                   }}
                 >
-                  <Image
+                  <img
                     src="/icon/card-arrow-left.svg"
                     width={40}
                     height={40}
                     alt="왼쪽 버튼"
                     className={styles.arrowBtn}
+                    loading="lazy"
                   />
                 </button>
                 <div className={styles.cardsContainer}>
@@ -121,12 +121,13 @@ export default function FollowNewFeed() {
                     visibility: endIdx >= (data?.feeds?.length || 0) ? "hidden" : "visible",
                   }}
                 >
-                  <Image
+                  <img
                     src="/icon/card-arrow-right.svg"
                     width={40}
                     height={40}
                     alt="오른쪽 버튼"
                     className={styles.arrowBtn}
+                    loading="lazy"
                   />
                 </button>
               </div>

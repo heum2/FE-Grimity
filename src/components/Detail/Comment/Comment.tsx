@@ -273,6 +273,7 @@ export default function Comment({
                     width={24}
                     height={24}
                     alt="댓글 프로필"
+                    quality={50}
                     className={styles.writerImage}
                   />
                 ) : (
@@ -281,6 +282,7 @@ export default function Comment({
                     width={24}
                     height={24}
                     alt="댓글 프로필"
+                    quality={50}
                     className={styles.writerImage}
                   />
                 )}
@@ -311,7 +313,7 @@ export default function Comment({
                           handleLikeClick(reply.id, reply.isLike);
                         }}
                       >
-                        <Image
+                        <img
                           src={
                             reply.isLike
                               ? "/icon/comment-like-on.svg"
@@ -321,6 +323,7 @@ export default function Comment({
                           height={24}
                           alt="좋아요"
                           className={styles.likeIcon}
+                          loading="lazy"
                         />
                         {reply.likeCount}
                       </div>
@@ -391,6 +394,7 @@ export default function Comment({
                 width={isMobile ? 24 : 40}
                 height={isMobile ? 24 : 40}
                 alt="댓글 프로필"
+                quality={50}
                 className={styles.writerImage}
               />
             ) : (
@@ -399,6 +403,7 @@ export default function Comment({
                 width={isMobile ? 24 : 40}
                 height={isMobile ? 24 : 40}
                 alt="댓글 프로필"
+                quality={50}
                 className={styles.writerImage}
               />
             )}
@@ -426,7 +431,7 @@ export default function Comment({
                       handleLikeClick(comment.id, comment.isLike);
                     }}
                   >
-                    <Image
+                    <img
                       src={
                         comment.isLike ? "/icon/comment-like-on.svg" : "/icon/comment-like-off.svg"
                       }
@@ -434,6 +439,7 @@ export default function Comment({
                       height={24}
                       alt="좋아요"
                       className={styles.likeIcon}
+                      loading="lazy"
                     />
                     {comment.likeCount}
                   </div>
@@ -503,7 +509,7 @@ export default function Comment({
               <div className={styles.input}>
                 {!isMobile &&
                   (isLoggedIn && userData ? (
-                    <Image
+                    <img
                       src={
                         userData.image !== "https://image.grimity.com/null"
                           ? userData.image
@@ -513,14 +519,16 @@ export default function Comment({
                       height={24}
                       alt="프로필 이미지"
                       className={styles.writerImage}
+                      loading="lazy"
                     />
                   ) : (
-                    <Image
+                    <img
                       src="/image/default.svg"
                       width={24}
                       height={24}
                       alt="프로필 이미지"
                       className={styles.writerImage}
+                      loading="lazy"
                     />
                   ))}
                 <TextArea

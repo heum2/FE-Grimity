@@ -226,11 +226,12 @@ export default function Header() {
       <div className={styles.container}>
         <div className={styles.leftSection}>
           <div className={styles.cursor} onClick={handleClickLogo}>
-            <Image
+            <img
               src={isUserPage ? "/image/logo-white.svg" : "/image/logo.svg"}
               width={100}
               height={29}
               alt="logo"
+              loading="lazy"
             />
           </div>
           {!isMobile && !isTablet && (
@@ -328,21 +329,21 @@ export default function Header() {
                     {myData.image !== "https://image.grimity.com/null" ? (
                       <Image
                         src={myData.image}
-                        width={100}
-                        height={100}
+                        width={28}
+                        height={28}
                         alt="프로필 이미지"
                         className={styles.profileImage}
-                        quality={100}
+                        quality={50}
                         style={{ objectFit: "cover" }}
                       />
                     ) : (
                       <Image
                         src="/image/default.svg"
-                        width={100}
-                        height={100}
+                        width={28}
+                        height={28}
                         alt="프로필 이미지"
                         className={styles.profileImage}
-                        quality={100}
+                        quality={50}
                         style={{ objectFit: "cover" }}
                       />
                     )}
@@ -360,21 +361,21 @@ export default function Header() {
                           {myData.image !== "https://image.grimity.com/null" ? (
                             <Image
                               src={myData.image}
-                              width={100}
-                              height={100}
+                              width={28}
+                              height={28}
                               alt="프로필 이미지"
                               className={styles.dropdownProfileImage}
-                              quality={100}
+                              quality={50}
                               style={{ objectFit: "cover" }}
                             />
                           ) : (
                             <Image
                               src="/image/default.svg"
-                              width={100}
-                              height={100}
+                              width={28}
+                              height={28}
                               alt="프로필 이미지"
                               className={styles.dropdownProfileImage}
-                              quality={100}
+                              quality={50}
                               style={{ objectFit: "cover" }}
                             />
                           )}
@@ -588,7 +589,13 @@ export default function Header() {
                               size="l"
                               type="filled-primary"
                               leftIcon={
-                                <Image src="/icon/menu-upload.svg" width={20} height={20} alt="" />
+                                <img
+                                  src="/icon/menu-upload.svg"
+                                  width={20}
+                                  height={20}
+                                  alt=""
+                                  loading="lazy"
+                                />
                               }
                             >
                               그림 업로드

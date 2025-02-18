@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import styles from "./BoardAll.module.scss";
 import Title from "@/components/Layout/Title/Title";
-import Image from "next/image";
 import Link from "next/link";
 import Button from "@/components/Button/Button";
 import IconComponent from "@/components/Asset/Icon";
@@ -238,14 +237,14 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
             >
               전체
             </button>
-            <Image src="/icon/dot.svg" width={3} height={3} alt="" />
+            <img src="/icon/dot.svg" width={3} height={3} alt="" loading="lazy" />
             <button
               className={`${styles.type} ${currentType === "question" ? styles.active : ""}`}
               onClick={() => handleTabChange("question")}
             >
               질문
             </button>
-            <Image src="/icon/dot.svg" width={3} height={3} alt="" />
+            <img src="/icon/dot.svg" width={3} height={3} alt="" loading="lazy" />
             <button
               className={`${styles.type} ${currentType === "feedback" ? styles.active : ""}`}
               onClick={() => handleTabChange("feedback")}
@@ -324,7 +323,7 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
         >
-          <Image src="/icon/pagination-left.svg" width={24} height={24} alt="" />
+          <img src="/icon/pagination-left.svg" width={24} height={24} alt="" loading="lazy" />
         </button>
         {getPageRange(currentPage, totalPages).map((pageNum) => (
           <button
@@ -340,7 +339,7 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages || posts.length === 0}
         >
-          <Image src="/icon/pagination-right.svg" width={24} height={24} alt="" />
+          <img src="/icon/pagination-right.svg" width={24} height={24} alt="" loading="lazy" />
         </button>
       </section>
     </div>

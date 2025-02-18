@@ -4,7 +4,6 @@ import styles from "./BoardPopular.module.scss";
 import { useTodayPopularPosts } from "@/api/posts/getTodayPopular";
 import PopularCard from "./PopularCard/PopularCard";
 import Loader from "@/components/Layout/Loader/Loader";
-import Image from "next/image";
 import { BoardPopularProps } from "./BoardPopular.types";
 import { useRouter } from "next/router";
 import { isTabletState } from "@/states/isMobileState";
@@ -56,12 +55,13 @@ export default function BoardPopular({ isDetail }: BoardPopularProps) {
             onClick={handlePrevClick}
             disabled={pageIndex === 0}
           >
-            <Image
+            <img
               src="/icon/card-arrow-left.svg"
               width={40}
               height={40}
               alt="왼쪽 버튼"
               className={styles.arrowBtn}
+              loading="lazy"
             />
           </button>
           <div className={styles.pageDots}>
@@ -77,12 +77,13 @@ export default function BoardPopular({ isDetail }: BoardPopularProps) {
             onClick={handleNextClick}
             disabled={pageIndex === totalPages - 1}
           >
-            <Image
+            <img
               src="/icon/card-arrow-right.svg"
               width={40}
               height={40}
               alt="오른쪽 버튼"
               className={styles.arrowBtn}
+              loading="lazy"
             />
           </button>
         </div>

@@ -3,7 +3,6 @@ import styles from "./SearchPost.module.scss";
 import Loader from "@/components/Layout/Loader/Loader";
 import { usePostSearch } from "@/api/posts/getPostsSearch";
 import AllCard from "@/components/Board/BoardAll/AllCard/AllCard";
-import Image from "next/image";
 import Dropdown from "@/components/Dropdown/Dropdown";
 import Button from "@/components/Button/Button";
 import IconComponent from "@/components/Asset/Icon";
@@ -112,7 +111,7 @@ export default function SearchPost() {
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
           >
-            <Image src="/icon/pagination-left.svg" width={24} height={24} alt="" />
+            <img src="/icon/pagination-left.svg" width={24} height={24} alt="" loading="lazy" />
           </button>
           {getPageRange(currentPage, totalPages).map((pageNum) => (
             <button
@@ -128,7 +127,7 @@ export default function SearchPost() {
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages || posts.length === 0}
           >
-            <Image src="/icon/pagination-right.svg" width={24} height={24} alt="" />
+            <img src="/icon/pagination-right.svg" width={24} height={24} alt="" loading="lazy" />
           </button>
         </section>
       )}

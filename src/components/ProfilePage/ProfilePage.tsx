@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useUserData } from "@/api/users/getId";
 import { useUserFeeds } from "@/api/users/getIdFeeds";
-import { useUserPosts } from "@/api/users/getIdPosts"; // Update import
+import { useUserPosts } from "@/api/users/getIdPosts";
 import Profile from "./Profile/Profile";
 import styles from "./ProfilePage.module.scss";
 import { ProfilePageProps } from "./ProfilePage.types";
@@ -12,7 +12,6 @@ import IconComponent from "../Asset/Icon";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import AllCard from "../Board/BoardAll/AllCard/AllCard";
-import Image from "next/image";
 
 type SortOption = "latest" | "like" | "oldest";
 
@@ -273,7 +272,13 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
                         onClick={() => handlePageChange(currentPage - 1)}
                         disabled={currentPage === 1}
                       >
-                        <Image src="/icon/pagination-left.svg" width={24} height={24} alt="" />
+                        <img
+                          src="/icon/pagination-left.svg"
+                          width={24}
+                          height={24}
+                          alt=""
+                          loading="lazy"
+                        />
                       </button>
                       {getPageRange(currentPage, totalPages).map((pageNum) => (
                         <button
@@ -289,7 +294,13 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
                         onClick={() => handlePageChange(currentPage + 1)}
                         disabled={currentPage === totalPages}
                       >
-                        <Image src="/icon/pagination-right.svg" width={24} height={24} alt="" />
+                        <img
+                          src="/icon/pagination-right.svg"
+                          width={24}
+                          height={24}
+                          alt=""
+                          loading="lazy"
+                        />
                       </button>
                     </section>
                   </>

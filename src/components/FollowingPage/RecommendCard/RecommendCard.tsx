@@ -54,6 +54,7 @@ export default function RecommendCard({
               <Image
                 src={thumbnails[0]}
                 fill
+                quality={50}
                 alt="인기 유저 헤더 이미지"
                 className={styles.backgroundLeft}
               />
@@ -61,6 +62,7 @@ export default function RecommendCard({
               <Image
                 src="/image/thumbnail.png"
                 fill
+                quality={50}
                 alt="인기 유저 헤더 이미지"
                 className={styles.backgroundLeft}
               />
@@ -71,6 +73,7 @@ export default function RecommendCard({
               <Image
                 src={thumbnails[1]}
                 fill
+                quality={50}
                 alt="인기 유저 헤더 이미지"
                 className={styles.backgroundRight}
               />
@@ -78,6 +81,7 @@ export default function RecommendCard({
               <Image
                 src="/image/thumbnail.png"
                 fill
+                quality={50}
                 alt="인기 유저 헤더 이미지"
                 className={styles.backgroundRight}
               />
@@ -91,16 +95,18 @@ export default function RecommendCard({
             {image !== "https://image.grimity.com/null" ? (
               <Image
                 src={image}
-                width={50}
-                height={50}
+                width={24}
+                height={24}
+                quality={50}
                 alt="인기 유저 프로필 이미지"
                 className={styles.profileImage}
               />
             ) : (
               <Image
                 src="/image/default.svg"
-                width={50}
-                height={50}
+                width={24}
+                height={24}
+                quality={50}
                 alt="인기 유저 프로필 이미지"
                 className={styles.profileImage}
               />

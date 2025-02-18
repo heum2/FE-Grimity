@@ -35,6 +35,7 @@ export default function Like() {
                     src={like.image}
                     width={50}
                     height={50}
+                    quality={50}
                     onClick={() => handleClickUser(like.id)}
                     className={styles.image}
                     alt="프로필 이미지"
@@ -44,6 +45,7 @@ export default function Like() {
                     src="/image/default.svg"
                     width={50}
                     height={50}
+                    quality={50}
                     onClick={() => handleClickUser(like.id)}
                     className={styles.image}
                     alt="프로필 이미지"

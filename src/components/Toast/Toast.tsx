@@ -1,6 +1,5 @@
 import styles from "./Toast.module.scss";
 import { useToast } from "@/hooks/useToast";
-import Image from "next/image";
 
 export default function Toast() {
   const { toast } = useToast();
@@ -34,7 +33,7 @@ export default function Toast() {
 
   return (
     <div className={`${styles.toast} ${borderColor}`}>
-      <Image src={iconPath} alt={toast.type} width={30} height={30} />
+      <img src={iconPath} alt={toast.type} width={30} height={30} loading="lazy" />
       {toast.message}
     </div>
   );

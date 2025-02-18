@@ -70,6 +70,7 @@ export default function CommentInput({
             width={40}
             height={40}
             alt="프로필 이미지"
+            quality={50}
             className={styles.writerImage}
           />
         ) : (
@@ -78,6 +79,7 @@ export default function CommentInput({
             width={40}
             height={40}
             alt="프로필 이미지"
+            quality={50}
             className={styles.writerImage}
           />
         ))}

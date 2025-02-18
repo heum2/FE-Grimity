@@ -1,7 +1,6 @@
 import IconComponent from "@/components/Asset/Icon";
 import styles from "./ProfileCard.module.scss";
 import { formatCurrency } from "@/utils/formatCurrency";
-import Image from "next/image";
 import { ProfileCardProps } from "./ProfileCard.types";
 import Link from "next/link";
 import { formattedDate } from "@/utils/formatDate";
@@ -27,13 +26,7 @@ export default function ProfileCard({
           </div>
         )}
         <Link href={`/feeds/${id}`}>
-          <Image
-            src={thumbnail}
-            alt={title}
-            layout="fill"
-            objectFit="cover"
-            className={styles.image}
-          />
+          <img src={thumbnail} alt={title} loading="lazy" className={styles.image} />
         </Link>
       </div>
       <div className={styles.infoContainer}>

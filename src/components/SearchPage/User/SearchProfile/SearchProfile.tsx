@@ -55,7 +55,7 @@ export default function SearchProfile({
       <Link href={`/users/${id}`}>
         <div className={styles.cover}>
           {backgroundImage !== "https://image.grimity.com/null" ? (
-            <Image
+            <img
               src={backgroundImage}
               alt="배경이미지"
               width={630}
@@ -65,9 +65,10 @@ export default function SearchProfile({
                 height: isMobile ? "130px" : isTablet ? "140px" : "178px",
                 objectFit: "cover",
               }}
+              loading="lazy"
             />
           ) : (
-            <Image
+            <img
               src="/image/search-default-cover.svg"
               alt="배경이미지"
               width={630}
@@ -77,6 +78,7 @@ export default function SearchProfile({
                 height: isMobile ? "130px" : isTablet ? "140px" : "178px",
                 objectFit: "cover",
               }}
+              loading="lazy"
             />
           )}
         </div>
@@ -84,13 +86,21 @@ export default function SearchProfile({
       <div className={styles.profile}>
         <Link href={`/users/${id}`}>
           {image !== "https://image.grimity.com/null" ? (
-            <Image src={image} alt="프로필" width={200} height={200} className={styles.image} />
+            <Image
+              src={image}
+              alt="프로필"
+              width={64}
+              height={64}
+              quality={75}
+              className={styles.image}
+            />
           ) : (
             <Image
               src="/image/default.svg"
               alt="프로필"
               width={64}
               height={64}
+              quality={50}
               className={styles.image}
             />
           )}

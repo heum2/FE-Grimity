@@ -48,6 +48,7 @@ export default function Noti({ notification, onClose, onRefetch }: NotiProps) {
           src={`https://image.grimity.com/${notification.data.thumbnail}`}
           width={isTablet ? 32 : 40}
           height={isTablet ? 32 : 40}
+          quality={50}
           alt="Thumbnail Image"
           className={styles.thumbnail}
         />
@@ -62,6 +63,7 @@ export default function Noti({ notification, onClose, onRefetch }: NotiProps) {
           }
           width={isTablet ? 32 : 40}
           height={isTablet ? 32 : 40}
+          quality={50}
           alt="Actor Image"
           className={styles.actorImage}
         />

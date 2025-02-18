@@ -1,6 +1,5 @@
 import BASE_URL from "@/constants/baseurl";
 import styles from "./Login.module.scss";
-import Image from "next/image";
 import { useRecoilState } from "recoil";
 import { useMutation } from "react-query";
 import { authState } from "@/states/authState";
@@ -137,7 +136,7 @@ export default function Login() {
   return (
     <div className={styles.container}>
       <div className={styles.messageContainer}>
-        <Image src="/image/logo.svg" width={120} height={34} alt="logo" />
+        <img src="/image/logo.svg" width={120} height={34} alt="logo" loading="lazy" />
         <p className={styles.text}>그리미티에 가입 후 나의 그림을 뽐내보세요</p>
       </div>
       <div className={styles.buttonContainer}>

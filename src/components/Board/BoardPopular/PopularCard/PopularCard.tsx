@@ -4,7 +4,6 @@ import striptags from "striptags";
 import { timeAgo } from "@/utils/timeAgo";
 import IconComponent from "@/components/Asset/Icon";
 import { formatCurrency } from "@/utils/formatCurrency";
-import Image from "next/image";
 import Link from "next/link";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useRecoilValue } from "recoil";
@@ -34,7 +33,7 @@ export default function PopularCard({ post }: PopularCardProps) {
           </Link>
           <p className={styles.date}>{timeAgo(post.createdAt)}</p>
           <div className={styles.countContainer}>
-            <Image src="/icon/dot.svg" width={3} height={3} alt="" />
+            <img src="/icon/dot.svg" width={3} height={3} alt="" loading="lazy" />
             <div className={styles.likeContainer}>
               <IconComponent name="boardCommentCount" width={16} height={16} />
               <p className={styles.commentCount}>{formatCurrency(post.commentCount)}</p>
@@ -56,10 +55,10 @@ export default function PopularCard({ post }: PopularCardProps) {
               <IconComponent name="boardViewCount" width={16} height={16} />
               <p className={styles.viewCount}>{formatCurrency(post.viewCount)}</p>
             </div>
-            <Image src="/icon/dot.svg" width={3} height={3} alt="" />
+            <img src="/icon/dot.svg" width={3} height={3} alt="" loading="lazy" />
           </div>
           <p className={styles.date}>{timeAgo(post.createdAt)}</p>
-          <Image src="/icon/dot.svg" width={3} height={3} alt="" />
+          <img src="/icon/dot.svg" width={3} height={3} alt="" loading="lazy" />
           <Link href={`/users/${post.author.id}`}>
             <p className={styles.author}>{post.author.name}</p>
           </Link>
