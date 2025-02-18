@@ -3,6 +3,7 @@ declare global {
     Kakao: any;
     google: any;
     tinymce: any;
+    gtag: (type: string, action: string, params?: Record<string, any>) => void;
   }
 }
 
