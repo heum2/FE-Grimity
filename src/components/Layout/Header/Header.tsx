@@ -31,7 +31,6 @@ export default function Header() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const notificationRef = useRef<HTMLDivElement>(null);
   const [showNotifications, setShowNotifications] = useState(false);
-  const contactRef = useRef<HTMLDivElement>(null);
   const [showContact, setShowContact] = useState(false);
   const { showToast } = useToast();
   const router = useRouter();
@@ -161,9 +160,6 @@ export default function Header() {
         showNotifications
       ) {
         setShowNotifications(false);
-      }
-      if (contactRef.current && !contactRef.current.contains(event.target as Node) && showContact) {
-        setShowContact(false);
       }
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsDropdownOpen(false);
@@ -440,7 +436,7 @@ export default function Header() {
                   )}
                 </div>
                 {!isMobile && !isTablet && (
-                  <div className={styles.contactBtn} ref={contactRef}>
+                  <div className={styles.contactBtn}>
                     <Dropdown
                       isSide
                       trigger={
@@ -455,10 +451,7 @@ export default function Header() {
                       menuItems={[
                         {
                           label: "문의하기",
-                          onClick: () => {
-                            toggleContact();
-                            setIsDropdownOpen(false);
-                          },
+                          onClick: () => toggleContact(),
                         },
                       ]}
                     />
