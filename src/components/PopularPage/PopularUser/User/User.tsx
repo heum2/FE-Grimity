@@ -45,39 +45,39 @@ export default function User({
       <Link href={`/users/${id}`}>
         <div className={styles.imageWrapper}>
           {thumbnails[0] ? (
-            <img
+            <Image
               src={thumbnails[0]}
               width={150}
               height={150}
-              loading="lazy"
+              quality={75}
               alt="인기 유저 헤더 이미지"
               className={styles.backgroundLeft}
             />
           ) : (
-            <img
+            <Image
               src="/image/thumbnail.png"
               width={150}
               height={150}
-              loading="lazy"
+              quality={75}
               alt="인기 유저 헤더 이미지"
               className={styles.backgroundLeft}
             />
           )}
           {thumbnails[1] ? (
-            <img
+            <Image
               src={thumbnails[1]}
               width={150}
               height={150}
-              loading="lazy"
+              quality={75}
               alt="인기 유저 헤더 이미지"
               className={styles.backgroundRight}
             />
           ) : (
-            <img
+            <Image
               src="/image/thumbnail.png"
               width={150}
               height={150}
-              loading="lazy"
+              quality={75}
               alt="인기 유저 헤더 이미지"
               className={styles.backgroundRight}
             />

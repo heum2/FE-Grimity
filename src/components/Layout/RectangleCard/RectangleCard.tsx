@@ -56,7 +56,7 @@ export default function RectangleCard({
               </div>
             )}
             <Link href={`/feeds/${id}`}>
-              <img src={thumbnail} alt={title} loading="lazy" className={styles.image} />
+              <Image src={thumbnail} alt={title} fill quality={75} className={styles.image} />
             </Link>
           </div>
           {!isTablet ? (
@@ -156,7 +156,7 @@ export default function RectangleCard({
               </div>
             )}
             <Link href={`/feeds/${id}`}>
-              <img src={thumbnail} alt={title} loading="lazy" className={styles.image} />
+              <Image src={thumbnail} alt={title} fill quality={75} className={styles.image} />
             </Link>
           </div>
           <div className={styles.cardData}>

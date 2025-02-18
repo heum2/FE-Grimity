@@ -284,12 +284,12 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
         <>
           {userData.backgroundImage !== "https://image.grimity.com/null" ? (
             <div className={styles.backgroundImage}>
-              <img
+              <Image
                 src={userData.backgroundImage}
                 width={1400} // 임의 지정
                 height={isMobile ? 240 : isTablet ? 300 : 400}
                 alt="backgroundImage"
-                loading="lazy"
+                quality={75}
                 style={{
                   width: "100vw",
                   height: isMobile ? "240px" : isTablet ? "300px" : "400px",
@@ -336,11 +336,11 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
             </div>
           ) : (
             <div className={styles.backgroundDefaultImageContainer}>
-              <img
+              <Image
                 src="/image/default-cover.png"
                 width={1400} // 임의 지정
                 height={isMobile ? 240 : 264}
-                loading="lazy"
+                quality={50}
                 alt="backgroundImage"
                 style={{
                   width: "100vw",
