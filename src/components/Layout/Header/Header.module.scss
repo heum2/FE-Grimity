@@ -309,7 +309,7 @@
 
     @include Size("mobile") {
       width: 240px;
-      padding: 16px 20px 104px;
+      padding: 16px 20px 110px;
     }
 
     @include Size("tablet") {
@@ -379,7 +379,6 @@
         display: flex;
         align-items: flex-start;
         flex-direction: column;
-        margin-bottom: 16px;
       }
 
       .itemBtn {
