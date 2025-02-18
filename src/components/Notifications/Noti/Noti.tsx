@@ -44,11 +44,11 @@ export default function Noti({ notification, onClose, onRefetch }: NotiProps) {
   const renderImage = () => {
     if (notification.data.type === "FEED_LIKE") {
       return (
-        <Image
+        <img
           src={`https://image.grimity.com/${notification.data.thumbnail}`}
           width={isTablet ? 32 : 40}
           height={isTablet ? 32 : 40}
-          quality={50}
+          loading="lazy"
           alt="Thumbnail Image"
           className={styles.thumbnail}
         />
