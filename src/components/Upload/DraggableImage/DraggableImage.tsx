@@ -5,7 +5,6 @@ import { useState } from "react";
 import { isMobileState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useRecoilValue } from "recoil";
-import Image from "next/image";
 
 export default function DraggableImage({
   image,
@@ -54,11 +53,11 @@ export default function DraggableImage({
                 loading="lazy"
               />
             </div>
-            <Image
+            <img
               src={image.url}
               width={240}
               height={240}
-              quality={75}
+              loading="lazy"
               alt="Uploaded"
               className={styles.image}
               onLoad={handleImageLoad}

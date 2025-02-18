@@ -276,14 +276,14 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
             <section className={styles.imageGallery}>
               {details.cards.slice(0, 2).map((card, index) => (
                 <div key={index} className={styles.imageWrapper}>
-                  <Image
+                  <img
                     src={card}
                     alt={`Card image ${index + 1}`}
                     width={880}
                     height={0}
                     className={styles.cardImage}
                     onClick={() => handleImageClick(card)}
-                    quality={75}
+                    loading="lazy"
                   />
                   {index === 1 && details.cards.length > 2 && !isExpanded && (
                     <>
@@ -301,14 +301,14 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
             {isExpanded &&
               details.cards.slice(2).map((card, index) => (
                 <div key={index + 2} className={styles.imageWrapper2}>
-                  <Image
+                  <img
                     src={card}
                     alt={`Card image ${index + 3}`}
                     width={600}
                     height={0}
                     className={styles.cardImage}
                     onClick={() => handleImageClick(card)}
-                    quality={75}
+                    loading="lazy"
                   />
                 </div>
               ))}
@@ -316,7 +316,7 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
               <div className={styles.overlay} onClick={() => setOverlayImage(null)}>
                 <div className={styles.overlayContent}>
                   <Zoom>
-                    <Image
+                    <img
                       src={overlayImage}
                       alt="Zoomed Image"
                       style={{
@@ -324,7 +324,7 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
                         objectFit: "cover",
                       }}
                       onClick={(event) => event.stopPropagation()}
-                      quality={75}
+                      loading="lazy"
                     />
                   </Zoom>
                 </div>

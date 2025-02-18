@@ -4,7 +4,6 @@ import { formatCurrency } from "@/utils/formatCurrency";
 import { ProfileCardProps } from "./ProfileCard.types";
 import Link from "next/link";
 import { formattedDate } from "@/utils/formatDate";
-import Image from "next/image";
 
 export default function ProfileCard({
   title,
@@ -27,7 +26,7 @@ export default function ProfileCard({
           </div>
         )}
         <Link href={`/feeds/${id}`}>
-          <Image src={thumbnail} alt={title} fill quality={75} className={styles.image} />
+          <img src={thumbnail} alt={title} loading="lazy" className={styles.image} />
         </Link>
       </div>
       <div className={styles.infoContainer}>

@@ -3,7 +3,6 @@ import IconComponent from "@/components/Asset/Icon";
 import styles from "./SearchCard.module.scss";
 import { formatCurrency } from "@/utils/formatCurrency";
 import Link from "next/link";
-import Image from "next/image";
 import { useRecoilValue } from "recoil";
 import { authState } from "@/states/authState";
 import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
@@ -52,7 +51,7 @@ export default function SearchCard({
           </div>
         )}
         <Link href={`/feeds/${id}`}>
-          <Image src={thumbnail} alt={title} fill quality={75} className={styles.image} />
+          <img src={thumbnail} alt={title} loading="lazy" className={styles.image} />
         </Link>
       </div>
       {tags.length > 0 && (

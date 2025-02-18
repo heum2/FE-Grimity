@@ -8,7 +8,6 @@ import { useRecoilValue } from "recoil";
 import { authState } from "@/states/authState";
 import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
 import { timeAgo } from "@/utils/timeAgo";
-import Image from "next/image";
 
 export default function SquareCard({
   title,
@@ -58,7 +57,7 @@ export default function SquareCard({
           </div>
         )}
         <Link href={`/feeds/${id}`}>
-          <Image src={thumbnail} alt={title} fill quality={75} className={styles.image} />
+          <img src={thumbnail} alt={title} loading="lazy" className={styles.image} />
         </Link>
       </div>
       <div className={styles.infoContainer}>

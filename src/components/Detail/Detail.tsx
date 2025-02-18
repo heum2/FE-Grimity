@@ -297,12 +297,12 @@ export default function Detail({ id }: DetailProps) {
             <section className={styles.imageGallery}>
               {details.cards.slice(0, 2).map((card, index) => (
                 <div key={index} className={styles.imageWrapper}>
-                  <Image
+                  <img
                     src={card}
                     alt={`Card image ${index + 1}`}
                     width={880}
                     height={0}
-                    quality={75}
+                    loading="lazy"
                     className={styles.cardImage}
                     onClick={() => handleImageClick(card)}
                   />
@@ -322,12 +322,12 @@ export default function Detail({ id }: DetailProps) {
             {isExpanded &&
               details.cards.slice(2).map((card, index) => (
                 <div key={index + 2} className={styles.imageWrapper2}>
-                  <Image
+                  <img
                     src={card}
                     alt={`Card image ${index + 3}`}
                     width={600}
                     height={0}
-                    quality={75}
+                    loading="lazy"
                     className={styles.cardImage}
                     onClick={() => handleImageClick(card)}
                   />
@@ -337,14 +337,14 @@ export default function Detail({ id }: DetailProps) {
               <div className={styles.overlay} onClick={() => setOverlayImage(null)}>
                 <div className={styles.overlayContent}>
                   <Zoom>
-                    <Image
+                    <img
                       src={overlayImage}
                       alt="Zoomed Image"
                       style={{
                         height: "90vh",
                         objectFit: "cover",
                       }}
-                      quality={75}
+                      loading="lazy"
                       onClick={(event) => event.stopPropagation()}
                     />
                   </Zoom>

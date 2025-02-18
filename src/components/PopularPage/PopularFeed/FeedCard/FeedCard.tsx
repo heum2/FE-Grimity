@@ -7,7 +7,6 @@ import { useRecoilValue } from "recoil";
 import { authState } from "@/states/authState";
 import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
 import { FeedCardProps } from "./FeedCard.types";
-import Image from "next/image";
 
 export default function FeedCard({
   id,
@@ -48,7 +47,7 @@ export default function FeedCard({
           </div>
         )}
         <Link href={`/feeds/${id}`}>
-          <Image src={thumbnail} alt={title} fill quality={75} className={styles.image} />
+          <img src={thumbnail} alt={title} loading="lazy" className={styles.image} />
         </Link>
       </div>
       <div className={styles.infoContainer}>
