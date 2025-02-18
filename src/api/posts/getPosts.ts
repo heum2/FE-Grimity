@@ -13,7 +13,7 @@ export interface PostsLatest {
   type: "NORMAL" | "QUESTION" | "FEEDBACK";
   title: string;
   content: string;
-  hasImage?: boolean;
+  thumbnail: string | null;
   commentCount: number;
   viewCount: number;
   createdAt: string;
@@ -37,7 +37,16 @@ export async function getPostsLatest({
     const response = await BASE_URL.get("/posts", {
       params: { size, page, type },
     });
-    return response.data;
+
+    const updatedData: PostsLatestResponse = {
+      ...response.data,
+      posts: response.data.posts.map((post: PostsLatest) => ({
+        ...post,
+        thumbnail: post.thumbnail ? `https://image.grimity.com/${post.thumbnail}` : null,
+      })),
+    };
+
+    return updatedData;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response?.status === 404) {
@@ -62,7 +71,13 @@ export const usePostsLatest = (params: PostsLatestRequest) => {
 export async function getPostsNotices(): Promise<PostsLatest[]> {
   try {
     const response = await BASE_URL.get("/posts/notices");
-    return response.data;
+
+    const updatedPosts: PostsLatest[] = response.data.map((post: PostsLatest) => ({
+      ...post,
+      thumbnail: post.thumbnail ? `https://image.grimity.com/${post.thumbnail}` : null,
+    }));
+
+    return updatedPosts;
   } catch (error) {
     console.error("Error fetching postsNotices:", error);
     throw new Error("Failed to fetch postsNotices");

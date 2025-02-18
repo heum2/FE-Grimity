@@ -6,7 +6,7 @@ export interface PostsDetailsResponse {
   type: "NORMAL" | "QUESTION" | "FEEDBACK" | "NOTICE";
   title: string;
   content: string;
-  hasImage?: boolean;
+  thumbnail: string | null;
   commentCount: number;
   viewCount: number;
   likeCount: number;
@@ -25,7 +25,14 @@ export async function getPostsDetails(id: string): Promise<PostsDetailsResponse>
       params: { id },
     });
 
-    return response.data;
+    const post = response.data;
+
+    const updatedData = {
+      ...post,
+      thumbnail: post.thumbnail ? `https://image.grimity.com/${post.thumbnail}` : null,
+    };
+
+    return updatedData;
   } catch (error) {
     console.error("Error fetching Postsdetails:", error);
     throw new Error("Failed to fetch Postsdetails");

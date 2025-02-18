@@ -111,7 +111,7 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
                   <div className={styles.mobileChip}>{getTypeLabel(post.type)}</div>
                 ))}
               <h2 className={styles.title}>{post.title}</h2>
-              {post.hasImage && (
+              {post.thumbnail !== null && (
                 <Image src="/icon/board-all-image.svg" width={16} height={16} alt="" />
               )}
               {!isMobile && (

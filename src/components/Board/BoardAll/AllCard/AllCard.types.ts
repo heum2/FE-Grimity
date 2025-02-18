@@ -4,7 +4,7 @@ export interface AllCardProps {
     type: "NORMAL" | "QUESTION" | "FEEDBACK" | "NOTICE";
     title: string;
     content: string;
-    hasImage?: boolean;
+    thumbnail: string | null;
     commentCount: number;
     viewCount: number;
     createdAt: string;

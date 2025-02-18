@@ -12,7 +12,7 @@ export interface UserPostsResponse {
   type: "NORMAL" | "QUESTION" | "FEEDBACK" | "NOTICE";
   title: string;
   content: string;
-  hasImage?: boolean;
+  thumbnail: string | null;
   commentCount: number;
   viewCount: number;
   createdAt: string;
@@ -31,7 +31,12 @@ export async function getUserPosts({
       },
     });
 
-    return response.data;
+    const updatedPosts: UserPostsResponse[] = response.data.map((post: UserPostsResponse) => ({
+      ...post,
+      thumbnail: post.thumbnail ? `https://image.grimity.com/${post.thumbnail}` : null,
+    }));
+
+    return updatedPosts;
   } catch (error) {
     console.error("Error fetching User Posts:", error);
     throw new Error("Failed to fetch User Posts");

@@ -11,7 +11,7 @@ export interface MySavePost {
   type: "NORMAL" | "QUESTION" | "FEEDBACK" | "NOTICE";
   title: string;
   content: string;
-  hasImage?: boolean;
+  thumbnail: string | null;
   commentCount: number;
   viewCount: number;
   createdAt: string;
@@ -33,7 +33,15 @@ export async function getMySavePost({
   try {
     const response = await BASE_URL.get("/users/me/save-posts", { params: { size, page } });
 
-    return response.data;
+    const updatedData: MySavePostResponse = {
+      ...response.data,
+      posts: response.data.posts.map((post: MySavePost) => ({
+        ...post,
+        thumbnail: post.thumbnail ? `https://image.grimity.com/${post.thumbnail}` : null,
+      })),
+    };
+
+    return updatedData;
   } catch (error) {
     console.error("Error fetching MySavePost:", error);
     throw new Error("Failed to fetch MySavePost");

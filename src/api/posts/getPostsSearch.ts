@@ -14,7 +14,7 @@ export interface PostSearch {
   title: string;
   createdAt: string;
   content: string;
-  hasImage?: boolean;
+  thumbnail: string | null;
   viewCount: number;
   commentCount: number;
   author: {
@@ -44,7 +44,15 @@ export async function getPostSearch({
       },
     });
 
-    return response.data;
+    const updatedData: PostSearchResponse = {
+      ...response.data,
+      posts: response.data.posts.map((post: PostSearch) => ({
+        ...post,
+        thumbnail: post.thumbnail ? `https://image.grimity.com/${post.thumbnail}` : null,
+      })),
+    };
+
+    return updatedData;
   } catch (error) {
     console.error("Error fetching PostSearch:", error);
     throw new Error("Failed to fetch PostSearch");

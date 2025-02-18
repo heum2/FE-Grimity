@@ -6,7 +6,7 @@ export interface TodayPopularPostsResponse {
   type: "NORMAL" | "QUESTION" | "FEEDBACK" | "NOTICE";
   title: string;
   content: string;
-  hasImage?: boolean;
+  thumbnail: string | null;
   commentCount: number;
   viewCount: number;
   createdAt: string;
@@ -20,7 +20,14 @@ export async function getTodayPopularPosts(): Promise<TodayPopularPostsResponse[
   try {
     const response = await BASE_URL.get("/posts/today-popular");
 
-    return response.data;
+    const updatedPosts: TodayPopularPostsResponse[] = response.data.map(
+      (post: TodayPopularPostsResponse) => ({
+        ...post,
+        thumbnail: post.thumbnail ? `https://image.grimity.com/${post.thumbnail}` : null,
+      })
+    );
+
+    return updatedPosts;
   } catch (error) {
     console.error("Error fetching TodayPopularPosts:", error);
     throw new Error("Failed to fetch TodayPopularPosts");
