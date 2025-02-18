@@ -39,6 +39,24 @@ export default function Document() {
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
         <script defer src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
         <script defer src="https://accounts.google.com/gsi/client" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "LocalBusiness",
+              name: "그리미티",
+              description: "그림쟁이들을 위한 그림 커뮤니티, 그리미티",
+              url: "https://www.grimity.com",
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "서울특별시",
+                addressCountry: "KR",
+              },
+              image: "/favicon/android-chrome-192x192.png",
+            }),
+          }}
+        />
       </Head>
       <body>
         <Main />
