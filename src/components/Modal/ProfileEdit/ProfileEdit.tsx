@@ -87,6 +87,11 @@ export default function ProfileEdit() {
       return;
     }
 
+    if (nameWithoutTrailingSpace.trim().length < 2) {
+      showToast("닉네임은 두 글자 이상 입력해야 합니다.", "error");
+      return;
+    }
+
     const filteredLinks = links.filter(
       (link) => link.linkName.trim() !== "" || link.link.trim() !== ""
     );
@@ -178,7 +183,12 @@ export default function ProfileEdit() {
             )}
           </div>
         </div>
-        <Button size="l" type="filled-primary" onClick={handleSave} disabled={mutation.isLoading}>
+        <Button
+          size="l"
+          type="filled-primary"
+          onClick={handleSave}
+          disabled={name.trim().length < 2 || mutation.isLoading}
+        >
           변경 내용 저장
         </Button>
       </div>

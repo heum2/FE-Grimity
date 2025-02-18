@@ -43,6 +43,11 @@ export default function Nickname() {
   });
 
   const handleSubmit = () => {
+    if (nickname.trim().length < 2) {
+      showToast("닉네임은 두 글자 이상 입력해야 합니다.", "error");
+      return;
+    }
+
     const { accessToken, provider } = modal[0].data;
     registerMutation.mutate({
       provider: provider,
@@ -101,7 +106,7 @@ export default function Nickname() {
         <Button
           size="l"
           type="filled-primary"
-          disabled={!nickname || !agree}
+          disabled={nickname.trim().length < 2 || !agree}
           onClick={handleSubmit}
         >
           설정 완료
