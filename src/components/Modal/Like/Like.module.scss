@@ -5,11 +5,19 @@
   display: flex;
   flex-direction: column;
   gap: 30px;
+
+  @include Size("mobile") {
+    gap: 20px;
+  }
 }
 
 .title {
   @include Title3;
   color: $gray70;
+
+  @include Size("mobile") {
+    @include Title4;
+  }
 }
 
 .content {
@@ -32,10 +40,29 @@
     background: rgba(57, 58, 61, 0.16);
   }
 
+  @include Size("mobile") {
+    height: 100%;
+    padding-bottom: 100px;
+    gap: 0;
+
+    &::-webkit-scrollbar {
+      width: 0;
+      display: none;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      display: none;
+    }
+  }
+
   ul {
     list-style: none;
     padding: 0;
     width: calc(100% - 16px - 7px);
+
+    @include Size("mobile") {
+      width: 100%;
+    }
 
     .item {
       display: flex;
@@ -46,6 +73,11 @@
 
       &:last-child {
         border: none;
+      }
+
+      @include Size("mobile") {
+        padding-bottom: 12px;
+        margin-bottom: 12px;
       }
     }
 

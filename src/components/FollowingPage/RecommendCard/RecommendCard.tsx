@@ -51,40 +51,76 @@ export default function RecommendCard({
         <div className={styles.imageWrapper}>
           <div className={styles.imageContainer}>
             {thumbnails[0] ? (
-              <Image
-                src={thumbnails[0]}
-                fill
-                quality={50}
-                alt="인기 유저 헤더 이미지"
-                className={styles.backgroundLeft}
-              />
+              <div className={styles.background}>
+                <img
+                  src={thumbnails[0]}
+                  alt="인기 유저 헤더 이미지"
+                  loading="lazy"
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    borderRadius: "12px 0 0 0",
+                  }}
+                />
+              </div>
             ) : (
-              <Image
-                src="/image/thumbnail.png"
-                fill
-                quality={50}
-                alt="인기 유저 헤더 이미지"
-                className={styles.backgroundLeft}
-              />
+              <div className={styles.background}>
+                <img
+                  src="/image/thumbnail.png"
+                  loading="lazy"
+                  alt="인기 유저 헤더 이미지"
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    borderRadius: "12px 0 0 0",
+                  }}
+                />
+              </div>
             )}
           </div>
           <div className={styles.imageContainer}>
             {thumbnails[1] ? (
-              <Image
-                src={thumbnails[1]}
-                fill
-                quality={50}
-                alt="인기 유저 헤더 이미지"
-                className={styles.backgroundRight}
-              />
+              <div className={styles.background}>
+                <img
+                  src={thumbnails[1]}
+                  alt="인기 유저 헤더 이미지"
+                  loading="lazy"
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    borderRadius: "0 12px 0 0",
+                  }}
+                />
+              </div>
             ) : (
-              <Image
-                src="/image/thumbnail.png"
-                fill
-                quality={50}
-                alt="인기 유저 헤더 이미지"
-                className={styles.backgroundRight}
-              />
+              <div className={styles.background}>
+                <img
+                  src="/image/thumbnail.png"
+                  loading="lazy"
+                  alt="인기 유저 헤더 이미지"
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    borderRadius: "0 12px 0 0",
+                  }}
+                />
+              </div>
             )}
           </div>
         </div>

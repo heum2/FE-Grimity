@@ -131,10 +131,18 @@ export default function Detail({ id }: DetailProps) {
     }
 
     if (details?.author.id === user_id) {
-      setModal({
-        isOpen: true,
-        type: "LIKE",
-      });
+      if (isMobile) {
+        setModal({
+          isOpen: true,
+          type: "LIKE",
+          isFill: true,
+        });
+      } else {
+        setModal({
+          isOpen: true,
+          type: "LIKE",
+        });
+      }
     } else {
       if (isLiked) {
         await deleteLike(id);

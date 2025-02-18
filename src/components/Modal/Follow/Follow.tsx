@@ -92,7 +92,10 @@ export default function Follow({ initialTab }: FollowProps) {
           }
         }
       },
-      { threshold: 0.1 }
+      {
+        threshold: 0.5,
+        rootMargin: "100px",
+      }
     );
 
     const currentObserverRef = observerRef.current;
@@ -218,8 +221,8 @@ export default function Follow({ initialTab }: FollowProps) {
               </li>
             ))
           )}
+          {hasNextPage && <div ref={observerRef} style={{ height: "20px" }} />}
         </ul>
-        {hasNextPage && <div ref={observerRef} style={{ height: "10px" }} />}
       </div>
     </div>
   );

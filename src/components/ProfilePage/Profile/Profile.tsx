@@ -343,7 +343,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                 loading="lazy"
                 alt="backgroundImage"
                 style={{
-                  width: "100vw",
+                  width: "100%",
                   height: isMobile ? "240px" : "264px",
                   objectFit: "cover",
                 }}

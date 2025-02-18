@@ -8,6 +8,7 @@
 
   @include Size("mobile") {
     gap: 24px;
+    overflow-y: auto;
     height: calc(100vh - 64px - 130px);
   }
 }

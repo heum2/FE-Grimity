@@ -1,15 +1,19 @@
 import styles from "./Like.module.scss";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { modalState } from "@/states/modalState";
 import { useFeedsLike } from "@/api/feeds/getFeedsIdLike";
 import Loader from "@/components/Layout/Loader/Loader";
+import { isMobileState } from "@/states/isMobileState";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 export default function Like() {
   const [, setModal] = useRecoilState(modalState);
   const route = useRouter();
   const { data, isLoading } = useFeedsLike({ id: String(route.query.id) });
+  const isMobile = useRecoilValue(isMobileState);
+  useIsMobile();
 
   const handleClickUser = (id: string) => {
     route.push(`/users/${id}`);
@@ -33,8 +37,8 @@ export default function Like() {
                 {like.image !== "https://image.grimity.com/null" ? (
                   <Image
                     src={like.image}
-                    width={50}
-                    height={50}
+                    width={isMobile ? 40 : 50}
+                    height={isMobile ? 40 : 50}
                     quality={50}
                     onClick={() => handleClickUser(like.id)}
                     className={styles.image}
@@ -43,8 +47,8 @@ export default function Like() {
                 ) : (
                   <Image
                     src="/image/default.svg"
-                    width={50}
-                    height={50}
+                    width={isMobile ? 40 : 50}
+                    height={isMobile ? 40 : 50}
                     quality={50}
                     onClick={() => handleClickUser(like.id)}
                     className={styles.image}
