@@ -164,7 +164,7 @@ export default function BoardWrite() {
                     margin: 14px 0;
                   }
                   p {
-                    line-height: 11.2px;
+                    margin: 6px 0;
                   }
                 `,
                 base_url: "https://public.grimity.com/tinymce",
