@@ -1,4 +1,4 @@
-import { DetailsResponse, useDetails } from "@/api/feeds/getFeedsId";
+import { DetailsResponse, getDetails } from "@/api/feeds/getFeedsId";
 import Detail from "@/components/Detail/Detail";
 import { DetailsPageMeta } from "@/components/MetaData/MetaData";
 import { serviceUrl } from "@/constants/serviceurl";
@@ -9,7 +9,8 @@ import { useEffect } from "react";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.params!;
-  const { data: details } = useDetails(id as string);
+  const details = await getDetails(id as string);
+
   return {
     props: {
       details,
