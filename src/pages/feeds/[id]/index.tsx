@@ -1,4 +1,4 @@
-import { DetailsResponse, getSSRDetails } from "@/api/feeds/getFeedsId";
+import { getSSRDetails, MetaDetailsResponse } from "@/api/feeds/getFeedsId";
 import Detail from "@/components/Detail/Detail";
 import { serviceUrl } from "@/constants/serviceurl";
 import { useScrollRestoration } from "@/hooks/useScrollRestoration";
@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 type Props = {
-  details: DetailsResponse;
+  details: MetaDetailsResponse;
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {

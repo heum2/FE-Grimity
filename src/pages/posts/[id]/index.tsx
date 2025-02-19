@@ -1,4 +1,4 @@
-import { getSSRPostsDetails, PostsDetailsResponse } from "@/api/posts/getPostsId";
+import { getSSRPostsDetails, MetaPostsDetailsResponse } from "@/api/posts/getPostsId";
 import PostDetail from "@/components/Board/Detail/Detail";
 import { serviceUrl } from "@/constants/serviceurl";
 import { GetServerSideProps } from "next";
@@ -6,7 +6,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 
 type Props = {
-  details: PostsDetailsResponse;
+  details: MetaPostsDetailsResponse;
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {

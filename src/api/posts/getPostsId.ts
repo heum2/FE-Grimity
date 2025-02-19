@@ -61,7 +61,7 @@ export async function getSSRPostsDetails(id: string): Promise<MetaPostsDetailsRe
 
     const updatedData = {
       ...post,
-      thumbnail: post.thumbnail ? `https://image.grimity.com/${post.thumbnail}` : null,
+      thumbnail: post.thumbnail ? `${post.thumbnail}` : null,
     };
 
     return updatedData;

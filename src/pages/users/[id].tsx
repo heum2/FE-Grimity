@@ -1,16 +1,15 @@
-import { getSSRUserInfo, UserInfoResponse } from "@/api/users/getId";
+import { getSSRUserInfo, MetaUserInfoResponse } from "@/api/users/getId";
 import { useMyData } from "@/api/users/getMe";
-import { InitialPageMeta } from "@/components/MetaData/MetaData";
 import ProfilePage from "@/components/ProfilePage/ProfilePage";
 import { serviceUrl } from "@/constants/serviceurl";
 import { useScrollRestoration } from "@/hooks/useScrollRestoration";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 type Props = {
-  data: UserInfoResponse;
+  data: MetaUserInfoResponse;
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -30,13 +29,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 export default function Profile({ data }: Props) {
   const router = useRouter();
   const { data: myData } = useMyData();
-  const [OGTitle] = useState("프로필 조회 - 그리미티");
-  const [OGUrl, setOGUrl] = useState(serviceUrl);
   const { restoreScrollPosition } = useScrollRestoration("profile-scroll");
-
-  useEffect(() => {
-    setOGUrl(serviceUrl + router.asPath);
-  }, [router.asPath]);
 
   useEffect(() => {
     if (sessionStorage.getItem("profile-scroll") !== null) {
