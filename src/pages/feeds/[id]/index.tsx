@@ -31,15 +31,11 @@ export default function FeedDetail() {
 
   useEffect(() => {
     if (details) {
-      setTitle(`${details.title ?? "그림 상세"} - 그리미티`);
+      setTitle(details.title ?? "그림 상세");
       setDescription(`${details.content ?? ""} ${details.tags ?? ""}`);
       setThumbnail(details.thumbnail ?? "");
     }
   }, [details]);
-
-  if (!id) {
-    return null;
-  }
 
   return (
     <>

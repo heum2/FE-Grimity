@@ -8,7 +8,13 @@ export function InitialPageMeta({ title, url }: InitialPageMetaProps) {
       <Head>
         <title>{title}</title>
         <meta property="og:title" content={title} />
+        <meta property="og:description" content="그림쟁이들을 위한 그림 커뮤니티, 그리미티" />
+        <meta
+          property="og:image"
+          content="https://avatars.githubusercontent.com/u/194518500?s=200&v=4"
+        />
         <meta property="og:url" content={url ?? serviceUrl} />
+        <meta property="og:type" content="website" />
         <meta
           name="keywords"
           content="그림, 커뮤니티, 그리미티, grimity, 일러스트, 일러스트레이터, 갤러리"
@@ -38,7 +44,7 @@ interface DetailsMetaProps {
 export function DetailsPageMeta({ title, description, thumbnail, url }: DetailsMetaProps) {
   return (
     <Head>
-      <title>{`${title}  - 그리미티`}</title>
+      <title>{`${title} - 그리미티`}</title>
       <meta property="og:title" content={`${title} - 그리미티`} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={thumbnail} />

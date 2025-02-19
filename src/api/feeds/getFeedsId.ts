@@ -54,8 +54,9 @@ export async function getDetails(id: string): Promise<DetailsResponse> {
   }
 }
 
-export function useDetails(id: string) {
-  return useQuery<DetailsResponse>(["details", id], () => getDetails(id), {
+export function useDetails(id?: string) {
+  return useQuery<DetailsResponse>(["details", id], () => getDetails(id!), {
+    enabled: !!id,
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
