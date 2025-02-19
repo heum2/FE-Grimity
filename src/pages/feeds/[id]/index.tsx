@@ -1,18 +1,24 @@
-import { useDetails } from "@/api/feeds/getFeedsId";
+import { DetailsResponse, useDetails } from "@/api/feeds/getFeedsId";
 import Detail from "@/components/Detail/Detail";
 import { DetailsPageMeta } from "@/components/MetaData/MetaData";
 import { serviceUrl } from "@/constants/serviceurl";
 import { useScrollRestoration } from "@/hooks/useScrollRestoration";
+import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-export default function FeedDetail() {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { id } = context.params!;
+  const { data: details } = useDetails(id as string);
+  return {
+    props: {
+      details,
+    },
+  };
+};
+
+export default function FeedDetail({ details }: { details: DetailsResponse }) {
   const router = useRouter();
-  const [title, setTitle] = useState("그림 상세 - 그리미티");
-  const [url, setUrl] = useState(serviceUrl);
-  const [description, setDescription] = useState("");
-  const [thumbnail, setThumbnail] = useState("");
-
   const { restoreScrollPosition } = useScrollRestoration("details-scroll");
 
   useEffect(() => {
@@ -22,24 +28,16 @@ export default function FeedDetail() {
     }
   }, []);
 
-  useEffect(() => {
-    setUrl(serviceUrl + router.asPath);
-  }, [router.asPath]);
-
   const { id } = router.query;
-  const { data: details } = useDetails(id as string);
-
-  useEffect(() => {
-    if (details) {
-      setTitle(details.title ?? "그림 상세");
-      setDescription(`${details.content ?? ""} ${details.tags ?? ""}`);
-      setThumbnail(details.thumbnail ?? "");
-    }
-  }, [details]);
 
   return (
     <>
-      <DetailsPageMeta title={title} description={description} url={url} thumbnail={thumbnail} />
+      <DetailsPageMeta
+        title={details.title}
+        description={`${details.content ?? ""} ${details.tags ?? ""}`}
+        url={`${serviceUrl}/feeds/${details.id}`}
+        thumbnail={details.thumbnail ?? ""}
+      />
       <Detail id={id as string} />
     </>
   );

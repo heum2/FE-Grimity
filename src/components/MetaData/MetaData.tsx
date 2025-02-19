@@ -55,6 +55,7 @@ export function DetailsPageMeta({ title, description, thumbnail, url }: DetailsM
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={thumbnail} />
       <meta name="twitter:url" content={url} />
+      <meta name="naver-site-verification" content="ad68cc7c7ab33fa1b5958b47805c1fc3009f5488" />
     </Head>
   );
 }
