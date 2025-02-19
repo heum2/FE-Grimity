@@ -39,10 +39,15 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
   const isUserPage = router.pathname.startsWith("/users/[id]");
+  const isPostPage = ["/board", "/board/write", "/posts/[id]", "/posts/[id]/edit"].includes(
+    router.pathname
+  );
   const isNavPage = ["/", "/popular", "/board", "/following", "/board/write"].includes(
     router.pathname
   );
-  const hideBtn = ["/write", "/feeds/[id]/edit"].includes(router.pathname);
+  const hideBtn = ["/write", "/feeds/[id]/edit", "/board/write", "/posts/[id]/edit"].includes(
+    router.pathname
+  );
   useIsMobile();
   const email = "grimity.official@gmail.com";
   const navItems = [
@@ -428,13 +433,20 @@ export default function Header() {
                       </div>
                     </div>
                   )}
-                  {!hideBtn && (
-                    <Link href="/write">
-                      <Button size="m" type="filled-primary">
-                        그림 업로드
-                      </Button>
-                    </Link>
-                  )}
+                  {!hideBtn &&
+                    (isPostPage ? (
+                      <Link href="/board/write">
+                        <Button size="m" type="filled-primary">
+                          글 쓰기
+                        </Button>
+                      </Link>
+                    ) : (
+                      <Link href="/write">
+                        <Button size="m" type="filled-primary">
+                          그림 업로드
+                        </Button>
+                      </Link>
+                    ))}
                 </div>
                 {!isMobile && !isTablet && (
                   <div className={styles.contactBtn}>
@@ -583,25 +595,44 @@ export default function Header() {
                             </button>
                           </div>
                         )}
-                        {isLoggedIn && (
-                          <Link href="/write" className={styles.uploadBtnContainer}>
-                            <Button
-                              size="l"
-                              type="filled-primary"
-                              leftIcon={
-                                <img
-                                  src="/icon/menu-upload.svg"
-                                  width={20}
-                                  height={20}
-                                  alt=""
-                                  loading="lazy"
-                                />
-                              }
-                            >
-                              그림 업로드
-                            </Button>
-                          </Link>
-                        )}
+                        {isLoggedIn &&
+                          (isPostPage ? (
+                            <Link href="/board/write" className={styles.uploadBtnContainer}>
+                              <Button
+                                size="l"
+                                type="filled-primary"
+                                leftIcon={
+                                  <img
+                                    src="/icon/menu-upload.svg"
+                                    width={20}
+                                    height={20}
+                                    alt=""
+                                    loading="lazy"
+                                  />
+                                }
+                              >
+                                글 쓰기
+                              </Button>
+                            </Link>
+                          ) : (
+                            <Link href="/write" className={styles.uploadBtnContainer}>
+                              <Button
+                                size="l"
+                                type="filled-primary"
+                                leftIcon={
+                                  <img
+                                    src="/icon/menu-upload.svg"
+                                    width={20}
+                                    height={20}
+                                    alt=""
+                                    loading="lazy"
+                                  />
+                                }
+                              >
+                                그림 업로드
+                              </Button>
+                            </Link>
+                          ))}
                       </div>
                     )}
                   </div>
