@@ -1,18 +1,30 @@
+import { getSSRPostsDetails, PostsDetailsResponse } from "@/api/posts/getPostsId";
 import PostDetail from "@/components/Board/Detail/Detail";
-import { InitialPageMeta } from "@/components/MetaData/MetaData";
 import { serviceUrl } from "@/constants/serviceurl";
+import { GetServerSideProps } from "next";
+import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 
-export default function FeedDetail() {
+type Props = {
+  details: PostsDetailsResponse;
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { id } = context.params as { id: string };
+
+  try {
+    const details = await getSSRPostsDetails(id);
+
+    return {
+      props: { details },
+    };
+  } catch (error) {
+    return { notFound: true };
+  }
+};
+
+export default function FeedDetail({ details }: Props) {
   const router = useRouter();
-  const [OGTitle] = useState("글 상세 - 그리미티");
-  const [OGUrl, setOGUrl] = useState(serviceUrl);
-
-  useEffect(() => {
-    setOGUrl(serviceUrl + router.asPath);
-  }, [router.asPath]);
-
   const { id } = router.query;
 
   if (!id) {
@@ -21,7 +33,19 @@ export default function FeedDetail() {
 
   return (
     <>
-      <InitialPageMeta title={OGTitle} url={OGUrl} />
+      <Head>
+        <title>{`${details.title} - 그리미티`}</title>
+        <meta name="description" content={details.content ?? ""} />
+        <meta property="og:title" content={`${details.title} - 그리미티`} />
+        <meta property="og:description" content={`${details.content} | grimity`} />
+        <meta property="og:image" content="/image/grimity_default.png" />
+        <meta property="og:url" content={`${serviceUrl}posts/${details.id}`} />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${details.title} - 그리미티`} />
+        <meta name="twitter:description" content={details.content ?? ""} />
+        <meta name="twitter:image" content={details.thumbnail ?? ""} />
+      </Head>
       <PostDetail id={id as string} />
     </>
   );

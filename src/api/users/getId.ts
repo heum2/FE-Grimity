@@ -40,6 +40,31 @@ export async function getUserInfo({ id }: UserInfoRequest): Promise<UserInfoResp
   }
 }
 
+export async function getSSRUserInfo(id: string): Promise<UserInfoResponse> {
+  try {
+    const token = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
+
+    const response = await axios.get(`https://api.grimity.com/users/${id}`, {
+      params: { id },
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    });
+
+    const updatedData = response.data;
+    updatedData.image = `https://image.grimity.com/${updatedData.image}`;
+    updatedData.backgroundImage = `https://image.grimity.com/${updatedData.backgroundImage}`;
+
+    return updatedData;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.response?.status === 404) {
+        throw new Error("DELETED_USER");
+      }
+    }
+    console.error("Error fetching User Profile:", error);
+    throw new Error("Failed to fetch User Profile");
+  }
+}
+
 export const useUserData = (userId: string | null) => {
   return useQuery(["userData", userId], () => getUserInfo({ id: userId! }), {
     enabled: Boolean(userId),

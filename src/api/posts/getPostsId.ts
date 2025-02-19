@@ -1,4 +1,5 @@
 import BASE_URL from "@/constants/baseurl";
+import axios from "axios";
 import { useQuery } from "react-query";
 
 export interface PostsDetailsResponse {
@@ -34,6 +35,32 @@ export async function getPostsDetails(id: string): Promise<PostsDetailsResponse>
 
     return updatedData;
   } catch (error) {
+    console.error("Error fetching Postsdetails:", error);
+    throw new Error("Failed to fetch Postsdetails");
+  }
+}
+
+export async function getSSRPostsDetails(id: string): Promise<PostsDetailsResponse> {
+  try {
+    const token = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
+
+    const response = await axios.get(`https://api.grimity.com/posts/${id}`, {
+      params: { id },
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    });
+
+    const post = response.data;
+
+    const updatedData = {
+      ...post,
+      thumbnail: post.thumbnail ? `https://image.grimity.com/${post.thumbnail}` : null,
+    };
+
+    return updatedData;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response?.status === 404) {
+      throw new Error("DELETED_POST");
+    }
     console.error("Error fetching Postsdetails:", error);
     throw new Error("Failed to fetch Postsdetails");
   }

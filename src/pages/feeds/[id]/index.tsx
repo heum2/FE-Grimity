@@ -48,12 +48,15 @@ export default function FeedDetail({ details }: Props) {
         <title>{`${details.title} - 그리미티`}</title>
         <meta name="description" content={details.content ?? ""} />
         <meta property="og:title" content={`${details.title} - 그리미티`} />
-        <meta property="og:description" content={`${details.content} ${details.tags} ?? ''`} />
+        <meta
+          property="og:description"
+          content={`${details.content} | grimity | ${details.tags} ?? ''`}
+        />
         <meta property="og:image" content={details.thumbnail ?? ""} />
-        <meta property="og:url" content={`${serviceUrl}/feeds/${details.id}`} />
+        <meta property="og:url" content={`${serviceUrl}feeds/${details.id}`} />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={details.title} />
+        <meta name="twitter:title" content={`${details.title} - 그리미티`} />
         <meta name="twitter:description" content={details.content ?? ""} />
         <meta name="twitter:image" content={details.thumbnail ?? ""} />
       </Head>
