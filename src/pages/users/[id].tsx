@@ -60,13 +60,13 @@ export default function Profile({ data }: Props) {
         <meta name="description" content={data.description ?? ""} />
         <meta property="og:title" content={`${data.name} - 그리미티`} />
         <meta property="og:description" content={`${data.description} | grimity |`} />
-        <meta property="og:image" content={data.image ?? ""} />
+        <meta property="og:image" content={data.image ?? "/image/grimity_default.png"} />
         <meta property="og:url" content={`${serviceUrl}users/${data.id}`} />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${data.name}의 프로필 - 그리미티`} />
         <meta name="twitter:description" content={data.description ?? ""} />
-        <meta name="twitter:image" content={data.image ?? ""} />
+        <meta name="twitter:image" content={data.image ?? "/image/grimity_default.png"} />
       </Head>
       <ProfilePage isMyProfile={isMyProfile} id={id as string} />
     </>
