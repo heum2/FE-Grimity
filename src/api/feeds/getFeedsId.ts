@@ -54,6 +54,35 @@ export async function getDetails(id: string): Promise<DetailsResponse> {
   }
 }
 
+export async function getSSRDetails(id: string): Promise<DetailsResponse> {
+  try {
+    const token = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
+
+    const response = await axios.get(`https://api.grimity.com/feeds/${id}`, {
+      params: { id },
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    });
+
+    const data = response.data;
+
+    return {
+      ...data,
+      thumbnail: `https://image.grimity.com/${data.thumbnail}`,
+      cards: data.cards.map((card: string) => `https://image.grimity.com/${card}`),
+      author: {
+        ...data.author,
+        image: `https://image.grimity.com/${data.author.image}`,
+      },
+    };
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response?.status === 404) {
+      throw new Error("DELETED_FEED");
+    }
+    console.error("Error fetching details:", error);
+    throw error;
+  }
+}
+
 export function useDetails(id?: string) {
   return useQuery<DetailsResponse>(["details", id], () => getDetails(id!), {
     enabled: !!id,

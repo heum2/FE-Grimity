@@ -4,20 +4,6 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-        <meta
-          name="keywords"
-          content="그림, 커뮤니티, 그리미티, grimity, 일러스트, 일러스트레이터, 갤러리"
-        />
-        <meta name="author" content="grimity" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="그리미티" />
-        <meta name="twitter:description" content="그림쟁이들을 위한 그림 커뮤니티, 그리미티" />
-        <meta
-          name="twitter:image"
-          content="https://avatars.githubusercontent.com/u/194518500?s=200&v=4"
-        />
-        <meta name="twitter:url" content="https://www.grimity.com" />
         <link rel="icon" href="/favicon/favicon.ico" />
         <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png" />
         <link
@@ -50,7 +36,7 @@ export default function Document() {
                 addressLocality: "서울특별시",
                 addressCountry: "KR",
               },
-              image: "https://avatars.githubusercontent.com/u/194518500?s=200&v=4",
+              image: "/favicon/android-chrome-192x192.png",
             }),
           }}
         />
