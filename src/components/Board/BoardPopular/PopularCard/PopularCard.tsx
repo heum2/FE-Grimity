@@ -15,7 +15,11 @@ interface PopularCardProps {
 
 export default function PopularCard({ post }: PopularCardProps) {
   let plainTextContent = striptags(post.content);
-  plainTextContent = plainTextContent.replace(/&nbsp;|&lt;|&gt;|&amp;|&quot;|&#39;/g, "").trim();
+  plainTextContent = plainTextContent
+    .replace(/&nbsp;|&lt;|&gt;|&amp;|&quot;|&#39;/g, "")
+    .replace(/&ldquo;/g, "“")
+    .replace(/&rdquo;/g, "”")
+    .trim();
   const isMobile = useRecoilValue(isMobileState);
 
   useIsMobile();
