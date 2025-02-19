@@ -36,7 +36,11 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
   const [, setModal] = useRecoilState(modalState);
   const { showToast } = useToast();
   let plainTextContent = striptags(post.content);
-  plainTextContent = plainTextContent.replace(/&nbsp;|&lt;|&gt;|&amp;|&quot;|&#39;/g, "").trim();
+  plainTextContent = plainTextContent
+    .replace(/&nbsp;|&lt;|&gt;|&amp;|&quot;|&#39;/g, "")
+    .replace(/&ldquo;/g, "“")
+    .replace(/&rdquo;/g, "”")
+    .trim();
   const [isSaved, setIsSaved] = useState(true);
   const router = useRouter();
 
