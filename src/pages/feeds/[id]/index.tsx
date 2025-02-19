@@ -1,5 +1,6 @@
+import { useDetails } from "@/api/feeds/getFeedsId";
 import Detail from "@/components/Detail/Detail";
-import { InitialPageMeta } from "@/components/MetaData/MetaData";
+import { DetailsPageMeta } from "@/components/MetaData/MetaData";
 import { serviceUrl } from "@/constants/serviceurl";
 import { useScrollRestoration } from "@/hooks/useScrollRestoration";
 import { useRouter } from "next/router";
@@ -7,8 +8,11 @@ import { useEffect, useState } from "react";
 
 export default function FeedDetail() {
   const router = useRouter();
-  const [OGTitle] = useState("그림 상세 - 그리미티");
-  const [OGUrl, setOGUrl] = useState(serviceUrl);
+  const [title, setTitle] = useState("그림 상세 - 그리미티");
+  const [url, setUrl] = useState(serviceUrl);
+  const [description, setDescription] = useState("");
+  const [thumbnail, setThumbnail] = useState("");
+
   const { restoreScrollPosition } = useScrollRestoration("details-scroll");
 
   useEffect(() => {
@@ -19,10 +23,19 @@ export default function FeedDetail() {
   }, []);
 
   useEffect(() => {
-    setOGUrl(serviceUrl + router.asPath);
+    setUrl(serviceUrl + router.asPath);
   }, [router.asPath]);
 
   const { id } = router.query;
+  const { data: details } = useDetails(id as string);
+
+  useEffect(() => {
+    if (details) {
+      setTitle(`${details.title ?? "그림 상세"} - 그리미티`);
+      setDescription(`${details.content ?? ""} ${details.tags ?? ""}`);
+      setThumbnail(details.thumbnail ?? "");
+    }
+  }, [details]);
 
   if (!id) {
     return null;
@@ -30,7 +43,7 @@ export default function FeedDetail() {
 
   return (
     <>
-      <InitialPageMeta title={OGTitle} url={OGUrl} />
+      <DetailsPageMeta title={title} description={description} url={url} thumbnail={thumbnail} />
       <Detail id={id as string} />
     </>
   );
