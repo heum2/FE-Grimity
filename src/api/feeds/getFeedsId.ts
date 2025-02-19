@@ -24,6 +24,15 @@ export interface DetailsResponse {
   isSave: boolean;
 }
 
+export interface MetaDetailsResponse {
+  id: string;
+  title: string;
+  content: string;
+  thumbnail: string;
+  createdAt: string;
+  tags: string[];
+}
+
 export async function getDetails(id: string): Promise<DetailsResponse> {
   try {
     const response = await BASE_URL.get(`/feeds/${id}`, {
@@ -54,11 +63,11 @@ export async function getDetails(id: string): Promise<DetailsResponse> {
   }
 }
 
-export async function getSSRDetails(id: string): Promise<DetailsResponse> {
+export async function getSSRDetails(id: string): Promise<MetaDetailsResponse> {
   try {
     const token = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
 
-    const response = await axios.get(`https://api.grimity.com/feeds/${id}`, {
+    const response = await axios.get(`https://api.grimity.com/feeds/${id}/meta`, {
       params: { id },
       headers: token ? { Authorization: `Bearer ${token}` } : {},
     });
@@ -68,11 +77,6 @@ export async function getSSRDetails(id: string): Promise<DetailsResponse> {
     return {
       ...data,
       thumbnail: `https://image.grimity.com/${data.thumbnail}`,
-      cards: data.cards.map((card: string) => `https://image.grimity.com/${card}`),
-      author: {
-        ...data.author,
-        image: `https://image.grimity.com/${data.author.image}`,
-      },
     };
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.status === 404) {

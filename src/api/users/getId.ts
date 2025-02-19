@@ -19,6 +19,12 @@ export interface UserInfoResponse {
   postCount: number;
   isFollowing: boolean;
 }
+export interface MetaUserInfoResponse {
+  id: string;
+  name: string;
+  description: string;
+  image: string;
+}
 
 export async function getUserInfo({ id }: UserInfoRequest): Promise<UserInfoResponse> {
   try {
@@ -40,18 +46,17 @@ export async function getUserInfo({ id }: UserInfoRequest): Promise<UserInfoResp
   }
 }
 
-export async function getSSRUserInfo(id: string): Promise<UserInfoResponse> {
+export async function getSSRUserInfo(id: string): Promise<MetaUserInfoResponse> {
   try {
     const token = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
 
-    const response = await axios.get(`https://api.grimity.com/users/${id}`, {
+    const response = await axios.get(`https://api.grimity.com/users/${id}/meta`, {
       params: { id },
       headers: token ? { Authorization: `Bearer ${token}` } : {},
     });
 
     const updatedData = response.data;
     updatedData.image = `https://image.grimity.com/${updatedData.image}`;
-    updatedData.backgroundImage = `https://image.grimity.com/${updatedData.backgroundImage}`;
 
     return updatedData;
   } catch (error) {

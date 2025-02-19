@@ -20,6 +20,14 @@ export interface PostsDetailsResponse {
   isSave: boolean;
 }
 
+export interface MetaPostsDetailsResponse {
+  id: string;
+  title: string;
+  content: string;
+  thumbnail: string | null;
+  createdAt: string;
+}
+
 export async function getPostsDetails(id: string): Promise<PostsDetailsResponse> {
   try {
     const response = await BASE_URL.get(`/posts/${id}`, {
@@ -40,11 +48,11 @@ export async function getPostsDetails(id: string): Promise<PostsDetailsResponse>
   }
 }
 
-export async function getSSRPostsDetails(id: string): Promise<PostsDetailsResponse> {
+export async function getSSRPostsDetails(id: string): Promise<MetaPostsDetailsResponse> {
   try {
     const token = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
 
-    const response = await axios.get(`https://api.grimity.com/posts/${id}`, {
+    const response = await axios.get(`https://api.grimity.com/posts/${id}/meta`, {
       params: { id },
       headers: token ? { Authorization: `Bearer ${token}` } : {},
     });
