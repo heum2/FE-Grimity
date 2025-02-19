@@ -9,7 +9,7 @@
   padding-top: 40px;
 
   .backgroundImage {
-    width: 100%;
+    width: calc(100vw - 18px);
     position: absolute;
     top: 0;
     left: 0;
@@ -18,6 +18,20 @@
     align-items: center;
     justify-content: center;
     overflow-x: hidden;
+  }
+
+  .background {
+    background-color: $primary4;
+    width: 100vw;
+    height: 264px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    @include Size("mobile") {
+      height: 240px;
+    }
   }
 
   .backgroundDefaultImageContainer {

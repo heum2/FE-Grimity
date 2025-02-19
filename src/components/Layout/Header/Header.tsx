@@ -454,7 +454,7 @@ export default function Header() {
                       isSide
                       trigger={
                         <IconComponent
-                          name="contactKebab"
+                          name={isUserPage ? "contactKebabWhite" : "contactKebab"}
                           padding={8}
                           width={24}
                           height={24}

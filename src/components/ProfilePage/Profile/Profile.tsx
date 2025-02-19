@@ -336,18 +336,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
             </div>
           ) : (
             <div className={styles.backgroundDefaultImageContainer}>
-              <img
-                src="/image/default-cover.png"
-                width={1400} // 임의 지정
-                height={isMobile ? 240 : 264}
-                loading="lazy"
-                alt="backgroundImage"
-                style={{
-                  width: "100%",
-                  height: isMobile ? "240px" : "264px",
-                  objectFit: "cover",
-                }}
-              />
+              <div className={styles.background}></div>
               {userData.id === user_id && (
                 <>
                   <label htmlFor="upload-cover" className={styles.backgroundAddMessage}>

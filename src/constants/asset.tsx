@@ -46,6 +46,7 @@ export const ICONS = {
   deleteTag: "/icon/delete-tag.svg",
   kebab: "/icon/kebab.svg",
   contactKebab: "/icon/contact-kebab.svg",
+  contactKebabWhite: "/icon/contact-kebab-white.svg",
   meatball: "/icon/meatball.svg",
   backBtn: "/icon/back-button.svg",
   share: "/icon/share.svg",
