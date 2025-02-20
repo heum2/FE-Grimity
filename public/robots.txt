@@ -1,2 +1,10 @@
 User-agent: *
-Allow:/
+Disallow: /following
+Disallow: /mypage
+Disallow: /search
+Disallow: /write
+Disallow: /board/write
+Disallow: /feeds/:id/edit
+Disallow: /posts/:id/edit
+
+Allow: /
