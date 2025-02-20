@@ -8,3 +8,5 @@ Disallow: /feeds/:id/edit
 Disallow: /posts/:id/edit
 
 Allow: /
+
+Sitemap: https://sitemap.grimity.com/index.xml
