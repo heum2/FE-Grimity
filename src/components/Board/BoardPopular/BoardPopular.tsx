@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import { isTabletState } from "@/states/isMobileState";
 import { useRecoilValue } from "recoil";
 
-export default function BoardPopular({ isDetail }: BoardPopularProps) {
+export default function BoardPopular({ isDetail, isMobileMain }: BoardPopularProps) {
   const { data, isLoading, refetch } = useTodayPopularPosts();
   const isTablet = useRecoilValue(isTabletState);
   const [pageIndex, setPageIndex] = useState(0);
@@ -38,7 +38,13 @@ export default function BoardPopular({ isDetail }: BoardPopularProps) {
 
   return (
     <div className={styles.container}>
-      {isDetail || isTablet ? <Title>자유게시판 인기글</Title> : <Title>오늘의 인기 글</Title>}
+      {isMobileMain ? (
+        <Title link="/board">자유게시판 인기글</Title>
+      ) : isDetail || isTablet ? (
+        <Title>자유게시판 인기글</Title>
+      ) : (
+        <Title>오늘의 인기 글</Title>
+      )}
       {currentPageData && currentPageData.length > 0 ? (
         <div className={isDetail ? styles.cardListDetail : styles.cardList}>
           {currentPageData?.map((post) => (

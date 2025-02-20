@@ -78,13 +78,11 @@
     white-space: pre-line;
     margin-top: 6px;
     margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
 
     .mentionedUser {
       color: $secandary1;
       @include Label1;
+      margin-right: 4px;
     }
   }
 

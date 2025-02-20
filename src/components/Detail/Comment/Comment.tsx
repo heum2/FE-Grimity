@@ -301,7 +301,7 @@ export default function Comment({
                     </div>
                     <div className={styles.commentText}>
                       {reply.mentionedUser && (
-                        <p className={styles.mentionedUser}>@{reply.mentionedUser?.name}</p>
+                        <span className={styles.mentionedUser}>@{reply.mentionedUser?.name}</span>
                       )}
                       {reply.content}
                     </div>

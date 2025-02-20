@@ -74,7 +74,7 @@ export default function Home() {
                   <div className={styles.bar} />
                 </>
               )}
-              {isMobile ? <BoardPopular isDetail /> : <BoardPopular />}
+              {isMobile ? <BoardPopular isMobileMain /> : <BoardPopular />}
               <div className={styles.bar} />
               <NewFeed />
             </section>
