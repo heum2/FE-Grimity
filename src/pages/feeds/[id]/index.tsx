@@ -47,6 +47,7 @@ export default function FeedDetail({ details }: Props) {
       <Head>
         <title>{`${details.title} - 그리미티`}</title>
         <meta name="description" content={details.content ?? ""} />
+        <meta name="keywords" content={`그리미티, grimity, ${details.tags}`} />
         <meta property="og:title" content={`${details.title} - 그리미티`} />
         <meta
           property="og:description"

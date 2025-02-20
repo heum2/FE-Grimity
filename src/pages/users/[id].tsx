@@ -50,6 +50,7 @@ export default function Profile({ data }: Props) {
     <>
       <Head>
         <title>{`${data.name}의 프로필 - 그리미티`}</title>
+        <meta name="keywords" content="그리미티, grimity" />
         <meta name="description" content={data.description ?? ""} />
         <meta property="og:title" content={`${data.name} - 그리미티`} />
         <meta property="og:description" content={`${data.description} | grimity |`} />
