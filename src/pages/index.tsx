@@ -55,6 +55,8 @@ export default function Home() {
               <NewFeed />
             </section>
             <section className={styles.BoardSection}>
+              <MainBoard type="NOTICE" />
+              <div className={styles.bar} />
               <MainBoard type="POPULAR" />
               <div className={styles.bar} />
               <MainBoard type="FEEDBACK" />

@@ -5,7 +5,7 @@ import styles from "./MainBoard.module.scss";
 import Loader from "../Loader/Loader";
 import { MainBoardProps } from "./MainBoard.types";
 import { useTodayPopularPosts } from "@/api/posts/getTodayPopular";
-import { usePostsLatest } from "@/api/posts/getPosts";
+import { usePostsLatest, usePostsNotices } from "@/api/posts/getPosts";
 import { useRouter } from "next/router";
 
 export default function MainBoard({ type }: MainBoardProps) {
@@ -13,7 +13,7 @@ export default function MainBoard({ type }: MainBoardProps) {
     data: latestPosts,
     isLoading: isLatestLoading,
     refetch: latestRefetch,
-  } = type !== "POPULAR"
+  } = type !== "POPULAR" && type !== "NOTICE"
     ? usePostsLatest({
         size: 4,
         page: 1,
@@ -22,19 +22,31 @@ export default function MainBoard({ type }: MainBoardProps) {
     : { data: null, isLoading: false };
 
   const { data: popularPosts, isLoading: isPopularLoading, refetch } = useTodayPopularPosts();
+  const {
+    data: noticePosts,
+    isLoading: isNoticeLoading,
+    refetch: noticeRefetch,
+  } = usePostsNotices();
 
   const { pathname } = useRouter();
   useEffect(() => {
     refetch();
-    latestRefetch;
+    latestRefetch?.();
+    noticeRefetch();
   }, [pathname]);
 
-  if ((type === "POPULAR" && isPopularLoading) || (type !== "POPULAR" && isLatestLoading)) {
+  if (
+    (type === "POPULAR" && isPopularLoading) ||
+    (type === "NOTICE" && isNoticeLoading) ||
+    (type !== "POPULAR" && type !== "NOTICE" && isLatestLoading)
+  ) {
     return <Loader />;
   }
 
   const getTitle = () => {
     switch (type) {
+      case "NOTICE":
+        return "공지사항";
       case "POPULAR":
         return "자유게시판 인기글";
       case "FEEDBACK":
@@ -48,6 +60,8 @@ export default function MainBoard({ type }: MainBoardProps) {
 
   const getLink = () => {
     switch (type) {
+      case "NOTICE":
+        return "/board";
       case "POPULAR":
         return "/board";
       case "FEEDBACK":
@@ -73,6 +87,17 @@ export default function MainBoard({ type }: MainBoardProps) {
             ))
           ) : (
             <p className={styles.noPosts}>아직 올라온 글이 없어요</p>
+          )
+        ) : type === "NOTICE" ? (
+          noticePosts && noticePosts.length > 0 ? (
+            noticePosts.map((post, index, arr) => (
+              <React.Fragment key={post.id}>
+                <BoardCard {...post} />
+                {index < arr.length - 1 && <div className={styles.bar} />}
+              </React.Fragment>
+            ))
+          ) : (
+            <p className={styles.noPosts}>공지사항이 없습니다</p>
           )
         ) : latestPosts && latestPosts.posts.length > 0 ? (
           latestPosts.posts.map((post, index, arr) => (
