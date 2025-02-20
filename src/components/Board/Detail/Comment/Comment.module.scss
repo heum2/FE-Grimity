@@ -127,6 +127,7 @@
 
 .replyBtnDropdown {
   position: relative;
+  @include Drag;
 }
 
 .input {

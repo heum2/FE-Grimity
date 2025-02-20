@@ -73,6 +73,7 @@
       .author {
         @include Label1;
         color: $gray40;
+        @include Drag;
 
         @include Size("mobile") {
           @include Cap2;

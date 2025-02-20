@@ -15,6 +15,7 @@
     align-items: flex-end;
     justify-content: space-between;
     margin-bottom: 32px;
+    @include Drag;
 
     @include Size("mobile") {
       height: auto;
@@ -51,6 +52,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
+    @include Drag;
 
     @include Size("mobile") {
       width: 100%;
@@ -149,6 +151,7 @@
     justify-content: center;
     align-items: center;
     gap: 8px;
+    @include Drag;
 
     @include Size("mobile") {
       margin-top: 28px;

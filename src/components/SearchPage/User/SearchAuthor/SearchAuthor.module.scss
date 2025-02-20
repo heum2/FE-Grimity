@@ -18,6 +18,7 @@
   .title {
     @include Title3;
     color: $gray70;
+    @include Drag;
 
     @include Size("mobile") {
       @include Sub2;
@@ -83,4 +84,5 @@
   @include Sub2;
   color: $gray50;
   margin-top: 50px;
+  @include Drag;
 }
