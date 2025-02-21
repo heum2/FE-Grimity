@@ -1,5 +1,8 @@
 import BASE_URL from "@/constants/baseurl";
 import { useQuery } from "react-query";
+import { useRecoilValue } from "recoil";
+import { useEffect, useState } from "react";
+import { authState } from "@/states/authState";
 
 export interface MyInfoResponse {
   id: string;
@@ -30,10 +33,11 @@ export async function getMyInfo(): Promise<MyInfoResponse> {
 }
 
 export function useMyData() {
+  const { isLoggedIn } = useRecoilValue(authState);
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
 
   return useQuery<MyInfoResponse>("myInfo", getMyInfo, {
-    enabled: Boolean(accessToken),
+    enabled: isLoggedIn && Boolean(accessToken),
     refetchOnMount: true,
     refetchOnReconnect: true,
     refetchOnWindowFocus: true,

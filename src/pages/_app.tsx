@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { AppProps } from "next/app";
 import "@/styles/globals.scss";
 import "@/styles/reset.css";
@@ -17,6 +17,7 @@ const queryClient = new QueryClient();
 
 function InitializeAuthState() {
   const setAuth = useSetRecoilState(authState);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
     const access_token = localStorage.getItem("access_token");
@@ -29,7 +30,18 @@ function InitializeAuthState() {
         user_id,
       });
     }
+    setIsInitialized(true);
   }, [setAuth]);
+
+  return <SetIsInitialized isInitialized={isInitialized} />;
+}
+
+function SetIsInitialized({ isInitialized }: { isInitialized: boolean }) {
+  const setAuth = useSetRecoilState(authState);
+
+  useEffect(() => {
+    setAuth((prev) => ({ ...prev, isInitialized }));
+  }, [isInitialized, setAuth]);
 
   return null;
 }
@@ -40,8 +52,8 @@ function PersistAuthState() {
 
     if (auth.isLoggedIn) {
       localStorage.setItem("access_token", auth.access_token);
-      if (auth.id) {
-        localStorage.setItem("user_id", auth.id);
+      if (auth.user_id) {
+        localStorage.setItem("user_id", auth.user_id);
       }
     } else {
       localStorage.removeItem("access_token");
