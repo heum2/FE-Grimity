@@ -141,6 +141,45 @@ export default function EditFeeds({ id }: EditFeedsProps) {
     };
   }, [router, setModal]);
 
+  const convertToWebP = (file: File): Promise<File> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event) => {
+        const img = new window.Image();
+        img.src = event.target?.result as string;
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext("2d");
+
+          if (!ctx) {
+            reject(new Error("Canvas context not found"));
+            return;
+          }
+
+          ctx.drawImage(img, 0, 0);
+          canvas.toBlob(
+            (blob) => {
+              if (!blob) {
+                reject(new Error("WebP 변환 실패"));
+                return;
+              }
+              const webpFile = new File([blob], file.name.replace(/\.\w+$/, ".webp"), {
+                type: "image/webp",
+              });
+              resolve(webpFile);
+            },
+            "image/webp",
+            0.8
+          );
+        };
+      };
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
   const { mutate: editFeed } = useMutation((data: EditFeedsRequest) => putEditFeeds(id, data), {
     onSuccess: () => {
       hasUnsavedChangesRef.current = false;
@@ -158,43 +197,35 @@ export default function EditFeeds({ id }: EditFeedsProps) {
   const uploadImagesToServer = async (files: FileList) => {
     try {
       const remainingSlots = 10 - images.length;
-      const filesToUpload = Array.from(files).slice(0, remainingSlots);
+      const filesToUpload = Array.from(files)
+        .slice(0, remainingSlots)
+        .filter((file) => file.type === "image/webp");
 
       if (remainingSlots <= 0) {
         showToast("최대 10장의 그림만 업로드할 수 있습니다.", "error");
         return;
       }
 
-      const requests = filesToUpload.map((file) => ({
+      const convertedFiles = await Promise.all(filesToUpload.map(convertToWebP));
+
+      const requests = convertedFiles.map((file) => ({
         type: "feed" as const,
-        ext: file.name.split(".").pop()?.toLowerCase() as "jpg" | "jpeg" | "png" | "gif",
+        ext: "webp" as const,
       }));
-
-      const invalidFiles = filesToUpload.some(
-        (file) =>
-          !["jpg", "jpeg", "png", "gif"].includes(file.name.split(".").pop()?.toLowerCase() || "")
-      );
-
-      if (invalidFiles) {
-        showToast("JPG, PNG, GIF 파일만 업로드 가능합니다.", "error");
-        return;
-      }
 
       const presignedUrls = await postPresignedUrls(requests);
 
-      const uploadPromises = filesToUpload.map((file, index) =>
+      const uploadPromises = convertedFiles.map((file, index) =>
         fetch(presignedUrls[index].url, {
           method: "PUT",
           body: file,
-          headers: {
-            "Content-Type": file.type,
-          },
+          headers: { "Content-Type": "image/webp" },
         })
       );
 
       await Promise.all(uploadPromises);
 
-      const newImages = filesToUpload.map((file, index) => ({
+      const newImages = convertedFiles.map((file, index) => ({
         name: presignedUrls[index].imageName,
         originalName: file.name,
         url: URL.createObjectURL(file),
@@ -431,7 +462,7 @@ export default function EditFeeds({ id }: EditFeedsProps) {
                       id="file-upload"
                       type="file"
                       multiple
-                      accept="image/png, image/jpeg, image/jpg, image/gif"
+                      accept="image/png, image/jpeg, image/jpg"
                       hidden
                       onChange={(e) => e.target.files && uploadImagesToServer(e.target.files)}
                     />
@@ -453,7 +484,7 @@ export default function EditFeeds({ id }: EditFeedsProps) {
                       id="file-upload"
                       type="file"
                       multiple
-                      accept="image/png, image/jpeg, image/jpg, image/gif"
+                      accept="image/png, image/jpeg, image/jpg"
                       hidden
                       onChange={(e) => e.target.files && uploadImagesToServer(e.target.files)}
                     />
@@ -465,7 +496,7 @@ export default function EditFeeds({ id }: EditFeedsProps) {
               id="file-upload"
               type="file"
               multiple
-              accept="image/png, image/jpeg, image/jpg, image/gif"
+              accept="image/png, image/jpeg, image/jpg"
               style={{ display: "none" }}
               onChange={(e) => e.target.files && uploadImagesToServer(e.target.files)}
             />
@@ -481,7 +512,7 @@ export default function EditFeeds({ id }: EditFeedsProps) {
                 id="file-upload"
                 type="file"
                 multiple
-                accept="image/png, image/jpeg, image/jpg, image/gif"
+                accept="image/png, image/jpeg, image/jpg"
                 hidden
                 onChange={(e) => e.target.files && uploadImagesToServer(e.target.files)}
               />

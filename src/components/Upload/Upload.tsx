@@ -178,7 +178,9 @@ export default function Upload() {
   const uploadImagesToServer = async (files: FileList) => {
     try {
       const remainingSlots = 10 - images.length;
-      const filesToUpload = Array.from(files).slice(0, remainingSlots);
+      const filesToUpload = Array.from(files)
+        .slice(0, remainingSlots)
+        .filter((file) => file.type === "image/webp");
 
       if (remainingSlots <= 0) {
         showToast("최대 10장의 그림만 업로드할 수 있습니다.", "error");
@@ -432,7 +434,7 @@ export default function Upload() {
                       id="file-upload"
                       type="file"
                       multiple
-                      accept="image/png, image/jpeg, image/jpg, image/gif"
+                      accept="image/png, image/jpeg, image/jpg"
                       hidden
                       onChange={(e) => e.target.files && uploadImagesToServer(e.target.files)}
                     />
@@ -454,7 +456,7 @@ export default function Upload() {
                       id="file-upload"
                       type="file"
                       multiple
-                      accept="image/png, image/jpeg, image/jpg, image/gif"
+                      accept="image/png, image/jpeg, image/jpg"
                       hidden
                       onChange={(e) => e.target.files && uploadImagesToServer(e.target.files)}
                     />
@@ -466,7 +468,7 @@ export default function Upload() {
               id="file-upload"
               type="file"
               multiple
-              accept="image/png, image/jpeg, image/jpg, image/gif"
+              accept="image/png, image/jpeg, image/jpg"
               style={{ display: "none" }}
               onChange={(e) => e.target.files && uploadImagesToServer(e.target.files)}
             />
@@ -482,7 +484,7 @@ export default function Upload() {
                 id="file-upload"
                 type="file"
                 multiple
-                accept="image/png, image/jpeg, image/jpg, image/gif"
+                accept="image/png, image/jpeg, image/jpg"
                 hidden
                 onChange={(e) => e.target.files && uploadImagesToServer(e.target.files)}
               />
