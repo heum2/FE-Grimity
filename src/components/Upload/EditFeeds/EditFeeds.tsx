@@ -155,6 +155,7 @@ export default function EditFeeds({ id }: EditFeedsProps) {
           const ctx = canvas.getContext("2d");
 
           if (!ctx) {
+            console.error("Canvas context가 존재하지 않음");
             reject(new Error("Canvas context not found"));
             return;
           }
@@ -163,6 +164,7 @@ export default function EditFeeds({ id }: EditFeedsProps) {
           canvas.toBlob(
             (blob) => {
               if (!blob) {
+                console.error("WebP 변환 실패");
                 reject(new Error("WebP 변환 실패"));
                 return;
               }
@@ -175,8 +177,15 @@ export default function EditFeeds({ id }: EditFeedsProps) {
             0.8
           );
         };
+        img.onerror = (error) => {
+          console.error("이미지 로드 실패", error);
+          reject(error);
+        };
       };
-      reader.onerror = (error) => reject(error);
+      reader.onerror = (error) => {
+        console.error("FileReader 실패", error);
+        reject(error);
+      };
     });
   };
 
@@ -199,7 +208,7 @@ export default function EditFeeds({ id }: EditFeedsProps) {
       const remainingSlots = 10 - images.length;
       const filesToUpload = Array.from(files)
         .slice(0, remainingSlots)
-        .filter((file) => file.type === "image/webp");
+        .filter((file) => file.type.startsWith("image/"));
 
       if (remainingSlots <= 0) {
         showToast("최대 10장의 그림만 업로드할 수 있습니다.", "error");
