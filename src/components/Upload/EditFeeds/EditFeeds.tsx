@@ -220,10 +220,10 @@ export default function EditFeeds({ id }: EditFeedsProps) {
     }
 
     if (ext === "png" || ext === "jpg" || ext === "jpeg") {
-      return file;
+      return await convertToWebP(file);
     }
 
-    return await convertToWebP(file);
+    return file;
   };
 
   const uploadImagesToServer = async (files: FileList) => {
@@ -244,7 +244,10 @@ export default function EditFeeds({ id }: EditFeedsProps) {
 
       if (processedFiles.length === 0) return;
 
-      const requests: PresignedUrlRequest[] = [{ type: "feed", ext: "webp" }];
+      const requests: PresignedUrlRequest[] = processedFiles.map(() => ({
+        type: "feed",
+        ext: "webp",
+      }));
 
       if (requests.length === 0) return;
 
