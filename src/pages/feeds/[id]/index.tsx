@@ -51,7 +51,7 @@ export default function FeedDetail({ details }: Props) {
         <meta property="og:title" content={`${details.title} - 그리미티`} />
         <meta
           property="og:description"
-          content={`${details.content} | grimity | ${details.tags} ?? ''`}
+          content={`${details.content} | grimity | ${details.tags}`}
         />
         <meta property="og:image" content={details.thumbnail ?? ""} />
         <meta property="og:url" content={`${serviceUrl}feeds/${details.id}`} />
