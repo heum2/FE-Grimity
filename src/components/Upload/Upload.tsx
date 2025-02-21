@@ -327,6 +327,11 @@ export default function Upload() {
       return;
     }
 
+    if (content.length > 500) {
+      showToast("내용은 최대 500자까지 입력할 수 있습니다.", "error");
+      return;
+    }
+
     if (images.length === 0) {
       showToast("최소 1장의 그림을 업로드해야 합니다.", "error");
       return;
