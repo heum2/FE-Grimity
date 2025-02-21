@@ -165,36 +165,28 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
     try {
       const webpFile = await convertToWebP(file);
 
-      if (isMobile || isTablet) {
-        const data = await postPresignedUrl({
-          type: "background",
-          ext: "webp",
-        });
+      const data = await postPresignedUrl({
+        type: "background",
+        ext: "webp",
+      });
 
-        CoverImageMutation.mutate(data.imageName);
+      CoverImageMutation.mutate(data.imageName);
 
-        const uploadResponse = await fetch(data.url, {
-          method: "PUT",
-          body: webpFile,
-          headers: {
-            "Content-Type": "image/webp",
-          },
-        });
+      const uploadResponse = await fetch(data.url, {
+        method: "PUT",
+        body: webpFile,
+        headers: {
+          "Content-Type": "image/webp",
+        },
+      });
 
-        if (!uploadResponse.ok) {
-          throw new Error(`Upload failed: ${uploadResponse.status}`);
-        }
-
-        showToast("커버 이미지가 변경되었습니다!", "success");
-        refetch();
-        refetchUserData();
-      } else {
-        setModal({
-          isOpen: true,
-          type: "BACKGROUND",
-          data: { imageSrc: imageUrl },
-        });
+      if (!uploadResponse.ok) {
+        throw new Error(`Upload failed: ${uploadResponse.status}`);
       }
+
+      showToast("커버 이미지가 변경되었습니다!", "success");
+      refetch();
+      refetchUserData();
     } catch (error) {
       console.error("File change error:", error);
     }
