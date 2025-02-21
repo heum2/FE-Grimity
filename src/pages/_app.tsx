@@ -10,6 +10,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Toast from "@/components/Toast/Toast";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/react";
 
 const queryClient = new QueryClient();
 
@@ -80,6 +81,7 @@ export default function App({ Component, pageProps }: AppProps) {
           `,
             }}
           />
+          <Analytics />
         </GoogleOAuthProvider>
       </QueryClientProvider>
     </RecoilRoot>
