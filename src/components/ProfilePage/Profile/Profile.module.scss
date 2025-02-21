@@ -18,6 +18,13 @@
     align-items: center;
     justify-content: center;
     overflow-x: hidden;
+
+    @include Size("mobile") {
+      width: 100vw;
+    }
+    @include Size("tablet") {
+      width: 100vw;
+    }
   }
 
   .background {
@@ -30,6 +37,7 @@
     justify-content: center;
 
     @include Size("mobile") {
+      width: 100vw;
       height: 240px;
     }
   }
