@@ -3,7 +3,7 @@ import Button from "../../Button/Button";
 import styles from "./EditFeeds.module.scss";
 import IconComponent from "../../Asset/Icon";
 import { useToast } from "@/hooks/useToast";
-import { postPresignedUrls } from "@/api/aws/postPresigned";
+import { postPresignedUrls, PresignedUrlRequest } from "@/api/aws/postPresigned";
 import { useMutation } from "react-query";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
@@ -203,38 +203,64 @@ export default function EditFeeds({ id }: EditFeedsProps) {
     },
   });
 
+  const getFileExtension = (fileName: string) => {
+    const ext = fileName.split(".").pop()?.toLowerCase();
+    if (ext === "jpg" || ext === "png" || ext === "jpeg" || ext === "webp") {
+      return ext;
+    }
+    return null;
+  };
+
+  const processFile = async (file: File): Promise<File | null> => {
+    const ext = getFileExtension(file.name);
+
+    if (!ext) {
+      showToast("지원되지 않는 파일 형식입니다. (jpg, png, jpeg, webp만 가능)", "error");
+      return null;
+    }
+
+    if (ext === "png" || ext === "jpg" || ext === "jpeg") {
+      return file;
+    }
+
+    return await convertToWebP(file);
+  };
+
   const uploadImagesToServer = async (files: FileList) => {
     try {
       const remainingSlots = 10 - images.length;
-      const filesToUpload = Array.from(files)
-        .slice(0, remainingSlots)
-        .filter((file) => file.type.startsWith("image/"));
-
       if (remainingSlots <= 0) {
         showToast("최대 10장의 그림만 업로드할 수 있습니다.", "error");
         return;
       }
 
-      const convertedFiles = await Promise.all(filesToUpload.map(convertToWebP));
+      const filesToUpload = Array.from(files)
+        .slice(0, remainingSlots)
+        .filter((file) => file.type.startsWith("image/"));
 
-      const requests = convertedFiles.map((file) => ({
-        type: "feed" as const,
-        ext: "webp" as const,
-      }));
+      const processedFiles = (await Promise.all(filesToUpload.map(processFile))).filter(
+        Boolean
+      ) as File[];
+
+      if (processedFiles.length === 0) return;
+
+      const requests: PresignedUrlRequest[] = [{ type: "feed", ext: "webp" }];
+
+      if (requests.length === 0) return;
 
       const presignedUrls = await postPresignedUrls(requests);
 
-      const uploadPromises = convertedFiles.map((file, index) =>
+      const uploadPromises = processedFiles.map((file, index) =>
         fetch(presignedUrls[index].url, {
           method: "PUT",
           body: file,
-          headers: { "Content-Type": "image/webp" },
+          headers: { "Content-Type": file.type },
         })
       );
 
       await Promise.all(uploadPromises);
 
-      const newImages = convertedFiles.map((file, index) => ({
+      const newImages = processedFiles.map((file, index) => ({
         name: presignedUrls[index].imageName,
         originalName: file.name,
         url: URL.createObjectURL(file),

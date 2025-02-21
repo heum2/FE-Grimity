@@ -83,11 +83,11 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
     try {
       const fileExt = file.name.split(".").pop()?.toLowerCase();
 
-      if (!fileExt || !["jpg", "jpeg", "png"].includes(fileExt)) {
-        showToast("JPG, JPEG, PNG 파일만 업로드 가능합니다.", "error");
+      if (!fileExt || !["jpg", "jpeg", "png", "webp"].includes(fileExt)) {
+        showToast("JPG, JPEG, PNG, WEBP 파일만 업로드 가능합니다.", "error");
         return;
       }
-      const ext = fileExt as "jpg" | "jpeg" | "png";
+      const ext = fileExt as "jpg" | "jpeg" | "png" | "webp";
 
       const data = await postPresignedUrl({
         type: "profile",
@@ -130,25 +130,54 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
     }
   };
 
+  const convertToWebP = async (file: File): Promise<File> => {
+    return new Promise((resolve, reject) => {
+      const img: HTMLImageElement = new window.Image();
+      img.src = URL.createObjectURL(file);
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return reject(new Error("Canvas context not available"));
+
+        ctx.drawImage(img, 0, 0);
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const webpFile = new File([blob], file.name.replace(/\.[^.]+$/, ".webp"), {
+              type: "image/webp",
+            });
+            resolve(webpFile);
+          } else {
+            reject(new Error("Failed to convert image to WebP"));
+          }
+        }, "image/webp");
+      };
+      img.onerror = () => reject(new Error("Image loading failed"));
+    });
+  };
+
   const handleAddCover = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     const imageUrl = URL.createObjectURL(file);
 
     try {
+      const webpFile = await convertToWebP(file);
+
       if (isMobile || isTablet) {
         const data = await postPresignedUrl({
           type: "background",
-          ext: "jpg",
+          ext: "webp",
         });
 
         CoverImageMutation.mutate(data.imageName);
 
         const uploadResponse = await fetch(data.url, {
           method: "PUT",
-          body: file,
+          body: webpFile,
           headers: {
-            "Content-Type": file.type,
+            "Content-Type": "image/webp",
           },
         });
 

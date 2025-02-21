@@ -41,7 +41,7 @@ export default function BoardPopular({ isDetail, isMobileMain }: BoardPopularPro
       {isMobileMain ? (
         <Title link="/board">자유게시판 인기글</Title>
       ) : isDetail || isTablet ? (
-        <Title>자유게시판 인기글</Title>
+        <Title link="/board">자유게시판 인기글</Title>
       ) : (
         <Title>오늘의 인기 글</Title>
       )}

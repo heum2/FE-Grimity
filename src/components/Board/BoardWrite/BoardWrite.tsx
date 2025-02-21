@@ -93,6 +93,33 @@ export default function BoardWrite() {
     });
   };
 
+  const convertToWebP = async (file: File): Promise<File> => {
+    return new Promise((resolve, reject) => {
+      const img: HTMLImageElement = new window.Image();
+      img.src = URL.createObjectURL(file);
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return reject(new Error("Canvas context not available"));
+
+        ctx.drawImage(img, 0, 0);
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const webpFile = new File([blob], file.name.replace(/\.[^.]+$/, ".webp"), {
+              type: "image/webp",
+            });
+            resolve(webpFile);
+          } else {
+            reject(new Error("Failed to convert image to WebP"));
+          }
+        }, "image/webp");
+      };
+      img.onerror = () => reject(new Error("Image loading failed"));
+    });
+  };
+
   return (
     <div className={styles.container}>
       <Script
@@ -183,17 +210,20 @@ export default function BoardWrite() {
                 ): Promise<string> => {
                   try {
                     const file = blobInfo.blob() as File;
-                    const ext = file.name.split(".").pop() as "jpg" | "jpeg" | "png" | "gif";
+
+                    const ext = file.name.split(".").pop()?.toLowerCase() as "jpg" | "jpeg" | "png";
+                    const webpFile = await convertToWebP(file);
+
                     const data = await postPresignedUrl({
                       type: "post",
-                      ext,
+                      ext: "webp",
                     });
 
                     const uploadResponse = await fetch(data.url, {
                       method: "PUT",
-                      body: file,
+                      body: webpFile,
                       headers: {
-                        "Content-Type": file.type,
+                        "Content-Type": "image/webp",
                       },
                     });
 
