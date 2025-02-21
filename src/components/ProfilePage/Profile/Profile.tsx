@@ -87,20 +87,24 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
         showToast("JPG, JPEG, PNG, WEBP 파일만 업로드 가능합니다.", "error");
         return;
       }
-      const ext = fileExt as "jpg" | "jpeg" | "png" | "webp";
+
+      let webpFile = file;
+      if (fileExt !== "webp") {
+        webpFile = await convertToWebP(file);
+      }
 
       const data = await postPresignedUrl({
         type: "profile",
-        ext,
+        ext: "webp",
       });
 
       ImageMutation.mutate(data.imageName);
 
       const uploadResponse = await fetch(data.url, {
         method: "PUT",
-        body: file,
+        body: webpFile,
         headers: {
-          "Content-Type": file.type,
+          "Content-Type": "image/webp",
         },
       });
 
