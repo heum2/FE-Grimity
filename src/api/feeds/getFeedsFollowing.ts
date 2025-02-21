@@ -80,10 +80,8 @@ export function useFollowingFeeds(params: FollowingFeedsRequest | null) {
     ["FollowingFeeds", params?.size],
     ({ pageParam = undefined }) => getFollowingFeeds({ ...params, cursor: pageParam }),
     {
-      enabled: !!params || Boolean(accessToken),
-      getNextPageParam: (lastPage) => {
-        return lastPage.nextCursor ? lastPage.nextCursor : undefined;
-      },
+      enabled: !!params && Boolean(accessToken),
+      getNextPageParam: (lastPage) => lastPage.nextCursor || undefined,
       refetchOnMount: false,
       refetchOnReconnect: false,
       refetchOnWindowFocus: false,
