@@ -225,12 +225,7 @@ export default function Upload() {
 
       if (processedFiles.length === 0) return;
 
-      const requests: PresignedUrlRequest[] = [
-        { type: "feed", ext: "jpg" },
-        { type: "feed", ext: "png" },
-        { type: "feed", ext: "jpeg" },
-        { type: "feed", ext: "webp" },
-      ];
+      const requests: PresignedUrlRequest[] = [{ type: "feed", ext: "webp" }];
 
       if (requests.length === 0) return;
 
