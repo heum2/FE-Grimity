@@ -156,20 +156,21 @@ export default function RecommendCard({
           </div>
         </Link>
         <p className={styles.description}>{description}</p>
-        {id !== user_id && isFollowing ? (
-          <Button size="m" type="outlined-assistive" onClick={handleUnfollowClick}>
-            팔로잉
-          </Button>
-        ) : (
-          <Button
-            size="m"
-            type="filled-primary"
-            leftIcon={<IconComponent name="addFollow" width={16} height={16} />}
-            onClick={handleFollowClick}
-          >
-            팔로우
-          </Button>
-        )}
+        {id !== user_id &&
+          (isFollowing ? (
+            <Button size="m" type="outlined-assistive" onClick={handleUnfollowClick}>
+              팔로잉
+            </Button>
+          ) : (
+            <Button
+              size="m"
+              type="filled-primary"
+              leftIcon={<IconComponent name="addFollow" width={16} height={16} />}
+              onClick={handleFollowClick}
+            >
+              팔로우
+            </Button>
+          ))}
       </div>
     </div>
   );
