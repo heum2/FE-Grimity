@@ -12,7 +12,7 @@ export function InitialPageMeta({ title, url }: InitialPageMetaProps) {
         <meta property="og:description" content="그림쟁이들을 위한 그림 커뮤니티, 그리미티" />
         <meta
           property="og:image"
-          content="https://github.com/organizations/Grimity/settings/profile"
+          content="https://avatars.githubusercontent.com/u/194518500?s=200&v=4"
         />
         <meta property="og:url" content={url ?? serviceUrl} />
         <meta property="og:type" content="website" />
@@ -26,7 +26,7 @@ export function InitialPageMeta({ title, url }: InitialPageMetaProps) {
         <meta name="twitter:description" content="그림쟁이들을 위한 그림 커뮤니티, 그리미티" />
         <meta
           name="twitter:image"
-          content="https://github.com/organizations/Grimity/settings/profile"
+          content="https://avatars.githubusercontent.com/u/194518500?s=200&v=4"
         />
         <meta name="twitter:url" content={url ?? "https://www.grimity.com"} />
         <meta name="naver-site-verification" content="ad68cc7c7ab33fa1b5958b47805c1fc3009f5488" />
