@@ -69,7 +69,7 @@ export default function Modal() {
       case "PROFILE-EDIT":
         return <ProfileEdit />;
       case "BACKGROUND":
-        return <Background imageSrc={modal.data.imageSrc} />;
+        return <Background imageSrc={modal.data.imageSrc} file={modal.data.file} />;
       case "FOLLOWER":
         return <Follow initialTab="follower" />;
       case "FOLLOWING":

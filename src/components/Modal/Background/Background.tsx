@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import ReactCrop, { Crop, PercentCrop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { modalState } from "@/states/modalState";
 import Button from "@/components/Button/Button";
 import styles from "./Background.module.scss";
@@ -11,15 +11,16 @@ import { putBackgroundImage } from "@/api/users/putMeImage";
 import router from "next/router";
 import IconComponent from "@/components/Asset/Icon";
 import { useMutation } from "react-query";
-import { isMobileState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { useMyData } from "@/api/users/getMe";
 
 interface BackgroundProps {
   imageSrc: string;
+  file: File;
 }
 
-export default function Background({ imageSrc }: BackgroundProps) {
-  const isMobile = useRecoilValue(isMobileState);
+export default function Background({ imageSrc, file }: BackgroundProps) {
+  const { refetch } = useMyData();
   useIsMobile();
   const [, setModal] = useRecoilState(modalState);
   const { showToast } = useToast();
@@ -54,13 +55,8 @@ export default function Background({ imageSrc }: BackgroundProps) {
     const scaleY = image.naturalHeight / image.height;
     const pixelRatio = window.devicePixelRatio;
 
-    if (isMobile) {
-      canvas.width = viewportWidth * pixelRatio;
-      canvas.height = 240 * pixelRatio;
-    } else {
-      canvas.width = viewportWidth * pixelRatio;
-      canvas.height = 400 * pixelRatio;
-    }
+    canvas.width = viewportWidth * pixelRatio;
+    canvas.height = 400 * pixelRatio;
 
     const ctx = canvas.getContext("2d");
     if (!ctx) {
@@ -75,11 +71,7 @@ export default function Background({ imageSrc }: BackgroundProps) {
     const cropWidth = ((crop.width * image.width) / 100) * scaleX;
     const cropHeight = ((crop.height * image.height) / 100) * scaleY;
 
-    if (isMobile) {
-      ctx.drawImage(image, cropX, cropY, cropWidth, cropHeight, 0, 0, viewportWidth, 240);
-    } else {
-      ctx.drawImage(image, cropX, cropY, cropWidth, cropHeight, 0, 0, viewportWidth, 400);
-    }
+    ctx.drawImage(image, cropX, cropY, cropWidth, cropHeight, 0, 0, viewportWidth, 400);
 
     return new Promise((resolve) => {
       canvas.toBlob(
@@ -89,11 +81,17 @@ export default function Background({ imageSrc }: BackgroundProps) {
           }
           resolve(blob);
         },
-        "image/jpeg",
-        1
+        "image/webp",
+        0.9
       );
     });
   }
+
+  const convertToWebP = async (blob: Blob): Promise<File> => {
+    return new File([blob], file.name.replace(/\.[^.]+$/, ".webp"), {
+      type: "image/webp",
+    });
+  };
 
   const handleSaveCrop = async () => {
     try {
@@ -103,20 +101,20 @@ export default function Background({ imageSrc }: BackgroundProps) {
       }
 
       const croppedBlob = await getCroppedImage(imgRef.current, completedCrop);
-      const file = new File([croppedBlob], "cover.jpg", { type: "image/jpeg" });
+      const webpFile = await convertToWebP(croppedBlob);
 
       const data = await postPresignedUrl({
         type: "background",
-        ext: "jpg",
+        ext: "webp",
       });
 
       CoverImageMutation.mutate(data.imageName);
 
       const uploadResponse = await fetch(data.url, {
         method: "PUT",
-        body: file,
+        body: webpFile,
         headers: {
-          "Content-Type": file.type,
+          "Content-Type": "image/webp",
         },
       });
 
@@ -126,7 +124,7 @@ export default function Background({ imageSrc }: BackgroundProps) {
 
       showToast("커버 이미지가 변경되었습니다!", "success");
       setModal({ isOpen: false, type: null, data: null });
-      router.reload();
+      refetch();
     } catch (error) {
       console.error("Cover image upload error:", error);
       showToast("커버 이미지 업로드에 실패했습니다.", "error");
@@ -135,7 +133,7 @@ export default function Background({ imageSrc }: BackgroundProps) {
 
   const onImageLoad = (img: HTMLImageElement) => {
     const { width, height } = img;
-    const aspectRatio = isMobile ? width / 240 : viewportWidth / 400;
+    const aspectRatio = viewportWidth / 400;
     const cropHeight = width / aspectRatio;
 
     const newCrop: Crop = {

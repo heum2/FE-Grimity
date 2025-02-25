@@ -30,7 +30,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
   const { data: myData, refetch } = useMyData();
   const { data: userData, refetch: refetchUserData } = useUserData(id);
   const [profileImage, setProfileImage] = useState<string>("");
-  const [, setCoverImage] = useState<string>("");
+  const [coverImage, setCoverImage] = useState<string>("");
   const { showToast } = useToast();
   const isMobile = useRecoilValue(isMobileState);
   const isTablet = useRecoilValue(isTabletState);
@@ -164,6 +164,17 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
   const handleAddCover = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    if (!isMobile && !isTablet) {
+      const imageUrl = URL.createObjectURL(file);
+      setModal({
+        isOpen: true,
+        type: "BACKGROUND",
+        data: { imageSrc: imageUrl, file },
+      });
+      return;
+    }
+
     const imageUrl = URL.createObjectURL(file);
 
     try {
@@ -189,10 +200,12 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
       }
 
       showToast("커버 이미지가 변경되었습니다!", "success");
+      setCoverImage(data.imageName);
       refetch();
       refetchUserData();
     } catch (error) {
       console.error("File change error:", error);
+      showToast("커버 이미지 업로드에 실패했습니다.", "error");
     }
   };
 
@@ -310,7 +323,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
           {userData.backgroundImage !== "https://image.grimity.com/null" ? (
             <div className={styles.backgroundImage}>
               <img
-                src={userData.backgroundImage}
+                src={coverImage}
                 width={1400} // 임의 지정
                 height={isMobile ? 240 : isTablet ? 300 : 400}
                 alt="backgroundImage"
