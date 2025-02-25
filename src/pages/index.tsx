@@ -15,6 +15,7 @@ import { isMobileState, isTabletState } from "@/states/isMobileState";
 import BoardPopular from "@/components/Board/BoardPopular/BoardPopular";
 import IconComponent from "@/components/Asset/Icon";
 import Link from "next/link";
+import Banner from "@/components/Layout/Banner/Banner";
 
 export default function Home() {
   const router = useRouter();
@@ -44,6 +45,7 @@ export default function Home() {
         {!isMobile && !isTablet && (
           <>
             <section className={styles.FeedSection}>
+              <Banner />
               <Ranking />
               <div className={styles.bar} />
               {isLoggedIn && (
@@ -68,6 +70,7 @@ export default function Home() {
         {(isMobile || isTablet) && (
           <>
             <section className={styles.MobileSection}>
+              <Banner />
               <Ranking />
               <div className={styles.bar} />
               {isLoggedIn && (
