@@ -28,11 +28,17 @@
   }
 
   .FeedSection {
-    width: 100%;
-    max-width: 880px;
+    flex: 2;
+    min-width: 500px;
     display: flex;
     flex-direction: column;
     gap: 48px;
+
+    .Banner {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+    }
 
     @include Size("mobile") {
       display: none;
@@ -44,11 +50,12 @@
   }
 
   .BoardSection {
-    width: 100%;
+    flex: 1;
     max-width: 320px;
+    min-width: 250px;
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 30px;
 
     @include Size("mobile") {
       display: none;
