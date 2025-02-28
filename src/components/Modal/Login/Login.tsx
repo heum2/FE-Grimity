@@ -1,4 +1,3 @@
-import BASE_URL from "@/constants/baseurl";
 import styles from "./Login.module.scss";
 import { useRecoilState } from "recoil";
 import { useMutation } from "react-query";
@@ -7,7 +6,8 @@ import { modalState } from "@/states/modalState";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useToast } from "@/hooks/useToast";
 import IconComponent from "@/components/Asset/Icon";
-import { useRouter } from "next/router";
+import axiosInstance from "@/api/auth/axiosInstance";
+import { AxiosError } from "axios";
 
 interface AuthObj {
   access_token: string;
@@ -30,7 +30,6 @@ export default function Login() {
   const [, setAuth] = useRecoilState(authState);
   const [, setModal] = useRecoilState(modalState);
   const { showToast } = useToast();
-  const route = useRouter();
 
   const loginMutation = useMutation({
     mutationFn: async ({
@@ -40,11 +39,11 @@ export default function Login() {
       provider: LoginType;
       providerAccessToken: string;
     }) => {
-      const response = await BASE_URL.post("/auth/login", {
-        provider: provider,
-        providerAccessToken: providerAccessToken,
+      const response = await axiosInstance.post("/auth/login", {
+        provider,
+        providerAccessToken,
       });
-      return { ...response.data };
+      return response.data;
     },
     onSuccess: (data) => {
       setAuth({
@@ -53,12 +52,14 @@ export default function Login() {
         user_id: data.id,
       });
 
-      setModal({ isOpen: false, type: null, data: null });
       localStorage.setItem("access_token", data.accessToken);
-      localStorage.setItem("user_id", data.id);
+      localStorage.setItem("refresh_token", data.refreshToken);
+      console.log(data);
+      console.log("Access Token:", localStorage.getItem("access_token"));
+      console.log("Refresh Token:", localStorage.getItem("refresh_token"));
     },
-    onError: (error: ErrorResponse) => {
-      showToast("오류가 발생했습니다. 다시 시도해주세요.", "error");
+    onError: () => {
+      showToast("로그인 실패", "error");
     },
   });
 
@@ -70,19 +71,11 @@ export default function Login() {
     window.Kakao.Auth.login({
       success: async (authObj: AuthObj) => {
         try {
-          // 로그인 요청을 시도
-          const response = await BASE_URL.post("/auth/login", {
-            provider: "KAKAO",
-            providerAccessToken: authObj.access_token,
-          });
-
-          // 로그인 성공
-          loginMutation.mutate({
+          await loginMutation.mutateAsync({
             provider: "KAKAO",
             providerAccessToken: authObj.access_token,
           });
         } catch (error: any) {
-          // 404 에러 발생시 회원가입 처리
           if (error.response?.status === 404) {
             setModal({
               isOpen: true,
@@ -90,12 +83,12 @@ export default function Login() {
               data: { accessToken: authObj.access_token, provider: "KAKAO" },
             });
           } else {
-            console.error("로그인 실패");
+            console.error("카카오 로그인 실패", error);
           }
         }
       },
       fail: (err: ErrorResponse) => {
-        console.error("로그인 실패:", err);
+        console.error("카카오 로그인 실패:", err);
       },
     });
   };
@@ -103,33 +96,28 @@ export default function Login() {
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
-        await BASE_URL.post("/auth/login", {
+        await loginMutation.mutateAsync({
           provider: "GOOGLE",
           providerAccessToken: tokenResponse.access_token,
-        })
-          .then((response) => {
-            loginMutation.mutate({
-              provider: "GOOGLE",
-              providerAccessToken: tokenResponse.access_token,
-            });
-          })
-          .catch((error) => {
-            if (error.response?.status === 404) {
-              setModal({
-                isOpen: true,
-                type: "NICKNAME",
-                data: { accessToken: tokenResponse.access_token, provider: "GOOGLE" },
-              });
-            } else {
-              console.error("Google 로그인 처리 중 오류 발생");
-            }
-          });
+        });
       } catch (error) {
-        console.error("Google 로그인 처리 중 오류 발생:", error);
+        if (error instanceof AxiosError) {
+          if (error.response?.status === 404) {
+            setModal({
+              isOpen: true,
+              type: "NICKNAME",
+              data: { accessToken: tokenResponse.access_token, provider: "GOOGLE" },
+            });
+          } else {
+            console.error("구글 로그인 실패", error);
+          }
+        } else {
+          console.error("구글 로그인 실패", error);
+        }
       }
     },
     onError: () => {
-      console.error("Google 로그인 실패");
+      console.error("구글 로그인 실패");
     },
   });
 
