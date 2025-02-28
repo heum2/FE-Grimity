@@ -1,40 +1,18 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+![image](https://github.com/user-attachments/assets/764918ad-de41-45ac-b7fb-490833496d1c)
+## [🔗 그리미티](https://www.grimity.com/)
+|사용 기술|`Next.js`, `TypeScript`, `Recoil`, `SCSS`, `React-Query`|
+|:-:|-|
+|개발 기간|2025.02|
+|FE|[@MEGUMMY1](https://github.com/MEGUMMY1)|
+|BE|[@leemhoon00](https://github.com/leemhoon00)|
+|DE|-|
 
-## Getting Started
+<br/>
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+# 🎨 시연
+![2025-02-28164522-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/5e24b98d-c152-45b8-860a-8f87fd8abb6b)
+![2025-02-28164522-ezgif com-video-to-gif-converter (3)](https://github.com/user-attachments/assets/83936fc8-bedb-4063-bc02-f47ed5a39f88)
+![2025-02-28164522-ezgif com-video-to-gif-converter (5)](https://github.com/user-attachments/assets/7e609ebd-a526-436d-8873-0d9d3d38a4d3)
+![2025-02-28164522-ezgif com-video-to-gif-converter (6)](https://github.com/user-attachments/assets/9f418be6-7a92-4bea-9b25-87af81b34f14)
+![2025-02-28164522-ezgif com-video-to-gif-converter (7)](https://github.com/user-attachments/assets/13d758b1-4aea-46ca-ad0c-3f780bafcc08)
+![mobile-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/7468fe0e-807a-4bf7-a6e5-7e1f91f05b0b)![mobile-ezgif com-video-to-gif-converter (1)](https://github.com/user-attachments/assets/c28c9ad4-fc7f-45b5-bbbd-67d86747c7ae)
