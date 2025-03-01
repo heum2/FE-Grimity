@@ -115,11 +115,15 @@ export default function Header() {
 
     try {
       if (refreshToken) {
-        await axiosInstance.post("/auth/logout", null, {
-          headers: {
-            Authorization: `Bearer ${refreshToken}`,
-          },
-        });
+        await axiosInstance.post(
+          "/auth/logout",
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${refreshToken}`,
+            },
+          }
+        );
       }
     } catch (error) {
       console.error("Logout failed:", error);

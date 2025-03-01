@@ -35,8 +35,7 @@ axiosInstance.interceptors.response.use(
       const refreshToken = localStorage.getItem("refresh_token");
 
       if (!refreshToken) {
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("refresh_token");
+        clearAuthAndReload();
         return Promise.reject(error);
       }
 
@@ -57,10 +56,7 @@ axiosInstance.interceptors.response.use(
           return axiosInstance(originalRequest);
         } catch (refreshError) {
           console.error("Failed to refresh token", refreshError);
-
-          localStorage.removeItem("access_token");
-          localStorage.removeItem("refresh_token");
-
+          clearAuthAndReload();
           return Promise.reject(refreshError);
         }
       }
@@ -69,5 +65,12 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+function clearAuthAndReload() {
+  localStorage.removeItem("access_token");
+  localStorage.removeItem("refresh_token");
+  localStorage.removeItem("user_id");
+  window.location.reload();
+}
 
 export default axiosInstance;
