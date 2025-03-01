@@ -1,5 +1,7 @@
 import axiosInstance from "@/constants/baseurl";
+import { authState } from "@/states/authState";
 import { useInfiniteQuery, useQuery } from "react-query";
+import { useRecoilValue } from "recoil";
 
 export interface FollowingFeedsRequest {
   size?: number;
@@ -74,13 +76,14 @@ export function useFollowingNew(params: FollowingFeedsRequest) {
 }
 
 export function useFollowingFeeds(params: FollowingFeedsRequest | null) {
+  const { isLoggedIn } = useRecoilValue(authState);
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
 
   return useInfiniteQuery<FollowingFeedsResponse>(
     ["FollowingFeeds", params?.size],
     ({ pageParam = undefined }) => getFollowingFeeds({ ...params, cursor: pageParam }),
     {
-      enabled: !!params && Boolean(accessToken),
+      enabled: !!params && isLoggedIn && Boolean(accessToken),
       getNextPageParam: (lastPage) => lastPage.nextCursor || undefined,
       refetchOnMount: false,
       refetchOnReconnect: false,
