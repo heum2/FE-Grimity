@@ -111,9 +111,8 @@ export default function Header() {
   };
 
   const handleLogout = async () => {
-    const refreshToken = localStorage.getItem("refresh_token");
-
     try {
+      const refreshToken = localStorage.getItem("refresh_token");
       if (refreshToken) {
         await axiosInstance.post(
           "/auth/logout",
@@ -121,26 +120,24 @@ export default function Header() {
           {
             headers: {
               Authorization: `Bearer ${refreshToken}`,
+              "exclude-access-token": true,
             },
           }
         );
       }
     } catch (error) {
-      console.error("Logout failed:", error);
+      console.error("Logout failed", error);
     } finally {
-      router.push("/");
-      window.scrollTo({ top: 0, behavior: "smooth" });
-
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
+      localStorage.removeItem("user_id");
       setAuth({
         access_token: "",
         isLoggedIn: false,
         user_id: "",
       });
-
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("refresh_token");
-      localStorage.removeItem("user_id");
-
+      router.push("/");
+      window.scrollTo({ top: 0, behavior: "smooth" });
       if (isMobile || isTablet) {
         setIsMenuOpen(false);
       }
