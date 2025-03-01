@@ -1,4 +1,4 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 import { useQuery } from "react-query";
 
 /* 댓글 api */
@@ -28,7 +28,7 @@ export async function getFeedsComments({
   feedId,
 }: FeedsCommentsRequest): Promise<FeedsCommentsResponse> {
   try {
-    const response = await BASE_URL.get<FeedsCommentsResponse>("/feed-comments", {
+    const response = await axiosInstance.get<FeedsCommentsResponse>("/feed-comments", {
       params: { feedId },
     });
 
@@ -92,7 +92,7 @@ export async function getFeedsChildComments({
   parentId,
 }: FeedsChildCommentsRequest): Promise<FeedsChildComment[]> {
   try {
-    const response = await BASE_URL.get<FeedsChildComment[]>("/feed-comments/child-comments", {
+    const response = await axiosInstance.get<FeedsChildComment[]>("/feed-comments/child-comments", {
       params: { feedId, parentId },
     });
 

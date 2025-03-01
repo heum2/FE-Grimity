@@ -1,4 +1,4 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 
 export interface EditFeedsRequest {
   title: string;
@@ -13,7 +13,7 @@ export async function putEditFeeds(
   id: string,
   { title, cards, isAI, content, tags, thumbnail }: EditFeedsRequest
 ): Promise<Response> {
-  const response = await BASE_URL.put(`/feeds/${id}`, {
+  const response = await axiosInstance.put(`/feeds/${id}`, {
     title,
     cards,
     isAI,

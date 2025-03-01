@@ -1,4 +1,4 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 import { useInfiniteQuery } from "react-query";
 
 export interface MyLikeListRequest {
@@ -31,7 +31,7 @@ export async function getMyLikeList({
   cursor,
 }: MyLikeListRequest): Promise<MyLikeListResponse> {
   try {
-    const response = await BASE_URL.get("/users/me/like-feeds", { params: { size, cursor } });
+    const response = await axiosInstance.get("/users/me/like-feeds", { params: { size, cursor } });
 
     const updatedData: MyLikeListResponse = {
       ...response.data,

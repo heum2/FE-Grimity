@@ -1,4 +1,4 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 import axios from "axios";
 import { useQuery } from "react-query";
 
@@ -28,7 +28,7 @@ export interface MetaUserInfoResponse {
 
 export async function getUserInfo({ id }: UserInfoRequest): Promise<UserInfoResponse> {
   try {
-    const response = await BASE_URL.get(`/users/${id}`);
+    const response = await axiosInstance.get(`/users/${id}`);
 
     const updatedData = response.data;
     updatedData.image = `https://image.grimity.com/${updatedData.image}`;

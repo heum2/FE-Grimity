@@ -1,4 +1,4 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 
 export interface ReportsRequest {
   type: number;
@@ -8,7 +8,7 @@ export interface ReportsRequest {
 }
 
 export async function postReports({ type, refType, refId, content }: ReportsRequest) {
-  const response = await BASE_URL.post("/reports", {
+  const response = await axiosInstance.post("/reports", {
     type,
     refType,
     refId,

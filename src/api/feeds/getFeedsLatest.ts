@@ -1,4 +1,4 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 import { useInfiniteQuery } from "react-query";
 
 export interface FeedsLatestRequest {
@@ -30,7 +30,7 @@ export async function getFeedsLatest({
   cursor,
 }: FeedsLatestRequest): Promise<FeedsLatestResponse> {
   try {
-    const response = await BASE_URL.get("/feeds/latest", {
+    const response = await axiosInstance.get("/feeds/latest", {
       params: { size, cursor },
     });
 

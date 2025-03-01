@@ -1,4 +1,4 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 import { useInfiniteQuery } from "react-query";
 
 /* 팔로워 목록 */
@@ -24,7 +24,7 @@ export async function getMyFollower({
   cursor,
 }: MyFollowerRequest): Promise<MyFollowerResponse> {
   try {
-    const response = await BASE_URL.get("/users/me/followers", {
+    const response = await axiosInstance.get("/users/me/followers", {
       params: { size, cursor },
     });
 
@@ -74,7 +74,7 @@ export async function getMyFollowing({
   cursor,
 }: MyFollowerRequest): Promise<MyFollowingResponse> {
   try {
-    const response = await BASE_URL.get("/users/me/followings", {
+    const response = await axiosInstance.get("/users/me/followings", {
       params: { size, cursor },
     });
 

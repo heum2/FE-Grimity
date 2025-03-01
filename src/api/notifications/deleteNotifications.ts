@@ -1,11 +1,11 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 
 export async function deleteNotifications(): Promise<Response> {
-  const response = await BASE_URL.delete("/notifications");
+  const response = await axiosInstance.delete("/notifications");
   return response.data;
 }
 
 export async function deleteNotificationsId(id: string): Promise<Response> {
-  const response = await BASE_URL.delete(`/notifications/${id}`);
+  const response = await axiosInstance.delete(`/notifications/${id}`);
   return response.data;
 }

@@ -1,7 +1,7 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 
 export async function deleteMe(): Promise<Response> {
-  const response = await BASE_URL.delete("/users/me");
+  const response = await axiosInstance.delete("/users/me");
 
   if (response.status === 200) {
     localStorage.removeItem("access_token");

@@ -1,4 +1,4 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 
 export type SubscriptionType =
   | "FOLLOW"
@@ -26,7 +26,7 @@ export interface SubscribeRequest {
 }
 
 export async function getSubscribe(): Promise<SubscribeResponse> {
-  const response = await BASE_URL.get("/users/me/subscribe");
+  const response = await axiosInstance.get("/users/me/subscribe");
   return response.data;
 }
 
@@ -34,6 +34,6 @@ export async function putSubscribe({ type }: SubscribeRequest): Promise<Response
   const payload = {
     subscription: type === "ALL" ? SubscriptionTypes : [type],
   };
-  const response = await BASE_URL.put(`/users/me/subscribe`, payload);
+  const response = await axiosInstance.put(`/users/me/subscribe`, payload);
   return response.data;
 }

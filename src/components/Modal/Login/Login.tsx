@@ -6,8 +6,8 @@ import { modalState } from "@/states/modalState";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useToast } from "@/hooks/useToast";
 import IconComponent from "@/components/Asset/Icon";
-import axiosInstance from "@/api/auth/axiosInstance";
 import { AxiosError } from "axios";
+import axiosInstance from "@/constants/baseurl";
 
 interface AuthObj {
   access_token: string;
@@ -21,6 +21,12 @@ interface AuthObj {
 interface ErrorResponse {
   error: string;
   error_description: string;
+}
+
+interface LoginResponse {
+  accessToken: string;
+  refreshToken: string;
+  id: string;
 }
 
 type LoginType = "GOOGLE" | "KAKAO";
@@ -39,22 +45,23 @@ export default function Login() {
       provider: LoginType;
       providerAccessToken: string;
     }) => {
-      const response = await axiosInstance.post("/auth/login", {
+      const response = await axiosInstance.post<LoginResponse>("/auth/login", {
         provider,
         providerAccessToken,
       });
       return response.data;
     },
-    onSuccess: (data) => {
+    onSuccess: (data: LoginResponse) => {
       setAuth({
         access_token: data.accessToken,
         isLoggedIn: true,
         user_id: data.id,
       });
 
+      setModal({ isOpen: false, type: null, data: null });
+
       localStorage.setItem("access_token", data.accessToken);
       localStorage.setItem("refresh_token", data.refreshToken);
-      console.log(data);
       console.log("Access Token:", localStorage.getItem("access_token"));
       console.log("Refresh Token:", localStorage.getItem("refresh_token"));
     },

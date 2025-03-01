@@ -1,4 +1,4 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 import { useQuery } from "react-query";
 
 export interface TodayPopularPostsResponse {
@@ -18,7 +18,7 @@ export interface TodayPopularPostsResponse {
 
 export async function getTodayPopularPosts(): Promise<TodayPopularPostsResponse[]> {
   try {
-    const response = await BASE_URL.get("/posts/today-popular");
+    const response = await axiosInstance.get("/posts/today-popular");
 
     const updatedPosts: TodayPopularPostsResponse[] = response.data.map(
       (post: TodayPopularPostsResponse) => ({

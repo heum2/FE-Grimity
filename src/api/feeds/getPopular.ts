@@ -1,4 +1,4 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 import { useInfiniteQuery } from "react-query";
 
 export interface PopularFeed {
@@ -23,7 +23,7 @@ export interface PopularFeedResponse {
 
 export async function getPopularFeed({ pageParam = null }): Promise<PopularFeedResponse> {
   try {
-    const response = await BASE_URL.get("/feeds/popular", {
+    const response = await axiosInstance.get("/feeds/popular", {
       params: {
         cursor: pageParam,
         size: 30,

@@ -1,4 +1,4 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 import { useMutation } from "react-query";
 
 export interface PostsCommentsPostRequest {
@@ -15,7 +15,7 @@ export async function postPostsComments({
   mentionedUserId,
 }: PostsCommentsPostRequest): Promise<void> {
   try {
-    await BASE_URL.post("/post-comments", {
+    await axiosInstance.post("/post-comments", {
       postId,
       parentCommentId,
       content,

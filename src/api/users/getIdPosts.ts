@@ -1,4 +1,4 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 import { useQuery } from "react-query";
 
 export interface UserPostsRequest {
@@ -24,7 +24,7 @@ export async function getUserPosts({
   page = 1,
 }: UserPostsRequest): Promise<UserPostsResponse[]> {
   try {
-    const response = await BASE_URL.get(`/users/${id}/posts`, {
+    const response = await axiosInstance.get(`/users/${id}/posts`, {
       params: {
         size,
         page,

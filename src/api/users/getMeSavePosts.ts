@@ -1,4 +1,4 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 import { useQuery } from "react-query";
 
 export interface MySavePostRequest {
@@ -31,7 +31,7 @@ export async function getMySavePost({
   page,
 }: MySavePostRequest): Promise<MySavePostResponse> {
   try {
-    const response = await BASE_URL.get("/users/me/save-posts", { params: { size, page } });
+    const response = await axiosInstance.get("/users/me/save-posts", { params: { size, page } });
 
     const updatedData: MySavePostResponse = {
       ...response.data,

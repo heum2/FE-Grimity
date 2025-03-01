@@ -1,4 +1,4 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 import axios from "axios";
 import { useQuery } from "react-query";
 
@@ -35,7 +35,7 @@ export interface MetaDetailsResponse {
 
 export async function getDetails(id: string): Promise<DetailsResponse> {
   try {
-    const response = await BASE_URL.get(`/feeds/${id}`, {
+    const response = await axiosInstance.get(`/feeds/${id}`, {
       params: { id },
     });
 

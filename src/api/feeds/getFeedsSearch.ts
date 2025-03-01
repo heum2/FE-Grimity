@@ -1,4 +1,4 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 import { useInfiniteQuery } from "react-query";
 
 export interface FeedSearchRequest {
@@ -36,7 +36,7 @@ export async function getFeedSearch({
   keyword,
 }: FeedSearchRequest): Promise<FeedSearchResponse> {
   try {
-    const response = await BASE_URL.get("/feeds/search", {
+    const response = await axiosInstance.get("/feeds/search", {
       params: {
         sort,
         size,

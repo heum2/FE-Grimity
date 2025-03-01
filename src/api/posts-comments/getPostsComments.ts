@@ -1,4 +1,4 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 import { useQuery } from "react-query";
 
 export interface PostsCommentsRequest {
@@ -44,7 +44,7 @@ export async function getPostsComments({
   postId,
 }: PostsCommentsRequest): Promise<PostsCommentsResponse> {
   try {
-    const response = await BASE_URL.get<PostsComment[]>("/post-comments", {
+    const response = await axiosInstance.get<PostsComment[]>("/post-comments", {
       params: { postId },
     });
 

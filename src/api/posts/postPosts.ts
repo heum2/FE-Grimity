@@ -1,4 +1,4 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 
 export interface PostsRequest {
   title: string;
@@ -11,7 +11,7 @@ export interface PostsResponse {
 }
 
 export async function postPosts({ title, content, type }: PostsRequest): Promise<PostsResponse> {
-  const response = await BASE_URL.post("/posts", {
+  const response = await axiosInstance.post("/posts", {
     title,
     content,
     type,

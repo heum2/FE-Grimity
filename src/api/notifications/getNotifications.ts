@@ -1,6 +1,6 @@
-import BASE_URL from "@/constants/baseurl";
 import { useQuery } from "react-query";
 import { NotificationData } from "@grimity/shared-types";
+import axiosInstance from "@/constants/baseurl";
 
 export interface NotificationsResponse {
   id: string;
@@ -10,7 +10,7 @@ export interface NotificationsResponse {
 }
 
 export async function getNotifications(): Promise<NotificationsResponse[]> {
-  const response = await BASE_URL.get("/notifications");
+  const response = await axiosInstance.get("/notifications");
   return response.data as NotificationsResponse[];
 }
 

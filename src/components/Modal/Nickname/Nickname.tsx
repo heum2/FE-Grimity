@@ -1,4 +1,3 @@
-import BASE_URL from "@/constants/baseurl";
 import styles from "./Nickname.module.scss";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
@@ -7,9 +6,9 @@ import { useMutation } from "react-query";
 import TextField from "@/components/TextField/TextField";
 import IconComponent from "@/components/Asset/Icon";
 import Button from "@/components/Button/Button";
-import router from "next/router";
 import { authState } from "@/states/authState";
 import { useToast } from "@/hooks/useToast";
+import axiosInstance from "@/constants/baseurl";
 
 export default function Nickname() {
   const [nickname, setNickname] = useState("");
@@ -22,7 +21,7 @@ export default function Nickname() {
 
   const registerMutation = useMutation({
     mutationFn: async (data: { provider: string; providerAccessToken: string; name: string }) => {
-      const response = await BASE_URL.post("/auth/register", data);
+      const response = await axiosInstance.post("/auth/register", data);
       return response.data;
     },
     onSuccess: (data) => {

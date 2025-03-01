@@ -1,4 +1,4 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 import { useQuery } from "react-query";
 
 export interface PostSearchRequest {
@@ -35,7 +35,7 @@ export async function getPostSearch({
   keyword,
 }: PostSearchRequest): Promise<PostSearchResponse> {
   try {
-    const response = await BASE_URL.get("/posts/search", {
+    const response = await axiosInstance.get("/posts/search", {
       params: {
         searchBy,
         size,

@@ -1,4 +1,4 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 import { useQuery } from "react-query";
 
 export interface PopularResponse {
@@ -13,7 +13,7 @@ export interface PopularResponse {
 
 export async function getPopular(): Promise<PopularResponse[]> {
   try {
-    const response = await BASE_URL.get("/users/popular");
+    const response = await axiosInstance.get("/users/popular");
 
     const updatedData = response.data.map((data: PopularResponse) => ({
       ...data,

@@ -1,4 +1,4 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 import { useQuery } from "react-query";
 
 export interface TagsSearchResponse {
@@ -16,7 +16,7 @@ export interface TagsSearchResponse {
 
 export async function getTagsSearch(tagNames: string): Promise<TagsSearchResponse[]> {
   try {
-    const response = await BASE_URL.get("/tags/search", {
+    const response = await axiosInstance.get("/tags/search", {
       params: { tagNames },
     });
 

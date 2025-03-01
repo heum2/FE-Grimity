@@ -1,4 +1,4 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 import { useQuery } from "react-query";
 
 export interface TagsPopularResponse {
@@ -8,7 +8,7 @@ export interface TagsPopularResponse {
 
 export async function getTagsPopular(): Promise<TagsPopularResponse[]> {
   try {
-    const response = await BASE_URL.get("/tags/popular");
+    const response = await axiosInstance.get("/tags/popular");
 
     const updatedData = response.data.map((tag: TagsPopularResponse) => ({
       ...tag,

@@ -1,8 +1,7 @@
-import BASE_URL from "@/constants/baseurl";
 import { useQuery } from "react-query";
 import { useRecoilValue } from "recoil";
-import { useEffect, useState } from "react";
 import { authState } from "@/states/authState";
+import axiosInstance from "@/constants/baseurl";
 
 export interface MyInfoResponse {
   id: string;
@@ -19,7 +18,7 @@ export interface MyInfoResponse {
 
 export async function getMyInfo(): Promise<MyInfoResponse> {
   try {
-    const response = await BASE_URL.get("/users/me");
+    const response = await axiosInstance.get("/users/me");
 
     const updatedData = response.data;
     updatedData.image = `https://image.grimity.com/${updatedData.image}`;

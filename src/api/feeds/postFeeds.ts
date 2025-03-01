@@ -1,4 +1,4 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 
 export interface FeedsRequest {
   title: string;
@@ -21,7 +21,7 @@ export async function postFeeds({
   tags,
   thumbnail,
 }: FeedsRequest): Promise<FeedsResponse> {
-  const response = await BASE_URL.post("/feeds", {
+  const response = await axiosInstance.post("/feeds", {
     title,
     cards,
     isAI,

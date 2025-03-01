@@ -1,4 +1,4 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 import axios from "axios";
 import { useQuery } from "react-query";
 
@@ -34,7 +34,7 @@ export async function getPostsLatest({
   type = "ALL",
 }: PostsLatestRequest): Promise<PostsLatestResponse> {
   try {
-    const response = await BASE_URL.get("/posts", {
+    const response = await axiosInstance.get("/posts", {
       params: { size, page, type },
     });
 
@@ -70,7 +70,7 @@ export const usePostsLatest = (params: PostsLatestRequest) => {
 
 export async function getPostsNotices(): Promise<PostsLatest[]> {
   try {
-    const response = await BASE_URL.get("/posts/notices");
+    const response = await axiosInstance.get("/posts/notices");
 
     const updatedPosts: PostsLatest[] = response.data.map((post: PostsLatest) => ({
       ...post,

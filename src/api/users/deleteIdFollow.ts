@@ -1,6 +1,6 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 
 export async function deleteFollow(id: string): Promise<Response> {
-  const response = await BASE_URL.delete(`/users/${id}/follow`);
+  const response = await axiosInstance.delete(`/users/${id}/follow`);
   return response.data;
 }

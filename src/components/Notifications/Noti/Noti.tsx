@@ -8,9 +8,9 @@ import { putNotificationsId } from "@/api/notifications/putNotifications";
 import { useToast } from "@/hooks/useToast";
 import axios from "axios";
 import { useRouter } from "next/router";
-import BASE_URL from "@/constants/baseurl";
 import { useRecoilValue } from "recoil";
 import { isTabletState } from "@/states/isMobileState";
+import axiosInstance from "@/constants/baseurl";
 
 export default function Noti({ notification, onClose, onRefetch }: NotiProps) {
   const { showToast } = useToast();
@@ -110,7 +110,7 @@ export default function Noti({ notification, onClose, onRefetch }: NotiProps) {
     e.preventDefault();
 
     try {
-      await BASE_URL.head(`${renderId()}`);
+      await axiosInstance.head(`${renderId()}`);
       await handleReadNotification();
       router.push(renderId());
     } catch (error) {

@@ -1,4 +1,4 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 import { useInfiniteQuery } from "react-query";
 
 export interface UserSearchRequest {
@@ -31,7 +31,7 @@ export async function getUserSearch({
   keyword,
 }: UserSearchRequest): Promise<UserSearchResponse> {
   try {
-    const response = await BASE_URL.get("/users/search", {
+    const response = await axiosInstance.get("/users/search", {
       params: {
         sort,
         size,

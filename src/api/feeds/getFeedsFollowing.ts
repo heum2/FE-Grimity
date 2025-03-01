@@ -1,4 +1,4 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 import { useInfiniteQuery, useQuery } from "react-query";
 
 export interface FollowingFeedsRequest {
@@ -37,7 +37,7 @@ export async function getFollowingFeeds({
   cursor,
 }: FollowingFeedsRequest): Promise<FollowingFeedsResponse> {
   try {
-    const response = await BASE_URL.get("/feeds/following", { params: { size, cursor } });
+    const response = await axiosInstance.get("/feeds/following", { params: { size, cursor } });
 
     const updatedData: FollowingFeedsResponse = {
       ...response.data,

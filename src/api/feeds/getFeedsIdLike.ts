@@ -1,4 +1,4 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 import { useQuery } from "react-query";
 
 export interface FeedsLikeRequest {
@@ -14,7 +14,7 @@ export interface FeedsLikeResponse {
 
 export async function getFeedsLike({ id }: FeedsLikeRequest): Promise<FeedsLikeResponse[]> {
   try {
-    const response = await BASE_URL.get(`/feeds/${id}/like`);
+    const response = await axiosInstance.get(`/feeds/${id}/like`);
     const data = response.data;
 
     const updatedData = data.map((item: FeedsLikeResponse) => ({

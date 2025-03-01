@@ -1,4 +1,4 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 import { useInfiniteQuery } from "react-query";
 
 export interface MySaveListRequest {
@@ -31,7 +31,7 @@ export async function getMySaveList({
   cursor,
 }: MySaveListRequest): Promise<MySaveListResponse> {
   try {
-    const response = await BASE_URL.get("/users/me/save-feeds", { params: { size, cursor } });
+    const response = await axiosInstance.get("/users/me/save-feeds", { params: { size, cursor } });
 
     const updatedData: MySaveListResponse = {
       ...response.data,

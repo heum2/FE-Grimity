@@ -1,4 +1,4 @@
-import BASE_URL from "@/constants/baseurl";
+import axiosInstance from "@/constants/baseurl";
 import { useInfiniteQuery, useQuery } from "react-query";
 
 export interface UserFeedsRequest {
@@ -31,7 +31,7 @@ export async function getUserFeeds({
   cursor,
 }: UserFeedsRequest): Promise<UserFeedsResponse> {
   try {
-    const response = await BASE_URL.get(`/users/${id}/feeds`, {
+    const response = await axiosInstance.get(`/users/${id}/feeds`, {
       params: {
         sort,
         cursor,
