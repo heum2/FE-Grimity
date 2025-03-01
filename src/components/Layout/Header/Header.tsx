@@ -55,8 +55,11 @@ export default function Header() {
     { name: "홈", path: "/" },
     { name: "인기그림", path: "/popular" },
     { name: "자유게시판", path: "/board" },
-    { name: "팔로잉", path: "/following" },
   ];
+
+  if (isLoggedIn) {
+    navItems.push({ name: "팔로잉", path: "/following" });
+  }
 
   let name: "bellWhiteActive" | "bellActive" | "bellWhite" | "bell";
 
