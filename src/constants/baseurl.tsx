@@ -36,8 +36,6 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
-    console.log(error.response?.status, "for URL:", error.config?.url);
-
     const originalRequest = error.config;
 
     if (error.response?.status === 401 && !originalRequest._retry) {
@@ -45,11 +43,9 @@ axiosInstance.interceptors.response.use(
 
       try {
         if (!refreshTokenPromise) {
-          console.log("🔄 Starting new token refresh");
           refreshTokenPromise = (async (): Promise<string> => {
             const refreshToken = localStorage.getItem("refresh_token");
             if (!refreshToken) {
-              console.error("❌ No refresh token found in localStorage");
               throw new Error("No refresh token found");
             }
 
@@ -58,14 +54,13 @@ axiosInstance.interceptors.response.use(
               headers: { Authorization: `Bearer ${refreshToken}` },
             });
 
-            console.log("✅ Token refresh successful, new tokens received");
             localStorage.setItem("access_token", response.data.accessToken);
             localStorage.setItem("refresh_token", response.data.refreshToken);
 
             return response.data.accessToken;
           })();
         } else {
-          console.log("⏳ Using existing refresh token promise");
+          console.log("refresh token 이상");
         }
 
         const newAccessToken = await refreshTokenPromise;
