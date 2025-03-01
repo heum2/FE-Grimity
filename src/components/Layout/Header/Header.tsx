@@ -16,6 +16,7 @@ import { useIsMobile } from "@/hooks/useIsMobile";
 import { usePreventScroll } from "@/hooks/usePreventScroll";
 import Dropdown from "@/components/Dropdown/Dropdown";
 import Contact from "./Contact/Contact";
+import axiosInstance from "@/constants/baseurl";
 
 export default function Header() {
   const [, setModal] = useRecoilState(modalState);
@@ -109,20 +110,36 @@ export default function Header() {
     }
   };
 
-  const handleLogout = () => {
-    router.push("/");
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    setAuth({
-      access_token: "",
-      isLoggedIn: false,
-      user_id: "",
-    });
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("refresh_token");
-    localStorage.removeItem("user_id");
+  const handleLogout = async () => {
+    const refreshToken = localStorage.getItem("refresh_token");
 
-    if (isMobile || isTablet) {
-      setIsMenuOpen(false);
+    try {
+      if (refreshToken) {
+        await axiosInstance.post("/auth/logout", null, {
+          headers: {
+            Authorization: `Bearer ${refreshToken}`,
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Logout failed:", error);
+    } finally {
+      router.push("/");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      setAuth({
+        access_token: "",
+        isLoggedIn: false,
+        user_id: "",
+      });
+
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
+      localStorage.removeItem("user_id");
+
+      if (isMobile || isTablet) {
+        setIsMenuOpen(false);
+      }
     }
   };
 
