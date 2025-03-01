@@ -62,8 +62,6 @@ export default function Login() {
 
       localStorage.setItem("access_token", data.accessToken);
       localStorage.setItem("refresh_token", data.refreshToken);
-      console.log("Access Token:", localStorage.getItem("access_token"));
-      console.log("Refresh Token:", localStorage.getItem("refresh_token"));
     },
     onError: () => {
       showToast("로그인 실패", "error");

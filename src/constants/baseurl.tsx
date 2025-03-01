@@ -2,17 +2,10 @@ import axios, { InternalAxiosRequestConfig } from "axios";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-const refreshAxiosInstance = axios.create({
-  baseURL: BASE_URL,
-  headers: { "Content-Type": "application/json" },
-});
-
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
   headers: { "Content-Type": "application/json" },
 });
-
-let refreshTokenPromise: Promise<string> | null = null;
 
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
@@ -38,45 +31,38 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
+    if (error.response?.status === 401) {
+      const refreshToken = localStorage.getItem("refresh_token");
 
-      try {
-        if (!refreshTokenPromise) {
-          refreshTokenPromise = (async (): Promise<string> => {
-            const refreshToken = localStorage.getItem("refresh_token");
-            if (!refreshToken) {
-              throw new Error("No refresh token found");
-            }
-
-            console.log("🔄 Sending refresh token request");
-            const response = await refreshAxiosInstance.get("/auth/refresh", {
-              headers: { Authorization: `Bearer ${refreshToken}` },
-            });
-
-            localStorage.setItem("access_token", response.data.accessToken);
-            localStorage.setItem("refresh_token", response.data.refreshToken);
-
-            return response.data.accessToken;
-          })();
-        } else {
-          console.log("refresh token 이상");
-        }
-
-        const newAccessToken = await refreshTokenPromise;
-
-        refreshTokenPromise = null;
-
-        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-
-        return axiosInstance(originalRequest);
-      } catch (refreshError) {
+      if (!refreshToken) {
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
+        return Promise.reject(error);
+      }
 
-        refreshTokenPromise = null;
+      if (!originalRequest._retry) {
+        originalRequest._retry = true;
 
-        return Promise.reject(refreshError);
+        try {
+          const response = await axios.get(`${BASE_URL}/auth/refresh`, {
+            headers: {
+              Authorization: `Bearer ${refreshToken}`,
+            },
+          });
+
+          localStorage.setItem("access_token", response.data.accessToken);
+          localStorage.setItem("refresh_token", response.data.refreshToken);
+
+          originalRequest.headers.Authorization = `Bearer ${response.data.accessToken}`;
+          return axiosInstance(originalRequest);
+        } catch (refreshError) {
+          console.error("Failed to refresh token", refreshError);
+
+          localStorage.removeItem("access_token");
+          localStorage.removeItem("refresh_token");
+
+          return Promise.reject(refreshError);
+        }
       }
     }
 
