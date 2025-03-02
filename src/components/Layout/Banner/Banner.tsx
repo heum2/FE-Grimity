@@ -30,7 +30,7 @@ export default function Banner() {
           </Link>
         )}
       </SwiperSlide>
-      <SwiperSlide>
+      {/* <SwiperSlide>
         {isMobile || isTablet ? (
           <Link href="https://www.grimity.com/posts/f3ee6b5b-2db6-4d85-98ad-3be95ef8d093">
             <img src="/image/m-banner2.png" loading="lazy" className={styles.banner} />
@@ -40,7 +40,7 @@ export default function Banner() {
             <img src="/image/banner2.png" loading="lazy" className={styles.banner} />
           </Link>
         )}
-      </SwiperSlide>
+      </SwiperSlide> */}
     </Swiper>
   );
 }
