@@ -86,6 +86,12 @@ export default function Detail({ id }: DetailProps) {
     }
   }, [overlayImage]);
 
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  const formattedContent = (details?.content ?? "").replace(
+    urlRegex,
+    '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
+  );
+
   if (isLoading) {
     return <Loader />;
   }
@@ -364,7 +370,10 @@ export default function Detail({ id }: DetailProps) {
             <section className={styles.contentContainer}>
               <h2 className={styles.title}>{details.title}</h2>
               <div className={styles.bar} />
-              <p className={styles.content}>{details.content}</p>
+              <p
+                className={styles.content}
+                dangerouslySetInnerHTML={{ __html: formattedContent }}
+              />
               {details.isAI && (
                 <div className={styles.aiBtn}>
                   <img src="/icon/ai-message.svg" width={20} height={20} alt="" loading="lazy" />

@@ -101,6 +101,12 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
     }
   }, [details?.content]);
 
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  const formattedContent = (details?.content ?? "").replace(
+    urlRegex,
+    '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
+  );
+
   const handleCommentSubmitSuccess = () => {
     if (isCommentExpanded) {
       refetchComments();
@@ -338,9 +344,8 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
               <p
                 className={`${styles.content} ${isContentExpanded && styles.expanded}`}
                 ref={contentRef}
-              >
-                {details.content}
-              </p>
+                dangerouslySetInnerHTML={{ __html: formattedContent }}
+              />
               {isContentTooLong && !isContentExpanded && (
                 <button className={styles.readMore} onClick={() => setIsContentExpanded(true)}>
                   자세히 보기
