@@ -86,6 +86,7 @@ export default function Author({ authorId, feedId }: AuthorProps) {
                       height={40}
                       quality={50}
                       style={{ objectFit: "cover" }}
+                      unoptimized
                     />
                   ) : (
                     <Image
@@ -96,6 +97,7 @@ export default function Author({ authorId, feedId }: AuthorProps) {
                       className={styles.authorImage}
                       quality={50}
                       style={{ objectFit: "cover" }}
+                      unoptimized
                     />
                   )}
                   <div className={styles.authorInfo}>

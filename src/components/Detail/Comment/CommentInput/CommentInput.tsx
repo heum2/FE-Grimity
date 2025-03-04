@@ -72,6 +72,7 @@ export default function CommentInput({
             alt="프로필 이미지"
             quality={50}
             className={styles.writerImage}
+            unoptimized
           />
         ) : (
           <Image
@@ -81,6 +82,7 @@ export default function CommentInput({
             alt="프로필 이미지"
             quality={50}
             className={styles.writerImage}
+            unoptimized
           />
         ))}
       <TextArea

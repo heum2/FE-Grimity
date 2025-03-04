@@ -95,6 +95,7 @@ export default function User({
                 quality={50}
                 alt="인기 유저 프로필 이미지"
                 className={styles.profileImage}
+                unoptimized
               />
             ) : (
               <Image
@@ -104,6 +105,7 @@ export default function User({
                 quality={50}
                 alt="인기 유저 프로필 이미지"
                 className={styles.profileImage}
+                unoptimized
               />
             )}
             <div className={styles.nameContainer}>

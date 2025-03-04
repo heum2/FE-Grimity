@@ -54,7 +54,7 @@ export default function SharePost({ postId, title }: ShareBtnProps) {
   return (
     <div className={styles.container}>
       <div className={styles.messageContainer}>
-        <Image src="/image/logo.svg" width={120} height={34} alt="logo" />
+        <img src="/image/logo.svg" width={120} height={34} alt="logo" loading="lazy" />
         <p className={styles.text}>그리미티의 글을 공유해보세요!</p>
       </div>
       <div className={styles.buttonContainer}>
@@ -62,7 +62,9 @@ export default function SharePost({ postId, title }: ShareBtnProps) {
           size="l"
           type="outlined-assistive"
           onClick={copyToClipboard}
-          leftIcon={<Image src="/icon/copy.svg" width={20} height={20} alt="클립보드 복사" />}
+          leftIcon={
+            <img src="/icon/copy.svg" width={20} height={20} alt="클립보드 복사" loading="lazy" />
+          }
         >
           링크 복사하기
         </Button>
@@ -70,7 +72,9 @@ export default function SharePost({ postId, title }: ShareBtnProps) {
           size="l"
           type="outlined-assistive"
           onClick={handleTwitterShare}
-          leftIcon={<Image src="/icon/twitter.svg" width={20} height={20} alt="트위터 공유" />}
+          leftIcon={
+            <img src="/icon/twitter.svg" width={20} height={20} alt="트위터 공유" loading="lazy" />
+          }
         >
           트위터에 공유
         </Button>
@@ -78,7 +82,15 @@ export default function SharePost({ postId, title }: ShareBtnProps) {
           size="l"
           type="outlined-assistive"
           onClick={handleKaKaoShare}
-          leftIcon={<Image src="/icon/kakaotalk.svg" width={20} height={20} alt="카카오톡 공유" />}
+          leftIcon={
+            <img
+              src="/icon/kakaotalk.svg"
+              width={20}
+              height={20}
+              alt="카카오톡 공유"
+              loading="lazy"
+            />
+          }
         >
           카톡으로 공유
         </Button>

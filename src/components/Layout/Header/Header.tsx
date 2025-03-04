@@ -362,6 +362,7 @@ export default function Header() {
                         className={styles.profileImage}
                         quality={50}
                         style={{ objectFit: "cover" }}
+                        unoptimized
                       />
                     ) : (
                       <Image
@@ -372,6 +373,7 @@ export default function Header() {
                         className={styles.profileImage}
                         quality={50}
                         style={{ objectFit: "cover" }}
+                        unoptimized
                       />
                     )}
                   </div>
@@ -394,6 +396,7 @@ export default function Header() {
                               className={styles.dropdownProfileImage}
                               quality={50}
                               style={{ objectFit: "cover" }}
+                              unoptimized
                             />
                           ) : (
                             <Image
@@ -404,6 +407,7 @@ export default function Header() {
                               className={styles.dropdownProfileImage}
                               quality={50}
                               style={{ objectFit: "cover" }}
+                              unoptimized
                             />
                           )}
                           <span>내 프로필</span>
@@ -575,6 +579,7 @@ export default function Header() {
                                 className={styles.profileImage}
                                 quality={50}
                                 style={{ objectFit: "cover" }}
+                                unoptimized
                               />
                             ) : (
                               <Image
@@ -585,6 +590,7 @@ export default function Header() {
                                 className={styles.profileImage}
                                 quality={50}
                                 style={{ objectFit: "cover" }}
+                                unoptimized
                               />
                             )}
                             <span className={styles.name}>{myData.name}</span>

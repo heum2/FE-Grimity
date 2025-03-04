@@ -275,6 +275,7 @@ export default function Comment({
                     alt="댓글 프로필"
                     quality={50}
                     className={styles.writerImage}
+                    unoptimized
                   />
                 ) : (
                   <Image
@@ -284,6 +285,7 @@ export default function Comment({
                     alt="댓글 프로필"
                     quality={50}
                     className={styles.writerImage}
+                    unoptimized
                   />
                 )}
               </Link>
@@ -396,6 +398,7 @@ export default function Comment({
                 alt="댓글 프로필"
                 quality={50}
                 className={styles.writerImage}
+                unoptimized
               />
             ) : (
               <Image
@@ -405,6 +408,7 @@ export default function Comment({
                 alt="댓글 프로필"
                 quality={50}
                 className={styles.writerImage}
+                unoptimized
               />
             )}
           </Link>

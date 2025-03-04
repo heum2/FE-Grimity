@@ -416,6 +416,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                       quality={75}
                       alt="프로필 이미지"
                       className={styles.profileImage}
+                      unoptimized
                     />
                   )}
                   {userData.id === user_id && (
@@ -452,6 +453,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                     alt="프로필 이미지"
                     quality={75}
                     className={styles.profileImage}
+                    unoptimized
                   />
                   {userData.id === user_id && (
                     <>

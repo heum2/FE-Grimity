@@ -213,6 +213,7 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
                       height={40}
                       quality={50}
                       style={{ objectFit: "cover" }}
+                      unoptimized
                     />
                   ) : (
                     <Image
@@ -223,6 +224,7 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
                       className={styles.authorImage}
                       quality={50}
                       style={{ objectFit: "cover" }}
+                      unoptimized
                     />
                   )}
                 </Link>
@@ -363,13 +365,13 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
                   {currentLikeCount}
                 </div>
                 <div className={styles.stat}>
-                  <Image
+                  <img
                     src="/icon/view-count.svg"
                     width={16}
                     height={0}
-                    layout="intrinsic"
                     alt="조회수"
                     className={styles.statIcon}
+                    loading="lazy"
                   />
                   {details.viewCount}
                 </div>

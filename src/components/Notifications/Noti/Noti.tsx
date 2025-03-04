@@ -66,6 +66,7 @@ export default function Noti({ notification, onClose, onRefetch }: NotiProps) {
           quality={50}
           alt="Actor Image"
           className={styles.actorImage}
+          unoptimized
         />
       );
     }

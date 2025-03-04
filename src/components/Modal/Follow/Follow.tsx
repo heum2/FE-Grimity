@@ -172,6 +172,7 @@ export default function Follow({ initialTab }: FollowProps) {
                     onClick={() => handleClickUser(follow.id)}
                     className={styles.image}
                     alt={`${activeTab === "follower" ? "팔로워" : "팔로잉"} 프로필 이미지`}
+                    unoptimized
                   />
                 ) : (
                   <Image
@@ -182,6 +183,7 @@ export default function Follow({ initialTab }: FollowProps) {
                     onClick={() => handleClickUser(follow.id)}
                     className={styles.image}
                     alt={`${activeTab === "follower" ? "팔로워" : "팔로잉"} 프로필 이미지`}
+                    unoptimized
                   />
                 )}
                 {follow.description !== "" ? (

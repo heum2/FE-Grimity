@@ -217,6 +217,7 @@ export default function Detail({ id }: DetailProps) {
                       height={40}
                       quality={50}
                       style={{ objectFit: "cover" }}
+                      unoptimized
                     />
                   ) : (
                     <Image
@@ -227,6 +228,7 @@ export default function Detail({ id }: DetailProps) {
                       className={styles.authorImage}
                       quality={50}
                       style={{ objectFit: "cover" }}
+                      unoptimized
                     />
                   )}
                 </Link>

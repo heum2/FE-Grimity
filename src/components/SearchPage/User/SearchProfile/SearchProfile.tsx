@@ -93,6 +93,7 @@ export default function SearchProfile({
               height={64}
               quality={75}
               className={styles.image}
+              unoptimized
             />
           ) : (
             <Image
@@ -102,6 +103,7 @@ export default function SearchProfile({
               height={64}
               quality={50}
               className={styles.image}
+              unoptimized
             />
           )}
         </Link>

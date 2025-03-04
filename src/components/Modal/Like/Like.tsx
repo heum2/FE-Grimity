@@ -43,6 +43,7 @@ export default function Like() {
                     onClick={() => handleClickUser(like.id)}
                     className={styles.image}
                     alt="프로필 이미지"
+                    unoptimized
                   />
                 ) : (
                   <Image
@@ -53,6 +54,7 @@ export default function Like() {
                     onClick={() => handleClickUser(like.id)}
                     className={styles.image}
                     alt="프로필 이미지"
+                    unoptimized
                   />
                 )}
                 {like.description !== "" ? (

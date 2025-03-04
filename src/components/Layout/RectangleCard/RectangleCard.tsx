@@ -91,6 +91,7 @@ export default function RectangleCard({
                           height={24}
                           quality={50}
                           className={styles.profileImage}
+                          unoptimized
                         />
                       ) : (
                         <Image
@@ -100,6 +101,7 @@ export default function RectangleCard({
                           quality={50}
                           alt="프로필 이미지"
                           className={styles.profileImage}
+                          unoptimized
                         />
                       )}
                       <p className={styles.author}>{author.name}</p>
@@ -124,6 +126,7 @@ export default function RectangleCard({
                         height={24}
                         quality={50}
                         className={styles.profileImage}
+                        unoptimized
                       />
                     ) : (
                       <Image
@@ -133,6 +136,7 @@ export default function RectangleCard({
                         quality={50}
                         alt="프로필 이미지"
                         className={styles.profileImage}
+                        unoptimized
                       />
                     )}
                     <p className={styles.author}>{author.name}</p>
@@ -156,7 +160,14 @@ export default function RectangleCard({
               </div>
             )}
             <Link href={`/feeds/${id}`}>
-              <Image src={thumbnail} alt={title} fill quality={75} className={styles.image} />
+              <Image
+                src={thumbnail}
+                alt={title}
+                fill
+                quality={75}
+                className={styles.image}
+                unoptimized
+              />
             </Link>
           </div>
           <div className={styles.cardData}>
@@ -170,6 +181,7 @@ export default function RectangleCard({
                     height={24}
                     quality={50}
                     className={styles.profileImage}
+                    unoptimized
                   />
                 ) : (
                   <Image
@@ -179,6 +191,7 @@ export default function RectangleCard({
                     alt="프로필 이미지"
                     quality={50}
                     className={styles.profileImage}
+                    unoptimized
                   />
                 )}
                 <p className={styles.author}>{author.name}</p>
