@@ -98,28 +98,37 @@ export default function Ranking() {
           <div className={styles.cardsContainer}>
             {paginatedFeeds
               .slice(pageIndex * itemsPerPage, (pageIndex + 1) * itemsPerPage)
-              .map((feed, idx) => (
-                <div key={feed.id} className={styles.cardWrapper}>
-                  {idx < 3 && (
-                    <div className={styles.rankingIconWrapper}>
-                      <IconComponent
-                        name={idx === 0 ? "ranking1" : idx === 1 ? "ranking2" : "ranking3"}
-                        width={30}
-                        height={30}
-                      />
-                    </div>
-                  )}
-                  <SquareCard
-                    id={feed.id}
-                    title={feed.title}
-                    thumbnail={feed.thumbnail}
-                    author={feed.author}
-                    likeCount={feed.likeCount}
-                    viewCount={feed.viewCount}
-                    isLike={feed.isLike}
-                  />
-                </div>
-              ))}
+              .map((feed, idx) => {
+                const absoluteIdx = pageIndex * itemsPerPage + idx;
+                return (
+                  <div key={feed.id} className={styles.cardWrapper}>
+                    {absoluteIdx < 3 && (
+                      <div className={styles.rankingIconWrapper}>
+                        <IconComponent
+                          name={
+                            absoluteIdx === 0
+                              ? "ranking1"
+                              : absoluteIdx === 1
+                              ? "ranking2"
+                              : "ranking3"
+                          }
+                          width={30}
+                          height={30}
+                        />
+                      </div>
+                    )}
+                    <SquareCard
+                      id={feed.id}
+                      title={feed.title}
+                      thumbnail={feed.thumbnail}
+                      author={feed.author}
+                      likeCount={feed.likeCount}
+                      viewCount={feed.viewCount}
+                      isLike={feed.isLike}
+                    />
+                  </div>
+                );
+              })}
           </div>
           <button
             className={`${styles.navButton} ${styles.right}`}
