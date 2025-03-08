@@ -160,29 +160,32 @@ export default function Upload() {
     });
   };
 
-  const { mutate: uploadFeed } = useMutation<FeedsResponse, AxiosError, FeedsRequest>(postFeeds, {
-    onSuccess: (response: FeedsResponse) => {
-      hasUnsavedChangesRef.current = false;
-      if (!response.id) {
-        showToast("업로드 중 문제가 발생했습니다. 다시 시도해주세요.", "error");
-        return;
-      }
+  const { mutate: uploadFeed, isLoading } = useMutation<FeedsResponse, AxiosError, FeedsRequest>(
+    postFeeds,
+    {
+      onSuccess: (response: FeedsResponse) => {
+        hasUnsavedChangesRef.current = false;
+        if (!response.id) {
+          showToast("업로드 중 문제가 발생했습니다. 다시 시도해주세요.", "error");
+          return;
+        }
 
-      const imageUrl = `https://image.grimity.com/${thumbnailName}`;
-      setModal({
-        isOpen: true,
-        type: "UPLOAD",
-        data: { feedId: response.id, title, image: imageUrl },
-      });
-      router.push(`/feeds/${response.id}`);
-    },
-    onError: (error: AxiosError) => {
-      showToast("업로드 중 오류가 발생했습니다. 다시 시도해주세요.", "error");
-      if (error.response?.status === 400) {
-        showToast("잘못된 요청입니다. 입력값을 확인해주세요.", "error");
-      }
-    },
-  });
+        const imageUrl = `https://image.grimity.com/${thumbnailName}`;
+        setModal({
+          isOpen: true,
+          type: "UPLOAD",
+          data: { feedId: response.id, title, image: imageUrl },
+        });
+        router.push(`/feeds/${response.id}`);
+      },
+      onError: (error: AxiosError) => {
+        showToast("업로드 중 오류가 발생했습니다. 다시 시도해주세요.", "error");
+        if (error.response?.status === 400) {
+          showToast("잘못된 요청입니다. 입력값을 확인해주세요.", "error");
+        }
+      },
+    }
+  );
 
   const getFileExtension = (fileName: string) => {
     const ext = fileName.split(".").pop()?.toLowerCase();
@@ -350,6 +353,8 @@ export default function Upload() {
   };
 
   const handleUpload = async () => {
+    if (isLoading) return;
+
     uploadFeed({
       title,
       cards: images.map((image) => image.name),
@@ -425,8 +430,13 @@ export default function Upload() {
       <div className={styles.container}>
         {!isMobile && (
           <div className={styles.uploadBtnContainer}>
-            <Button size="m" type="filled-primary" disabled={isDisabled} onClick={handleSubmit}>
-              업로드
+            <Button
+              size="m"
+              type="filled-primary"
+              disabled={isDisabled || isLoading}
+              onClick={handleSubmit}
+            >
+              {isLoading ? "업로드 중..." : "업로드"}
             </Button>
           </div>
         )}
