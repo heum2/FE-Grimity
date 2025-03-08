@@ -37,7 +37,7 @@ export default function Login() {
   const [, setModal] = useRecoilState(modalState);
   const { showToast } = useToast();
 
-  const loginMutation = useMutation({
+  const { mutateAsync, isLoading } = useMutation({
     mutationFn: async ({
       provider,
       providerAccessToken,
@@ -73,7 +73,7 @@ export default function Login() {
     window.Kakao.Auth.login({
       success: async (authObj: AuthObj) => {
         try {
-          await loginMutation.mutateAsync({
+          await mutateAsync({
             provider: "KAKAO",
             providerAccessToken: authObj.access_token,
           });
@@ -100,7 +100,7 @@ export default function Login() {
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
-        await loginMutation.mutateAsync({
+        await mutateAsync({
           provider: "GOOGLE",
           providerAccessToken: tokenResponse.access_token,
         });
@@ -130,13 +130,13 @@ export default function Login() {
         <p className={styles.text}>그리미티에 가입 후 나의 그림을 뽐내보세요</p>
       </div>
       <div className={styles.buttonContainer}>
-        <button className={styles.kakaoButton} onClick={handleKaKaoLogin}>
+        <button className={styles.kakaoButton} onClick={handleKaKaoLogin} disabled={isLoading}>
           <IconComponent name="kakao" width={24} height={24} alt="logo" />
-          카카오로 계속하기
+          {isLoading ? "로그인 중..." : "카카오로 계속하기"}
         </button>
-        <button className={styles.googleButton} onClick={() => googleLogin()}>
+        <button className={styles.googleButton} onClick={() => googleLogin()} disabled={isLoading}>
           <IconComponent name="google" width={20} height={20} alt="logo" />
-          구글로 계속하기
+          {isLoading ? "로그인 중..." : "구글로 계속하기"}
         </button>
       </div>
     </div>
