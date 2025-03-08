@@ -65,7 +65,7 @@ export function useUserForDetail({ id, sort, cursor, size }: UserFeedsRequest) {
       refetchOnWindowFocus: false,
       staleTime: 5 * 60 * 1000,
       cacheTime: 10 * 60 * 1000,
-    }
+    },
   );
 }
 
@@ -86,6 +86,6 @@ export function useUserFeeds(params: UserFeedsRequest) {
       refetchOnWindowFocus: false,
       staleTime: 5 * 60 * 1000,
       cacheTime: 10 * 60 * 1000,
-    }
+    },
   );
 }

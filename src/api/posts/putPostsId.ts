@@ -8,7 +8,7 @@ export interface EditPostsRequest {
 
 export async function putEditPosts(
   id: string,
-  { title, content, type }: EditPostsRequest
+  { title, content, type }: EditPostsRequest,
 ): Promise<Response> {
   const response = await axiosInstance.put(`/posts/${id}`, {
     title,

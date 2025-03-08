@@ -631,7 +631,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                   <div className={styles.linkContainer}>
                     {userData.links.map(({ linkName, link }, index) => {
                       const isEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(
-                        link
+                        link,
                       );
 
                       return (

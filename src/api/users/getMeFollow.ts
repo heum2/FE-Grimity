@@ -59,7 +59,7 @@ export function useMyFollower({ size }: MyFollowerRequest) {
       refetchOnWindowFocus: false,
       staleTime: 5 * 60 * 1000,
       cacheTime: 10 * 60 * 1000,
-    }
+    },
   );
 }
 
@@ -109,6 +109,6 @@ export function useMyFollowing({ size }: MyFollowerRequest) {
       refetchOnWindowFocus: false,
       staleTime: 5 * 60 * 1000,
       cacheTime: 10 * 60 * 1000,
-    }
+    },
   );
 }

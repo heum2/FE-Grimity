@@ -180,7 +180,7 @@ export default function Notifications({ onClose }: NotificationsProps) {
     try {
       await putSubscribe({ type: isSubscribed ? "ALL" : type });
       setSubscriptions((prev) =>
-        isSubscribed ? prev.filter((sub) => sub !== type) : [...prev, type]
+        isSubscribed ? prev.filter((sub) => sub !== type) : [...prev, type],
       );
     } catch (error) {
       console.error("Failed to toggle subscription:", error);

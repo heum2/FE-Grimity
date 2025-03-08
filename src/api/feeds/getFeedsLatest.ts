@@ -65,6 +65,6 @@ export function useFeedsLatest({ size }: FeedsLatestRequest) {
       refetchOnWindowFocus: false,
       staleTime: 5 * 60 * 1000,
       cacheTime: 10 * 60 * 1000,
-    }
+    },
   );
 }

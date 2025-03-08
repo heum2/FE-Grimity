@@ -26,7 +26,7 @@ export default function PopularFeed() {
       },
       {
         rootMargin: "100px",
-      }
+      },
     );
 
     if (loadMoreRef.current) {

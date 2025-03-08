@@ -19,7 +19,7 @@ export async function getPopular(): Promise<PopularResponse[]> {
       ...data,
       image: `https://image.grimity.com/${data.image}`,
       thumbnails: data.thumbnails.map(
-        (thumbnail: string) => `https://image.grimity.com/${thumbnail}`
+        (thumbnail: string) => `https://image.grimity.com/${thumbnail}`,
       ),
     }));
 

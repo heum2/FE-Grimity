@@ -291,7 +291,9 @@
 
     .toggle {
       cursor: pointer;
-      transition: transform 0.5s ease, opacity 0.5s ease;
+      transition:
+        transform 0.5s ease,
+        opacity 0.5s ease;
     }
 
     .columnContainer {

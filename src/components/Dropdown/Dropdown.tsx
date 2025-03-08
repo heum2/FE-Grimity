@@ -46,10 +46,10 @@ export default function Dropdown({
             isTopItem
               ? styles.topMenu
               : isMobile || isTablet
-              ? styles.mobileMenu
-              : isSide
-              ? styles.isSideMenu
-              : styles.menu
+                ? styles.mobileMenu
+                : isSide
+                  ? styles.isSideMenu
+                  : styles.menu
           }
         >
           {menuItems.map((item, index) => (

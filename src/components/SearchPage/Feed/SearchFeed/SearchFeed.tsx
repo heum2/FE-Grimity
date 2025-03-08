@@ -46,7 +46,7 @@ export default function SearchFeed() {
       },
       {
         rootMargin: "100px",
-      }
+      },
     );
 
     if (loadMoreRef.current) {
@@ -105,7 +105,7 @@ export default function SearchFeed() {
       ) : (
         <div className={styles.feedContainer}>
           {data.pages.map((page) =>
-            page.feeds.map((feed) => <SearchCard key={feed.id} {...feed} />)
+            page.feeds.map((feed) => <SearchCard key={feed.id} {...feed} />),
           )}
         </div>
       )}

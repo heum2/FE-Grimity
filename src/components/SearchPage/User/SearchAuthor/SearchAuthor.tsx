@@ -106,7 +106,7 @@ export default function SearchAuthor() {
       ) : (
         <div className={styles.feedContainer}>
           {data.pages.map((page) =>
-            page.users.map((user) => <SearchProfile key={user.id} {...user} />)
+            page.users.map((user) => <SearchProfile key={user.id} {...user} />),
           )}
         </div>
       )}

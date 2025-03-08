@@ -60,7 +60,7 @@ export function useGetFeedsComments({ feedId, enabled = true }: FeedsCommentsReq
       refetchOnWindowFocus: false,
       staleTime: 5 * 60 * 1000,
       cacheTime: 10 * 60 * 1000,
-    }
+    },
   );
 }
 
@@ -120,6 +120,6 @@ export function useGetFeedsChildComments({ feedId, parentId }: FeedsChildComment
       refetchOnWindowFocus: false,
       staleTime: 5 * 60 * 1000,
       cacheTime: 10 * 60 * 1000,
-    }
+    },
   );
 }

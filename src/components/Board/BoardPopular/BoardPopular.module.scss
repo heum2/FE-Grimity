@@ -64,7 +64,9 @@
     height: 6px;
     background-color: $gray30;
     border-radius: 50px;
-    transition: transform 0.3s ease, background-color 0.3s ease;
+    transition:
+      transform 0.3s ease,
+      background-color 0.3s ease;
   }
 
   .dot.active {

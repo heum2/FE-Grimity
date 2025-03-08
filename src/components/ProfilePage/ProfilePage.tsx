@@ -35,7 +35,7 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
   const { query } = router;
   const currentPage = Number(query.page) || 1;
   const [activeTab, setActiveTab] = useState<"feeds" | "posts">(
-    (query.tab as "feeds" | "posts") || "feeds"
+    (query.tab as "feeds" | "posts") || "feeds",
   );
   const { pathname } = useRouter();
 
@@ -73,7 +73,7 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
       },
       {
         rootMargin: "100px",
-      }
+      },
     );
 
     if (loadMoreRef.current) {
@@ -104,7 +104,7 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
             query: { ...query, tab: "feeds" },
           },
           undefined,
-          { shallow: true }
+          { shallow: true },
         );
       } else {
         setActiveTab(query.tab);
@@ -122,7 +122,7 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
         query: { ...restQuery, tab },
       },
       undefined,
-      { shallow: true }
+      { shallow: true },
     );
   };
 

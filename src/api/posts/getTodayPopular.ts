@@ -24,7 +24,7 @@ export async function getTodayPopularPosts(): Promise<TodayPopularPostsResponse[
       (post: TodayPopularPostsResponse) => ({
         ...post,
         thumbnail: post.thumbnail ? `https://image.grimity.com/${post.thumbnail}` : null,
-      })
+      }),
     );
 
     return updatedPosts;
@@ -38,6 +38,6 @@ export function useTodayPopularPosts() {
   return useQuery<TodayPopularPostsResponse[]>(
     ["TodayPopularPosts"],
     () => getTodayPopularPosts(),
-    { refetchOnWindowFocus: false, staleTime: 5 * 60 * 1000, cacheTime: 10 * 60 * 1000 }
+    { refetchOnWindowFocus: false, staleTime: 5 * 60 * 1000, cacheTime: 10 * 60 * 1000 },
   );
 }

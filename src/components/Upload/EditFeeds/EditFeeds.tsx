@@ -174,7 +174,7 @@ export default function EditFeeds({ id }: EditFeedsProps) {
               resolve(webpFile);
             },
             "image/webp",
-            0.8
+            0.8,
           );
         };
         img.onerror = (error) => {
@@ -239,7 +239,7 @@ export default function EditFeeds({ id }: EditFeedsProps) {
         .filter((file) => file.type.startsWith("image/"));
 
       const processedFiles = (await Promise.all(filesToUpload.map(processFile))).filter(
-        Boolean
+        Boolean,
       ) as File[];
 
       if (processedFiles.length === 0) return;
@@ -258,7 +258,7 @@ export default function EditFeeds({ id }: EditFeedsProps) {
           method: "PUT",
           body: file,
           headers: { "Content-Type": file.type },
-        })
+        }),
       );
 
       await Promise.all(uploadPromises);

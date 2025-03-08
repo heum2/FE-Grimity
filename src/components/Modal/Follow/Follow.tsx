@@ -95,7 +95,7 @@ export default function Follow({ initialTab }: FollowProps) {
       {
         threshold: 0.5,
         rootMargin: "100px",
-      }
+      },
     );
 
     const currentObserverRef = observerRef.current;

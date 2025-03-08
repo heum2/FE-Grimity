@@ -71,7 +71,7 @@ export function useFollowingNew(params: FollowingFeedsRequest) {
       refetchOnWindowFocus: false,
       staleTime: 5 * 60 * 1000,
       cacheTime: 10 * 60 * 1000,
-    }
+    },
   );
 }
 
@@ -90,6 +90,6 @@ export function useFollowingFeeds(params: FollowingFeedsRequest | null) {
       refetchOnWindowFocus: false,
       staleTime: 5 * 60 * 1000,
       cacheTime: 10 * 60 * 1000,
-    }
+    },
   );
 }

@@ -61,6 +61,6 @@ export function useMySavePost({ size, page }: MySavePostRequest) {
       refetchOnWindowFocus: false,
       staleTime: 5 * 60 * 1000,
       cacheTime: 10 * 60 * 1000,
-    }
+    },
   );
 }

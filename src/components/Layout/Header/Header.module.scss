@@ -112,7 +112,9 @@
     position: absolute;
     height: 2px;
     background-color: $gray80;
-    transition: transform 0.3s ease, width 0.3s ease;
+    transition:
+      transform 0.3s ease,
+      width 0.3s ease;
     bottom: -8px;
   }
 }
@@ -242,7 +244,9 @@
   border-radius: 12px;
   border: 1px solid $gray30;
   background-color: $gray10;
-  transition: transform 0.3s ease, width 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    width 0.3s ease;
 
   .input {
     width: 100%;

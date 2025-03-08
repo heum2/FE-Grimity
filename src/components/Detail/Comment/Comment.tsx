@@ -124,7 +124,7 @@ export default function Comment({
   const handleChildReply = (
     commentId: string,
     parentId: string,
-    writer: { id: string; name: string }
+    writer: { id: string; name: string },
   ) => {
     if (activeChildReplyId === commentId) {
       setActiveChildReplyId(null);
@@ -207,7 +207,7 @@ export default function Comment({
           refetchComments();
           queryClient.invalidateQueries(["getFeedsChildComments", feedId, activeParentReplyId]);
         },
-      }
+      },
     );
   };
 

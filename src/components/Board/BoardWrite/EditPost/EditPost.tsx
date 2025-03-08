@@ -293,7 +293,7 @@ export default function EditPost({ id }: EditPostProps) {
                 },
                 images_upload_handler: async (
                   blobInfo: { filename: () => string; blob: () => Blob },
-                  progress: (progress: number) => void
+                  progress: (progress: number) => void,
                 ): Promise<string> => {
                   try {
                     const file = blobInfo.blob() as File;

@@ -16,7 +16,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
       onFocus,
       isReply,
     },
-    ref
+    ref,
   ) => {
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -87,7 +87,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
         {isError && <span className={styles.errorMessage}>{errorMessage}</span>}
       </div>
     );
-  }
+  },
 );
 
 TextArea.displayName = "TextArea";

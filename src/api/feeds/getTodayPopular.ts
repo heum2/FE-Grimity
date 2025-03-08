@@ -23,7 +23,7 @@ export async function getTodayFeedPopular(): Promise<TodayFeedPopularResponse[]>
       (item: TodayFeedPopularResponse) => ({
         ...item,
         thumbnail: `https://image.grimity.com/${item.thumbnail}`,
-      })
+      }),
     );
 
     return updatedData;

@@ -23,7 +23,7 @@ export default function SavedFeeds() {
           fetchNextPage();
         }
       },
-      { threshold: 1.0 }
+      { threshold: 1.0 },
     );
 
     if (observerRef.current) {
@@ -65,7 +65,7 @@ export default function SavedFeeds() {
                   id={feed.id}
                 />
               </div>
-            ))
+            )),
           )}
         </section>
       )}

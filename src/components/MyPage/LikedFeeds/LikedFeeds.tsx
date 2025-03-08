@@ -23,7 +23,7 @@ export default function LikedFeeds() {
           fetchNextPage();
         }
       },
-      { threshold: 1.0 }
+      { threshold: 1.0 },
     );
 
     if (observerRef.current) {
@@ -66,7 +66,7 @@ export default function LikedFeeds() {
                     id={feed.id}
                   />
                 </div>
-              ))
+              )),
             )}
         </section>
       )}

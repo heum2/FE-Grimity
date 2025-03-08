@@ -4,7 +4,9 @@
   height: fit-content;
   position: relative;
   width: fit-content;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
 
   &.dragging {
     opacity: 0.5;

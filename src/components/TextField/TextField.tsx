@@ -16,7 +16,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
       onFocus,
       isReply,
     },
-    ref
+    ref,
   ) => {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       onChange(event);
@@ -63,7 +63,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
         {isError && <span className={styles.error}>{errorMessage}</span>}
       </div>
     );
-  }
+  },
 );
 
 TextField.displayName = "TextField";

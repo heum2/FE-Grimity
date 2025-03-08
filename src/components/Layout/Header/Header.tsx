@@ -41,13 +41,13 @@ export default function Header() {
   const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
   const isUserPage = router.pathname.startsWith("/users/[id]");
   const isPostPage = ["/board", "/board/write", "/posts/[id]", "/posts/[id]/edit"].includes(
-    router.pathname
+    router.pathname,
   );
   const isNavPage = ["/", "/popular", "/board", "/following", "/board/write"].includes(
-    router.pathname
+    router.pathname,
   );
   const hideBtn = ["/write", "/feeds/[id]/edit", "/board/write", "/posts/[id]/edit"].includes(
-    router.pathname
+    router.pathname,
   );
   useIsMobile();
   const email = "grimity.official@gmail.com";
@@ -125,7 +125,7 @@ export default function Header() {
               Authorization: `Bearer ${refreshToken}`,
               "exclude-access-token": true,
             },
-          }
+          },
         );
       }
     } catch (error) {
@@ -155,7 +155,7 @@ export default function Header() {
     const currentPath = router.pathname;
     const activeItem = navItems.find(
       (item) =>
-        currentPath === item.path || (item.path === "/board" && currentPath.startsWith("/board/"))
+        currentPath === item.path || (item.path === "/board" && currentPath.startsWith("/board/")),
     );
     if (activeItem) {
       setActiveNav(activeItem.name);

@@ -71,7 +71,7 @@ const ReplyInput = memo(
         </Button>
       </div>
     </div>
-  )
+  ),
 );
 
 ReplyInput.displayName = "ReplyInput";
@@ -161,7 +161,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
   const handleChildReply = (
     commentId: string,
     parentId: string,
-    writer?: { id: string; name: string }
+    writer?: { id: string; name: string },
   ) => {
     if (!writer) {
       showToast("삭제된 댓글에는 답글을 달 수 없습니다.", "error");
@@ -235,7 +235,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
           setComment("");
           refetchComments();
         },
-      }
+      },
     );
   };
 
@@ -269,7 +269,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
           setIsReplyToChild(false);
           refetchComments();
         },
-      }
+      },
     );
   };
 

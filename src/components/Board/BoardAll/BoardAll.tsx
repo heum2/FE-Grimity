@@ -60,7 +60,7 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
           page: currentPage,
           keyword: query.keyword as string,
         }
-      : null
+      : null,
   );
 
   useEffect(() => {
@@ -136,7 +136,7 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
             },
           },
           undefined,
-          { shallow: true }
+          { shallow: true },
         );
       } else {
         showToast("두 글자 이상 입력해주세요.", "warning");
@@ -156,7 +156,7 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
         },
       },
       undefined,
-      { shallow: true }
+      { shallow: true },
     );
   };
 

@@ -104,7 +104,7 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
   const urlRegex = /(https?:\/\/[^\s]+)/g;
   const formattedContent = (details?.content ?? "").replace(
     urlRegex,
-    '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
+    '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>',
   );
 
   const handleCommentSubmitSuccess = () => {

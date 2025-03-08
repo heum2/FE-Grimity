@@ -145,7 +145,7 @@ export default function Upload() {
               resolve(webpFile);
             },
             "image/webp",
-            0.8
+            0.8,
           );
         };
         img.onerror = (error) => {
@@ -184,7 +184,7 @@ export default function Upload() {
           showToast("잘못된 요청입니다. 입력값을 확인해주세요.", "error");
         }
       },
-    }
+    },
   );
 
   const getFileExtension = (fileName: string) => {
@@ -223,7 +223,7 @@ export default function Upload() {
         .filter((file) => file.type.startsWith("image/"));
 
       const processedFiles = (await Promise.all(filesToUpload.map(processFile))).filter(
-        Boolean
+        Boolean,
       ) as File[];
 
       if (processedFiles.length === 0) return;
@@ -242,7 +242,7 @@ export default function Upload() {
           method: "PUT",
           body: file,
           headers: { "Content-Type": file.type },
-        })
+        }),
       );
 
       await Promise.all(uploadPromises);

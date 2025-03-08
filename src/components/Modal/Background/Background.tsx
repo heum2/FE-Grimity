@@ -82,7 +82,7 @@ export default function Background({ imageSrc, file }: BackgroundProps) {
           resolve(blob);
         },
         "image/webp",
-        0.9
+        0.9,
       );
     });
   }

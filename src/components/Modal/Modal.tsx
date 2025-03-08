@@ -114,8 +114,8 @@ export default function Modal() {
                 modal.type === "PROFILE-EDIT"
                   ? styles.profileEditModal
                   : modal.type === "FOLLOWER" || modal.type === "FOLLOWING" || modal.type === "LIKE"
-                  ? styles.followModal
-                  : styles.modal
+                    ? styles.followModal
+                    : styles.modal
               }
               onClick={(e) => e.stopPropagation()}
             >

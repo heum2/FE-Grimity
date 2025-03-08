@@ -93,7 +93,7 @@ export default function ProfileEdit() {
     }
 
     const filteredLinks = links.filter(
-      (link) => link.linkName.trim() !== "" || link.link.trim() !== ""
+      (link) => link.linkName.trim() !== "" || link.link.trim() !== "",
     );
 
     const updatedInfo: MyInfoRequest = {

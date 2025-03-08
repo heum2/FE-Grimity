@@ -64,7 +64,7 @@ export default function FollowingPage() {
             fetchNextPage();
           }
         },
-        { threshold: 1.0 }
+        { threshold: 1.0 },
       );
 
       observer.current.observe(lastFeedElement.current);

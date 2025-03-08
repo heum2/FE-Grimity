@@ -25,7 +25,7 @@ export default function NewFeed({ isDetail = false }: NewFeedProps) {
           fetchNextPage();
         }
       },
-      { threshold: 1.0 }
+      { threshold: 1.0 },
     );
 
     const currentObserver = observerRef.current;
@@ -56,7 +56,7 @@ export default function NewFeed({ isDetail = false }: NewFeedProps) {
               viewCount={feed.viewCount}
               isLike={feed.isLike}
             />
-          ))
+          )),
         )}
       </div>
       {hasNextPage && <div ref={observerRef} className={styles.loader} />}
