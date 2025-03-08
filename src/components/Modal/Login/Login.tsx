@@ -63,9 +63,6 @@ export default function Login() {
       localStorage.setItem("access_token", data.accessToken);
       localStorage.setItem("refresh_token", data.refreshToken);
     },
-    onError: () => {
-      showToast("로그인 실패", "error");
-    },
   });
 
   const handleKaKaoLogin = async () => {
@@ -81,7 +78,7 @@ export default function Login() {
             providerAccessToken: authObj.access_token,
           });
         } catch (error: any) {
-          if (error.response?.status === 404) {
+          if (error?.response?.status === 404) {
             setModal({
               isOpen: true,
               type: "NICKNAME",
@@ -89,11 +86,13 @@ export default function Login() {
             });
           } else {
             console.error("카카오 로그인 실패", error);
+            showToast("로그인 실패", "error");
           }
         }
       },
       fail: (err: ErrorResponse) => {
         console.error("카카오 로그인 실패:", err);
+        showToast("로그인에 실패했습니다. 다시 시도해주세요.", "error");
       },
     });
   };
@@ -106,23 +105,21 @@ export default function Login() {
           providerAccessToken: tokenResponse.access_token,
         });
       } catch (error) {
-        if (error instanceof AxiosError) {
-          if (error.response?.status === 404) {
-            setModal({
-              isOpen: true,
-              type: "NICKNAME",
-              data: { accessToken: tokenResponse.access_token, provider: "GOOGLE" },
-            });
-          } else {
-            console.error("구글 로그인 실패", error);
-          }
+        if (error instanceof AxiosError && error.response?.status === 404) {
+          setModal({
+            isOpen: true,
+            type: "NICKNAME",
+            data: { accessToken: tokenResponse.access_token, provider: "GOOGLE" },
+          });
         } else {
           console.error("구글 로그인 실패", error);
+          showToast("로그인에 실패했습니다. 다시 시도해주세요.", "error");
         }
       }
     },
     onError: () => {
       console.error("구글 로그인 실패");
+      showToast("로그인에 실패했습니다. 다시 시도해주세요.", "error");
     },
   });
 

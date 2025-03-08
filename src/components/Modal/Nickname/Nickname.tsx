@@ -15,8 +15,7 @@ export default function Nickname() {
   const [agree, setAgree] = useState(false);
   const [isError, setIsError] = useState(false);
   const [, setAuth] = useRecoilState(authState);
-  const [, setModal] = useRecoilState(modalState);
-  const modal = useRecoilState(modalState);
+  const [modal, setModal] = useRecoilState(modalState);
   const { showToast } = useToast();
 
   const registerMutation = useMutation({
@@ -25,17 +24,22 @@ export default function Nickname() {
       return response.data;
     },
     onSuccess: (data) => {
-      setModal({ isOpen: true, type: "JOIN", data: null });
       setAuth({
         access_token: data.accessToken,
         isLoggedIn: true,
         user_id: data.id,
       });
+
+      localStorage.setItem("access_token", data.accessToken);
+      localStorage.setItem("refresh_token", data.refreshToken || "");
+
+      setModal({ isOpen: true, type: "JOIN", data: null });
     },
     onError: (error: any) => {
       if (error?.response?.status === 409) {
         setIsError(true);
       } else {
+        console.error("Registration error:", error);
         showToast("오류가 발생했습니다. 다시 시도해주세요.", "error");
       }
     },
@@ -47,7 +51,18 @@ export default function Nickname() {
       return;
     }
 
-    const { accessToken, provider } = modal[0].data;
+    if (!agree) {
+      showToast("서비스 이용약관 및 개인정보취급방침에 동의해주세요.", "error");
+      return;
+    }
+
+    if (!modal.data || !modal.data.accessToken || !modal.data.provider) {
+      showToast("오류가 발생했습니다. 다시 시도해주세요.", "error");
+      return;
+    }
+
+    const { accessToken, provider } = modal.data;
+
     registerMutation.mutate({
       provider: provider,
       providerAccessToken: accessToken,
@@ -68,7 +83,10 @@ export default function Nickname() {
             errorMessage="중복된 닉네임입니다."
             maxLength={12}
             value={nickname}
-            onChange={(e) => setNickname(e.target.value.trimStart())}
+            onChange={(e) => {
+              setIsError(false);
+              setNickname(e.target.value.trimStart());
+            }}
             isError={isError}
           />
           <label className={styles.label}>
