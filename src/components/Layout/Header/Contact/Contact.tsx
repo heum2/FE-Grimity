@@ -37,7 +37,7 @@ export default function Contact({ onClose }: ContactProps) {
           <div className={styles.titleContainer}>
             <h2 className={styles.title}>문의하기</h2>
             <button className={styles.closeButton} onClick={onClose}>
-              <IconComponent name="notiClose" width={24} height={24} isBtn padding={8} />
+              <IconComponent name="notiClose" size={24} isBtn padding={8} />
             </button>
           </div>
         </section>
