@@ -48,7 +48,7 @@ export default function PopularFeed() {
         <Title>인기 그림</Title>
         <div className={styles.sortBtnContainer}>
           <button className={styles.sortBtn}>
-            좋아요 순<IconComponent name="arrowDown" width={20} height={20} />
+            좋아요 순<IconComponent name="arrowDown" size={20} />
           </button>
         </div>
       </div>
