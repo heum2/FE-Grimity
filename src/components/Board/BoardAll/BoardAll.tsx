@@ -198,9 +198,9 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
                 <button className={styles.dropdownBtn}>
                   {sortOptions.find((option) => option.value === searchBy)?.label || "제목+내용"}
                   {isDropdownOpen ? (
-                    <IconComponent name="arrowUp" width={20} height={20} isBtn />
+                    <IconComponent name="arrowUp" size={20} isBtn />
                   ) : (
-                    <IconComponent name="arrowDown" width={20} height={20} isBtn />
+                    <IconComponent name="arrowDown" size={20} isBtn />
                   )}
                 </button>
               }
@@ -215,14 +215,7 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
               onKeyDown={handleSearchKeyDown}
             />
             <div onClick={handleSearch}>
-              <IconComponent
-                name="searchGray"
-                width={24}
-                height={24}
-                padding={8}
-                isBtn
-                alt="검색"
-              />
+              <IconComponent name="searchGray" size={24} padding={8} isBtn />
             </div>
           </div>
         </div>
@@ -237,14 +230,14 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
             >
               전체
             </button>
-            <img src="/icon/dot.svg" width={3} height={3} alt="" loading="lazy" />
+            <IconComponent name="dot" size={3} />
             <button
               className={`${styles.type} ${currentType === "question" ? styles.active : ""}`}
               onClick={() => handleTabChange("question")}
             >
               질문
             </button>
-            <img src="/icon/dot.svg" width={3} height={3} alt="" loading="lazy" />
+            <IconComponent name="dot" size={3} />
             <button
               className={`${styles.type} ${currentType === "feedback" ? styles.active : ""}`}
               onClick={() => handleTabChange("feedback")}
@@ -267,9 +260,9 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
                       {sortOptions.find((option) => option.value === searchBy)?.label ||
                         "제목+내용"}
                       {isDropdownOpen ? (
-                        <IconComponent name="arrowUp" width={20} height={20} isBtn />
+                        <IconComponent name="arrowUp" size={20} isBtn />
                       ) : (
-                        <IconComponent name="arrowDown" width={20} height={20} isBtn />
+                        <IconComponent name="arrowDown" size={20} isBtn />
                       )}
                     </button>
                   }
@@ -284,14 +277,7 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
                   onKeyDown={handleSearchKeyDown}
                 />
                 <div onClick={handleSearch}>
-                  <IconComponent
-                    name="searchGray"
-                    width={24}
-                    height={24}
-                    padding={8}
-                    isBtn
-                    alt="검색"
-                  />
+                  <IconComponent name="searchGray" size={20} padding={8} isBtn />
                 </div>
               </div>
             </div>
@@ -310,7 +296,7 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
             <Button
               size="l"
               type="outlined-assistive"
-              leftIcon={<IconComponent name="writePost" width={20} height={20} />}
+              leftIcon={<IconComponent name="writePost" size={20} />}
             >
               글쓰기
             </Button>
@@ -323,7 +309,7 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
         >
-          <img src="/icon/pagination-left.svg" width={24} height={24} alt="" loading="lazy" />
+          <IconComponent name="paginationLeft" size={24} />
         </button>
         {getPageRange(currentPage, totalPages).map((pageNum) => (
           <button
@@ -339,7 +325,7 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages || posts.length === 0}
         >
-          <img src="/icon/pagination-right.svg" width={24} height={24} alt="" loading="lazy" />
+          <IconComponent name="paginationRight" size={24} />
         </button>
       </section>
     </div>

@@ -302,25 +302,16 @@ export default function Header() {
                     onKeyDown={handleSearchKeyDown}
                   />
                   <div onClick={handleSearchBarOpen}>
-                    <IconComponent
-                      name="searchGray"
-                      width={24}
-                      height={24}
-                      padding={8}
-                      isBtn
-                      alt="검색"
-                    />
+                    <IconComponent name="searchGray" size={24} padding={8} isBtn />
                   </div>
                 </div>
               ) : (
                 <div onClick={handleSearchBarOpen}>
                   <IconComponent
                     name={isUserPage ? "searchWhite" : "search"}
-                    width={24}
-                    height={24}
+                    size={24}
                     padding={8}
                     isBtn
-                    alt="검색"
                   />
                 </div>
               )
@@ -328,18 +319,16 @@ export default function Header() {
               <Link href="/search">
                 <IconComponent
                   name={isUserPage ? "searchWhite" : "search"}
-                  width={24}
-                  height={24}
+                  size={24}
                   padding={8}
                   isBtn
-                  alt="검색"
                 />
               </Link>
             )}
             {isLoggedIn && myData && (
               <div className={styles.notificationWrapper} ref={notificationRef}>
                 <div className={styles.notification} onClick={toggleNotifications}>
-                  <IconComponent name={name} width={40} height={40} alt="알림" isBtn />
+                  <IconComponent name={name} size={40} isBtn />
                 </div>
                 {showNotifications && <Notifications onClose={() => setShowNotifications(false)} />}
               </div>
@@ -482,8 +471,7 @@ export default function Header() {
                         <IconComponent
                           name={isUserPage ? "contactKebabWhite" : "contactKebab"}
                           padding={8}
-                          width={24}
-                          height={24}
+                          size={24}
                           isBtn
                         />
                       }
@@ -513,8 +501,7 @@ export default function Header() {
               <div onClick={toggleMenu}>
                 <IconComponent
                   name={isUserPage ? "hamburgerWhite" : "hamburger"}
-                  width={24}
-                  height={24}
+                  size={24}
                   padding={8}
                   isBtn
                 />
@@ -533,7 +520,7 @@ export default function Header() {
                         }}
                         className={styles.closeBtn}
                       >
-                        <IconComponent name="x" width={24} height={24} padding={8} isBtn />
+                        <IconComponent name="x" size={24} padding={8} isBtn />
                       </div>
                       <nav className={styles.nav}>
                         {navItems.map((item, index) => (
@@ -602,23 +589,19 @@ export default function Header() {
                               toggleSubmenu();
                             }}
                           >
-                            <IconComponent
-                              name={isSubMenuOpen ? "menuUp" : "menuDown"}
-                              width={20}
-                              height={20}
-                            />
+                            <IconComponent name={isSubMenuOpen ? "menuUp" : "menuDown"} size={20} />
                           </div>
                         </div>
                         {isSubMenuOpen && (
                           <div className={styles.btns}>
                             <Link href="/mypage?tab=liked-feeds">
                               <button className={styles.itemBtn}>
-                                <IconComponent name="menuSave" width={24} height={24} isBtn />
+                                <IconComponent name="menuSave" size={24} isBtn />
                                 저장한 컨텐츠
                               </button>
                             </Link>
                             <button className={styles.itemBtn} onClick={handleLogout}>
-                              <IconComponent name="menuLogout" width={24} height={24} isBtn />
+                              <IconComponent name="menuLogout" size={24} isBtn />
                               로그아웃
                             </button>
                           </div>
@@ -629,15 +612,7 @@ export default function Header() {
                               <Button
                                 size="l"
                                 type="filled-primary"
-                                leftIcon={
-                                  <img
-                                    src="/icon/menu-upload.svg"
-                                    width={20}
-                                    height={20}
-                                    alt=""
-                                    loading="lazy"
-                                  />
-                                }
+                                leftIcon={<IconComponent name="menuUpload" size={20} />}
                               >
                                 글 쓰기
                               </Button>
@@ -647,15 +622,7 @@ export default function Header() {
                               <Button
                                 size="l"
                                 type="filled-primary"
-                                leftIcon={
-                                  <img
-                                    src="/icon/menu-upload.svg"
-                                    width={20}
-                                    height={20}
-                                    alt=""
-                                    loading="lazy"
-                                  />
-                                }
+                                leftIcon={<IconComponent name="menuUpload" size={20} />}
                               >
                                 그림 업로드
                               </Button>

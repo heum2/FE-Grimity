@@ -91,12 +91,7 @@ export default function Nickname() {
           />
           <label className={styles.label}>
             <div className={styles.checkbox} onClick={() => setAgree(!agree)}>
-              <IconComponent
-                name={agree ? "checkedbox" : "checkbox"}
-                width={24}
-                height={24}
-                isBtn
-              />
+              <IconComponent name={agree ? "checkedbox" : "checkbox"} size={24} isBtn />
             </div>
             <span className={styles.text}>
               <a

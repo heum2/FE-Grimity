@@ -171,7 +171,7 @@ export default function Background({ imageSrc, file }: BackgroundProps) {
       </div>
       <div className={styles.controls}>
         <div className={styles.zoomContainer}>
-          <IconComponent name="zoomOut" width={18} height={18} />
+          <IconComponent name="zoomOut" size={18} />
           <input
             type="range"
             className={styles.rangeInput}
@@ -181,7 +181,7 @@ export default function Background({ imageSrc, file }: BackgroundProps) {
             value={scale}
             onChange={(e) => setScale(Number(e.target.value))}
           />
-          <IconComponent name="zoomIn" width={18} height={18} />
+          <IconComponent name="zoomIn" size={18} />
         </div>
         <Button type="filled-primary" size="l" onClick={handleSaveCrop}>
           변경 내용 저장

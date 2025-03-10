@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import Loader from "@/components/Layout/Loader/Loader";
 import Button from "@/components/Button/Button";
 import Link from "next/link";
+import IconComponent from "@/components/Asset/Icon";
 
 export default function SavedPosts() {
   const router = useRouter();
@@ -77,13 +78,7 @@ export default function SavedPosts() {
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
           >
-            <img
-              src="/icon/pagination-left.svg"
-              width={24}
-              height={24}
-              alt="Previous"
-              loading="lazy"
-            />
+            <IconComponent name="paginationLeft" size={24} />
           </button>
           {getPageRange(currentPage, totalPages).map((pageNum) => (
             <button
@@ -99,13 +94,7 @@ export default function SavedPosts() {
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
           >
-            <img
-              src="/icon/pagination-right.svg"
-              width={24}
-              height={24}
-              alt="Next"
-              loading="lazy"
-            />
+            <IconComponent name="paginationRight" size={24} />
           </button>
         </section>
       )}

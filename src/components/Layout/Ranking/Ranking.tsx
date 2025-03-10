@@ -57,8 +57,7 @@ export default function Ranking() {
                     <div className={styles.rankingIconWrapper}>
                       <IconComponent
                         name={idx === 0 ? "ranking1" : idx === 1 ? "ranking2" : "ranking3"}
-                        width={30}
-                        height={30}
+                        size={30}
                       />
                     </div>
                   )}
@@ -109,11 +108,10 @@ export default function Ranking() {
                             absoluteIdx === 0
                               ? "ranking1"
                               : absoluteIdx === 1
-                                ? "ranking2"
-                                : "ranking3"
+                              ? "ranking2"
+                              : "ranking3"
                           }
-                          width={30}
-                          height={30}
+                          size={30}
                         />
                       </div>
                     )}

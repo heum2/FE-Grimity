@@ -350,17 +350,9 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
                         handleLikeClick(reply.id, reply.isLike);
                       }}
                     >
-                      <img
-                        src={
-                          reply.isLike
-                            ? "/icon/board-like-count-on.svg"
-                            : "/icon/board-like-count.svg"
-                        }
-                        width={24}
-                        height={24}
-                        alt="좋아요"
-                        className={styles.likeIcon}
-                        loading="lazy"
+                      <IconComponent
+                        name={reply.isLike ? "boardLikeCountOn" : "boardLikeCountOff"}
+                        size={24}
                       />
                       {reply.likeCount}
                     </div>
@@ -381,9 +373,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
                   <div className={styles.replyBtnDropdown}>
                     {reply.writer.id === user_id ? (
                       <Dropdown
-                        trigger={
-                          <IconComponent name="kebab" padding={8} width={24} height={24} isBtn />
-                        }
+                        trigger={<IconComponent name="kebab" padding={8} size={24} isBtn />}
                         menuItems={[
                           {
                             label: "삭제하기",
@@ -394,9 +384,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
                       />
                     ) : (
                       <Dropdown
-                        trigger={
-                          <IconComponent name="kebab" padding={8} width={24} height={24} isBtn />
-                        }
+                        trigger={<IconComponent name="kebab" padding={8} size={24} isBtn />}
                         menuItems={[
                           {
                             label: "신고하기",
@@ -469,17 +457,9 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
                           handleLikeClick(comment.id, comment.isLike);
                         }}
                       >
-                        <img
-                          src={
-                            comment.isLike
-                              ? "/icon/board-like-count-on.svg"
-                              : "/icon/board-like-count.svg"
-                          }
-                          width={24}
-                          height={24}
-                          alt="좋아요"
-                          className={styles.likeIcon}
-                          loading="lazy"
+                        <IconComponent
+                          name={comment.isLike ? "boardLikeCount" : "boardLikeCountOn"}
+                          size={24}
                         />
                         {comment.likeCount}
                       </div>
@@ -504,9 +484,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
                 <div className={styles.replyBtnDropdown}>
                   {comment.writer.id === user_id ? (
                     <Dropdown
-                      trigger={
-                        <IconComponent name="kebab" padding={8} width={24} height={24} isBtn />
-                      }
+                      trigger={<IconComponent name="kebab" padding={8} size={24} isBtn />}
                       menuItems={[
                         {
                           label: "삭제하기",
@@ -517,9 +495,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
                     />
                   ) : (
                     <Dropdown
-                      trigger={
-                        <IconComponent name="kebab" padding={8} width={24} height={24} isBtn />
-                      }
+                      trigger={<IconComponent name="kebab" padding={8} size={24} isBtn />}
                       menuItems={[
                         {
                           label: "신고하기",

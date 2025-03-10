@@ -42,12 +42,7 @@ export default function SearchCard({
       <div className={styles.imageContainer}>
         {isLoggedIn && (
           <div className={styles.likeBtn} onClick={handleLikeClick}>
-            <IconComponent
-              name={isLiked ? "cardLikeOn" : "cardLikeOff"}
-              isBtn
-              width={35}
-              height={35}
-            />
+            <IconComponent name={isLiked ? "cardLikeOn" : "cardLikeOff"} isBtn size={35} />
           </div>
         )}
         <Link href={`/feeds/${id}`}>
@@ -75,18 +70,18 @@ export default function SearchCard({
           <Link href={`/users/${author?.id}`}>
             <p className={styles.author}>{author?.name}</p>
           </Link>
-          <img src="/icon/dot.svg" width={3} height={3} alt="" loading="lazy" />
+          <IconComponent name="dot" size={3} />
           <div className={styles.countContainer}>
             <div className={styles.likeContainer}>
-              <IconComponent name="likeCount" width={16} height={16} />
+              <IconComponent name="likeCount" size={16} />
               <p className={styles.count}>{formatCurrency(currentLikeCount)}</p>
             </div>
             <div className={styles.likeContainer}>
-              <IconComponent name="commentCount" width={16} height={16} />
+              <IconComponent name="commentCount" size={16} />
               <p className={styles.count}>{formatCurrency(commentCount)}</p>
             </div>
             <div className={styles.likeContainer}>
-              <IconComponent name="viewCount" width={16} height={16} />
+              <IconComponent name="viewCount" size={16} />
               <p className={styles.count}>{formatCurrency(viewCount)}</p>
             </div>
           </div>

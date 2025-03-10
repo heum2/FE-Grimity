@@ -5,6 +5,7 @@ import { useState } from "react";
 import { isMobileState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useRecoilValue } from "recoil";
+import IconComponent from "@/components/Asset/Icon";
 
 export default function DraggableImage({
   image,
@@ -64,13 +65,7 @@ export default function DraggableImage({
               {...provided.dragHandleProps}
             />
             <div className={styles.removeImage} onClick={() => removeImage(index)}>
-              <img
-                src="/icon/upload-delete-image.svg"
-                width={40}
-                height={40}
-                alt="사진 제거"
-                loading="lazy"
-              />
+              <IconComponent name="uploadDeleteImage" size={40} />
             </div>
             {!isMobile && <p className={styles.fileName}>{name}</p>}
           </div>

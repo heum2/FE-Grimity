@@ -167,7 +167,7 @@ export default function RecommendCard({
             <Button
               size="m"
               type="filled-primary"
-              leftIcon={<IconComponent name="addFollow" width={16} height={16} />}
+              leftIcon={<IconComponent name="addFollow" size={16} />}
               onClick={handleFollowClick}
             >
               팔로우

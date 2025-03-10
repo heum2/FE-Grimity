@@ -165,7 +165,7 @@ export default function ProfileEdit() {
                   />
                 </div>
                 <div onClick={() => handleRemoveLink(index)} className={styles.removeLinkButton}>
-                  <IconComponent name="deleteLink" width={24} height={24} alt="링크 삭제" isBtn />
+                  <IconComponent name="deleteLink" size={24} isBtn />
                 </div>
               </div>
             ))}
@@ -174,7 +174,7 @@ export default function ProfileEdit() {
                 <Button
                   type="outlined-assistive"
                   size="m"
-                  leftIcon={<IconComponent name="addLink" width={16} height={16} isBtn />}
+                  leftIcon={<IconComponent name="addLink" size={16} isBtn />}
                   onClick={handleAddLink}
                 >
                   링크 추가

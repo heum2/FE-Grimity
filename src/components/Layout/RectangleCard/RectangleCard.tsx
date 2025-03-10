@@ -47,12 +47,7 @@ export default function RectangleCard({
           <div className={styles.imageContainer}>
             {isLoggedIn && (
               <div className={styles.likeBtn} onClick={handleLikeClick}>
-                <IconComponent
-                  name={isLiked ? "cardLikeOn" : "cardLikeOff"}
-                  isBtn
-                  width={24}
-                  height={24}
-                />
+                <IconComponent name={isLiked ? "cardLikeOn" : "cardLikeOff"} isBtn size={24} />
               </div>
             )}
             <Link href={`/feeds/${id}`}>
@@ -68,14 +63,14 @@ export default function RectangleCard({
               <div className={styles.profileContainer}>
                 <div className={styles.informationContainer}>
                   <p className={styles.createdAt}>{timeAgo(createdAt)}</p>
-                  <img src="/icon/card-dot.svg" width={2} height={2} alt="" loading="lazy" />
+                  <IconComponent name="cardDot" size={2} />
                   <div className={styles.countContainer}>
                     <div className={styles.likeContainer}>
-                      <IconComponent name="likeCount" width={16} height={16} />
+                      <IconComponent name="likeCount" size={16} />
                       <p className={styles.count}>{formatCurrency(likeCount)}</p>
                     </div>
                     <div className={styles.likeContainer}>
-                      <IconComponent name="commentCount" width={16} height={16} />
+                      <IconComponent name="commentCount" size={16} />
                       <p className={styles.count}>{formatCurrency(commentCount)}</p>
                     </div>
                   </div>
@@ -151,12 +146,7 @@ export default function RectangleCard({
           <div className={styles.imageContainer}>
             {isLoggedIn && (
               <div className={styles.likeBtn} onClick={handleLikeClick}>
-                <IconComponent
-                  name={isLiked ? "cardLikeOn" : "cardLikeOff"}
-                  isBtn
-                  width={24}
-                  height={24}
-                />
+                <IconComponent name={isLiked ? "cardLikeOn" : "cardLikeOff"} isBtn size={24} />
               </div>
             )}
             <Link href={`/feeds/${id}`}>

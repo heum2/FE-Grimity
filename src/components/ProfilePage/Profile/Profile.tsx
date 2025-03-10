@@ -339,12 +339,12 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                   <label htmlFor="edit-cover">
                     {isMobile ? (
                       <div className={styles.coverEditBtn}>
-                        <IconComponent name="editCover" width={14} height={14} isBtn />
+                        <IconComponent name="editCover" size={14} isBtn />
                         수정
                       </div>
                     ) : (
                       <div className={styles.coverEditBtn}>
-                        <IconComponent name="editCover" width={20} height={20} isBtn />
+                        <IconComponent name="editCover" size={20} isBtn />
                         커버 수정
                       </div>
                     )}
@@ -359,12 +359,12 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                   <div onClick={handleDeleteImage}>
                     {isMobile ? (
                       <div className={styles.coverEditBtn}>
-                        <IconComponent name="deleteCover" width={14} height={14} isBtn />
+                        <IconComponent name="deleteCover" size={14} isBtn />
                         삭제
                       </div>
                     ) : (
                       <div className={styles.coverEditBtn}>
-                        <IconComponent name="deleteCover" width={20} height={20} isBtn />
+                        <IconComponent name="deleteCover" size={20} isBtn />
                         커버 삭제
                       </div>
                     )}
@@ -378,13 +378,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
               {userData.id === user_id && (
                 <>
                   <label htmlFor="upload-cover" className={styles.backgroundAddMessage}>
-                    <img
-                      src="/icon/add-cover.svg"
-                      width={20}
-                      height={20}
-                      alt="커버 추가하기"
-                      loading="lazy"
-                    />
+                    <IconComponent name="addCover" size={20} />
                     커버 추가하기
                   </label>
                   <input
@@ -421,15 +415,8 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                   )}
                   {userData.id === user_id && (
                     <>
-                      <label htmlFor="upload-image">
-                        <img
-                          src="/icon/edit-profile-image.svg"
-                          width={40}
-                          height={40}
-                          loading="lazy"
-                          alt="프로필 이미지 수정"
-                          className={styles.addProfileImage}
-                        />
+                      <label htmlFor="upload-image" className={styles.addProfileImage}>
+                        <IconComponent name="editProfileImage" size={40} />
                       </label>
                       <input
                         id="upload-image"
@@ -439,7 +426,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                         onChange={handleFileChange}
                       />
                       <div className={styles.deleteImageBtn} onClick={handleDeleteProfileImage}>
-                        <IconComponent name="deleteProfile" width={40} height={40} isBtn />
+                        <IconComponent name="deleteProfile" size={40} isBtn />
                       </div>
                     </>
                   )}
@@ -458,14 +445,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                   {userData.id === user_id && (
                     <>
                       <label htmlFor="upload-image">
-                        <img
-                          src="/icon/add-profile-image.svg"
-                          width={40}
-                          height={40}
-                          loading="lazy"
-                          alt="프로필 이미지 추가"
-                          className={styles.addProfileImage}
-                        />
+                        <IconComponent name="addProfileImage" size={40} />
                       </label>
                       <input
                         id="upload-image"
@@ -529,13 +509,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                                 isSide
                                 trigger={
                                   <div className={styles.menuBtn}>
-                                    <img
-                                      src="/icon/meatball.svg"
-                                      width={20}
-                                      height={20}
-                                      alt="메뉴 버튼 "
-                                      loading="lazy"
-                                    />
+                                    <IconComponent name="meatball" size={20} />
                                   </div>
                                 }
                                 menuItems={[
@@ -564,13 +538,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                                 isTopItem
                                 trigger={
                                   <div className={styles.menuBtn}>
-                                    <img
-                                      src="/icon/meatball.svg"
-                                      width={20}
-                                      height={20}
-                                      alt="메뉴 버튼 "
-                                      loading="lazy"
-                                    />
+                                    <IconComponent name="meatball" size={20} />
                                   </div>
                                 }
                                 menuItems={[
@@ -595,13 +563,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                                 isTopItem
                                 trigger={
                                   <div className={styles.menuBtn}>
-                                    <img
-                                      src="/icon/meatball.svg"
-                                      width={20}
-                                      height={20}
-                                      alt="메뉴 버튼 "
-                                      loading="lazy"
-                                    />
+                                    <IconComponent name="meatball" size={20} />
                                   </div>
                                 }
                                 menuItems={[
@@ -636,7 +598,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
 
                       return (
                         <div key={index} className={styles.linkWrapper}>
-                          <IconComponent name="link" width={20} height={20} />
+                          <IconComponent name="link" size={20} />
                           <a
                             href={isEmail ? `mailto:${link}` : link}
                             className={styles.link}
@@ -666,13 +628,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                         isSide
                         trigger={
                           <div className={styles.menuBtn}>
-                            <img
-                              src="/icon/meatball.svg"
-                              width={20}
-                              height={20}
-                              alt="메뉴 버튼 "
-                              loading="lazy"
-                            />
+                            <IconComponent name="meatball" size={16} />
                           </div>
                         }
                         menuItems={[
@@ -697,13 +653,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                         isSide
                         trigger={
                           <div className={styles.menuBtn}>
-                            <img
-                              src="/icon/meatball.svg"
-                              width={20}
-                              height={20}
-                              alt="메뉴 버튼 "
-                              loading="lazy"
-                            />
+                            <IconComponent name="meatball" size={16} />
                           </div>
                         }
                         menuItems={[
@@ -727,13 +677,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                       <Dropdown
                         trigger={
                           <div className={styles.menuBtn}>
-                            <img
-                              src="/icon/meatball.svg"
-                              width={20}
-                              height={20}
-                              alt="메뉴 버튼 "
-                              loading="lazy"
-                            />
+                            <IconComponent name="meatball" size={16} />
                           </div>
                         }
                         menuItems={[

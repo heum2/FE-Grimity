@@ -246,9 +246,7 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
                   (user_id === details.author.id ? (
                     <div className={styles.dropdown}>
                       <Dropdown
-                        trigger={
-                          <IconComponent name="meatball" padding={8} width={24} height={24} isBtn />
-                        }
+                        trigger={<IconComponent name="meatball" padding={8} size={24} isBtn />}
                         menuItems={[
                           {
                             label: "수정하기",
@@ -265,9 +263,7 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
                   ) : (
                     <div className={styles.dropdown}>
                       <Dropdown
-                        trigger={
-                          <IconComponent name="meatball" padding={8} width={24} height={24} isBtn />
-                        }
+                        trigger={<IconComponent name="meatball" padding={8} size={24} isBtn />}
                         menuItems={[
                           {
                             label: "신고하기",
@@ -353,31 +349,17 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
               )}
               {details.isAI && (
                 <div className={styles.aiBtn}>
-                  <img src="/icon/ai-message.svg" width={20} height={20} alt="" loading="lazy" />
+                  <IconComponent name="aiMessage" size={20} />
                   해당 컨텐츠는 AI로 생성되었어요
                 </div>
               )}
               <div className={styles.stats}>
                 <div className={styles.stat}>
-                  <img
-                    src="/icon/like-count.svg"
-                    width={16}
-                    height={0}
-                    alt="좋아요 수"
-                    className={styles.statIcon}
-                    loading="lazy"
-                  />
+                  <IconComponent name="likeCount" size={16} />
                   {currentLikeCount}
                 </div>
                 <div className={styles.stat}>
-                  <img
-                    src="/icon/view-count.svg"
-                    width={16}
-                    height={0}
-                    alt="조회수"
-                    className={styles.statIcon}
-                    loading="lazy"
-                  />
+                  <IconComponent name="viewCount" size={16} />
                   {details.viewCount}
                 </div>
               </div>
@@ -399,39 +381,21 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
                   size="l"
                   type="outlined-assistive"
                   leftIcon={
-                    <img
-                      src={isLiked ? "/icon/detail-like-on.svg" : "/icon/detail-like-off.svg"}
-                      width={20}
-                      height={20}
-                      alt="좋아요"
-                      loading="lazy"
-                    />
+                    <IconComponent name={isLiked ? "detailLikeOn" : "detailLikeOff"} size={20} />
                   }
                 >
                   {currentLikeCount}
                 </Button>
               </div>
               <div className={styles.saveBtn} onClick={handleSaveClick}>
-                <img
-                  src={isSaved ? "/icon/detail-save-on.svg" : "/icon/detail-save-off.svg"}
-                  width={20}
-                  height={20}
-                  alt="저장"
-                  loading="lazy"
-                />
+                <IconComponent name={isSaved ? "detailSaveOn" : "detailSaveOff"} size={20} />
               </div>
               {user_id === details.author.id || !isLoggedIn ? (
                 <div className={styles.dropdown}>
                   <Dropdown
                     trigger={
                       <div className={styles.menuBtn}>
-                        <img
-                          src="/icon/meatball.svg"
-                          width={20}
-                          height={20}
-                          alt="메뉴 버튼 "
-                          loading="lazy"
-                        />
+                        <IconComponent name="meatball" size={20} />
                       </div>
                     }
                     menuItems={[
@@ -447,13 +411,7 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
                   <Dropdown
                     trigger={
                       <div className={styles.menuBtn}>
-                        <img
-                          src="/icon/meatball.svg"
-                          width={20}
-                          height={20}
-                          alt="메뉴 버튼 "
-                          loading="lazy"
-                        />
+                        <IconComponent name="meatball" size={20} />
                       </div>
                     }
                     menuItems={[
@@ -481,11 +439,11 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
             {commentCount !== 0 && (
               <div onClick={handleCommentShowMore} className={styles.commentShowMore}>
                 {isCommentExpanded ? "댓글 숨기기" : `댓글 ${commentCount}개 보기`}
-                {isCommentExpanded ? (
-                  <IconComponent name="commentUp" width={16} height={16} isBtn />
-                ) : (
-                  <IconComponent name="commentDown" width={16} height={16} isBtn />
-                )}
+                <IconComponent
+                  name={isCommentExpanded ? "commentUp" : "commentDown"}
+                  size={16}
+                  isBtn
+                />
               </div>
             )}
             {isCommentExpanded && (

@@ -131,11 +131,11 @@ export default function Login() {
       </div>
       <div className={styles.buttonContainer}>
         <button className={styles.kakaoButton} onClick={handleKaKaoLogin} disabled={isLoading}>
-          <IconComponent name="kakao" width={24} height={24} alt="logo" />
+          <IconComponent name="kakao" size={24} />
           {isLoading ? "로그인 중..." : "카카오로 계속하기"}
         </button>
         <button className={styles.googleButton} onClick={() => googleLogin()} disabled={isLoading}>
-          <IconComponent name="google" width={20} height={20} alt="logo" />
+          <IconComponent name="google" size={20} />
           {isLoading ? "로그인 중..." : "구글로 계속하기"}
         </button>
       </div>

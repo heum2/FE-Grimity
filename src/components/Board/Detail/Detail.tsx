@@ -188,9 +188,7 @@ export default function PostDetail({ id }: PostDetailProps) {
                   (user_id === posts.author.id ? (
                     <div className={styles.dropdown}>
                       <Dropdown
-                        trigger={
-                          <IconComponent name="meatball" padding={8} width={24} height={24} isBtn />
-                        }
+                        trigger={<IconComponent name="meatball" padding={8} size={24} isBtn />}
                         menuItems={[
                           {
                             label: "수정하기",
@@ -207,9 +205,7 @@ export default function PostDetail({ id }: PostDetailProps) {
                   ) : (
                     <div className={styles.dropdown}>
                       <Dropdown
-                        trigger={
-                          <IconComponent name="meatball" padding={8} width={24} height={24} isBtn />
-                        }
+                        trigger={<IconComponent name="meatball" padding={8} size={24} isBtn />}
                         menuItems={[
                           {
                             label: "신고하기",
@@ -228,15 +224,15 @@ export default function PostDetail({ id }: PostDetailProps) {
           <div className={styles.content} dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
           <div className={styles.counts}>
             <div className={styles.count}>
-              <img src="/icon/board-like-count.svg" width={16} height={16} alt="" loading="lazy" />
+              <IconComponent name="boardLikeCount" size={16} />
               {posts.likeCount}
             </div>
             <div className={styles.count}>
-              <img src="/icon/comment-count.svg" width={16} height={16} alt="" loading="lazy" />
+              <IconComponent name="commentCount" size={16} />
               {posts.commentCount}
             </div>
             <div className={styles.count}>
-              <img src="/icon/view-count.svg" width={16} height={16} alt="" loading="lazy" />
+              <IconComponent name="viewCount" size={16} />
               {posts.viewCount}
             </div>
           </div>
@@ -246,14 +242,9 @@ export default function PostDetail({ id }: PostDetailProps) {
                 size="l"
                 type="outlined-assistive"
                 leftIcon={
-                  <img
-                    src={
-                      isLiked ? "/icon/board-like-count-on.svg" : "/icon/board-like-count-off.svg"
-                    }
-                    width={20}
-                    height={20}
-                    alt="좋아요"
-                    loading="lazy"
+                  <IconComponent
+                    name={isLiked ? "boardLikeCountOn" : "boardLikeCountOff"}
+                    size={20}
                   />
                 }
               >
@@ -261,13 +252,7 @@ export default function PostDetail({ id }: PostDetailProps) {
               </Button>
             </div>
             <div className={styles.saveBtn} onClick={handleSaveClick}>
-              <img
-                src={isSaved ? "/icon/detail-save-on.svg" : "/icon/detail-save-off.svg"}
-                width={20}
-                height={20}
-                alt="저장"
-                loading="lazy"
-              />
+              <IconComponent name={isSaved ? "detailSaveOn" : "detailSaveOff"} size={20} />
             </div>
             {user_id === posts.author.id || !isLoggedIn ? (
               <div className={styles.dropdown}>
@@ -275,13 +260,7 @@ export default function PostDetail({ id }: PostDetailProps) {
                   <Dropdown
                     trigger={
                       <div className={styles.menuBtn}>
-                        <img
-                          src="/icon/meatball.svg"
-                          width={20}
-                          height={20}
-                          alt="메뉴 버튼 "
-                          loading="lazy"
-                        />
+                        <IconComponent name="meatball" size={20} />
                       </div>
                     }
                     menuItems={[
@@ -295,13 +274,7 @@ export default function PostDetail({ id }: PostDetailProps) {
                   <Dropdown
                     trigger={
                       <div className={styles.menuBtn}>
-                        <img
-                          src="/icon/meatball.svg"
-                          width={20}
-                          height={20}
-                          alt="메뉴 버튼 "
-                          loading="lazy"
-                        />
+                        <IconComponent name="meatball" size={20} />
                       </div>
                     }
                     menuItems={[
@@ -324,13 +297,7 @@ export default function PostDetail({ id }: PostDetailProps) {
                   <Dropdown
                     trigger={
                       <div className={styles.menuBtn}>
-                        <img
-                          src="/icon/meatball.svg"
-                          width={20}
-                          height={20}
-                          alt="메뉴 버튼 "
-                          loading="lazy"
-                        />
+                        <IconComponent name="meatball" size={20} />
                       </div>
                     }
                     menuItems={[
@@ -352,13 +319,7 @@ export default function PostDetail({ id }: PostDetailProps) {
                 <Dropdown
                   trigger={
                     <div className={styles.menuBtn}>
-                      <img
-                        src="/icon/meatball.svg"
-                        width={20}
-                        height={20}
-                        alt="메뉴 버튼 "
-                        loading="lazy"
-                      />
+                      <IconComponent name="meatball" size={20} />
                     </div>
                   }
                   menuItems={[
@@ -384,7 +345,7 @@ export default function PostDetail({ id }: PostDetailProps) {
                 <Button
                   size="m"
                   type="outlined-assistive"
-                  leftIcon={<IconComponent name="detailWrite" width={16} height={16} />}
+                  leftIcon={<IconComponent name="detailWrite" size={16} />}
                 >
                   글쓰기
                 </Button>

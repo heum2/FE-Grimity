@@ -37,13 +37,13 @@ export default function PopularCard({ post }: PopularCardProps) {
           </Link>
           <p className={styles.date}>{timeAgo(post.createdAt)}</p>
           <div className={styles.countContainer}>
-            <img src="/icon/dot.svg" width={3} height={3} alt="" loading="lazy" />
+            <IconComponent name="dot" size={3} />
             <div className={styles.likeContainer}>
-              <IconComponent name="boardCommentCount" width={16} height={16} />
+              <IconComponent name="boardCommentCount" size={16} />
               <p className={styles.commentCount}>{formatCurrency(post.commentCount)}</p>
             </div>
             <div className={styles.likeContainer}>
-              <IconComponent name="boardViewCount" width={16} height={16} />
+              <IconComponent name="boardViewCount" size={16} />
               <p className={styles.viewCount}>{formatCurrency(post.viewCount)}</p>
             </div>
           </div>
@@ -52,17 +52,17 @@ export default function PopularCard({ post }: PopularCardProps) {
         <div className={styles.footer}>
           <div className={styles.countContainer}>
             <div className={styles.likeContainer}>
-              <IconComponent name="boardCommentCount" width={16} height={16} />
+              <IconComponent name="boardCommentCount" size={16} />
               <p className={styles.commentCount}>{formatCurrency(post.commentCount)}</p>
             </div>
             <div className={styles.likeContainer}>
-              <IconComponent name="boardViewCount" width={16} height={16} />
+              <IconComponent name="boardViewCount" size={16} />
               <p className={styles.viewCount}>{formatCurrency(post.viewCount)}</p>
             </div>
-            <img src="/icon/dot.svg" width={3} height={3} alt="" loading="lazy" />
+            <IconComponent name="dot" size={3} />
           </div>
           <p className={styles.date}>{timeAgo(post.createdAt)}</p>
-          <img src="/icon/dot.svg" width={3} height={3} alt="" loading="lazy" />
+          <IconComponent name="dot" size={3} />
           <Link href={`/users/${post.author.id}`}>
             <p className={styles.author}>{post.author.name}</p>
           </Link>

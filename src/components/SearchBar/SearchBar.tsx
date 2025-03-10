@@ -37,7 +37,7 @@ export default function SearchBar({ searchValue, setSearchValue, onSearch }: Sea
   return (
     <div className={styles.container}>
       <div className={styles.leftContainer}>
-        <IconComponent name="searchGray" width={24} height={24} padding={8} />
+        <IconComponent name="searchGray" size={24} padding={8} />
         <input
           type="text"
           placeholder="그림, 작가, 관련 작품을 검색해보세요"
@@ -49,7 +49,7 @@ export default function SearchBar({ searchValue, setSearchValue, onSearch }: Sea
       </div>
       {searchValue && (
         <div onClick={handleClear}>
-          <IconComponent name="searchDelete" width={24} height={24} padding={8} isBtn />
+          <IconComponent name="searchDelete" size={24} padding={8} isBtn />
         </div>
       )}
     </div>

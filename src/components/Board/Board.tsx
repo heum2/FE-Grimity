@@ -21,7 +21,7 @@ export default function Board() {
         {(isMobile || isTablet) && (
           <Link href="/board/write">
             <div className={styles.uploadButton} role="button" tabIndex={0}>
-              <IconComponent name="mobileUpload" width={32} height={32} isBtn />
+              <IconComponent name="mobileUpload" size={32} isBtn />
             </div>
           </Link>
         )}

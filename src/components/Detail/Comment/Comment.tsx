@@ -315,17 +315,9 @@ export default function Comment({
                           handleLikeClick(reply.id, reply.isLike);
                         }}
                       >
-                        <img
-                          src={
-                            reply.isLike
-                              ? "/icon/comment-like-on.svg"
-                              : "/icon/comment-like-off.svg"
-                          }
-                          width={24}
-                          height={24}
-                          alt="좋아요"
-                          className={styles.likeIcon}
-                          loading="lazy"
+                        <IconComponent
+                          name={reply.isLike ? "commentLikeOn" : "commentLikeOff"}
+                          size={24}
                         />
                         {reply.likeCount}
                       </div>
@@ -346,9 +338,7 @@ export default function Comment({
                     <div className={styles.replyBtnDropdown}>
                       {reply.writer.id === user_id ? (
                         <Dropdown
-                          trigger={
-                            <IconComponent name="kebab" padding={8} width={24} height={24} isBtn />
-                          }
+                          trigger={<IconComponent name="kebab" padding={8} size={24} isBtn />}
                           menuItems={[
                             {
                               label: "삭제하기",
@@ -359,9 +349,7 @@ export default function Comment({
                         />
                       ) : (
                         <Dropdown
-                          trigger={
-                            <IconComponent name="kebab" padding={8} width={24} height={24} isBtn />
-                          }
+                          trigger={<IconComponent name="kebab" padding={8} size={24} isBtn />}
                           menuItems={[
                             {
                               label: "신고하기",
@@ -435,15 +423,9 @@ export default function Comment({
                       handleLikeClick(comment.id, comment.isLike);
                     }}
                   >
-                    <img
-                      src={
-                        comment.isLike ? "/icon/comment-like-on.svg" : "/icon/comment-like-off.svg"
-                      }
-                      width={24}
-                      height={24}
-                      alt="좋아요"
-                      className={styles.likeIcon}
-                      loading="lazy"
+                    <IconComponent
+                      name={comment.isLike ? "commentLikeOn" : "commentLikeOff"}
+                      size={24}
                     />
                     {comment.likeCount}
                   </div>
@@ -464,9 +446,7 @@ export default function Comment({
                 <div className={styles.replyBtnDropdown}>
                   {comment.writer.id === user_id ? (
                     <Dropdown
-                      trigger={
-                        <IconComponent name="kebab" padding={8} width={24} height={24} isBtn />
-                      }
+                      trigger={<IconComponent name="kebab" padding={8} size={24} isBtn />}
                       menuItems={[
                         {
                           label: "삭제하기",
@@ -477,9 +457,7 @@ export default function Comment({
                     />
                   ) : (
                     <Dropdown
-                      trigger={
-                        <IconComponent name="kebab" padding={8} width={24} height={24} isBtn />
-                      }
+                      trigger={<IconComponent name="kebab" padding={8} size={24} isBtn />}
                       menuItems={[
                         {
                           label: "신고하기",
@@ -500,9 +478,9 @@ export default function Comment({
                 >
                   {isExpanded ? "답글 숨기기" : `답글 ${comment.childCommentCount}개 보기`}
                   {isExpanded ? (
-                    <IconComponent name="replyFold" width={16} height={16} isBtn />
+                    <IconComponent name="replyFold" size={16} isBtn />
                   ) : (
-                    <IconComponent name="replySeeMore" width={16} height={16} isBtn />
+                    <IconComponent name="replySeeMore" size={16} isBtn />
                   )}
                 </button>
                 {isExpanded && <ChildComments parentId={comment.id} />}

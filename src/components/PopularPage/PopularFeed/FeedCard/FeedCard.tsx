@@ -38,12 +38,7 @@ export default function FeedCard({
       <div className={styles.imageContainer}>
         {isLoggedIn && (
           <div className={styles.likeBtn} onClick={handleLikeClick}>
-            <IconComponent
-              name={isLiked ? "cardLikeOn" : "cardLikeOff"}
-              isBtn
-              width={24}
-              height={24}
-            />
+            <IconComponent name={isLiked ? "cardLikeOn" : "cardLikeOff"} size={24} isBtn />
           </div>
         )}
         <Link href={`/feeds/${id}`}>
@@ -58,14 +53,14 @@ export default function FeedCard({
           <Link href={`/users/${author?.id}`}>
             <p className={styles.author}>{author?.name}</p>
           </Link>
-          <img src="/icon/dot.svg" width={3} height={3} alt="" loading="lazy" />
+          <IconComponent name="dot" size={3} />
           <div className={styles.countContainer}>
             <div className={styles.likeContainer}>
-              <IconComponent name="likeCount" width={16} height={16} />
+              <IconComponent name="likeCount" size={16} />
               <p className={styles.count}>{formatCurrency(currentLikeCount)}</p>
             </div>
             <div className={styles.likeContainer}>
-              <IconComponent name="viewCount" width={16} height={16} />
+              <IconComponent name="viewCount" size={16} />
               <p className={styles.count}>{formatCurrency(viewCount)}</p>
             </div>
           </div>

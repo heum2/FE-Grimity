@@ -530,7 +530,7 @@ export default function Upload() {
           {(isMobile || isTablet) && images.length > 0 && images.length < 10 && (
             <label htmlFor="file-upload" style={{ width: "100%" }}>
               <div className={styles.imageAddBtn}>
-                <IconComponent name="mobileAddImage" width={16} height={16} />
+                <IconComponent name="mobileAddImage" size={16} />
                 이미지 추가
               </div>
               <input
@@ -615,13 +615,7 @@ export default function Upload() {
                           tabIndex={0}
                           className={styles.deleteTag}
                         >
-                          <IconComponent
-                            name="deleteTag"
-                            width={16}
-                            height={16}
-                            alt="태그 제거"
-                            isBtn
-                          />
+                          <IconComponent name="deleteTag" size={16} isBtn />
                         </div>
                       }
                     >
@@ -638,12 +632,7 @@ export default function Upload() {
                     className={`${styles.option} ${isAI ? styles.selected : ""}`}
                     onClick={() => setIsAI((prev) => !prev)}
                   >
-                    <IconComponent
-                      name={isAI ? "checkedbox" : "checkbox"}
-                      width={24}
-                      height={24}
-                      isBtn
-                    />
+                    <IconComponent name={isAI ? "checkedbox" : "checkbox"} size={24} isBtn />
                   </div>
                 </div>
               </div>

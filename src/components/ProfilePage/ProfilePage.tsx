@@ -199,9 +199,9 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
                       size="l"
                       rightIcon={
                         isDropdownOpen ? (
-                          <IconComponent name="arrowUp" width={20} height={20} isBtn />
+                          <IconComponent name="arrowUp" size={20} isBtn />
                         ) : (
-                          <IconComponent name="arrowDown" width={20} height={20} isBtn />
+                          <IconComponent name="arrowDown" size={20} isBtn />
                         )
                       }
                     >
@@ -272,13 +272,7 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
                         onClick={() => handlePageChange(currentPage - 1)}
                         disabled={currentPage === 1}
                       >
-                        <img
-                          src="/icon/pagination-left.svg"
-                          width={24}
-                          height={24}
-                          alt=""
-                          loading="lazy"
-                        />
+                        <IconComponent name="paginationLeft" size={24} />
                       </button>
                       {getPageRange(currentPage, totalPages).map((pageNum) => (
                         <button
@@ -294,13 +288,7 @@ export default function ProfilePage({ isMyProfile, id }: ProfilePageProps) {
                         onClick={() => handlePageChange(currentPage + 1)}
                         disabled={currentPage === totalPages}
                       >
-                        <img
-                          src="/icon/pagination-right.svg"
-                          width={24}
-                          height={24}
-                          alt=""
-                          loading="lazy"
-                        />
+                        <IconComponent name="paginationRight" size={24} />
                       </button>
                     </section>
                   </>

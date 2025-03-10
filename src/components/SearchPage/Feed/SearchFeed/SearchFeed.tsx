@@ -88,9 +88,9 @@ export default function SearchFeed() {
                 size="l"
                 rightIcon={
                   isDropdownOpen ? (
-                    <IconComponent name="arrowUp" width={20} height={20} isBtn />
+                    <IconComponent name="arrowUp" size={20} isBtn />
                   ) : (
-                    <IconComponent name="arrowDown" width={20} height={20} isBtn />
+                    <IconComponent name="arrowDown" size={20} isBtn />
                   )
                 }
               >

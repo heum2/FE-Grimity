@@ -143,7 +143,7 @@ export default function Noti({ notification, onClose, onRefetch }: NotiProps) {
         </div>
       </div>
       <div onClick={handleDeleteNotification}>
-        <IconComponent name="notiDelete" width={24} height={24} isBtn padding={8} />
+        <IconComponent name="notiDelete" size={24} isBtn padding={8} />
       </div>
     </div>
   );

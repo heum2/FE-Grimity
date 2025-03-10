@@ -6,6 +6,7 @@ import { useRecoilState } from "recoil";
 import Button from "@/components/Button/Button";
 import { serviceUrl } from "@/constants/serviceurl";
 import { ShareBtnProps } from "@/components/Board/Detail/ShareBtn/ShareBtn.types";
+import IconComponent from "@/components/Asset/Icon";
 
 export default function SharePost({ postId, title }: ShareBtnProps) {
   const { showToast } = useToast();
@@ -62,9 +63,7 @@ export default function SharePost({ postId, title }: ShareBtnProps) {
           size="l"
           type="outlined-assistive"
           onClick={copyToClipboard}
-          leftIcon={
-            <img src="/icon/copy.svg" width={20} height={20} alt="클립보드 복사" loading="lazy" />
-          }
+          leftIcon={<IconComponent name="copy" size={20} />}
         >
           링크 복사하기
         </Button>
@@ -72,9 +71,7 @@ export default function SharePost({ postId, title }: ShareBtnProps) {
           size="l"
           type="outlined-assistive"
           onClick={handleTwitterShare}
-          leftIcon={
-            <img src="/icon/twitter.svg" width={20} height={20} alt="트위터 공유" loading="lazy" />
-          }
+          leftIcon={<IconComponent name="twitter" size={20} />}
         >
           트위터에 공유
         </Button>
@@ -82,15 +79,7 @@ export default function SharePost({ postId, title }: ShareBtnProps) {
           size="l"
           type="outlined-assistive"
           onClick={handleKaKaoShare}
-          leftIcon={
-            <img
-              src="/icon/kakaotalk.svg"
-              width={20}
-              height={20}
-              alt="카카오톡 공유"
-              loading="lazy"
-            />
-          }
+          leftIcon={<IconComponent name="kakaotalk" size={20} />}
         >
           카톡으로 공유
         </Button>

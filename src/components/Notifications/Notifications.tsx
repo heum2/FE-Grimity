@@ -43,17 +43,17 @@ const NotificationSettings = ({
         <div className={styles.titleContainer}>
           <h2 className={styles.title}>알림 설정</h2>
           <button className={styles.closeButton} onClick={onBack}>
-            <IconComponent name="notiClose" width={24} height={24} isBtn padding={8} />
+            <IconComponent name="notiClose" size={24} isBtn padding={8} />
           </button>
         </div>
       ) : (
         <div className={styles.titleContainer}>
           <button className={styles.backButton} onClick={onBack} data-setting-button="true">
-            <IconComponent name="notiBack" width={24} height={24} isBtn padding={8} />
+            <IconComponent name="notiBack" size={24} isBtn padding={8} />
           </button>
           <h2 className={styles.title}>알림 설정</h2>
           <button className={styles.closeButton} onClick={onClose}>
-            <IconComponent name="notiClose" width={24} height={24} isBtn padding={8} />
+            <IconComponent name="notiClose" size={24} isBtn padding={8} />
           </button>
         </div>
       )}
@@ -234,11 +234,11 @@ export default function Notifications({ onClose }: NotificationsProps) {
               onClick={() => setIsOpen((prev) => !prev)}
               data-setting-button="true"
             >
-              <IconComponent name="notiSetting" width={24} height={24} isBtn padding={8} />
+              <IconComponent name="notiSetting" size={24} isBtn padding={8} />
             </button>
             {!isMobile && (
               <button className={styles.closeButton} onClick={onClose}>
-                <IconComponent name="notiClose" width={24} height={24} isBtn padding={8} />
+                <IconComponent name="notiClose" size={24} isBtn padding={8} />
               </button>
             )}
           </div>
@@ -261,11 +261,11 @@ export default function Notifications({ onClose }: NotificationsProps) {
       {data.length !== 0 && (
         <div className={styles.options}>
           <button onClick={handleMarkAllAsRead} className={styles.option}>
-            <IconComponent name="notiRead" width={16} height={16} isBtn />
+            <IconComponent name="notiRead" size={16} isBtn />
             전체 읽음
           </button>
           <button onClick={handleDeleteAllNotifications} className={styles.option}>
-            <IconComponent name="notiDeleteAll" width={16} height={16} isBtn />
+            <IconComponent name="notiDeleteAll" size={16} isBtn />
             전체 삭제
           </button>
         </div>
