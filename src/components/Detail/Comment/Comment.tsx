@@ -318,6 +318,7 @@ export default function Comment({
                         <IconComponent
                           name={reply.isLike ? "commentLikeOn" : "commentLikeOff"}
                           size={24}
+                          isBtn
                         />
                         {reply.likeCount}
                       </div>
@@ -426,6 +427,7 @@ export default function Comment({
                     <IconComponent
                       name={comment.isLike ? "commentLikeOn" : "commentLikeOff"}
                       size={24}
+                      isBtn
                     />
                     {comment.likeCount}
                   </div>

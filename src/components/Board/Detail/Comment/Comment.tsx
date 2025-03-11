@@ -351,8 +351,9 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
                       }}
                     >
                       <IconComponent
-                        name={reply.isLike ? "boardLikeCountOn" : "boardLikeCountOff"}
+                        name={reply.isLike ? "boardLikeCountOn" : "boardLikeCount"}
                         size={24}
+                        isBtn
                       />
                       {reply.likeCount}
                     </div>
@@ -458,8 +459,9 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
                         }}
                       >
                         <IconComponent
-                          name={comment.isLike ? "boardLikeCount" : "boardLikeCountOn"}
+                          name={comment.isLike ? "boardLikeCountOn" : "boardLikeCount"}
                           size={24}
+                          isBtn
                         />
                         {comment.likeCount}
                       </div>
@@ -559,7 +561,4 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
       <section>{commentsData?.comments?.map((comment) => renderComment(comment))}</section>
     </div>
   );
-}
-function refetch() {
-  throw new Error("Function not implemented.");
 }
