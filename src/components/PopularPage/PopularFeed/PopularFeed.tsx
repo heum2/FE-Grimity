@@ -46,11 +46,6 @@ export default function PopularFeed() {
     <div className={styles.container}>
       <div className={styles.titleContainer}>
         <Title>인기 그림</Title>
-        <div className={styles.sortBtnContainer}>
-          <button className={styles.sortBtn}>
-            좋아요 순<IconComponent name="arrowDown" size={20} />
-          </button>
-        </div>
       </div>
       <section className={styles.feedContainer}>
         {data?.pages.map((page) => page.feeds.map((feed) => <FeedCard key={feed.id} {...feed} />))}
