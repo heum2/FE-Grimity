@@ -12,35 +12,6 @@
     @include Size("mobile") {
       align-items: flex-end;
     }
-
-    .sortBtnContainer {
-      width: 180px;
-
-      @include Size("mobile") {
-        width: 120px;
-      }
-    }
-
-    .sortBtn {
-      width: 100%;
-      padding: 16px 24px;
-      @include Btn1;
-      color: $primary4;
-      background-color: $gray0;
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-      outline: none;
-      border: none;
-      cursor: pointer;
-      @include Drag;
-
-      @include Size("mobile") {
-        padding: 16px 0;
-        @include Label1;
-      }
-    }
   }
 
   .feedContainer {
