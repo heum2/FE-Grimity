@@ -17,29 +17,26 @@ export default function ProfileId() {
   const { showToast } = useToast();
   const [errorMessage, setErrorMessage] = useState("");
 
-  const checkProfileIdMutation = useMutation({
-    mutationFn: async (profileId: string) => {
-      await axiosInstance.post("/auth/register/name", { name: profileId });
-    },
-    onError: (error: any) => {
-      if (error.response?.status === 409) {
-        setErrorMessage("이미 사용 중인 프로필 url입니다.");
-      }
-    },
-  });
-
   const registerMutation = useMutation({
     mutationFn: async () => {
-      // 활동명 사용 가능 여부 확인
-      await axiosInstance.post("/auth/register/name", { name: modal.data.nickname });
-      // 이후 회원가입 요청
-      const response = await axiosInstance.post("/auth/register", {
-        provider: modal.data.provider,
-        providerAccessToken: modal.data.accessToken,
-        name: modal.data.nickname,
-        id: profileId.trim(),
-      });
-      return response.data;
+      try {
+        const response = await axiosInstance.post("/auth/register", {
+          provider: modal.data.provider,
+          providerAccessToken: modal.data.accessToken,
+          name: modal.data.nickname,
+          id: profileId.trim(),
+        });
+        return response.data;
+      } catch (error: any) {
+        if (error.response?.status === 409) {
+          setErrorMessage("이미 사용 중인 프로필 url입니다.");
+        } else if (error.response?.status === 400) {
+          setErrorMessage("숫자, 영문(소문자), 언더바(_)만 입력 가능합니다.");
+        } else {
+          showToast("오류가 발생했습니다. 다시 시도해주세요.", "error");
+        }
+        throw new Error("ErrorHandled");
+      }
     },
     onSuccess: (data) => {
       setAuth({
@@ -50,14 +47,10 @@ export default function ProfileId() {
 
       localStorage.setItem("access_token", data.accessToken);
       localStorage.setItem("refresh_token", data.refreshToken || "");
-
       setModal({ isOpen: true, type: "JOIN", data: null });
     },
     onError: (error: any) => {
-      if (error.response?.status === 400) {
-        setErrorMessage("숫자, 영문(소문자), 언더바(_)만 입력 가능합니다.");
-      } else {
-        console.error("Registration error:", error);
+      if (error.message !== "ErrorHandled") {
         showToast("오류가 발생했습니다. 다시 시도해주세요.", "error");
       }
     },
@@ -87,11 +80,15 @@ export default function ProfileId() {
       return;
     }
 
-    try {
-      await checkProfileIdMutation.mutateAsync(profileId.trim());
-      await registerMutation.mutateAsync();
-    } catch (error) {
-      console.error("Registration error: ", error);
+    registerMutation.mutate();
+  };
+
+  const handleEnterKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.nativeEvent.isComposing) return;
+
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      handleSubmit();
     }
   };
 
@@ -108,6 +105,7 @@ export default function ProfileId() {
             placeholder="숫자, 영문(소문자), 언더바(_)"
             value={profileId}
             onChange={(e) => setProfileId(e.target.value)}
+            onKeyDown={handleEnterKeyDown}
             isError={!!errorMessage}
             errorMessage={errorMessage}
           />
