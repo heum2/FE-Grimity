@@ -28,33 +28,6 @@ export default function Nickname() {
     },
   });
 
-  const registerMutation = useMutation({
-    mutationFn: async (data: { provider: string; providerAccessToken: string; name: string }) => {
-      const response = await axiosInstance.post("/auth/register", data);
-      return response.data;
-    },
-    onSuccess: (data) => {
-      setAuth({
-        access_token: data.accessToken,
-        isLoggedIn: true,
-        user_id: data.id,
-      });
-
-      localStorage.setItem("access_token", data.accessToken);
-      localStorage.setItem("refresh_token", data.refreshToken || "");
-
-      setModal({ isOpen: true, type: "JOIN", data: null });
-    },
-    onError: (error: any) => {
-      if (error?.response?.status === 409) {
-        setErrorMessage("이미 사용 중인 활동명입니다.");
-      } else {
-        console.error("Registration error:", error);
-        showToast("오류가 발생했습니다. 다시 시도해주세요.", "error");
-      }
-    },
-  });
-
   const handleSubmitNickname = async () => {
     setErrorMessage("");
 
@@ -88,6 +61,15 @@ export default function Nickname() {
     } catch (error) {}
   };
 
+  const handleEnterKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.nativeEvent.isComposing) return;
+
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      handleSubmitNickname();
+    }
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.titleContainer}>
@@ -104,6 +86,7 @@ export default function Nickname() {
               setNickname(e.target.value.trimStart());
               setErrorMessage("");
             }}
+            onKeyDown={handleEnterKeyDown}
             isError={!!errorMessage || checkNicknameMutation.isError}
             errorMessage={errorMessage}
           />
