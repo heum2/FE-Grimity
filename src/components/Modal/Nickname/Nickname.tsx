@@ -13,10 +13,20 @@ import axiosInstance from "@/constants/baseurl";
 export default function Nickname() {
   const [nickname, setNickname] = useState("");
   const [agree, setAgree] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [, setAuth] = useRecoilState(authState);
   const [modal, setModal] = useRecoilState(modalState);
   const { showToast } = useToast();
+
+  const checkNicknameMutation = useMutation({
+    mutationFn: async (nickname: string) => {
+      const response = await axiosInstance.post("/auth/register/name", { name: nickname });
+      return response.data;
+    },
+    onError: () => {
+      setErrorMessage("이미 사용 중인 활동명입니다.");
+    },
+  });
 
   const registerMutation = useMutation({
     mutationFn: async (data: { provider: string; providerAccessToken: string; name: string }) => {
@@ -37,7 +47,7 @@ export default function Nickname() {
     },
     onError: (error: any) => {
       if (error?.response?.status === 409) {
-        setIsError(true);
+        setErrorMessage("이미 사용 중인 활동명입니다.");
       } else {
         console.error("Registration error:", error);
         showToast("오류가 발생했습니다. 다시 시도해주세요.", "error");
@@ -45,9 +55,11 @@ export default function Nickname() {
     },
   });
 
-  const handleSubmit = () => {
+  const handleSubmitNickname = async () => {
+    setErrorMessage("");
+
     if (nickname.trim().length < 2) {
-      showToast("닉네임은 두 글자 이상 입력해야 합니다.", "error");
+      setErrorMessage("활동명은 두 글자 이상 입력해야 합니다.");
       return;
     }
 
@@ -61,33 +73,39 @@ export default function Nickname() {
       return;
     }
 
-    const { accessToken, provider } = modal.data;
+    try {
+      await checkNicknameMutation.mutateAsync(nickname.trim());
 
-    registerMutation.mutate({
-      provider: provider,
-      providerAccessToken: accessToken,
-      name: nickname.trim(),
-    });
+      setModal({
+        isOpen: true,
+        type: "PROFILE-ID",
+        data: {
+          accessToken: modal.data.accessToken,
+          provider: modal.data.provider,
+          nickname: nickname.trim(),
+        },
+      });
+    } catch (error) {}
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.titleContainer}>
-        <h2 className={styles.title}>닉네임을 설정할게요</h2>
-        <p className={styles.subtitle}>닉네임이 곧 작가 이름이에요!</p>
+        <h2 className={styles.title}>활동명을 정해주세요</h2>
+        <p className={styles.subtitle}>작품과 함께 기억될 이름이에요</p>
       </div>
       <div className={styles.textBtnContainer}>
         <div className={styles.textContainer}>
           <TextField
-            placeholder="프로필에 노출될 닉네임을 입력해주세요."
-            errorMessage="중복된 닉네임입니다."
+            placeholder="프로필에 표시될 활동명을 입력해주세요"
             maxLength={12}
             value={nickname}
             onChange={(e) => {
-              setIsError(false);
               setNickname(e.target.value.trimStart());
+              setErrorMessage("");
             }}
-            isError={isError}
+            isError={!!errorMessage || checkNicknameMutation.isError}
+            errorMessage={errorMessage}
           />
           <label className={styles.label}>
             <div className={styles.checkbox} onClick={() => setAgree(!agree)}>
@@ -119,9 +137,9 @@ export default function Nickname() {
           size="l"
           type="filled-primary"
           disabled={nickname.trim().length < 2 || !agree}
-          onClick={handleSubmit}
+          onClick={handleSubmitNickname}
         >
-          설정 완료
+          다음
         </Button>
       </div>
     </div>
