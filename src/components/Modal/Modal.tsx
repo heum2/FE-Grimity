@@ -8,6 +8,7 @@ import IconComponent from "../Asset/Icon";
 import Button from "../Button/Button";
 import Login from "./Login/Login";
 import Nickname from "./Nickname/Nickname";
+import ProfileId from "./ProfileId/ProfileId";
 import Join from "./Join/Join";
 import ProfileEdit from "./ProfileEdit/ProfileEdit";
 import Background from "./Background/Background";
@@ -64,6 +65,8 @@ export default function Modal() {
         return <Login />;
       case "NICKNAME":
         return <Nickname />;
+      case "PROFILE-ID":
+        return <ProfileId />;
       case "JOIN":
         return <Join />;
       case "PROFILE-EDIT":

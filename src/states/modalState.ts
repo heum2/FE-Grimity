@@ -4,6 +4,7 @@ export type ModalType =
   | "LOGIN"
   | "NICKNAME"
   | "JOIN"
+  | "PROFILE-ID"
   | "PROFILE-EDIT"
   | "BACKGROUND"
   | "FOLLOWER"
