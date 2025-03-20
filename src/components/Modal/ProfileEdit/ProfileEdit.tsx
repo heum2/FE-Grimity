@@ -15,6 +15,7 @@ import router from "next/router";
 import { isMobileState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { isValidProfileIdFormat, isForbiddenProfileId } from "@/utils/isValidProfileId";
+import { useScrollRestoration } from "@/hooks/useScrollRestoration";
 
 export default function ProfileEdit() {
   const { data: myData, isLoading, refetch } = useMyData();
@@ -28,6 +29,8 @@ export default function ProfileEdit() {
   ]);
   const [isError, setIsError] = useState(false);
   const [, setModal] = useRecoilState(modalState);
+  const { restoreScrollPosition } = useScrollRestoration("profileEdit-scroll");
+
   const { showToast } = useToast();
   const isMobile = useRecoilValue(isMobileState);
   useIsMobile();
@@ -38,6 +41,10 @@ export default function ProfileEdit() {
       setDescription(myData.description || "");
       setProfileId(myData.url || "");
       setLinks(myData.links?.length ? myData.links : [{ linkName: "", link: "" }]);
+    }
+    if (sessionStorage.getItem("profileEdit-scroll") !== null) {
+      restoreScrollPosition();
+      sessionStorage.removeItem("profileEdit-scroll");
     }
   }, [myData]);
 

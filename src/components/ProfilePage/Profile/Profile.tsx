@@ -70,12 +70,11 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
   };
 
   const handleOpenEditModal = () => {
-    // if (isMobile) {
-    //   setModal({ isOpen: true, type: "PROFILE-EDIT", data: null, isFill: true });
-    // } else {
-    //   setModal({ isOpen: true, type: "PROFILE-EDIT", data: null });
-    // }
-    showToast("현재 수정 중인 기능으로 비활성화 되었습니다.", "error");
+    if (isMobile) {
+      setModal({ isOpen: true, type: "PROFILE-EDIT", data: null, isFill: true });
+    } else {
+      setModal({ isOpen: true, type: "PROFILE-EDIT", data: null });
+    }
   };
 
   const ImageMutation = useMutation((imageName: string) => putProfileImage(imageName));
