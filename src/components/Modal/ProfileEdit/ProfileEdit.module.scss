@@ -3,6 +3,7 @@
 .container {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   justify-content: space-between;
   height: 100%;
   gap: 30px;
@@ -73,7 +74,7 @@
 
     .textareaContainer {
       width: 100%;
-      height: 120px;
+      height: 90px;
       padding: 16px 20px;
       border-radius: 12px;
       background-color: $gray10;

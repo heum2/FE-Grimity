@@ -14,12 +14,15 @@ import Loader from "@/components/Layout/Loader/Loader";
 import router from "next/router";
 import { isMobileState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { isValidProfileIdFormat, isForbiddenProfileId } from "@/utils/isValidProfileId";
 
 export default function ProfileEdit() {
   const { data: myData, isLoading, refetch } = useMyData();
   const [name, setName] = useState("");
   const [nameError, setNameError] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  const [profileId, setProfileId] = useState<string>("");
+  const [profileIdError, setProfileIdError] = useState<string>("");
   const [links, setLinks] = useState<{ linkName: string; link: string }[]>([
     { linkName: "", link: "" },
   ]);
@@ -33,6 +36,7 @@ export default function ProfileEdit() {
     if (myData) {
       setName(myData.name?.replace(/\s+$/, "") || "");
       setDescription(myData.description || "");
+      setProfileId(myData.url || "");
       setLinks(myData.links?.length ? myData.links : [{ linkName: "", link: "" }]);
     }
   }, [myData]);
@@ -50,6 +54,7 @@ export default function ProfileEdit() {
       if (error.response?.status === 409) {
         setIsError(true);
         setNameError("닉네임이 이미 존재합니다.");
+        setProfileIdError("이미 사용 중인 프로필 URL입니다.");
       }
     },
   });
@@ -59,6 +64,14 @@ export default function ProfileEdit() {
     setName(inputValue);
     if (nameError) {
       setNameError("");
+    }
+  };
+
+  const handleProfileIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value.trim();
+    setProfileId(inputValue);
+    if (profileIdError) {
+      setProfileIdError("");
     }
   };
 
@@ -80,7 +93,10 @@ export default function ProfileEdit() {
 
   const handleSave = () => {
     setNameError("");
+    setProfileIdError("");
+
     const nameWithoutTrailingSpace = name?.replace(/\s+$/, "") || "";
+    const profileIdTrimmed = profileId.trim();
 
     if (!nameWithoutTrailingSpace) {
       setNameError("닉네임을 입력해주세요.");
@@ -92,6 +108,21 @@ export default function ProfileEdit() {
       return;
     }
 
+    if (!profileIdTrimmed) {
+      setProfileIdError("프로필 URL을 입력해주세요.");
+      return;
+    }
+
+    if (!isValidProfileIdFormat(profileIdTrimmed)) {
+      setProfileIdError("숫자, 영문(소문자), 언더바(_)만 입력 가능합니다.");
+      return;
+    }
+
+    if (isForbiddenProfileId(profileIdTrimmed)) {
+      setProfileIdError("사용할 수 없는 ID입니다.");
+      return;
+    }
+
     const filteredLinks = links.filter(
       (link) => link.linkName.trim() !== "" || link.link.trim() !== "",
     );
@@ -100,6 +131,7 @@ export default function ProfileEdit() {
       name: nameWithoutTrailingSpace,
       description,
       links: filteredLinks,
+      url: profileIdTrimmed,
     };
 
     mutation.mutate(updatedInfo);
@@ -148,6 +180,16 @@ export default function ProfileEdit() {
               )}
             </div>
           </div>
+          <TextField
+            label="그리미티 URL"
+            placeholder="url을 입력해주세요."
+            maxLength={20}
+            value={profileId}
+            onChange={handleProfileIdChange}
+            isError={!!profileIdError}
+            errorMessage={profileIdError}
+            prefix="www.grimity.com/"
+          />
           <div className={styles.linkContainer}>
             <label className={styles.label}>외부 링크</label>
             {links.map((link, index) => (
@@ -187,7 +229,7 @@ export default function ProfileEdit() {
           size="l"
           type="filled-primary"
           onClick={handleSave}
-          disabled={name.trim().length < 2 || mutation.isLoading}
+          disabled={name.trim().length < 2 || mutation.isLoading || !!profileIdError}
         >
           변경 내용 저장
         </Button>
