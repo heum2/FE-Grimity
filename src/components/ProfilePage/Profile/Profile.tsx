@@ -51,6 +51,10 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
     }
   }, [id, myData, userData]);
 
+  useEffect(() => {
+    setProfileImage(userData?.image || "/image/default.svg");
+  }, [userData]);
+
   const handleFollowClick = async () => {
     try {
       await putFollow(id);
@@ -114,9 +118,11 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
       }
 
       showToast("프로필 사진이 변경되었습니다!", "success");
-      refetch();
+      setProfileImage(userData?.image || "/image/default.svg");
+      refetchUserData();
     } catch (error) {
       showToast("프로필 사진 업로드에 실패했습니다.", "error");
+      setProfileImage(userData?.image || "/image/default.svg");
     }
   };
 
@@ -130,7 +136,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
 
       await uploadImageToServer(file);
     } catch (error) {
-      setProfileImage(myData?.image || "/image/default.svg");
+      setProfileImage(userData?.image || "/image/default.svg");
       console.error("File change error:", error);
     }
   };
@@ -176,8 +182,6 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
       return;
     }
 
-    const imageUrl = URL.createObjectURL(file);
-
     try {
       const webpFile = await convertToWebP(file);
 
@@ -202,8 +206,8 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
 
       showToast("커버 이미지가 변경되었습니다!", "success");
       setCoverImage(data.imageName);
-      refetch();
       refetchUserData();
+      router.reload();
     } catch (error) {
       console.error("File change error:", error);
       showToast("커버 이미지 업로드에 실패했습니다.", "error");
@@ -261,12 +265,14 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
 
   const handleDeleteProfileImage = async () => {
     try {
+      setProfileImage("/image/default.svg");
+      refetchUserData();
       await deleteMyProfileImage();
       showToast("프로필 이미지가 삭제되었습니다.", "success");
-      refetch();
     } catch (error) {
       showToast("프로필 이미지 삭제에 실패했습니다.", "error");
       console.error("Image delete error:", error);
+      setProfileImage(userData?.image || "/image/default.svg");
     }
   };
 
@@ -417,7 +423,7 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                   {userData.id === user_id && (
                     <>
                       <label htmlFor="upload-image" className={styles.addProfileImage}>
-                        <IconComponent name="editProfileImage" size={40} />
+                        <IconComponent name="editProfileImage" size={40} isBtn />
                       </label>
                       <input
                         id="upload-image"
@@ -445,8 +451,8 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
                   />
                   {userData.id === user_id && (
                     <>
-                      <label htmlFor="upload-image">
-                        <IconComponent name="addProfileImage" size={40} />
+                      <label htmlFor="upload-image" className={styles.addProfileImage}>
+                        <IconComponent name="addProfileImage" size={40} isBtn />
                       </label>
                       <input
                         id="upload-image"
