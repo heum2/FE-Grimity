@@ -26,6 +26,7 @@ import { deleteMe } from "@/api/users/deleteMe";
 
 export default function Profile({ isMyProfile, id }: ProfileProps) {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
+  const [, setAuth] = useRecoilState(authState);
   const [, setModal] = useRecoilState(modalState);
   const { data: myData, refetch } = useMyData();
   const { data: userData, refetch: refetchUserData } = useUserData(id);
@@ -303,6 +304,11 @@ export default function Profile({ isMyProfile, id }: ProfileProps) {
           onClick: async () => {
             try {
               await deleteMe();
+              setAuth({
+                access_token: "",
+                isLoggedIn: false,
+                user_id: "",
+              });
               showToast("회원 탈퇴 되었습니다.", "success");
               router.push("/");
             } catch (err) {
