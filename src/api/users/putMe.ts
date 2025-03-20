@@ -12,6 +12,11 @@ export interface Response {
   message: string;
 }
 
+export interface UpdateProfileConflictResponse {
+  statusCode: number;
+  message: string;
+}
+
 export async function putMyInfo({
   name,
   description,

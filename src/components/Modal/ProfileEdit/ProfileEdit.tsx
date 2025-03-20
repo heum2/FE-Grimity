@@ -8,7 +8,7 @@ import IconComponent from "@/components/Asset/Icon";
 import Button from "@/components/Button/Button";
 import { useToast } from "@/hooks/useToast";
 import { useMyData } from "@/api/users/getMe";
-import { MyInfoRequest, putMyInfo } from "@/api/users/putMe";
+import { MyInfoRequest, UpdateProfileConflictResponse, putMyInfo } from "@/api/users/putMe";
 import { AxiosError } from "axios";
 import Loader from "@/components/Layout/Loader/Loader";
 import router from "next/router";
@@ -56,12 +56,17 @@ export default function ProfileEdit() {
       router.reload();
       setNameError("");
     },
-    onError: (error: AxiosError) => {
-      showToast("오류가 발생했습니다. 다시 시도해주세요.", "error");
+    onError: (error: AxiosError<UpdateProfileConflictResponse>) => {
       if (error.response?.status === 409) {
         setIsError(true);
-        setNameError("닉네임이 이미 존재합니다.");
-        setProfileIdError("이미 사용 중인 프로필 URL입니다.");
+        const message = error.response?.data?.message;
+        if (message === "NAME") {
+          setNameError("이미 사용 중인 닉네임입니다.");
+        } else if (message === "URL") {
+          setProfileIdError("이미 사용 중인 프로필 URL입니다.");
+        } else {
+          showToast("오류가 발생했습니다. 다시 시도해주세요.", "error");
+        }
       }
     },
   });
