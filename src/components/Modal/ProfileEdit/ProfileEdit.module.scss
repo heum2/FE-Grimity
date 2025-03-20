@@ -33,7 +33,7 @@
     flex-direction: column;
     gap: 40px;
     overflow-y: auto;
-    max-height: 400px;
+    max-height: calc(100vh - 140px);
 
     &::-webkit-scrollbar {
       width: 7px;
@@ -201,7 +201,7 @@
     }
 
     .addBtn {
-      margin-top: 12px;
+      margin: 12px 0;
     }
   }
 }
