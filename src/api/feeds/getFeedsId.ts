@@ -26,6 +26,7 @@ export interface DetailsResponse {
 }
 
 export interface MetaDetailsResponse {
+  url: string;
   id: string;
   title: string;
   content: string;

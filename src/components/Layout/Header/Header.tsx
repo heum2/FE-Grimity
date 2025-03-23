@@ -368,7 +368,7 @@ export default function Header() {
                   </div>
                   {isDropdownOpen && (
                     <div className={styles.dropdown} ref={dropdownRef}>
-                      <Link href={`/users/${myData.url}`}>
+                      <Link href={`${myData.url}`}>
                         <div
                           className={styles.dropdownItem}
                           onClick={() => {
@@ -556,7 +556,7 @@ export default function Header() {
                       <div className={styles.mobileProfile}>
                         <div className={styles.bar} />
                         <div className={styles.profileSubmenu}>
-                          <Link href={`/users/${myData.url}`} className={styles.mobileMyInfo}>
+                          <Link href={`${myData.url}`} className={styles.mobileMyInfo}>
                             {myData.image !== "https://image.grimity.com/null" ? (
                               <Image
                                 src={myData.image}

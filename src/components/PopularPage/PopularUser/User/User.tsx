@@ -43,7 +43,7 @@ export default function User({
 
   return (
     <div className={styles.container}>
-      <Link href={`users/${url}`}>
+      <Link href={`${url}`}>
         <div className={styles.imageWrapper}>
           {thumbnails[0] ? (
             <img
@@ -86,7 +86,7 @@ export default function User({
         </div>
       </Link>
       <div className={styles.profileWrapper}>
-        <Link href={`users/${url}`}>
+        <Link href={`${url}`}>
           <div className={styles.profileLeft}>
             {image !== "https://image.grimity.com/null" ? (
               <Image

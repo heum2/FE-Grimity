@@ -322,7 +322,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
                   <div className={styles.writerCreatedAt}>
                     {reply.writer ? (
                       <>
-                        <Link href={`/users/${reply.writer?.url}`}>
+                        <Link href={`${reply.writer?.url}`}>
                           <div className={styles.writerName}>
                             {reply.writer?.name}
                             {reply.writer?.id === postWriterId && (
@@ -431,7 +431,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
                 <div className={styles.writerCreatedAt}>
                   {comment.writer ? (
                     <>
-                      <Link href={`/users/${comment.writer.url}`}>
+                      <Link href={`${comment.writer.url}`}>
                         <div className={styles.writerName}>
                           {comment.writer.name}
                           {comment.writer.id === postWriterId && (

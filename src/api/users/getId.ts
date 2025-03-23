@@ -25,7 +25,6 @@ export interface UserInfoResponse {
   isFollowing: boolean;
 }
 
-// users/profile/{url}/meta response
 export interface MetaUserInfoResponse {
   id: string;
   name: string;
