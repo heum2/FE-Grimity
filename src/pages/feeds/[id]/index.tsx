@@ -12,10 +12,10 @@ type Props = {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { url } = context.params as { url: string };
+  const { id } = context.params as { id: string };
 
   try {
-    const details = await getSSRDetails(url);
+    const details = await getSSRDetails(id);
 
     return {
       props: { details },
@@ -36,9 +36,9 @@ export default function FeedDetail({ details }: Props) {
     }
   }, []);
 
-  const { url } = router.query;
+  const { id } = router.query;
 
-  if (!url) {
+  if (!id) {
     return null;
   }
 

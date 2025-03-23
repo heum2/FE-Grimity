@@ -53,7 +53,7 @@ export default function SearchProfile({
 
   return (
     <div className={styles.container}>
-      <Link href={`/users/profile/${url}`}>
+      <Link href={`${id}`}>
         <div className={styles.cover}>
           {backgroundImage !== "https://image.grimity.com/null" ? (
             <img
@@ -85,7 +85,7 @@ export default function SearchProfile({
         </div>
       </Link>
       <div className={styles.profile}>
-        <Link href={`/users/profile/${url}`}>
+        <Link href={`${id}`}>
           {image !== "https://image.grimity.com/null" ? (
             <Image
               src={image}
@@ -111,7 +111,7 @@ export default function SearchProfile({
         <div className={styles.infoContainer}>
           <div className={styles.spaceBetween}>
             <div className={styles.nameCount}>
-              <Link href={`/users/profile/${url}`}>
+              <Link href={`${id}`}>
                 <p className={styles.name}>{name}</p>
               </Link>
               <div className={styles.follower}>
