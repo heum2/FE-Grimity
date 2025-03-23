@@ -73,29 +73,6 @@ export async function getUserInfoByUrl({ url }: UserInfoRequestByURL): Promise<U
   }
 }
 
-export async function getSSRUserInfo(id: string): Promise<MetaUserInfoResponse> {
-  try {
-    const token = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
-
-    const response = await axios.get(`https://api.grimity.com/users/${id}/meta`, {
-      params: { id },
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
-    });
-
-    const updatedData = response.data;
-    updatedData.image = `https://image.grimity.com/${updatedData.image}`;
-
-    return updatedData;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      if (error.response?.status === 404) {
-        throw new Error("DELETED_USER");
-      }
-    }
-    console.error("Error fetching User Profile:", error);
-    throw new Error("Failed to fetch User Profile");
-  }
-}
 export async function getSSRUserInfoByUrl(url: string): Promise<MetaUserInfoResponse> {
   try {
     const token = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
