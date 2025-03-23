@@ -77,7 +77,7 @@ export default function Author({ authorId, authorUrl, feedId }: AuthorProps) {
         <>
           <div className={styles.spaceBetween}>
             <div className={styles.profileContainer}>
-              <Link href={`${authorUrl}`}>
+              <Link href={`/${authorUrl}`}>
                 <div className={styles.profileLeft}>
                   {userData.image !== "https://image.grimity.com/null" ? (
                     <Image
@@ -132,7 +132,7 @@ export default function Author({ authorId, authorUrl, feedId }: AuthorProps) {
                 ))}
             </div>
             {!isMobile && (
-              <Link href={`${authorUrl}`}>
+              <Link href={`/${authorUrl}`}>
                 <p className={styles.seeMore}>작품 더보기</p>
               </Link>
             )}

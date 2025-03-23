@@ -273,7 +273,7 @@ export default function Comment({
         {childComments.map((reply) => (
           <div key={reply.id} className={`${styles.comment} ${styles.nestedComment}`}>
             <div className={styles.commentBox}>
-              <Link href={`${reply.writer.url}`}>
+              <Link href={`/${reply.writer.url}`}>
                 {reply.writer.image !== "https://image.grimity.com/null" ? (
                   <Image
                     src={reply.writer.image}
@@ -300,7 +300,7 @@ export default function Comment({
                 <div className={styles.writerReply}>
                   <div className={styles.writerLeft}>
                     <div className={styles.writerCreatedAt}>
-                      <Link href={`${reply.writer.url}`}>
+                      <Link href={`/{reply.writer.url}`}>
                         <div className={styles.writerName}>{reply.writer.name}</div>
                       </Link>
                       {reply.writer.id === feedWriterId && (
@@ -386,7 +386,7 @@ export default function Comment({
     return (
       <div key={comment.id} className={styles.comment}>
         <div className={styles.commentBox}>
-          <Link href={`${comment.writer.url}`}>
+          <Link href={`/${comment.writer.url}`}>
             {comment.writer.image !== "https://image.grimity.com/null" ? (
               <Image
                 src={comment.writer.image}
@@ -413,7 +413,7 @@ export default function Comment({
             <div className={styles.writerReply}>
               <div className={styles.writerLeft}>
                 <div className={styles.writerCreatedAt}>
-                  <Link href={`${comment.writer.url}`}>
+                  <Link href={`/${comment.writer.url}`}>
                     <div className={styles.writerName}>
                       {comment.writer.name}
                       {comment.writer.id === feedWriterId && (

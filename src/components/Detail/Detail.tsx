@@ -213,7 +213,7 @@ export default function Detail({ id }: DetailProps) {
           <>
             <section className={styles.header}>
               <div className={styles.profileLeft}>
-                <Link href={`${details.author.url}`}>
+                <Link href={`/${details.author.url}`}>
                   {details.author.image !== "https://image.grimity.com/null" ? (
                     <Image
                       src={details.author.image}
@@ -239,7 +239,7 @@ export default function Detail({ id }: DetailProps) {
                   )}
                 </Link>
                 <div className={styles.authorInfo}>
-                  <Link href={`${details.author.url}`}>
+                  <Link href={`/${details.author.url}`}>
                     <p className={styles.authorName}>{details.author.name}</p>
                   </Link>
                   <div className={styles.stats}>
