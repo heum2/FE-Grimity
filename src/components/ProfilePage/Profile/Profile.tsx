@@ -57,6 +57,7 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
 
   useEffect(() => {
     setProfileImage(userData?.image || "/image/default.svg");
+    setCoverImage(userData?.backgroundImage || "/image/default-cover.png");
   }, [userData]);
 
   const handleFollowClick = async () => {
