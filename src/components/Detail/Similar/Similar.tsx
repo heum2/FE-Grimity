@@ -20,7 +20,7 @@ export default function Similar({ tagNames }: SimilarProps) {
 
   return (
     <div className={styles.container}>
-      <Title>관련 작품</Title>
+      {/* <Title>관련 작품</Title>
       {Data && (
         <div className={styles.cardList}>
           {Data.map((item) => (
@@ -36,7 +36,7 @@ export default function Similar({ tagNames }: SimilarProps) {
             />
           ))}
         </div>
-      )}
+      )} */}
     </div>
   );
 }
