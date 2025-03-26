@@ -26,7 +26,6 @@ export default function Header() {
   const [activeNav, setActiveNav] = useState("홈");
   const activeItemRef = useRef<HTMLDivElement>(null);
   const indicatorRef = useRef<HTMLDivElement>(null);
-  const [isSearchBarOpen, setIsSearchBarOpen] = useState(false);
   const [keyword, setKeyword] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -205,10 +204,6 @@ export default function Header() {
     }
   };
 
-  const handleSearchBarOpen = () => {
-    setIsSearchBarOpen((prev) => !prev);
-  };
-
   const toggleNotifications = () => {
     setShowNotifications((prev) => !prev);
   };
@@ -243,7 +238,7 @@ export default function Header() {
         tab = "board";
       }
       router.push(`/search?tab=${tab}&keyword=${encodeURIComponent(trimmedKeyword)}`);
-      setIsSearchBarOpen(false);
+      // setIsSearchBarOpen(false);
       setKeyword("");
     }
   };
@@ -292,37 +287,26 @@ export default function Header() {
           )}
           <div className={styles.icons}>
             {!isMobile && !isTablet ? (
-              isSearchBarOpen ? (
-                <div className={styles.searchbarContainer}>
-                  <input
-                    placeholder="그림, 작가, 관련 작품을 검색해보세요"
-                    className={styles.input}
-                    value={keyword}
-                    onChange={(e) => setKeyword(e.target.value)}
-                    onKeyDown={handleSearchKeyDown}
-                  />
-                  <div onClick={handleSearchBarOpen}>
-                    <IconComponent name="searchGray" size={24} padding={8} isBtn />
-                  </div>
-                </div>
-              ) : (
-                <div onClick={handleSearchBarOpen}>
+              <div className={styles.searchbarContainer}>
+                <input
+                  placeholder="그림, 작가, 관련 작품을 검색해보세요"
+                  className={styles.input}
+                  value={keyword}
+                  onChange={(e) => setKeyword(e.target.value)}
+                  onKeyDown={handleSearchKeyDown}
+                />
+                <Link href="/search">
                   <IconComponent
                     name={isUserPage ? "searchWhite" : "search"}
                     size={24}
                     padding={8}
                     isBtn
                   />
-                </div>
-              )
+                </Link>
+              </div>
             ) : (
               <Link href="/search">
-                <IconComponent
-                  name={isUserPage ? "searchWhite" : "search"}
-                  size={24}
-                  padding={8}
-                  isBtn
-                />
+                <IconComponent name="search" size={24} padding={8} isBtn />
               </Link>
             )}
             {isLoggedIn && myData && (
