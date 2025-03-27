@@ -444,7 +444,7 @@ export default function Detail({ id }: DetailProps) {
             <div className={styles.bar} />
             <div className={styles.cards}>
               <Author authorId={details.author.id} feedId={id} authorUrl={details.author.url} />
-              {details.tags.length > 0 && <Similar tagNames={details.tags.join(",")} />}
+              {/* {details.tags.length > 0 && <Similar tagNames={details.tags.join(",")} />} */}
               <NewFeed isDetail />
             </div>
           </>
