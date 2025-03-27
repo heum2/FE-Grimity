@@ -238,7 +238,6 @@ export default function Header() {
         tab = "board";
       }
       router.push(`/search?tab=${tab}&keyword=${encodeURIComponent(trimmedKeyword)}`);
-      // setIsSearchBarOpen(false);
       setKeyword("");
     }
   };
@@ -286,29 +285,9 @@ export default function Header() {
             </div>
           )}
           <div className={styles.icons}>
-            {!isMobile && !isTablet ? (
-              <div className={styles.searchbarContainer}>
-                <input
-                  placeholder="그림, 작가, 관련 작품을 검색해보세요"
-                  className={styles.input}
-                  value={keyword}
-                  onChange={(e) => setKeyword(e.target.value)}
-                  onKeyDown={handleSearchKeyDown}
-                />
-                <Link href="/search">
-                  <IconComponent
-                    name={isUserPage ? "searchWhite" : "search"}
-                    size={24}
-                    padding={8}
-                    isBtn
-                  />
-                </Link>
-              </div>
-            ) : (
-              <Link href="/search">
-                <IconComponent name="search" size={24} padding={8} isBtn />
-              </Link>
-            )}
+            <Link href="/search">
+              <IconComponent name="search" size={24} padding={8} isBtn />
+            </Link>
             {isLoggedIn && myData && (
               <div className={styles.notificationWrapper} ref={notificationRef}>
                 <div className={styles.notification} onClick={toggleNotifications}>
