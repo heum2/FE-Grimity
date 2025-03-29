@@ -1,5 +1,6 @@
 import axiosInstance from "@/constants/baseurl";
 import { useInfiniteQuery } from "react-query";
+import { SearchedFeedsResponse } from "@grimity/dto";
 
 export interface FeedSearchRequest {
   sort?: "latest" | "popular" | "accuracy";
@@ -8,34 +9,12 @@ export interface FeedSearchRequest {
   keyword: string;
 }
 
-export interface FeedSearch {
-  id: string;
-  title: string;
-  thumbnail: string;
-  viewCount: number;
-  likeCount: number;
-  commentCount: number;
-  isLike: boolean;
-  tags: string[];
-  author: {
-    id: string;
-    name: string;
-    url: string;
-  };
-}
-
-export interface FeedSearchResponse {
-  totalCount: number;
-  nextCursor: string | null;
-  feeds: FeedSearch[];
-}
-
 export async function getFeedSearch({
   sort,
   size,
   cursor,
   keyword,
-}: FeedSearchRequest): Promise<FeedSearchResponse> {
+}: FeedSearchRequest): Promise<SearchedFeedsResponse> {
   try {
     const response = await axiosInstance.get("/feeds/search", {
       params: {
@@ -46,18 +25,7 @@ export async function getFeedSearch({
       },
     });
 
-    const updatedData: FeedSearchResponse = {
-      ...response.data,
-      feeds: response.data.feeds.map((feed: FeedSearch) => ({
-        ...feed,
-        thumbnail: `https://image.grimity.com/${feed.thumbnail}`,
-        author: {
-          ...feed.author,
-        },
-      })),
-    };
-
-    return updatedData;
+    return response.data;
   } catch (error) {
     console.error("Error fetching FeedSearch:", error);
     throw new Error("Failed to fetch FeedSearch");

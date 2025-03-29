@@ -26,12 +26,12 @@ import { useGetFeedsComments } from "@/api/feeds-comments/getFeedComments";
 import { useMyData } from "@/api/users/getMe";
 import { isMobileState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { FollowingFeeds } from "@/api/feeds/getFeedsFollowing";
+import { FollowingFeedsResponse } from "@/api/feeds/getFeedsFollowing";
 
 interface FollowingFeedProps {
   id: string;
   commentCount: number;
-  details: FollowingFeeds;
+  details: FollowingFeedsResponse["feeds"][number];
 }
 
 export default function FollowingFeed({ id, commentCount, details }: FollowingFeedProps) {
@@ -210,7 +210,7 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
             <section className={styles.header}>
               <div className={styles.profileLeft}>
                 <Link href={`/${details.author.url}`}>
-                  {details.author.image !== "https://image.grimity.com/null" ? (
+                  {details.author.image !== null ? (
                     <Image
                       src={details.author.image}
                       alt={details.author.name}

@@ -1,6 +1,8 @@
 import axiosInstance from "@/constants/baseurl";
 import axios from "axios";
 import { useQuery } from "react-query";
+import type { PostsResponse, PostResponse } from "@grimity/dto";
+export type { PostResponse };
 
 export interface PostsLatestRequest {
   size: number;
@@ -8,46 +10,17 @@ export interface PostsLatestRequest {
   type: "ALL" | "QUESTION" | "FEEDBACK";
 }
 
-export interface PostsLatest {
-  id: string;
-  type: "NORMAL" | "QUESTION" | "FEEDBACK";
-  title: string;
-  content: string;
-  thumbnail: string | null;
-  commentCount: number;
-  viewCount: number;
-  createdAt: string;
-  author: {
-    id: string;
-    name: string;
-    url: string;
-  };
-}
-
-export interface PostsLatestResponse {
-  posts: PostsLatest[];
-  totalCount: number;
-}
-
 export async function getPostsLatest({
   size = 10,
   page = 1,
   type = "ALL",
-}: PostsLatestRequest): Promise<PostsLatestResponse> {
+}: PostsLatestRequest): Promise<PostsResponse> {
   try {
     const response = await axiosInstance.get("/posts", {
       params: { size, page, type },
     });
 
-    const updatedData: PostsLatestResponse = {
-      ...response.data,
-      posts: response.data.posts.map((post: PostsLatest) => ({
-        ...post,
-        thumbnail: post.thumbnail ? `https://image.grimity.com/${post.thumbnail}` : null,
-      })),
-    };
-
-    return updatedData;
+    return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response?.status === 404) {
@@ -60,7 +33,7 @@ export async function getPostsLatest({
 }
 
 export const usePostsLatest = (params: PostsLatestRequest) => {
-  return useQuery<PostsLatestResponse>(["postsLatest", params], () => getPostsLatest(params), {
+  return useQuery<PostsResponse>(["postsLatest", params], () => getPostsLatest(params), {
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
@@ -69,16 +42,11 @@ export const usePostsLatest = (params: PostsLatestRequest) => {
   });
 };
 
-export async function getPostsNotices(): Promise<PostsLatest[]> {
+export async function getPostsNotices(): Promise<PostResponse[]> {
   try {
     const response = await axiosInstance.get("/posts/notices");
 
-    const updatedPosts: PostsLatest[] = response.data.map((post: PostsLatest) => ({
-      ...post,
-      thumbnail: post.thumbnail ? `https://image.grimity.com/${post.thumbnail}` : null,
-    }));
-
-    return updatedPosts;
+    return response.data;
   } catch (error) {
     console.error("Error fetching postsNotices:", error);
     throw new Error("Failed to fetch postsNotices");
@@ -86,7 +54,7 @@ export async function getPostsNotices(): Promise<PostsLatest[]> {
 }
 
 export const usePostsNotices = () => {
-  return useQuery<PostsLatest[]>(["postsNotices"], () => getPostsNotices(), {
+  return useQuery<PostResponse[]>(["postsNotices"], () => getPostsNotices(), {
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,

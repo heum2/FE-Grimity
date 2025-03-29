@@ -3,7 +3,7 @@ export interface ProfileCardProps {
   title: string;
   cards: string[];
   thumbnail: string;
-  createdAt: string;
+  createdAt: string | Date;
   likeCount: number;
   commentCount: number;
   viewCount?: number;

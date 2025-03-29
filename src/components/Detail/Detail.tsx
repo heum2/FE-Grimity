@@ -24,7 +24,6 @@ import { timeAgo } from "@/utils/timeAgo";
 import Chip from "../Chip/Chip";
 import { modalState } from "@/states/modalState";
 import { deleteSave, putSave } from "@/api/feeds/putDeleteFeedsIdSave";
-import Similar from "./Similar/Similar";
 import Comment from "./Comment/Comment";
 import NewFeed from "../Layout/NewFeed/NewFeed";
 import { isMobileState } from "@/states/isMobileState";
@@ -214,7 +213,7 @@ export default function Detail({ id }: DetailProps) {
             <section className={styles.header}>
               <div className={styles.profileLeft}>
                 <Link href={`/${details.author.url}`}>
-                  {details.author.image !== "https://image.grimity.com/null" ? (
+                  {details.author.image !== null ? (
                     <Image
                       src={details.author.image}
                       alt={details.author.name}
@@ -444,7 +443,6 @@ export default function Detail({ id }: DetailProps) {
             <div className={styles.bar} />
             <div className={styles.cards}>
               <Author authorId={details.author.id} feedId={id} authorUrl={details.author.url} />
-              {/* {details.tags.length > 0 && <Similar tagNames={details.tags.join(",")} />} */}
               <NewFeed isDetail />
             </div>
           </>

@@ -1,17 +1,6 @@
 import axiosInstance from "@/constants/baseurl";
-
-export interface FeedsRequest {
-  title: string;
-  cards: string[];
-  isAI: boolean;
-  content: string;
-  tags: string[];
-  thumbnail: string;
-}
-
-export interface FeedsResponse {
-  id: string;
-}
+import type { CreateFeedRequest, IdResponse } from "@grimity/dto";
+export type { CreateFeedRequest, IdResponse };
 
 export async function postFeeds({
   title,
@@ -20,7 +9,7 @@ export async function postFeeds({
   content,
   tags,
   thumbnail,
-}: FeedsRequest): Promise<FeedsResponse> {
+}: CreateFeedRequest): Promise<IdResponse> {
   const response = await axiosInstance.post("/feeds", {
     title,
     cards,

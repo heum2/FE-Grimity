@@ -1,5 +1,6 @@
 import axiosInstance from "@/constants/baseurl";
 import { useQuery } from "react-query";
+import { PostsResponse } from "@grimity/dto";
 
 export interface PostSearchRequest {
   searchBy: "combined" | "name";
@@ -8,33 +9,12 @@ export interface PostSearchRequest {
   keyword: string;
 }
 
-export interface PostSearch {
-  id: string;
-  type: "NORMAL" | "QUESTION" | "FEEDBACK";
-  title: string;
-  createdAt: string;
-  content: string;
-  thumbnail: string | null;
-  viewCount: number;
-  commentCount: number;
-  author: {
-    id: string;
-    name: string;
-    url: string;
-  };
-}
-
-export interface PostSearchResponse {
-  totalCount: number;
-  posts: PostSearch[];
-}
-
 export async function getPostSearch({
   searchBy,
   size,
   page,
   keyword,
-}: PostSearchRequest): Promise<PostSearchResponse> {
+}: PostSearchRequest): Promise<PostsResponse> {
   try {
     const response = await axiosInstance.get("/posts/search", {
       params: {
@@ -45,15 +25,7 @@ export async function getPostSearch({
       },
     });
 
-    const updatedData: PostSearchResponse = {
-      ...response.data,
-      posts: response.data.posts.map((post: PostSearch) => ({
-        ...post,
-        thumbnail: post.thumbnail ? `https://image.grimity.com/${post.thumbnail}` : null,
-      })),
-    };
-
-    return updatedData;
+    return response.data;
   } catch (error) {
     console.error("Error fetching PostSearch:", error);
     throw new Error("Failed to fetch PostSearch");
@@ -61,7 +33,7 @@ export async function getPostSearch({
 }
 
 export function usePostSearch(params: PostSearchRequest | null) {
-  return useQuery<PostSearchResponse>(
+  return useQuery<PostsResponse>(
     params ? ["PostSearch", params.searchBy, params.size, params.page, params.keyword] : [],
     () => (params ? getPostSearch(params) : Promise.reject(undefined)),
     {

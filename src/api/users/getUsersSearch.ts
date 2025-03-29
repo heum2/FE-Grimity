@@ -1,5 +1,6 @@
 import axiosInstance from "@/constants/baseurl";
 import { useInfiniteQuery } from "react-query";
+import { SearchedUsersResponse } from "@grimity/dto";
 
 export interface UserSearchRequest {
   sort?: "popular" | "accuracy";
@@ -8,29 +9,12 @@ export interface UserSearchRequest {
   keyword: string;
 }
 
-export interface UserSearch {
-  url: string;
-  id: string;
-  name: string;
-  image: string;
-  description: string;
-  backgroundImage: string;
-  isFollowing: boolean;
-  followerCount: number;
-}
-
-export interface UserSearchResponse {
-  totalCount: number;
-  nextCursor: string | null;
-  users: UserSearch[];
-}
-
 export async function getUserSearch({
   sort,
   size,
   cursor,
   keyword,
-}: UserSearchRequest): Promise<UserSearchResponse> {
+}: UserSearchRequest): Promise<SearchedUsersResponse> {
   try {
     const response = await axiosInstance.get("/users/search", {
       params: {
@@ -41,16 +25,7 @@ export async function getUserSearch({
       },
     });
 
-    const updatedData: UserSearchResponse = {
-      ...response.data,
-      users: response.data.users.map((user: UserSearch) => ({
-        ...user,
-        image: `https://image.grimity.com/${user.image}`,
-        backgroundImage: `https://image.grimity.com/${user.backgroundImage}`,
-      })),
-    };
-
-    return updatedData;
+    return response.data;
   } catch (error) {
     console.error("Error fetching UserSearch:", error);
     throw new Error("Failed to fetch UserSearch");

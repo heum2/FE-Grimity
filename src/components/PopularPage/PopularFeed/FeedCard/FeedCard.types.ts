@@ -8,7 +8,7 @@ export interface FeedCardProps {
   author: {
     id: string;
     name: string;
-    image: string;
+    image: string | null;
     url: string;
   };
 }

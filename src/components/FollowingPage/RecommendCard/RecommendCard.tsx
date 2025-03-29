@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PopularResponse } from "@/api/users/getPopular";
+import { PopularUserResponse } from "@/api/users/getPopular";
 import styles from "./RecommendCard.module.scss";
 import Image from "next/image";
 import Button from "@/components/Button/Button";
@@ -20,7 +20,7 @@ export default function RecommendCard({
   followerCount: initialFollowerCount,
   isFollowing: initialIsFollowing,
   thumbnails,
-}: PopularResponse) {
+}: PopularUserResponse) {
   const { user_id } = useRecoilValue(authState);
   const { showToast } = useToast();
   const [isFollowing, setIsFollowing] = useState(initialIsFollowing);
@@ -129,7 +129,7 @@ export default function RecommendCard({
       <div className={styles.profileWrapper}>
         <Link href={`/${url}`}>
           <div className={styles.profileLeft}>
-            {image !== "https://image.grimity.com/null" ? (
+            {image !== null ? (
               <Image
                 src={image}
                 width={24}

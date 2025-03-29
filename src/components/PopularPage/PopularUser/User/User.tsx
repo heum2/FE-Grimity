@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PopularResponse } from "@/api/users/getPopular";
+import { PopularUserResponse } from "@/api/users/getPopular";
 import styles from "./User.module.scss";
 import Image from "next/image";
 import Button from "@/components/Button/Button";
@@ -16,7 +16,7 @@ export default function User({
   followerCount: initialFollowerCount,
   isFollowing: initialIsFollowing,
   thumbnails,
-}: PopularResponse) {
+}: PopularUserResponse) {
   const { showToast } = useToast();
   const [isFollowing, setIsFollowing] = useState(initialIsFollowing);
   const [followerCount, setFollowerCount] = useState(initialFollowerCount);
@@ -88,7 +88,7 @@ export default function User({
       <div className={styles.profileWrapper}>
         <Link href={`/${url}`}>
           <div className={styles.profileLeft}>
-            {image !== "https://image.grimity.com/null" ? (
+            {image !== null ? (
               <Image
                 src={image}
                 width={24}

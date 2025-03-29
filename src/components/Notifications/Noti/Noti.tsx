@@ -46,7 +46,7 @@ export default function Noti({ notification, onClose, onRefetch }: NotiProps) {
     if (notification.data.type === "FEED_LIKE") {
       return (
         <img
-          src={`https://image.grimity.com/${notification.data.thumbnail}`}
+          src={notification.data.thumbnail}
           width={isTablet ? 32 : 40}
           height={isTablet ? 32 : 40}
           loading="lazy"
@@ -57,11 +57,7 @@ export default function Noti({ notification, onClose, onRefetch }: NotiProps) {
     } else {
       return (
         <Image
-          src={
-            notification.data.actor.image
-              ? `https://image.grimity.com/${notification.data.actor.image}`
-              : "/image/default.svg"
-          }
+          src={notification.data.actor.image ? notification.data.actor.image : "/image/default.svg"}
           width={isTablet ? 32 : 40}
           height={isTablet ? 32 : 40}
           quality={50}

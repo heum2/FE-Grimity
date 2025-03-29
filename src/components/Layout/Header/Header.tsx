@@ -305,7 +305,7 @@ export default function Header() {
                     className={styles.profileContainer}
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   >
-                    {myData.image !== "https://image.grimity.com/null" ? (
+                    {myData.image !== null ? (
                       <Image
                         src={myData.image}
                         width={28}
@@ -339,7 +339,7 @@ export default function Header() {
                             window.scrollTo(0, 0);
                           }}
                         >
-                          {myData.image !== "https://image.grimity.com/null" ? (
+                          {myData.image !== null ? (
                             <Image
                               src={myData.image}
                               width={28}
@@ -520,7 +520,7 @@ export default function Header() {
                         <div className={styles.bar} />
                         <div className={styles.profileSubmenu}>
                           <Link href={`/${myData.url}`} className={styles.mobileMyInfo}>
-                            {myData.image !== "https://image.grimity.com/null" ? (
+                            {myData.image !== null ? (
                               <Image
                                 src={myData.image}
                                 width={32}

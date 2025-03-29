@@ -6,7 +6,7 @@ import Button from "@/components/Button/Button";
 import IconComponent from "@/components/Asset/Icon";
 import AllCard from "./AllCard/AllCard";
 import { useEffect, useState } from "react";
-import { PostsLatest, usePostsLatest, usePostsNotices } from "@/api/posts/getPosts";
+import { PostResponse, usePostsLatest, usePostsNotices } from "@/api/posts/getPosts";
 import { useRecoilValue } from "recoil";
 import { authState } from "@/states/authState";
 import { BoardAllProps } from "./BoardAll.types";
@@ -28,7 +28,7 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
   const { isLoggedIn } = useRecoilValue(authState);
   const [searchBy, setSearchBy] = useState<SortOption>("combined");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [posts, setPosts] = useState<PostsLatest[]>([]);
+  const [posts, setPosts] = useState<PostResponse[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [keyword, setKeyword] = useState("");
   const router = useRouter();

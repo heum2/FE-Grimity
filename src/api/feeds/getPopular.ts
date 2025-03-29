@@ -1,28 +1,8 @@
 import axiosInstance from "@/constants/baseurl";
 import { useInfiniteQuery } from "react-query";
+import { PopularFeedsResponse } from "@grimity/dto";
 
-export interface PopularFeed {
-  id: string;
-  title: string;
-  thumbnail: string;
-  createdAt: string;
-  likeCount: number;
-  viewCount: number;
-  isLike?: boolean;
-  author: {
-    id: string;
-    name: string;
-    image: string;
-    url: string;
-  };
-}
-
-export interface PopularFeedResponse {
-  feeds: PopularFeed[];
-  nextCursor: string | null;
-}
-
-export async function getPopularFeed({ pageParam = null }): Promise<PopularFeedResponse> {
+export async function getPopularFeed({ pageParam = null }): Promise<PopularFeedsResponse> {
   try {
     const response = await axiosInstance.get("/feeds/popular", {
       params: {
@@ -31,17 +11,7 @@ export async function getPopularFeed({ pageParam = null }): Promise<PopularFeedR
       },
     });
 
-    return {
-      ...response.data,
-      feeds: response.data.feeds.map((feed: PopularFeed) => ({
-        ...feed,
-        thumbnail: `https://image.grimity.com/${feed.thumbnail}`,
-        author: {
-          ...feed.author,
-          image: `https://image.grimity.com/${feed.author.image}`,
-        },
-      })),
-    };
+    return response.data;
   } catch (error) {
     console.error("Error fetching Popular:", error);
     throw new Error("Failed to fetch Popular");
@@ -49,7 +19,7 @@ export async function getPopularFeed({ pageParam = null }): Promise<PopularFeedR
 }
 
 export function usePopularFeed() {
-  return useInfiniteQuery<PopularFeedResponse>("PopularFeed", getPopularFeed, {
+  return useInfiniteQuery<PopularFeedsResponse>("PopularFeed", getPopularFeed, {
     getNextPageParam: (lastPage) => {
       // sourcery skip: simplify-ternary
       return lastPage.nextCursor ? lastPage.nextCursor : undefined;

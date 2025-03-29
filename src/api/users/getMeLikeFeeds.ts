@@ -1,5 +1,6 @@
 import axiosInstance from "@/constants/baseurl";
 import { useInfiniteQuery } from "react-query";
+import { MyLikeFeedsResponse } from "@grimity/dto";
 
 export interface MyLikeListRequest {
   size?: number;
@@ -21,31 +22,14 @@ export interface MyLikeListFeed {
   };
 }
 
-export interface MyLikeListResponse {
-  nextCursor: string | null;
-  feeds: MyLikeListFeed[];
-}
-
 export async function getMyLikeList({
   size,
   cursor,
-}: MyLikeListRequest): Promise<MyLikeListResponse> {
+}: MyLikeListRequest): Promise<MyLikeFeedsResponse> {
   try {
     const response = await axiosInstance.get("/users/me/like-feeds", { params: { size, cursor } });
 
-    const updatedData: MyLikeListResponse = {
-      ...response.data,
-      feeds: response.data.feeds.map((feed: MyLikeListFeed) => ({
-        ...feed,
-        cards: feed.cards.map((card) => `https://image.grimity.com/${card}`),
-        thumbnail: `https://image.grimity.com/${feed.thumbnail}`,
-        author: {
-          ...feed.author,
-        },
-      })),
-    };
-
-    return updatedData;
+    return response.data;
   } catch (error) {
     console.error("Error fetching MyLikeList:", error);
     throw new Error("Failed to fetch MyLikeList");
@@ -55,7 +39,7 @@ export async function getMyLikeList({
 export function useMyLikeList({ size }: MyLikeListRequest) {
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
 
-  return useInfiniteQuery<MyLikeListResponse>(
+  return useInfiniteQuery<MyLikeFeedsResponse>(
     "MyLikeList",
     ({ pageParam = null }) => getMyLikeList({ cursor: pageParam }),
     {

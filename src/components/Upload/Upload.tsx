@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Button from "../Button/Button";
 import styles from "./Upload.module.scss";
-import Image from "next/image";
+import { imageUrl as imageDomain } from "@/constants/imageUrl";
 import IconComponent from "../Asset/Icon";
 import { useToast } from "@/hooks/useToast";
 import { postPresignedUrls, PresignedUrlRequest } from "@/api/aws/postPresigned";
 import router from "next/router";
 import { useMutation } from "react-query";
-import { FeedsRequest, FeedsResponse, postFeeds } from "@/api/feeds/postFeeds";
+import { CreateFeedRequest, IdResponse, postFeeds } from "@/api/feeds/postFeeds";
 import { AxiosError } from "axios";
 import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
 import DraggableImage from "./DraggableImage/DraggableImage";
@@ -160,17 +160,17 @@ export default function Upload() {
     });
   };
 
-  const { mutate: uploadFeed, isLoading } = useMutation<FeedsResponse, AxiosError, FeedsRequest>(
+  const { mutate: uploadFeed, isLoading } = useMutation<IdResponse, AxiosError, CreateFeedRequest>(
     postFeeds,
     {
-      onSuccess: (response: FeedsResponse) => {
+      onSuccess: (response: IdResponse) => {
         hasUnsavedChangesRef.current = false;
         if (!response.id) {
           showToast("업로드 중 문제가 발생했습니다. 다시 시도해주세요.", "error");
           return;
         }
 
-        const imageUrl = `https://image.grimity.com/${thumbnailName}`;
+        const imageUrl = `${imageDomain}/${thumbnailName}`;
         setModal({
           isOpen: true,
           type: "UPLOAD",

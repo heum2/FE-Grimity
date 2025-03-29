@@ -7,7 +7,7 @@ export interface AllCardProps {
     thumbnail: string | null;
     commentCount: number;
     viewCount: number;
-    createdAt: string;
+    createdAt: string | Date;
     author?: { name: string; id: string; url: string };
   };
   case: "saved-posts" | "my-posts" | "board";

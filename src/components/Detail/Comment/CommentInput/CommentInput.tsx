@@ -10,7 +10,7 @@ import { isMobileState } from "@/states/isMobileState";
 interface CommentInputProps {
   feedId: string;
   isLoggedIn: boolean;
-  userData?: { image: string };
+  userData?: { image: string | null };
   showToast: (message: string, type: "error" | "success") => void;
   onCommentSubmitSuccess?: () => void;
 }
@@ -62,11 +62,7 @@ export default function CommentInput({
       {!isMobile &&
         (isLoggedIn && userData ? (
           <Image
-            src={
-              userData.image !== "https://image.grimity.com/null"
-                ? userData.image
-                : "/image/default.svg"
-            }
+            src={userData.image !== null ? userData.image : "/image/default.svg"}
             width={40}
             height={40}
             alt="프로필 이미지"

@@ -55,7 +55,7 @@ export default function SearchProfile({
     <div className={styles.container}>
       <Link href={`/${url}`}>
         <div className={styles.cover}>
-          {backgroundImage !== "https://image.grimity.com/null" ? (
+          {backgroundImage !== null ? (
             <img
               src={backgroundImage}
               alt="배경이미지"
@@ -86,7 +86,7 @@ export default function SearchProfile({
       </Link>
       <div className={styles.profile}>
         <Link href={`/${url}`}>
-          {image !== "https://image.grimity.com/null" ? (
+          {image !== null ? (
             <Image
               src={image}
               alt="프로필"

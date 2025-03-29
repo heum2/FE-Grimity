@@ -7,7 +7,7 @@ import { postPresignedUrls, PresignedUrlRequest } from "@/api/aws/postPresigned"
 import { useMutation } from "react-query";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
-import { EditFeedsRequest, putEditFeeds } from "@/api/feeds/putFeedsId";
+import { CreateFeedRequest, putEditFeeds } from "@/api/feeds/putFeedsId";
 import { useDetails } from "@/api/feeds/getFeedsId";
 import { EditFeedsProps } from "./EditFeeds.type";
 import Loader from "@/components/Layout/Loader/Loader";
@@ -19,6 +19,7 @@ import { modalState } from "@/states/modalState";
 import { isMobileState, isTabletState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { authState } from "@/states/authState";
+import { imageUrl } from "@/constants/imageUrl";
 
 export default function EditFeeds({ id }: EditFeedsProps) {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
@@ -189,7 +190,7 @@ export default function EditFeeds({ id }: EditFeedsProps) {
     });
   };
 
-  const { mutate: editFeed } = useMutation((data: EditFeedsRequest) => putEditFeeds(id, data), {
+  const { mutate: editFeed } = useMutation((data: CreateFeedRequest) => putEditFeeds(id, data), {
     onSuccess: () => {
       hasUnsavedChangesRef.current = false;
       showToast("수정이 완료되었습니다!", "success");
@@ -373,11 +374,11 @@ export default function EditFeeds({ id }: EditFeedsProps) {
 
     editFeed({
       title,
-      cards: images.map((image) => image.name.replace("https://image.grimity.com/", "")),
+      cards: images.map((image) => image.name.replace(`${imageUrl}/`, "")),
       isAI,
       content,
       tags,
-      thumbnail: thumbnailName.replace("https://image.grimity.com/", ""),
+      thumbnail: thumbnailName.replace(`${imageUrl}/`, ""),
     });
   };
 

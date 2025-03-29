@@ -12,7 +12,7 @@ export default function Following() {
   const { restoreScrollPosition } = useScrollRestoration("following-scroll");
 
   useEffect(() => {
-    setOGUrl(serviceUrl + router.asPath);
+    setOGUrl(`${serviceUrl}/${router.asPath}`);
   }, [router.asPath]);
 
   useEffect(() => {

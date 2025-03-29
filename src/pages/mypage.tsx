@@ -27,12 +27,12 @@ export default function Mypage() {
   };
 
   const [OGTitle, setOGTitle] = useState<string>(getTabData());
-  const [OGUrl, setOGUrl] = useState<string>(serviceUrl);
+  const [OGUrl, setOGUrl] = useState(serviceUrl);
   const { restoreScrollPosition } = useScrollRestoration("mypage-scroll");
   const { isLoggedIn } = useRecoilValue(authState);
 
   useEffect(() => {
-    setOGUrl(serviceUrl + router.asPath);
+    setOGUrl(`${serviceUrl}/${router.asPath}`);
   }, [router.asPath]);
 
   useEffect(() => {
