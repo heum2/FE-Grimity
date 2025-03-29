@@ -7,7 +7,7 @@ import { usePostFeedsComments } from "@/api/feeds-comments/postFeedComments";
 import {
   useGetFeedsComments,
   useGetFeedsChildComments,
-  FeedsCommentsResponse,
+  FeedCommentsResponse,
 } from "@/api/feeds-comments/getFeedComments";
 import { CommentProps } from "./Comment.types";
 import { useToast } from "@/hooks/useToast";
@@ -274,7 +274,7 @@ export default function Comment({
           <div key={reply.id} className={`${styles.comment} ${styles.nestedComment}`}>
             <div className={styles.commentBox}>
               <Link href={`/${reply.writer.url}`}>
-                {reply.writer.image !== "https://image.grimity.com/null" ? (
+                {reply.writer.image !== null ? (
                   <Image
                     src={reply.writer.image}
                     width={24}
@@ -380,14 +380,14 @@ export default function Comment({
   };
 
   // 댓글 영역
-  const renderComment = (comment: FeedsCommentsResponse["comments"][number]) => {
+  const renderComment = (comment: FeedCommentsResponse["comments"][number]) => {
     const isExpanded = expandedComments.has(comment.id);
 
     return (
       <div key={comment.id} className={styles.comment}>
         <div className={styles.commentBox}>
           <Link href={`/${comment.writer.url}`}>
-            {comment.writer.image !== "https://image.grimity.com/null" ? (
+            {comment.writer.image !== null ? (
               <Image
                 src={comment.writer.image}
                 width={isMobile ? 24 : 40}
@@ -503,11 +503,7 @@ export default function Comment({
                 {!isMobile &&
                   (isLoggedIn && userData ? (
                     <img
-                      src={
-                        userData.image !== "https://image.grimity.com/null"
-                          ? userData.image
-                          : "/image/default.svg"
-                      }
+                      src={userData.image !== null ? userData.image : "/image/default.svg"}
                       width={24}
                       height={24}
                       alt="프로필 이미지"

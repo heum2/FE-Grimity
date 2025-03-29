@@ -1,4 +1,4 @@
-import { getSSRDetails, MetaDetailsResponse } from "@/api/feeds/getFeedsId";
+import { getSSRDetails, FeedMetaResponse } from "@/api/feeds/getFeedsId";
 import Detail from "@/components/Detail/Detail";
 import { serviceUrl } from "@/constants/serviceurl";
 import { useScrollRestoration } from "@/hooks/useScrollRestoration";
@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 type Props = {
-  details: MetaDetailsResponse;
+  details: FeedMetaResponse;
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -54,7 +54,7 @@ export default function FeedDetail({ details }: Props) {
           content={`${details.content} | grimity | ${details.tags}`}
         />
         <meta property="og:image" content={details.thumbnail ?? ""} />
-        <meta property="og:url" content={`${serviceUrl}feeds/${details.id}`} />
+        <meta property="og:url" content={`${serviceUrl}/feeds/${details.id}`} />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${details.title} - 그리미티`} />

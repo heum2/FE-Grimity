@@ -1,17 +1,10 @@
 import axiosInstance from "@/constants/baseurl";
-
-export interface EditFeedsRequest {
-  title: string;
-  cards: string[];
-  isAI: boolean;
-  content: string;
-  tags: string[];
-  thumbnail: string;
-}
+import type { CreateFeedRequest } from "@grimity/dto";
+export type { CreateFeedRequest };
 
 export async function putEditFeeds(
   id: string,
-  { title, cards, isAI, content, tags, thumbnail }: EditFeedsRequest,
+  { title, cards, isAI, content, tags, thumbnail }: CreateFeedRequest,
 ): Promise<Response> {
   const response = await axiosInstance.put(`/feeds/${id}`, {
     title,

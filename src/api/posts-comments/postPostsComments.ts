@@ -1,19 +1,13 @@
 import axiosInstance from "@/constants/baseurl";
 import { useMutation } from "react-query";
-
-export interface PostsCommentsPostRequest {
-  postId: string;
-  parentCommentId?: string;
-  content: string;
-  mentionedUserId?: {};
-}
+import { CreatePostCommentRequest } from "@grimity/dto";
 
 export async function postPostsComments({
   postId,
   parentCommentId,
   content,
   mentionedUserId,
-}: PostsCommentsPostRequest): Promise<void> {
+}: CreatePostCommentRequest): Promise<void> {
   try {
     await axiosInstance.post("/post-comments", {
       postId,
@@ -28,5 +22,5 @@ export async function postPostsComments({
 }
 
 export function usePostPostsComments() {
-  return useMutation((data: PostsCommentsPostRequest) => postPostsComments(data));
+  return useMutation((data: CreatePostCommentRequest) => postPostsComments(data));
 }

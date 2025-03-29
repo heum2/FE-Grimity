@@ -34,7 +34,7 @@ export default function Like() {
           ) : (
             data.map((like, index) => (
               <li key={index} className={styles.item}>
-                {like.image !== "https://image.grimity.com/null" ? (
+                {like.image !== null ? (
                   <Image
                     src={like.image}
                     width={isMobile ? 40 : 50}

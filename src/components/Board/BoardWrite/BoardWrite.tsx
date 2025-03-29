@@ -6,7 +6,7 @@ import styles from "./BoardWrite.module.scss";
 import { postPresignedUrl } from "@/api/aws/postPresigned";
 import TextField from "@/components/TextField/TextField";
 import { useMutation } from "react-query";
-import { PostsRequest, PostsResponse, postPosts } from "@/api/posts/postPosts";
+import { CreatePostRequest, PostsResponse, postPosts } from "@/api/posts/postPosts";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useToast } from "@/hooks/useToast";
@@ -15,6 +15,7 @@ import { useRecoilValue } from "recoil";
 import { isMobileState, isTabletState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { authState } from "@/states/authState";
+import { imageUrl } from "@/constants/imageUrl";
 
 const Editor = dynamic(() => import("@tinymce/tinymce-react").then((mod) => mod.Editor), {
   ssr: false,
@@ -59,15 +60,18 @@ export default function BoardWrite() {
     setContent(value);
   };
 
-  const { mutate: createPost } = useMutation<PostsResponse, AxiosError, PostsRequest>(postPosts, {
-    onSuccess: (response) => {
-      router.push(`/posts/${response.id}`);
-      showToast("글이 등록되었어요.", "success");
+  const { mutate: createPost } = useMutation<PostsResponse, AxiosError, CreatePostRequest>(
+    postPosts,
+    {
+      onSuccess: (response) => {
+        router.push(`/posts/${response.id}`);
+        showToast("글이 등록되었어요.", "success");
+      },
+      onError: () => {
+        showToast("글 작성에 실패했습니다.", "error");
+      },
     },
-    onError: () => {
-      showToast("글 작성에 실패했습니다.", "error");
-    },
-  });
+  );
 
   const handleSubmit = () => {
     if (!title.trim()) {
@@ -231,7 +235,7 @@ export default function BoardWrite() {
                       throw new Error(`${uploadResponse.status}`);
                     }
 
-                    return `https://image.grimity.com/${data.imageName}`;
+                    return `${imageUrl}/${data.imageName}`;
                   } catch (error) {
                     return Promise.reject("이미지 업로드 실패");
                   }

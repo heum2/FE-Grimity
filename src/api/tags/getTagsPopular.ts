@@ -1,21 +1,13 @@
 import axiosInstance from "@/constants/baseurl";
 import { useQuery } from "react-query";
+import type { PopularTagResponse } from "@grimity/dto";
+export type { PopularTagResponse };
 
-export interface TagsPopularResponse {
-  tagName: string;
-  thumbnail: string;
-}
-
-export async function getTagsPopular(): Promise<TagsPopularResponse[]> {
+export async function getTagsPopular(): Promise<PopularTagResponse[]> {
   try {
     const response = await axiosInstance.get("/tags/popular");
 
-    const updatedData = response.data.map((tag: TagsPopularResponse) => ({
-      ...tag,
-      thumbnail: `https://image.grimity.com/${tag.thumbnail}`,
-    }));
-
-    return updatedData;
+    return response.data;
   } catch (error) {
     console.error("Error fetching TagsPopular:", error);
     throw new Error("Failed to fetch TagsPopular");
@@ -23,7 +15,7 @@ export async function getTagsPopular(): Promise<TagsPopularResponse[]> {
 }
 
 export function useTagsPopular() {
-  return useQuery<TagsPopularResponse[]>(["TagsPopular"], getTagsPopular, {
+  return useQuery<PopularTagResponse[]>(["TagsPopular"], getTagsPopular, {
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,

@@ -1,4 +1,4 @@
-import { getSSRUserInfoByUrl, MetaUserInfoResponse } from "@/api/users/getId";
+import { getSSRUserInfoByUrl, UserMetaResponse } from "@/api/users/getId";
 import { useMyData } from "@/api/users/getMe";
 import ProfilePage from "@/components/ProfilePage/ProfilePage";
 import { serviceUrl } from "@/constants/serviceurl";
@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 type Props = {
-  data: MetaUserInfoResponse;
+  data: UserMetaResponse;
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {

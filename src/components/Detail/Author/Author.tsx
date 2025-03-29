@@ -79,7 +79,7 @@ export default function Author({ authorId, authorUrl, feedId }: AuthorProps) {
             <div className={styles.profileContainer}>
               <Link href={`/${authorUrl}`}>
                 <div className={styles.profileLeft}>
-                  {userData.image !== "https://image.grimity.com/null" ? (
+                  {userData.image !== null ? (
                     <Image
                       src={userData.image}
                       alt={userData.name}

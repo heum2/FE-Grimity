@@ -7,10 +7,10 @@ export interface RectangleCardProps {
     url: string;
     id: string;
     name: string;
-    image: string;
+    image: string | null;
   };
   likeCount: number;
   commentCount: number;
-  createdAt: string;
+  createdAt: string | Date;
   isLike?: boolean;
 }

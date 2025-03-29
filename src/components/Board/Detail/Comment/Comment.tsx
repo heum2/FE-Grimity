@@ -19,9 +19,8 @@ import {
 import { deletePostsComments } from "@/api/posts-comments/deletePostsComment";
 import { usePostPostsComments } from "@/api/posts-comments/postPostsComments";
 import {
-  PostsChildComment,
-  PostsComment,
   useGetPostsComments,
+  ParentPostCommentResponse,
 } from "@/api/posts-comments/getPostsComments";
 import { PostCommentProps, PostCommentWriter } from "./Comment.types";
 import { isMobileState } from "@/states/isMobileState";
@@ -138,7 +137,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
 
   const handleParentReply = (
     commentId: string,
-    writer?: { id: string; name: string; url: string },
+    writer: { id: string; name: string; url: string } | null,
   ) => {
     if (!writer) {
       showToast("삭제된 댓글에는 답글을 달 수 없습니다.", "error");
@@ -164,7 +163,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
   const handleChildReply = (
     commentId: string,
     parentId: string,
-    writer?: { id: string; name: string; url: string },
+    writer: { id: string; name: string; url: string } | null,
   ) => {
     if (!writer) {
       showToast("삭제된 댓글에는 답글을 달 수 없습니다.", "error");
@@ -311,7 +310,11 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
 
   if (isLoading) return <Loader />;
 
-  const renderChildComments = (childComments: PostsChildComment[], parentCommentId: string) => {
+  // const renderChildComments = (childComments: PostsChildComment[], parentCommentId: string) => {
+  const renderChildComments = (
+    childComments: ParentPostCommentResponse["childComments"],
+    parentCommentId: string,
+  ) => {
     return (
       <div className={styles.childComments}>
         {childComments.map((reply) => (
@@ -360,7 +363,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
                       />
                       {reply.likeCount}
                     </div>
-                    {!reply.isDeleted && reply.writer && (
+                    {reply.writer && (
                       <p
                         onClick={(e) => {
                           e.stopPropagation();
@@ -421,7 +424,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
     );
   };
 
-  const renderComment = (comment: PostsComment) => {
+  const renderComment = (comment: ParentPostCommentResponse) => {
     return (
       <div key={comment.id} className={styles.comment}>
         <div className={styles.commentBox}>

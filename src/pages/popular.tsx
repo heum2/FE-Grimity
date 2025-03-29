@@ -12,7 +12,7 @@ export default function PopularPage() {
   const { restoreScrollPosition } = useScrollRestoration("popular-scroll");
 
   useEffect(() => {
-    setOGUrl(serviceUrl + router.asPath);
+    setOGUrl(`${serviceUrl}/${router.asPath}`);
   }, [router.asPath]);
 
   useEffect(() => {

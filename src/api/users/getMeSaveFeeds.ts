@@ -1,52 +1,20 @@
 import axiosInstance from "@/constants/baseurl";
 import { useInfiniteQuery } from "react-query";
+import { MyLikeFeedsResponse } from "@grimity/dto";
 
 export interface MySaveListRequest {
   size?: number;
   cursor?: string;
 }
 
-export interface MySaveListFeed {
-  id: string;
-  title: string;
-  cards: string[];
-  thumbnail: string;
-  likeCount: number;
-  viewCount: number;
-  commentCount: number;
-  createdAt: string;
-  author: {
-    id: string;
-    name: string;
-    url: string;
-  };
-}
-
-export interface MySaveListResponse {
-  nextCursor: string | null;
-  feeds: MySaveListFeed[];
-}
-
 export async function getMySaveList({
   size,
   cursor,
-}: MySaveListRequest): Promise<MySaveListResponse> {
+}: MySaveListRequest): Promise<MyLikeFeedsResponse> {
   try {
     const response = await axiosInstance.get("/users/me/save-feeds", { params: { size, cursor } });
 
-    const updatedData: MySaveListResponse = {
-      ...response.data,
-      feeds: response.data.feeds.map((feed: MySaveListFeed) => ({
-        ...feed,
-        cards: feed.cards.map((card) => `https://image.grimity.com/${card}`),
-        thumbnail: `https://image.grimity.com/${feed.thumbnail}`,
-        author: {
-          ...feed.author,
-        },
-      })),
-    };
-
-    return updatedData;
+    return response.data;
   } catch (error) {
     console.error("Error fetching MySaveList:", error);
     throw new Error("Failed to fetch MySaveList");
@@ -56,7 +24,7 @@ export async function getMySaveList({
 export function useMySaveList({ size }: MySaveListRequest) {
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
 
-  return useInfiniteQuery<MySaveListResponse>(
+  return useInfiniteQuery<MyLikeFeedsResponse>(
     "MySaveList",
     ({ pageParam = null }) => getMySaveList({ cursor: pageParam }),
     {

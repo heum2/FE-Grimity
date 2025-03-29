@@ -2,37 +2,12 @@ import axiosInstance from "@/constants/baseurl";
 import { authState } from "@/states/authState";
 import { useInfiniteQuery, useQuery } from "react-query";
 import { useRecoilValue } from "recoil";
+import type { FollowingFeedsResponse } from "@grimity/dto";
+export type { FollowingFeedsResponse };
 
 export interface FollowingFeedsRequest {
   size?: number;
   cursor?: string;
-}
-
-export interface FollowingFeeds {
-  id: string;
-  title: string;
-  cards: string[];
-  thumbnail: string;
-  content: string;
-  createdAt: string;
-  viewCount: number;
-  likeCount: number;
-  commentCount: number;
-  isAI: boolean;
-  author: {
-    id: string;
-    name: string;
-    image: string;
-    url: string;
-  };
-  isLike: boolean;
-  isSave: boolean;
-  tags: string[];
-}
-
-export interface FollowingFeedsResponse {
-  nextCursor: string | null;
-  feeds: FollowingFeeds[];
 }
 
 export async function getFollowingFeeds({
@@ -42,20 +17,7 @@ export async function getFollowingFeeds({
   try {
     const response = await axiosInstance.get("/feeds/following", { params: { size, cursor } });
 
-    const updatedData: FollowingFeedsResponse = {
-      ...response.data,
-      feeds: response.data.feeds.map((feed: FollowingFeeds) => ({
-        ...feed,
-        cards: feed.cards.map((card) => `https://image.grimity.com/${card}`),
-        thumbnail: `https://image.grimity.com/${feed.thumbnail}`,
-        author: {
-          ...feed.author,
-          image: `https://image.grimity.com/${feed.author.image}`,
-        },
-      })),
-    };
-
-    return updatedData;
+    return response.data;
   } catch (error) {
     console.error("Error fetching FollowingFeeds:", error);
     throw new Error("Failed to fetch FollowingFeeds");

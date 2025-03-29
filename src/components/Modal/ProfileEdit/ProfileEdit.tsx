@@ -8,7 +8,7 @@ import IconComponent from "@/components/Asset/Icon";
 import Button from "@/components/Button/Button";
 import { useToast } from "@/hooks/useToast";
 import { useMyData } from "@/api/users/getMe";
-import { MyInfoRequest, UpdateProfileConflictResponse, putMyInfo } from "@/api/users/putMe";
+import { UpdateUserRequest, UpdateProfileConflictResponse, putMyInfo } from "@/api/users/putMe";
 import { AxiosError } from "axios";
 import Loader from "@/components/Layout/Loader/Loader";
 import router from "next/router";
@@ -48,7 +48,7 @@ export default function ProfileEdit() {
     }
   }, [myData]);
 
-  const mutation = useMutation((newInfo: MyInfoRequest) => putMyInfo(newInfo), {
+  const mutation = useMutation((newInfo: UpdateUserRequest) => putMyInfo(newInfo), {
     onSuccess: () => {
       showToast("프로필 정보가 변경되었습니다!", "success");
       setModal({ isOpen: false, type: null, data: null });
@@ -139,7 +139,7 @@ export default function ProfileEdit() {
       (link) => link.linkName.trim() !== "" || link.link.trim() !== "",
     );
 
-    const updatedInfo: MyInfoRequest = {
+    const updatedInfo: UpdateUserRequest = {
       name: nameWithoutTrailingSpace,
       description,
       links: filteredLinks,

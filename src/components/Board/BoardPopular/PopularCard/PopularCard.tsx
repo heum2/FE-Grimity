@@ -1,4 +1,4 @@
-import { TodayPopularPostsResponse } from "@/api/posts/getTodayPopular";
+import { PostResponse } from "@/api/posts/getTodayPopular";
 import styles from "./PopularCard.module.scss";
 import striptags from "striptags";
 import { timeAgo } from "@/utils/timeAgo";
@@ -10,7 +10,7 @@ import { useRecoilValue } from "recoil";
 import { isMobileState } from "@/states/isMobileState";
 
 interface PopularCardProps {
-  post: TodayPopularPostsResponse;
+  post: PostResponse;
 }
 
 export default function PopularCard({ post }: PopularCardProps) {

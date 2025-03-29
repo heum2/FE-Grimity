@@ -1,7 +1,5 @@
 import Title from "@/components/Layout/Title/Title";
 import styles from "./PopularFeed.module.scss";
-import Button from "@/components/Button/Button";
-import IconComponent from "@/components/Asset/Icon";
 import FeedCard from "./FeedCard/FeedCard";
 import { usePopularFeed } from "@/api/feeds/getPopular";
 import { useRef, useEffect } from "react";

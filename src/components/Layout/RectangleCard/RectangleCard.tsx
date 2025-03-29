@@ -78,7 +78,7 @@ export default function RectangleCard({
                 {author && (
                   <Link href={`/${author.url}`}>
                     <div className={styles.profile}>
-                      {author.image !== "https://image.grimity.com/null" ? (
+                      {author.image !== null ? (
                         <Image
                           src={author.image}
                           alt={author.name}
@@ -113,7 +113,7 @@ export default function RectangleCard({
               {author && (
                 <Link href={`/${author.url}`}>
                   <div className={styles.profile}>
-                    {author.image !== "https://image.grimity.com/null" ? (
+                    {author.image !== null ? (
                       <Image
                         src={author.image}
                         alt={author.name}
@@ -163,7 +163,7 @@ export default function RectangleCard({
           <div className={styles.cardData}>
             {author && (
               <div className={styles.profile}>
-                {author.image !== "https://image.grimity.com/null" ? (
+                {author.image !== null ? (
                   <Image
                     src={author.image}
                     alt={author.name}

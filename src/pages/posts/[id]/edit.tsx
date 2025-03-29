@@ -10,7 +10,7 @@ export default function PostEditPage() {
   const [OGUrl, setOGUrl] = useState(serviceUrl);
 
   useEffect(() => {
-    setOGUrl(serviceUrl + router.asPath);
+    setOGUrl(`${serviceUrl}/${router.asPath}`);
   }, [router.asPath]);
 
   const { id } = router.query;

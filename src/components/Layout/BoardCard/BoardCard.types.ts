@@ -3,5 +3,5 @@ export interface BoardCardProps {
   title: string;
   commentCount: number;
   viewCount: number;
-  createdAt: string;
+  createdAt: string | Date;
 }

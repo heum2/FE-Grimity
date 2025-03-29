@@ -1,4 +1,4 @@
-import { getSSRPostsDetails, MetaPostsDetailsResponse } from "@/api/posts/getPostsId";
+import { getSSRPostsDetails, PostBaseResponse } from "@/api/posts/getPostsId";
 import PostDetail from "@/components/Board/Detail/Detail";
 import { serviceUrl } from "@/constants/serviceurl";
 import { GetServerSideProps } from "next";
@@ -6,7 +6,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 
 type Props = {
-  details: MetaPostsDetailsResponse;
+  details: PostBaseResponse;
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -40,7 +40,7 @@ export default function FeedDetail({ details }: Props) {
         <meta property="og:title" content={`${details.title} - 그리미티`} />
         <meta property="og:description" content={`${details.content} | grimity |`} />
         <meta property="og:image" content={details.thumbnail ?? "/image/grimity_default.png"} />
-        <meta property="og:url" content={`${serviceUrl}posts/${details.id}`} />
+        <meta property="og:url" content={`${serviceUrl}/posts/${details.id}`} />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${details.title} - 그리미티`} />

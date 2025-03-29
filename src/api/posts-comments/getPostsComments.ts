@@ -1,52 +1,22 @@
 import axiosInstance from "@/constants/baseurl";
 import { useQuery } from "react-query";
+import type { ParentPostCommentResponse } from "@grimity/dto";
+export type { ParentPostCommentResponse };
 
 export interface PostsCommentsRequest {
   postId: string;
 }
 
-export interface PostsCommentWriter {
-  url: string;
-  id: string;
-  name: string;
-}
-
-export interface PostsChildComment {
-  isDeleted: any;
-  id: string;
-  content: string;
-  createdAt: string;
-  likeCount: number;
-  writer?: PostsCommentWriter;
-  mentionedUser?: {
-    id: string;
-    name: string;
-    url: string;
-  };
-  isLike: boolean;
-}
-
-export interface PostsComment {
-  id: string;
-  content: string;
-  createdAt: string;
-  likeCount: number;
-  isDeleted: boolean;
-  isLike: boolean;
-  writer?: PostsCommentWriter;
-  childComments: PostsChildComment[];
-}
-
 export interface PostsCommentsResponse {
   commentCount: number;
-  comments: PostsComment[];
+  comments: ParentPostCommentResponse[];
 }
 
 export async function getPostsComments({
   postId,
 }: PostsCommentsRequest): Promise<PostsCommentsResponse> {
   try {
-    const response = await axiosInstance.get<PostsComment[]>("/post-comments", {
+    const response = await axiosInstance.get<ParentPostCommentResponse[]>("/post-comments", {
       params: { postId },
     });
 

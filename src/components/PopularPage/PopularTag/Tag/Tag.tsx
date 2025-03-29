@@ -1,7 +1,7 @@
-import { TagsPopularResponse } from "@/api/tags/getTagsPopular";
+import type { PopularTagResponse } from "@/api/tags/getTagsPopular";
 import styles from "./Tag.module.scss";
 
-export default function Tag({ tagName, thumbnail }: TagsPopularResponse) {
+export default function Tag({ tagName, thumbnail }: PopularTagResponse) {
   return (
     <div className={styles.container}>
       <div className={styles.imageWrapper}>

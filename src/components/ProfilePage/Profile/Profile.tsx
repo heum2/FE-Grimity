@@ -336,7 +336,7 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
     <div className={styles.container}>
       {userData && (
         <>
-          {userData.backgroundImage !== "https://image.grimity.com/null" ? (
+          {userData.backgroundImage !== null ? (
             <div className={styles.backgroundImage}>
               <img
                 src={coverImage}
@@ -410,13 +410,11 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
           )}
           <section
             className={
-              userData.backgroundImage !== "https://image.grimity.com/null"
-                ? styles.infoContainer
-                : styles.infoContainerDefault
+              userData.backgroundImage !== null ? styles.infoContainer : styles.infoContainerDefault
             }
           >
             <div className={styles.imageLeft}>
-              {userData.image !== "https://image.grimity.com/null" ? (
+              {userData.image !== null ? (
                 <div className={styles.profileImageContainer}>
                   {profileImage && (
                     <Image

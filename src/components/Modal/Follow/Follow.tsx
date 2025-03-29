@@ -163,7 +163,7 @@ export default function Follow({ initialTab }: FollowProps) {
           ) : (
             data.map((follow, index) => (
               <li key={index} className={styles.item}>
-                {follow.image !== "https://image.grimity.com/null" ? (
+                {follow.image !== null ? (
                   <Image
                     src={follow.image}
                     width={isMobile ? 40 : 50}

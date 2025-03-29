@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { usePopular } from "@/api/users/getPopular";
+import { usePopular, type PopularUserResponse } from "@/api/users/getPopular";
 import styles from "./PopularUser.module.scss";
 import Title from "@/components/Layout/Title/Title";
 import Loader from "@/components/Layout/Loader/Loader";
@@ -13,7 +13,7 @@ import { authState } from "@/states/authState";
 export default function PopularUser() {
   const { user_id } = useRecoilValue(authState);
   const { data, isLoading } = usePopular();
-  const [randomUsers, setRandomUsers] = useState<any[]>([]);
+  const [randomUsers, setRandomUsers] = useState<PopularUserResponse[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const isMobile = useRecoilValue(isMobileState);
   const isTablet = useRecoilValue(isTabletState);
@@ -66,7 +66,7 @@ export default function PopularUser() {
           className={styles.swiper}
         >
           {randomUsers?.map((user) => (
-            <SwiperSlide key={user.tagName} className={styles.slide}>
+            <SwiperSlide key={user.id} className={styles.slide}>
               <User
                 id={user.id}
                 url={user.url}
@@ -75,6 +75,7 @@ export default function PopularUser() {
                 followerCount={user.followerCount}
                 isFollowing={user.isFollowing}
                 thumbnails={user.thumbnails}
+                description={user.description}
               />
             </SwiperSlide>
           ))}
@@ -82,7 +83,7 @@ export default function PopularUser() {
       ) : (
         <div className={styles.cardContainer} ref={containerRef}>
           {randomUsers?.map((user) => (
-            <div key={user.tagName} className={styles.slide}>
+            <div key={user.id} className={styles.slide}>
               <User
                 id={user.id}
                 url={user.url}
@@ -91,6 +92,7 @@ export default function PopularUser() {
                 followerCount={user.followerCount}
                 isFollowing={user.isFollowing}
                 thumbnails={user.thumbnails}
+                description={user.description}
               />
             </div>
           ))}

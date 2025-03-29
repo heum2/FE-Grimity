@@ -10,7 +10,7 @@ import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useToast } from "@/hooks/useToast";
 import Loader from "@/components/Layout/Loader/Loader";
-import { EditPostsRequest, putEditPosts } from "@/api/posts/putPostsId";
+import { CreatePostRequest, putEditPosts } from "@/api/posts/putPostsId";
 import { EditPostProps } from "./EditPost.types";
 import { usePostsDetails } from "@/api/posts/getPostsId";
 import { useRecoilState } from "recoil";
@@ -19,6 +19,7 @@ import { useRecoilValue } from "recoil";
 import { isMobileState, isTabletState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { authState } from "@/states/authState";
+import { imageUrl } from "@/constants/imageUrl";
 
 const Editor = dynamic(() => import("@tinymce/tinymce-react").then((mod) => mod.Editor), {
   ssr: false,
@@ -140,7 +141,7 @@ export default function EditPost({ id }: EditPostProps) {
     setContent(value);
   };
 
-  const { mutate: editPost } = useMutation((data: EditPostsRequest) => putEditPosts(id, data), {
+  const { mutate: editPost } = useMutation((data: CreatePostRequest) => putEditPosts(id, data), {
     onSuccess: () => {
       hasUnsavedChangesRef.current = false;
       router.push(`/posts/${id}`);
@@ -318,7 +319,7 @@ export default function EditPost({ id }: EditPostProps) {
                       throw new Error(`${uploadResponse.status}`);
                     }
 
-                    return `https://image.grimity.com/${data.imageName}`;
+                    return `${imageUrl}/${data.imageName}`;
                   } catch (error) {
                     return Promise.reject("이미지 업로드 실패");
                   }

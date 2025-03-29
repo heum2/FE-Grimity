@@ -12,7 +12,7 @@ export default function search() {
   const { restoreScrollPosition } = useScrollRestoration("search-scroll");
 
   useEffect(() => {
-    setOGUrl(serviceUrl + router.asPath);
+    setOGUrl(`${serviceUrl}/${router.asPath}`);
   }, [router.asPath]);
 
   useEffect(() => {

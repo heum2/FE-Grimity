@@ -1,5 +1,7 @@
 import axiosInstance from "@/constants/baseurl";
 import { useQuery } from "react-query";
+import type { FeedCommentsResponse, FeedChildCommentResponse } from "@grimity/dto";
+export type { FeedCommentsResponse };
 
 /* 댓글 api */
 export interface FeedsCommentsRequest {
@@ -7,43 +9,15 @@ export interface FeedsCommentsRequest {
   enabled?: boolean;
 }
 
-export interface FeedsCommentsResponse {
-  commentCount: number;
-  comments: {
-    id: string;
-    content: string;
-    createdAt: string;
-    likeCount: number;
-    isLike: boolean;
-    childCommentCount: number;
-    writer: {
-      id: string;
-      url: string;
-      name: string;
-      image: string;
-    };
-  }[];
-}
-
 export async function getFeedsComments({
   feedId,
-}: FeedsCommentsRequest): Promise<FeedsCommentsResponse> {
+}: FeedsCommentsRequest): Promise<FeedCommentsResponse> {
   try {
-    const response = await axiosInstance.get<FeedsCommentsResponse>("/feed-comments", {
+    const response = await axiosInstance.get<FeedCommentsResponse>("/feed-comments", {
       params: { feedId },
     });
 
-    const data = response.data;
-    return {
-      ...data,
-      comments: data.comments.map((comment) => ({
-        ...comment,
-        writer: {
-          ...comment.writer,
-          image: `https://image.grimity.com/${comment.writer.image}`,
-        },
-      })),
-    };
+    return response.data;
   } catch (error) {
     console.error("Error fetching comments:", error);
     throw new Error("Failed to fetch comments");
@@ -51,7 +25,7 @@ export async function getFeedsComments({
 }
 
 export function useGetFeedsComments({ feedId, enabled = true }: FeedsCommentsRequest) {
-  return useQuery<FeedsCommentsResponse>(
+  return useQuery<FeedCommentsResponse>(
     ["getFeedsComments", feedId],
     () => getFeedsComments({ feedId }),
     {
@@ -71,41 +45,19 @@ export interface FeedsChildCommentsRequest {
   parentId: string;
 }
 
-export interface FeedsChildComment {
-  id: string;
-  content: string;
-  createdAt: string;
-  likeCount: number;
-  isLike: boolean;
-  writer: {
-    url: any;
-    id: string;
-    name: string;
-    image: string;
-  };
-  mentionedUser?: {
-    id: string;
-    name: string;
-  };
-}
-
 export async function getFeedsChildComments({
   feedId,
   parentId,
-}: FeedsChildCommentsRequest): Promise<FeedsChildComment[]> {
+}: FeedsChildCommentsRequest): Promise<FeedChildCommentResponse[]> {
   try {
-    const response = await axiosInstance.get<FeedsChildComment[]>("/feed-comments/child-comments", {
-      params: { feedId, parentId },
-    });
-
-    const data = response.data;
-    return data.map((comment) => ({
-      ...comment,
-      writer: {
-        ...comment.writer,
-        image: `https://image.grimity.com/${comment.writer.image}`,
+    const response = await axiosInstance.get<FeedChildCommentResponse[]>(
+      "/feed-comments/child-comments",
+      {
+        params: { feedId, parentId },
       },
-    }));
+    );
+
+    return response.data;
   } catch (error) {
     console.error("Error fetching child comments:", error);
     throw new Error("Failed to fetch child comments");
@@ -113,7 +65,7 @@ export async function getFeedsChildComments({
 }
 
 export function useGetFeedsChildComments({ feedId, parentId }: FeedsChildCommentsRequest) {
-  return useQuery<FeedsChildComment[]>(
+  return useQuery<FeedChildCommentResponse[]>(
     ["getFeedsChildComments", feedId, parentId],
     () => getFeedsChildComments({ feedId, parentId }),
     {

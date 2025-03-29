@@ -1,27 +1,12 @@
 import axiosInstance from "@/constants/baseurl";
 import { useInfiniteQuery, useQuery } from "react-query";
+import { UserFeedsResponse } from "@grimity/dto";
 
 export interface UserFeedsRequest {
   id: string;
   size?: number;
   sort?: "latest" | "like" | "oldest";
   cursor?: string;
-}
-
-export interface UserFeeds {
-  id: string;
-  title: string;
-  cards: string[];
-  thumbnail: string;
-  createdAt: string;
-  viewCount: number;
-  likeCount: number;
-  commentCount: number;
-}
-
-export interface UserFeedsResponse {
-  nextCursor: string | null;
-  feeds: UserFeeds[];
 }
 
 export async function getUserFeeds({
@@ -31,7 +16,7 @@ export async function getUserFeeds({
   cursor,
 }: UserFeedsRequest): Promise<UserFeedsResponse> {
   try {
-    const response = await axiosInstance.get(`/users/${id}/feeds`, {
+    const response = await axiosInstance.get<UserFeedsResponse>(`/users/${id}/feeds`, {
       params: {
         sort,
         cursor,
@@ -39,16 +24,7 @@ export async function getUserFeeds({
       },
     });
 
-    const updatedData: UserFeedsResponse = {
-      nextCursor: response.data.nextCursor,
-      feeds: response.data.feeds.map((feed: UserFeeds) => ({
-        ...feed,
-        cards: feed.cards.map((card: string) => `https://image.grimity.com/${card}`),
-        thumbnail: `https://image.grimity.com/${feed.thumbnail}`,
-      })),
-    };
-
-    return updatedData;
+    return response.data;
   } catch (error) {
     console.error("Error fetching User Feeds:", error);
     throw new Error("Failed to fetch User Feeds");

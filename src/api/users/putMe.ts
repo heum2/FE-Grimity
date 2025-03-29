@@ -1,19 +1,9 @@
 import axiosInstance from "@/constants/baseurl";
-
-export interface MyInfoRequest {
-  name: string;
-  description: string;
-  links: { linkName: string; link: string }[];
-  url: string;
-}
+import type { UpdateUserRequest, UpdateProfileConflictResponse } from "@grimity/dto";
+export type { UpdateUserRequest, UpdateProfileConflictResponse };
 
 export interface Response {
   success: boolean;
-  message: string;
-}
-
-export interface UpdateProfileConflictResponse {
-  statusCode: number;
   message: string;
 }
 
@@ -22,12 +12,12 @@ export async function putMyInfo({
   description,
   links,
   url,
-}: MyInfoRequest): Promise<Response> {
-  const response = await axiosInstance.put("/users/me", {
+}: UpdateUserRequest): Promise<void> {
+  await axiosInstance.put("/users/me", {
     name,
     description,
     links,
     url,
   });
-  return response.data;
+  return;
 }

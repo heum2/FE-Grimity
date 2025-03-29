@@ -30,7 +30,7 @@
     "tinymce": "^7.6.1"
   },
   "devDependencies": {
-    "@grimity/dto": "^1.0.7",
+    "@grimity/dto": "^1.0.9",
     "@grimity/shared-types": "^1.3.0",
     "@types/node": "^20",
     "@types/react": "^19",

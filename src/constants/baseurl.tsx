@@ -1,9 +1,9 @@
 import axios, { InternalAxiosRequestConfig } from "axios";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+export const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 const axiosInstance = axios.create({
-  baseURL: BASE_URL,
+  baseURL: baseUrl,
   headers: { "Content-Type": "application/json" },
 });
 
@@ -53,7 +53,7 @@ axiosInstance.interceptors.response.use(
         originalRequest._retry = true;
 
         try {
-          const response = await axios.get(`${BASE_URL}/auth/refresh`, {
+          const response = await axios.get(`${baseUrl}/auth/refresh`, {
             headers: {
               Authorization: `Bearer ${refreshToken}`,
             },
