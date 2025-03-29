@@ -1,1 +1,1 @@
-export const serviceUrl = "https://www.grimity.com/";
+export const serviceUrl = process.env.NEXT_PUBLIC_SERVICE_URL;
