@@ -398,7 +398,7 @@ export default function EditFeeds({ id }: EditFeedsProps) {
         return;
       }
 
-      const newTag = tag.replace(/\s+/g, "");
+      const newTag = tag.replace(/#/g, "").trim();
 
       // 중복 태그 방지
       if (!tags.includes(newTag)) {
@@ -408,7 +408,6 @@ export default function EditFeeds({ id }: EditFeedsProps) {
       }
 
       setTag("");
-      if (event.nativeEvent.isComposing) return;
     }
   };
 
