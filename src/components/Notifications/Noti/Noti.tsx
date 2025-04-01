@@ -22,7 +22,7 @@ export default function Noti({ notification, onClose, onRefetch }: NotiProps) {
 
   const renderImage = () => {
     const imageUrl = notification?.image || "/image/default.svg";
-    const isFeedImage = imageUrl.startsWith("https://image.grimity.com/feed");
+    const isFeedImage = imageUrl.startsWith(`${process.env.NEXT_PUBLIC_IMAGE_URL}/feed`);
 
     if (isFeedImage) {
       return (
@@ -71,7 +71,7 @@ export default function Noti({ notification, onClose, onRefetch }: NotiProps) {
     e.preventDefault();
 
     try {
-      if (!notification.isRead) await handleReadNotification();
+      if (!notification.isRead) handleReadNotification();
       router.push(notification.link);
     } catch (error) {
       console.error("Notification error:", error);
