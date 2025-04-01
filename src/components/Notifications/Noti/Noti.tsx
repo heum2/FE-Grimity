@@ -10,6 +10,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useRecoilValue } from "recoil";
 import { isTabletState } from "@/states/isMobileState";
+import { imageUrl as imagePrefix } from "@/constants/imageUrl";
 
 export default function Noti({ notification, onClose, onRefetch }: NotiProps) {
   const { showToast } = useToast();
@@ -22,7 +23,7 @@ export default function Noti({ notification, onClose, onRefetch }: NotiProps) {
 
   const renderImage = () => {
     const imageUrl = notification?.image || "/image/default.svg";
-    const isFeedImage = imageUrl.startsWith(`${process.env.NEXT_PUBLIC_IMAGE_URL}/feed`);
+    const isFeedImage = imageUrl.startsWith(`${imagePrefix}/feed`);
 
     if (isFeedImage) {
       return (
