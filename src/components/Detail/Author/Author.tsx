@@ -14,6 +14,7 @@ import { useUserDataByUrl } from "@/api/users/getId";
 import Button from "@/components/Button/Button";
 import { useUserForDetail } from "@/api/users/getIdFeeds";
 import SquareCard from "@/components/Layout/SquareCard/SquareCard";
+import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 import Loader from "@/components/Layout/Loader/Loader";
 import { isMobileState } from "@/states/isMobileState";
 import { useRouter } from "next/router";
@@ -22,6 +23,8 @@ export default function Author({ authorId, authorUrl, feedId }: AuthorProps) {
   const { data: userData } = useUserData(authorId);
   const { data: userDataByUrl } = useUserDataByUrl(authorUrl);
   const { isLoggedIn, user_id } = useRecoilValue(authState);
+  const imgRef = usePreventRightClick<HTMLImageElement>();
+  const divRef = usePreventRightClick<HTMLDivElement>();
   const [isFollowing, setIsFollowing] = useState(false);
   const [followerCount, setFollowerCount] = useState(0);
   const { showToast } = useToast();
@@ -89,6 +92,7 @@ export default function Author({ authorId, authorUrl, feedId }: AuthorProps) {
                       quality={50}
                       style={{ objectFit: "cover" }}
                       unoptimized
+                      ref={imgRef}
                     />
                   ) : (
                     <Image
@@ -100,6 +104,7 @@ export default function Author({ authorId, authorUrl, feedId }: AuthorProps) {
                       quality={50}
                       style={{ objectFit: "cover" }}
                       unoptimized
+                      ref={imgRef}
                     />
                   )}
                   <div className={styles.authorInfo}>
@@ -137,7 +142,7 @@ export default function Author({ authorId, authorUrl, feedId }: AuthorProps) {
               </Link>
             )}
           </div>
-          <div className={styles.cardList}>
+          <div className={styles.cardList} ref={divRef}>
             {feeds.map((feed) => (
               <SquareCard
                 key={feed.id}

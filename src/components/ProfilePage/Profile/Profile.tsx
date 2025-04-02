@@ -5,7 +5,6 @@ import Image from "next/image";
 import { formatCurrency } from "@/utils/formatCurrency";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { ProfileProps } from "./Profile.types";
-// import { useUserData } from "@/api/users/getId";
 import { useUserDataByUrl } from "@/api/users/getId";
 import { deleteFollow } from "@/api/users/deleteIdFollow";
 import { putFollow } from "@/api/users/putIdFollow";
@@ -24,18 +23,18 @@ import Dropdown from "@/components/Dropdown/Dropdown";
 import { isMobileState, isTabletState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { deleteMe } from "@/api/users/deleteMe";
+import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 
 export default function Profile({ isMyProfile, id, url }: ProfileProps) {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
   const [, setAuth] = useRecoilState(authState);
   const [, setModal] = useRecoilState(modalState);
-  // TODO
   const { data: myData, refetch } = useMyData();
-  // const { data: userData, refetch: refetchUserData } = useUserData(id);
   const { data: userData, refetch: refetchUserData } = useUserDataByUrl(url);
   const [profileImage, setProfileImage] = useState<string>("");
   const [coverImage, setCoverImage] = useState<string>("");
   const { showToast } = useToast();
+  const imgRef = usePreventRightClick<HTMLImageElement>();
   const isMobile = useRecoilValue(isMobileState);
   const isTablet = useRecoilValue(isTabletState);
   useIsMobile();
@@ -349,6 +348,7 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                   height: isMobile ? "240px" : isTablet ? "300px" : "400px",
                   objectFit: "cover",
                 }}
+                ref={imgRef}
               />
               {userData.id === user_id && (
                 <div className={styles.coverBtns}>
@@ -425,6 +425,7 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                       alt="프로필 이미지"
                       className={styles.profileImage}
                       unoptimized
+                      ref={imgRef}
                     />
                   )}
                   {userData.id === user_id && (
@@ -455,6 +456,7 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                     quality={75}
                     className={styles.profileImage}
                     unoptimized
+                    ref={imgRef}
                   />
                   {userData.id === user_id && (
                     <>

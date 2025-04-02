@@ -27,6 +27,7 @@ import { useMyData } from "@/api/users/getMe";
 import { isMobileState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { FollowingFeedsResponse } from "@/api/feeds/getFeedsFollowing";
+import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 
 interface FollowingFeedProps {
   id: string;
@@ -55,6 +56,9 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
   const [isContentTooLong, setIsContentTooLong] = useState(false);
   const contentRef = useRef<HTMLParagraphElement | null>(null);
   const isMobile = useRecoilValue(isMobileState);
+  const imgRef = usePreventRightClick<HTMLImageElement>();
+  const divRef = usePreventRightClick<HTMLDivElement>();
+  const sectionRef = usePreventRightClick<HTMLElement>();
 
   useIsMobile();
   usePreventScroll(!!overlayImage);
@@ -220,6 +224,7 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
                       quality={50}
                       style={{ objectFit: "cover" }}
                       unoptimized
+                      ref={imgRef}
                     />
                   ) : (
                     <Image
@@ -231,6 +236,7 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
                       quality={50}
                       style={{ objectFit: "cover" }}
                       unoptimized
+                      ref={imgRef}
                     />
                   )}
                 </Link>
@@ -277,9 +283,9 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
                 <ShareBtn feedId={id} title={details.title} image={details.cards[0]} />
               </div>
             </section>
-            <section className={styles.imageGallery}>
+            <section className={styles.imageGallery} ref={sectionRef}>
               {details.cards.slice(0, 2).map((card, index) => (
-                <div key={index} className={styles.imageWrapper}>
+                <div key={index} className={styles.imageWrapper} ref={divRef}>
                   <img
                     src={card}
                     alt={`Card image ${index + 1}`}
@@ -288,6 +294,7 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
                     className={styles.cardImage}
                     onClick={() => handleImageClick(card)}
                     loading="lazy"
+                    ref={imgRef}
                   />
                   {index === 1 && details.cards.length > 2 && !isExpanded && (
                     <>
@@ -302,23 +309,26 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
                 </div>
               ))}
             </section>
-            {isExpanded &&
-              details.cards.slice(2).map((card, index) => (
-                <div key={index + 2} className={styles.imageWrapper2}>
-                  <img
-                    src={card}
-                    alt={`Card image ${index + 3}`}
-                    width={600}
-                    height={0}
-                    className={styles.cardImage}
-                    onClick={() => handleImageClick(card)}
-                    loading="lazy"
-                  />
-                </div>
-              ))}
+            <section ref={sectionRef}>
+              {isExpanded &&
+                details.cards.slice(2).map((card, index) => (
+                  <div key={index + 2} className={styles.imageWrapper2} ref={divRef}>
+                    <img
+                      src={card}
+                      alt={`Card image ${index + 3}`}
+                      width={600}
+                      height={0}
+                      className={styles.cardImage}
+                      onClick={() => handleImageClick(card)}
+                      loading="lazy"
+                      ref={imgRef}
+                    />
+                  </div>
+                ))}
+            </section>
             {overlayImage && (
               <div className={styles.overlay} onClick={() => setOverlayImage(null)}>
-                <div className={styles.overlayContent}>
+                <div className={styles.overlayContent} ref={divRef}>
                   <Zoom>
                     <img
                       src={overlayImage}
@@ -329,12 +339,13 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
                       }}
                       onClick={(event) => event.stopPropagation()}
                       loading="lazy"
+                      ref={imgRef}
                     />
                   </Zoom>
                 </div>
               </div>
             )}
-            <section className={styles.contentContainer}>
+            <section className={styles.contentContainer} ref={sectionRef}>
               <h2 className={styles.title}>{details.title}</h2>
               <div className={styles.bar} />
               <p

@@ -8,6 +8,7 @@ import { authState } from "@/states/authState";
 import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
 import { SearchCardProps } from "./SearchCard.types";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 import "swiper/css";
 
 export default function SearchCard({
@@ -24,6 +25,7 @@ export default function SearchCard({
   const { isLoggedIn } = useRecoilValue(authState);
   const [isLiked, setIsLiked] = useState(isLike);
   const [currentLikeCount, setCurrentLikeCount] = useState(likeCount);
+  const imgRef = usePreventRightClick<HTMLImageElement>();
 
   const handleLikeClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -46,7 +48,7 @@ export default function SearchCard({
           </div>
         )}
         <Link href={`/feeds/${id}`}>
-          <img src={thumbnail} alt={title} loading="lazy" className={styles.image} />
+          <img src={thumbnail} alt={title} loading="lazy" className={styles.image} ref={imgRef} />
         </Link>
       </div>
       {tags.length > 0 && (

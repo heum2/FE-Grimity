@@ -7,6 +7,7 @@ import { useRecoilValue } from "recoil";
 import { authState } from "@/states/authState";
 import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
 import { FeedCardProps } from "./FeedCard.types";
+import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 
 export default function FeedCard({
   id,
@@ -20,6 +21,7 @@ export default function FeedCard({
   const { isLoggedIn } = useRecoilValue(authState);
   const [isLiked, setIsLiked] = useState(isLike);
   const [currentLikeCount, setCurrentLikeCount] = useState(likeCount);
+  const imgRef = usePreventRightClick<HTMLImageElement>();
 
   const handleLikeClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -42,7 +44,7 @@ export default function FeedCard({
           </div>
         )}
         <Link href={`/feeds/${id}`}>
-          <img src={thumbnail} alt={title} loading="lazy" className={styles.image} />
+          <img src={thumbnail} alt={title} loading="lazy" className={styles.image} ref={imgRef} />
         </Link>
       </div>
       <div className={styles.infoContainer}>

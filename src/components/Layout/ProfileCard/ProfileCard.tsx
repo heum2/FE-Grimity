@@ -4,6 +4,7 @@ import { formatCurrency } from "@/utils/formatCurrency";
 import { ProfileCardProps } from "./ProfileCard.types";
 import Link from "next/link";
 import { formattedDate } from "@/utils/formatDate";
+import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 
 export default function ProfileCard({
   title,
@@ -16,6 +17,7 @@ export default function ProfileCard({
   viewCount,
 }: ProfileCardProps) {
   const hasMultipleImages = cards && cards.length > 1;
+  const imgRef = usePreventRightClick<HTMLImageElement>();
 
   return (
     <div className={styles.container}>
@@ -26,7 +28,7 @@ export default function ProfileCard({
           </div>
         )}
         <Link href={`/feeds/${id}`}>
-          <img src={thumbnail} alt={title} loading="lazy" className={styles.image} />
+          <img src={thumbnail} alt={title} loading="lazy" className={styles.image} ref={imgRef} />
         </Link>
       </div>
       <div className={styles.infoContainer}>
