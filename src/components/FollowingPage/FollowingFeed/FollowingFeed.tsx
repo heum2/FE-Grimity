@@ -295,6 +295,7 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
                     onClick={() => handleImageClick(card)}
                     loading="lazy"
                     ref={imgRef}
+                    onContextMenu={(e) => e.preventDefault()}
                   />
                   {index === 1 && details.cards.length > 2 && !isExpanded && (
                     <>
@@ -322,6 +323,7 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
                       onClick={() => handleImageClick(card)}
                       loading="lazy"
                       ref={imgRef}
+                      onContextMenu={(e) => e.preventDefault()}
                     />
                   </div>
                 ))}
@@ -340,6 +342,7 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
                       onClick={(event) => event.stopPropagation()}
                       loading="lazy"
                       ref={imgRef}
+                      onContextMenu={(e) => e.preventDefault()}
                     />
                   </Zoom>
                 </div>

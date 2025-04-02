@@ -309,6 +309,7 @@ export default function Detail({ id }: DetailProps) {
                     className={styles.cardImage}
                     onClick={() => handleImageClick(card)}
                     ref={imgRef}
+                    onContextMenu={(e) => e.preventDefault()}
                   />
                   {index === 1 && details.cards.length > 2 && !isExpanded && (
                     <>
@@ -336,6 +337,7 @@ export default function Detail({ id }: DetailProps) {
                       className={styles.cardImage}
                       onClick={() => handleImageClick(card)}
                       ref={imgRef}
+                      onContextMenu={(e) => e.preventDefault()}
                     />
                   </div>
                 ))}
