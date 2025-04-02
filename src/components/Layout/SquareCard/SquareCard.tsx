@@ -3,6 +3,7 @@ import IconComponent from "@/components/Asset/Icon";
 import styles from "./SquareCard.module.scss";
 import { formatCurrency } from "@/utils/formatCurrency";
 import { SquareCardProps } from "./SquareCard.types";
+import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 import Link from "next/link";
 import { useRecoilValue } from "recoil";
 import { authState } from "@/states/authState";
@@ -25,6 +26,7 @@ export default function SquareCard({
   const [isLiked, setIsLiked] = useState(isLike);
   const [currentLikeCount, setCurrentLikeCount] = useState(likeCount);
   const hasMultipleImages = cards && cards.length > 1;
+  const imgRef = usePreventRightClick<HTMLImageElement>();
 
   const handleLikeClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -52,7 +54,7 @@ export default function SquareCard({
           </div>
         )}
         <Link href={`/feeds/${id}`}>
-          <img src={thumbnail} alt={title} loading="lazy" className={styles.image} />
+          <img src={thumbnail} alt={title} loading="lazy" className={styles.image} ref={imgRef} />
         </Link>
       </div>
       <div className={styles.infoContainer}>

@@ -28,6 +28,7 @@ import Comment from "./Comment/Comment";
 import NewFeed from "../Layout/NewFeed/NewFeed";
 import { isMobileState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 
 export default function Detail({ id }: DetailProps) {
   const { isLoggedIn, user_id } = useRecoilValue(authState);
@@ -39,6 +40,9 @@ export default function Detail({ id }: DetailProps) {
   const [currentLikeCount, setCurrentLikeCount] = useState(0);
   const [viewCounted, setViewCounted] = useState(false);
   const [overlayImage, setOverlayImage] = useState<string | null>(null);
+  const imgRef = usePreventRightClick<HTMLImageElement>();
+  const divRef = usePreventRightClick<HTMLDivElement>();
+  const sectionRef = usePreventRightClick<HTMLElement>();
   const router = useRouter();
   const [, setModal] = useRecoilState(modalState);
   const isMobile = useRecoilValue(isMobileState);
@@ -223,6 +227,7 @@ export default function Detail({ id }: DetailProps) {
                       quality={50}
                       style={{ objectFit: "cover" }}
                       unoptimized
+                      ref={imgRef}
                     />
                   ) : (
                     <Image
@@ -234,6 +239,7 @@ export default function Detail({ id }: DetailProps) {
                       quality={50}
                       style={{ objectFit: "cover" }}
                       unoptimized
+                      ref={imgRef}
                     />
                   )}
                 </Link>
@@ -291,9 +297,9 @@ export default function Detail({ id }: DetailProps) {
                 <ShareBtn feedId={id} title={details.title} image={details.cards[0]} />
               </div>
             </section>
-            <section className={styles.imageGallery}>
+            <section className={styles.imageGallery} ref={sectionRef}>
               {details.cards.slice(0, 2).map((card, index) => (
-                <div key={index} className={styles.imageWrapper}>
+                <div key={index} className={styles.imageWrapper} ref={divRef}>
                   <img
                     src={card}
                     alt={`Card image ${index + 1}`}
@@ -302,6 +308,8 @@ export default function Detail({ id }: DetailProps) {
                     loading="lazy"
                     className={styles.cardImage}
                     onClick={() => handleImageClick(card)}
+                    ref={imgRef}
+                    onContextMenu={(e) => e.preventDefault()}
                   />
                   {index === 1 && details.cards.length > 2 && !isExpanded && (
                     <>
@@ -316,23 +324,27 @@ export default function Detail({ id }: DetailProps) {
                 </div>
               ))}
             </section>
-            {isExpanded &&
-              details.cards.slice(2).map((card, index) => (
-                <div key={index + 2} className={styles.imageWrapper2}>
-                  <img
-                    src={card}
-                    alt={`Card image ${index + 3}`}
-                    width={600}
-                    height={0}
-                    loading="lazy"
-                    className={styles.cardImage}
-                    onClick={() => handleImageClick(card)}
-                  />
-                </div>
-              ))}
+            <section ref={sectionRef}>
+              {isExpanded &&
+                details.cards.slice(2).map((card, index) => (
+                  <div key={index + 2} className={styles.imageWrapper2} ref={divRef}>
+                    <img
+                      src={card}
+                      alt={`Card image ${index + 3}`}
+                      width={600}
+                      height={0}
+                      loading="lazy"
+                      className={styles.cardImage}
+                      onClick={() => handleImageClick(card)}
+                      ref={imgRef}
+                      onContextMenu={(e) => e.preventDefault()}
+                    />
+                  </div>
+                ))}
+            </section>
             {overlayImage && (
               <div className={styles.overlay} onClick={() => setOverlayImage(null)}>
-                <div className={styles.overlayContent}>
+                <div className={styles.overlayContent} ref={divRef}>
                   <Zoom>
                     <img
                       src={overlayImage}
@@ -343,6 +355,7 @@ export default function Detail({ id }: DetailProps) {
                       }}
                       loading="lazy"
                       onClick={(event) => event.stopPropagation()}
+                      ref={imgRef}
                     />
                   </Zoom>
                 </div>

@@ -9,12 +9,14 @@ import { isMobileState, isTabletState } from "@/states/isMobileState";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { authState } from "@/states/authState";
+import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 
 export default function PopularUser() {
   const { user_id } = useRecoilValue(authState);
   const { data, isLoading } = usePopular();
   const [randomUsers, setRandomUsers] = useState<PopularUserResponse[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
+  const divRef = usePreventRightClick<HTMLDivElement>();
   const isMobile = useRecoilValue(isMobileState);
   const isTablet = useRecoilValue(isTabletState);
 
@@ -56,7 +58,7 @@ export default function PopularUser() {
   if (isLoading) return <Loader />;
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} ref={divRef}>
       <Title>인기 유저</Title>
       {isMobile || isTablet ? (
         <Swiper

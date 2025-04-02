@@ -10,6 +10,7 @@ import { useRecoilValue } from "recoil";
 import { authState } from "@/states/authState";
 import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
 import { isMobileState, isTabletState } from "@/states/isMobileState";
+import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 
 export default function RectangleCard({
   id,
@@ -27,6 +28,7 @@ export default function RectangleCard({
   const isTablet = useRecoilValue(isTabletState);
   const [isLiked, setIsLiked] = useState(initialIsLike);
   const [likeCount, setLikeCount] = useState(initialLikeCount);
+  const imgRef = usePreventRightClick<HTMLImageElement>();
 
   const handleLikeClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -51,7 +53,13 @@ export default function RectangleCard({
               </div>
             )}
             <Link href={`/feeds/${id}`}>
-              <img src={thumbnail} alt={title} loading="lazy" className={styles.image} />
+              <img
+                src={thumbnail}
+                alt={title}
+                loading="lazy"
+                className={styles.image}
+                ref={imgRef}
+              />
             </Link>
           </div>
           {!isTablet ? (
@@ -87,6 +95,7 @@ export default function RectangleCard({
                           quality={50}
                           className={styles.profileImage}
                           unoptimized
+                          ref={imgRef}
                         />
                       ) : (
                         <Image
@@ -97,6 +106,7 @@ export default function RectangleCard({
                           alt="프로필 이미지"
                           className={styles.profileImage}
                           unoptimized
+                          ref={imgRef}
                         />
                       )}
                       <p className={styles.author}>{author.name}</p>
@@ -122,6 +132,7 @@ export default function RectangleCard({
                         quality={50}
                         className={styles.profileImage}
                         unoptimized
+                        ref={imgRef}
                       />
                     ) : (
                       <Image
@@ -132,6 +143,7 @@ export default function RectangleCard({
                         alt="프로필 이미지"
                         className={styles.profileImage}
                         unoptimized
+                        ref={imgRef}
                       />
                     )}
                     <p className={styles.author}>{author.name}</p>

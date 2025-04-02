@@ -10,6 +10,7 @@ import { deleteFollow } from "@/api/users/deleteIdFollow";
 import IconComponent from "@/components/Asset/Icon";
 import { useRecoilValue } from "recoil";
 import { authState } from "@/states/authState";
+import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 
 export default function RecommendCard({
   id,
@@ -25,6 +26,8 @@ export default function RecommendCard({
   const { showToast } = useToast();
   const [isFollowing, setIsFollowing] = useState(initialIsFollowing);
   const [followerCount, setFollowerCount] = useState(initialFollowerCount);
+  const imgRef = usePreventRightClick<HTMLImageElement>();
+  const divRef = usePreventRightClick<HTMLDivElement>();
 
   const handleFollowClick = async () => {
     try {
@@ -49,7 +52,7 @@ export default function RecommendCard({
   return (
     <div className={styles.container}>
       <Link href={`/${url}`}>
-        <div className={styles.imageWrapper}>
+        <div className={styles.imageWrapper} ref={divRef}>
           <div className={styles.imageContainer}>
             {thumbnails[0] ? (
               <div className={styles.background}>
@@ -66,6 +69,7 @@ export default function RecommendCard({
                     objectFit: "cover",
                     borderRadius: "12px 0 0 0",
                   }}
+                  ref={imgRef}
                 />
               </div>
             ) : (
@@ -83,6 +87,7 @@ export default function RecommendCard({
                     objectFit: "cover",
                     borderRadius: "12px 0 0 0",
                   }}
+                  ref={imgRef}
                 />
               </div>
             )}
@@ -103,6 +108,7 @@ export default function RecommendCard({
                     objectFit: "cover",
                     borderRadius: "0 12px 0 0",
                   }}
+                  ref={imgRef}
                 />
               </div>
             ) : (
@@ -120,6 +126,7 @@ export default function RecommendCard({
                     objectFit: "cover",
                     borderRadius: "0 12px 0 0",
                   }}
+                  ref={imgRef}
                 />
               </div>
             )}
@@ -138,6 +145,7 @@ export default function RecommendCard({
                 alt="인기 유저 프로필 이미지"
                 className={styles.profileImage}
                 unoptimized
+                ref={imgRef}
               />
             ) : (
               <Image
@@ -148,6 +156,7 @@ export default function RecommendCard({
                 alt="인기 유저 프로필 이미지"
                 className={styles.profileImage}
                 unoptimized
+                ref={imgRef}
               />
             )}
             <div className={styles.nameContainer}>

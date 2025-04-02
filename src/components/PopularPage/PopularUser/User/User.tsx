@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useToast } from "@/hooks/useToast";
 import { putFollow } from "@/api/users/putIdFollow";
 import { deleteFollow } from "@/api/users/deleteIdFollow";
+import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 
 export default function User({
   id,
@@ -20,6 +21,7 @@ export default function User({
   const { showToast } = useToast();
   const [isFollowing, setIsFollowing] = useState(initialIsFollowing);
   const [followerCount, setFollowerCount] = useState(initialFollowerCount);
+  const imgRef = usePreventRightClick<HTMLImageElement>();
 
   const handleFollowClick = async () => {
     try {
@@ -53,6 +55,7 @@ export default function User({
               loading="lazy"
               alt="인기 유저 헤더 이미지"
               className={styles.backgroundLeft}
+              ref={imgRef}
             />
           ) : (
             <img
@@ -62,6 +65,7 @@ export default function User({
               loading="lazy"
               alt="인기 유저 헤더 이미지"
               className={styles.backgroundLeft}
+              ref={imgRef}
             />
           )}
           {thumbnails[1] ? (
@@ -72,6 +76,7 @@ export default function User({
               loading="lazy"
               alt="인기 유저 헤더 이미지"
               className={styles.backgroundRight}
+              ref={imgRef}
             />
           ) : (
             <img
@@ -81,6 +86,7 @@ export default function User({
               loading="lazy"
               alt="인기 유저 헤더 이미지"
               className={styles.backgroundRight}
+              ref={imgRef}
             />
           )}
         </div>
@@ -97,6 +103,7 @@ export default function User({
                 alt="인기 유저 프로필 이미지"
                 className={styles.profileImage}
                 unoptimized
+                ref={imgRef}
               />
             ) : (
               <Image
@@ -107,6 +114,7 @@ export default function User({
                 alt="인기 유저 프로필 이미지"
                 className={styles.profileImage}
                 unoptimized
+                ref={imgRef}
               />
             )}
             <div className={styles.nameContainer}>

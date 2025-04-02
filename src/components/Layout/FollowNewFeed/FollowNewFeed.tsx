@@ -14,6 +14,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
+import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 
 export default function FollowNewFeed() {
   const isMobile = useRecoilValue(isMobileState);
@@ -23,6 +24,7 @@ export default function FollowNewFeed() {
   useIsMobile();
   const { data, isLoading, refetch } = useFollowingNew({ size: 8 });
   const { pathname } = useRouter();
+  const divRef = usePreventRightClick<HTMLDivElement>();
 
   useEffect(() => {
     refetch();
@@ -43,7 +45,7 @@ export default function FollowNewFeed() {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} ref={divRef}>
       {data?.feeds?.length === 0 ? (
         <>
           <Title>팔로우하는 유저의 새 그림</Title>
