@@ -10,7 +10,7 @@ import IconComponent from "@/components/Asset/Icon";
 export default function Share({ feedId, title, image }: ShareBtnProps) {
   const { showToast } = useToast();
   const [, setModal] = useRecoilState(modalState);
-  const url = `${serviceUrl}feeds/${feedId}`;
+  const url = `${serviceUrl}/feeds/${feedId}`;
 
   const copyToClipboard = async () => {
     try {
