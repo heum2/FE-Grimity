@@ -1,5 +1,4 @@
 import { useToast } from "@/hooks/useToast";
-import Image from "next/image";
 import styles from "./SharePost.module.scss";
 import { modalState } from "@/states/modalState";
 import { useRecoilState } from "recoil";
@@ -11,7 +10,7 @@ import IconComponent from "@/components/Asset/Icon";
 export default function SharePost({ postId, title }: ShareBtnProps) {
   const { showToast } = useToast();
   const [, setModal] = useRecoilState(modalState);
-  const url = `${serviceUrl}posts/${postId}`;
+  const url = `${serviceUrl}/posts/${postId}`;
 
   const copyToClipboard = async () => {
     try {
