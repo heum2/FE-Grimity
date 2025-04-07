@@ -38,7 +38,7 @@ export default function Header() {
   const isTablet = useRecoilValue(isTabletState);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
-  const isUserPage = router.pathname.startsWith("/users/[url]");
+  const isUserPage = router.pathname.startsWith("/[url]");
   const isPostPage = ["/board", "/board/write", "/posts/[id]", "/posts/[id]/edit"].includes(
     router.pathname,
   );
