@@ -5,7 +5,6 @@ export type { CreateFeedRequest, IdResponse };
 export async function postFeeds({
   title,
   cards,
-  isAI,
   content,
   tags,
   thumbnail,
@@ -13,7 +12,6 @@ export async function postFeeds({
   const response = await axiosInstance.post("/feeds", {
     title,
     cards,
-    isAI,
     content,
     tags,
     thumbnail,

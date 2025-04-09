@@ -361,12 +361,12 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
                   자세히 보기
                 </button>
               )}
-              {details.isAI && (
+              {/* {details.isAI && (
                 <div className={styles.aiBtn}>
                   <IconComponent name="aiMessage" size={20} />
                   해당 컨텐츠는 AI로 생성되었어요
                 </div>
-              )}
+              )} */}
               <div className={styles.stats}>
                 <div className={styles.stat}>
                   <IconComponent name="likeCount" size={16} />

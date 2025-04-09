@@ -99,6 +99,5 @@ export const ICONS = {
   menuLogout: "/icon/menu-logout.svg",
   menuSave: "/icon/menu-save.svg",
   uploadDeleteImage: "/icon/upload-delete-image.svg",
-  aiMessage: "/icon/ai-message.svg",
   menuUpload: "/icon/menu-upload.svg",
 };

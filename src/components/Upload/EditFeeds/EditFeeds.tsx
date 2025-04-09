@@ -28,7 +28,7 @@ export default function EditFeeds({ id }: EditFeedsProps) {
   const [images, setImages] = useState<{ name: string; originalName: string; url: string }[]>([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [isAI, setIsAI] = useState(false);
+  // const [isAI, setIsAI] = useState(false);
   const [tag, setTag] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [thumbnailUrl, setThumbnailUrl] = useState("");
@@ -72,7 +72,7 @@ export default function EditFeeds({ id }: EditFeedsProps) {
 
       setTitle(feedData.title);
       setContent(feedData.content);
-      setIsAI(feedData.isAI);
+      // setIsAI(feedData.isAI);
       setTags(feedData.tags);
       setImages(initialImages);
       setThumbnailUrl(feedData.thumbnail);
@@ -85,12 +85,12 @@ export default function EditFeeds({ id }: EditFeedsProps) {
     const hasChanges =
       title !== feedData?.title ||
       content !== feedData?.content ||
-      isAI !== feedData?.isAI ||
+      // isAI !== feedData?.isAI ||
       thumbnailUrl !== feedData?.thumbnail ||
       JSON.stringify(tags) !== JSON.stringify(feedData?.tags) ||
       JSON.stringify(images) !== JSON.stringify(feedData?.cards);
     setHasUnsavedChanges(hasChanges);
-  }, [feedData, images, title, content, tags, isAI]);
+  }, [feedData, images, title, content, tags]);
 
   // 브라우저 이벤트 핸들러
   useEffect(() => {
@@ -375,7 +375,7 @@ export default function EditFeeds({ id }: EditFeedsProps) {
     editFeed({
       title,
       cards: images.map((image) => image.name.replace(`${imageUrl}/`, "")),
-      isAI,
+      // isAI,
       content,
       tags,
       thumbnail: thumbnailName.replace(`${imageUrl}/`, ""),
@@ -442,7 +442,7 @@ export default function EditFeeds({ id }: EditFeedsProps) {
 
   if (isLoading) return <Loader />;
 
-  const isDisabled = title.trim() === "" || content.trim() === "" || isAI === null;
+  const isDisabled = title.trim() === "" || content.trim() === "";
 
   return (
     <div className={styles.background}>
@@ -635,7 +635,7 @@ export default function EditFeeds({ id }: EditFeedsProps) {
                   ))}
                 </div>
               </div>
-              <div className={styles.optionContainer}>
+              {/* <div className={styles.optionContainer}>
                 <label className={styles.label}>추가 옵션</label>
                 <div className={styles.options}>
                   <p className={styles.subtitle}>AI 생성 작품이에요</p>
@@ -646,7 +646,7 @@ export default function EditFeeds({ id }: EditFeedsProps) {
                     <IconComponent name={isAI ? "checkedbox" : "checkbox"} size={14} isBtn />
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </section>
         </div>

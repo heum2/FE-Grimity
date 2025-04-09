@@ -4,12 +4,11 @@ export type { CreateFeedRequest };
 
 export async function putEditFeeds(
   id: string,
-  { title, cards, isAI, content, tags, thumbnail }: CreateFeedRequest,
+  { title, cards, content, tags, thumbnail }: CreateFeedRequest,
 ): Promise<Response> {
   const response = await axiosInstance.put(`/feeds/${id}`, {
     title,
     cards,
-    isAI,
     content,
     tags,
     thumbnail,

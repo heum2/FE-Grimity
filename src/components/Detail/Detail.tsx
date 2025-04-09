@@ -368,12 +368,12 @@ export default function Detail({ id }: DetailProps) {
                 className={styles.content}
                 dangerouslySetInnerHTML={{ __html: formattedContent }}
               />
-              {details.isAI && (
+              {/* {details.isAI && (
                 <div className={styles.aiBtn}>
                   <IconComponent name="aiMessage" size={20} />
                   해당 컨텐츠는 AI로 생성되었어요
                 </div>
-              )}
+              )} */}
               <div className={styles.stats}>
                 <p className={styles.createdAt}>{timeAgo(details.createdAt)}</p>
                 <IconComponent name="dot" size={3} />
