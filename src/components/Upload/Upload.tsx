@@ -23,7 +23,7 @@ export default function Upload() {
   const [images, setImages] = useState<{ name: string; originalName: string; url: string }[]>([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [isAI, setIsAI] = useState(false);
+  // const [isAI, setIsAI] = useState(false);
   const [tag, setTag] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [thumbnailUrl, setThumbnailUrl] = useState("");
@@ -358,7 +358,7 @@ export default function Upload() {
     uploadFeed({
       title,
       cards: images.map((image) => image.name),
-      isAI,
+      // isAI,
       content,
       tags,
       thumbnail: thumbnailName,
@@ -423,7 +423,7 @@ export default function Upload() {
     };
   }, [handleWheel]);
 
-  const isDisabled = title.trim() === "" || content.trim() === "" || isAI === null;
+  const isDisabled = title.trim() === "" || content.trim() === "";
 
   return (
     <div className={styles.background}>
@@ -624,7 +624,7 @@ export default function Upload() {
                   ))}
                 </div>
               </div>
-              <div className={styles.optionContainer}>
+              {/* <div className={styles.optionContainer}>
                 <label className={styles.label}>추가 옵션</label>
                 <div className={styles.options}>
                   <p className={styles.subtitle}>AI 생성 작품이에요</p>
@@ -635,7 +635,7 @@ export default function Upload() {
                     <IconComponent name={isAI ? "checkedbox" : "checkbox"} size={24} isBtn />
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </section>
         </div>
