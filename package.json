@@ -23,10 +23,10 @@
     "react-medium-image-zoom": "^5.2.13",
     "react-query": "^3.39.3",
     "react-svg": "^16.3.0",
-    "recoil": "^0.7.7",
     "sass": "^1.83.1",
     "swiper": "^11.2.1",
-    "tinymce": "^7.6.1"
+    "tinymce": "^7.6.1",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@grimity/dto": "^1.0.12",
