@@ -4,7 +4,7 @@ import "@/styles/globals.scss";
 import "@/styles/reset.css";
 import Layout from "@/components/Layout/Layout";
 import Modal from "@/components/Modal/Modal";
-import { useAuthStore } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Toast from "@/components/Toast/Toast";

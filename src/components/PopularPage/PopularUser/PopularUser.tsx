@@ -7,7 +7,7 @@ import User from "./User/User";
 import { useDeviceStore } from "@/states/deviceStore";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import { useAuthStore } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 
 export default function PopularUser() {

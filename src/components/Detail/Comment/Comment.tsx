@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "./Comment.module.scss";
 import Image from "next/image";
-import { useAuthStore } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import { usePostFeedsComments } from "@/api/feeds-comments/postFeedComments";
 import {
   useGetFeedsComments,

@@ -3,7 +3,7 @@ import styles from "./SearchProfile.module.scss";
 import { formatCurrency } from "@/utils/formatCurrency";
 import Image from "next/image";
 import Link from "next/link";
-import { useAuthStore } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import { SearchProfileProps } from "./SearchProfile.types";
 import { deleteFollow } from "@/api/users/deleteIdFollow";
 import { putFollow } from "@/api/users/putIdFollow";

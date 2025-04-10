@@ -8,7 +8,7 @@ import { useUserDataByUrl } from "@/api/users/getId";
 import { deleteFollow } from "@/api/users/deleteIdFollow";
 import { putFollow } from "@/api/users/putIdFollow";
 import { useToast } from "@/hooks/useToast";
-import { useAuthStore } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import IconComponent from "@/components/Asset/Icon";
 import { useModalStore } from "@/states/modalStore";
 import { useEffect, useState } from "react";

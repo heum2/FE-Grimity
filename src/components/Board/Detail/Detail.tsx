@@ -11,7 +11,7 @@ import Button from "@/components/Button/Button";
 import IconComponent from "@/components/Asset/Icon";
 import { useModalStore } from "@/states/modalStore";
 import { useToast } from "@/hooks/useToast";
-import { useAuthStore } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import { useEffect, useState } from "react";
 import { deletePostsSave, putPostsSave } from "@/api/posts/putDeletePostsIdSave";
 import { deletePostsLike, putPostsLike } from "@/api/posts/putDeletePostsLike";

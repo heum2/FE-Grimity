@@ -3,7 +3,7 @@ import IconComponent from "@/components/Asset/Icon";
 import styles from "./SearchCard.module.scss";
 import { formatCurrency } from "@/utils/formatCurrency";
 import Link from "next/link";
-import { useAuthStore } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
 import { SearchCardProps } from "./SearchCard.types";
 import { Swiper, SwiperSlide } from "swiper/react";

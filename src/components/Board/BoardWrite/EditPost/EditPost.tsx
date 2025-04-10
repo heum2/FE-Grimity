@@ -16,7 +16,7 @@ import { usePostsDetails } from "@/api/posts/getPostsId";
 import { useModalStore } from "@/states/modalStore";
 import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { useAuthStore } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import { imageUrl } from "@/constants/imageUrl";
 
 const Editor = dynamic(() => import("@tinymce/tinymce-react").then((mod) => mod.Editor), {

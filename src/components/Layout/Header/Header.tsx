@@ -5,7 +5,7 @@ import Button from "@/components/Button/Button";
 import Link from "next/link";
 import IconComponent from "@/components/Asset/Icon";
 import { useModalStore } from "@/states/modalStore";
-import { useAuthStore } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import { useMyData } from "@/api/users/getMe";
 import { useRouter } from "next/router";
 import { useToast } from "@/hooks/useToast";

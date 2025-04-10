@@ -6,7 +6,7 @@ import Image from "next/image";
 import { RectangleCardProps } from "./RectangleCard.types";
 import Link from "next/link";
 import { timeAgo } from "@/utils/timeAgo";
-import { useAuthStore } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
 import { useDeviceStore } from "@/states/deviceStore";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";

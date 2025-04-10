@@ -17,7 +17,7 @@ import DraggableImage from "../DraggableImage/DraggableImage";
 import { useModalStore } from "@/states/modalStore";
 import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { useAuthStore } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import { imageUrl } from "@/constants/imageUrl";
 
 export default function EditFeeds({ id }: EditFeedsProps) {

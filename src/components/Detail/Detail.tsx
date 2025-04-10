@@ -4,7 +4,7 @@ import { useDetails } from "@/api/feeds/getFeedsId";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import Dropdown from "../Dropdown/Dropdown";
-import { useAuthStore } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import { useToast } from "@/hooks/useToast";
 import IconComponent from "../Asset/Icon";
 import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";

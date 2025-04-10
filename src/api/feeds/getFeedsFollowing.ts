@@ -1,5 +1,5 @@
 import axiosInstance from "@/constants/baseurl";
-import { useAuthStore } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import { useInfiniteQuery, useQuery } from "react-query";
 import type { FollowingFeedsResponse } from "@grimity/dto";
 export type { FollowingFeedsResponse };

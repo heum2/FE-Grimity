@@ -1,7 +1,7 @@
 import styles from "./FollowingFeed.module.scss";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
-import { useAuthStore } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import { useToast } from "@/hooks/useToast";
 import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
 import Link from "next/link";

@@ -1,7 +1,7 @@
 import styles from "./ProfileId.module.scss";
 import { useState } from "react";
 import { useModalStore } from "@/states/modalStore";
-import { useAuthStore } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import Button from "@/components/Button/Button";
 import { useToast } from "@/hooks/useToast";
 import axiosInstance from "@/constants/baseurl";

@@ -2,7 +2,7 @@ import styles from "./Author.module.scss";
 import { formatCurrency } from "@/utils/formatCurrency";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { useAuthStore } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import { putFollow } from "@/api/users/putIdFollow";
 import { deleteFollow } from "@/api/users/deleteIdFollow";
 import { useToast } from "@/hooks/useToast";

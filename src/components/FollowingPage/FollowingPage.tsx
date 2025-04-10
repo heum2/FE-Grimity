@@ -3,7 +3,7 @@ import { useFollowingFeeds } from "@/api/feeds/getFeedsFollowing";
 import styles from "./FollowingPage.module.scss";
 import FollowingFeed from "./FollowingFeed/FollowingFeed";
 import Loader from "../Layout/Loader/Loader";
-import { useAuthStore } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import { useModalStore } from "@/states/modalStore";
 import Title from "../Layout/Title/Title";
 import { usePopular } from "@/api/users/getPopular";

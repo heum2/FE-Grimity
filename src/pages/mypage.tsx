@@ -4,7 +4,7 @@ import { serviceUrl } from "@/constants/serviceurl";
 import { useScrollRestoration } from "@/hooks/useScrollRestoration";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useAuthStore } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 
 export default function Mypage() {
   const router = useRouter();

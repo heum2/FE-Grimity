@@ -5,7 +5,7 @@ import { formatCurrency } from "@/utils/formatCurrency";
 import { SquareCardProps } from "./SquareCard.types";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 import Link from "next/link";
-import { useAuthStore } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
 import { timeAgo } from "@/utils/timeAgo";
 

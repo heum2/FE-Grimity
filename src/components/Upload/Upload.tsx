@@ -15,7 +15,7 @@ import Chip from "../Chip/Chip";
 import { useModalStore } from "@/states/modalStore";
 import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { useAuthStore } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 
 export default function Upload() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);

@@ -7,7 +7,7 @@ import IconComponent from "@/components/Asset/Icon";
 import AllCard from "./AllCard/AllCard";
 import { useEffect, useState } from "react";
 import { PostResponse, usePostsLatest, usePostsNotices } from "@/api/posts/getPosts";
-import { useAuthStore } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import { useDeviceStore } from "@/states/deviceStore";
 import { BoardAllProps } from "./BoardAll.types";
 import { useToast } from "@/hooks/useToast";

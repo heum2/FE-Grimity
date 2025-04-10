@@ -1,6 +1,6 @@
 import styles from "./Login.module.scss";
 import { useMutation } from "react-query";
-import { useAuthStore } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import { useModalStore } from "@/states/modalStore";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useToast } from "@/hooks/useToast";
@@ -58,8 +58,6 @@ export default function Login() {
       setIsLoggedIn(true);
       setUserId(data.id);
       closeModal();
-      showToast("로그인되었습니다.", "success");
-
       localStorage.setItem("access_token", data.accessToken);
       localStorage.setItem("refresh_token", data.refreshToken);
     },

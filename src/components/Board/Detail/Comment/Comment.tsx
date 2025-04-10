@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, memo } from "react";
 import styles from "./Comment.module.scss";
-import { useAuthStore } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import { useToast } from "@/hooks/useToast";
 import { useMutation, useQueryClient } from "react-query";
 import Link from "next/link";

@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { useAuthStore } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import axiosInstance from "@/constants/baseurl";
 import { MyProfileResponse } from "@grimity/dto";
 

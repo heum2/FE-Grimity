@@ -5,7 +5,7 @@ import { useMutation } from "react-query";
 import TextField from "@/components/TextField/TextField";
 import IconComponent from "@/components/Asset/Icon";
 import Button from "@/components/Button/Button";
-import { useAuthStore } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import { useToast } from "@/hooks/useToast";
 import axiosInstance from "@/constants/baseurl";
 
