@@ -7,12 +7,11 @@ import IconComponent from "@/components/Asset/Icon";
 import AllCard from "./AllCard/AllCard";
 import { useEffect, useState } from "react";
 import { PostResponse, usePostsLatest, usePostsNotices } from "@/api/posts/getPosts";
-import { useRecoilValue } from "recoil";
-import { authState } from "@/states/authState";
+import { useAuthStore } from "@/states/authState";
+import { useDeviceStore } from "@/states/deviceStore";
 import { BoardAllProps } from "./BoardAll.types";
 import { useToast } from "@/hooks/useToast";
 import Dropdown from "@/components/Dropdown/Dropdown";
-import { isMobileState } from "@/states/isMobileState";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import Loader from "@/components/Layout/Loader/Loader";
 import { usePostSearch } from "@/api/posts/getPostsSearch";
@@ -25,7 +24,7 @@ const sortOptions: { value: SortOption; label: string }[] = [
 ];
 
 export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
-  const { isLoggedIn } = useRecoilValue(authState);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const [searchBy, setSearchBy] = useState<SortOption>("combined");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [posts, setPosts] = useState<PostResponse[]>([]);
@@ -37,7 +36,7 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
   const currentPage = Number(query.page) || 1;
   const totalPages = Math.ceil(totalCount / 10);
   const { showToast } = useToast();
-  const isMobile = useRecoilValue(isMobileState);
+  const isMobile = useDeviceStore((state) => state.isMobile);
   useIsMobile();
   const { pathname } = useRouter();
 

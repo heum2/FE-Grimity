@@ -1,8 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import styles from "./Dropdown.module.scss";
 import { DropdownProps } from "./Dropdown.types";
-import { isMobileState, isTabletState } from "@/states/isMobileState";
-import { useRecoilValue } from "recoil";
+import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
 export default function Dropdown({
@@ -14,8 +13,9 @@ export default function Dropdown({
 }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const isMobile = useRecoilValue(isMobileState);
-  const isTablet = useRecoilValue(isTabletState);
+  const isMobile = useDeviceStore((state) => state.isMobile);
+  const isTablet = useDeviceStore((state) => state.isTablet);
+
   useIsMobile();
 
   const toggleDropdown = (newState: boolean) => {
@@ -46,10 +46,10 @@ export default function Dropdown({
             isTopItem
               ? styles.topMenu
               : isMobile || isTablet
-                ? styles.mobileMenu
-                : isSide
-                  ? styles.isSideMenu
-                  : styles.menu
+              ? styles.mobileMenu
+              : isSide
+              ? styles.isSideMenu
+              : styles.menu
           }
         >
           {menuItems.map((item, index) => (

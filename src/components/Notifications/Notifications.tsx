@@ -7,8 +7,7 @@ import { NotificationsProps } from "./Notifications.types";
 import { deleteNotifications } from "@/api/notifications/deleteNotifications";
 import { putNotifications } from "@/api/notifications/putNotifications";
 import { getSubscribe, putSubscribe, SubscriptionType } from "@/api/users/subscribe";
-import { useRecoilValue } from "recoil";
-import { isMobileState } from "@/states/isMobileState";
+import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
 const ALL_SUBSCRIPTION_TYPES: SubscriptionType[] = [
@@ -161,7 +160,7 @@ export default function Notifications({ onClose }: NotificationsProps) {
   const { data = [], refetch } = useGetNotifications();
   const [isOpen, setIsOpen] = useState(false);
   const [subscriptions, setSubscriptions] = useState<SubscriptionType[]>([]);
-  const isMobile = useRecoilValue(isMobileState);
+  const isMobile = useDeviceStore((state) => state.isMobile);
   useIsMobile();
 
   useEffect(() => {

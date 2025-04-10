@@ -1,8 +1,7 @@
 import styles from "./Login.module.scss";
-import { useRecoilState } from "recoil";
 import { useMutation } from "react-query";
-import { authState } from "@/states/authState";
-import { modalState } from "@/states/modalState";
+import { useAuthStore } from "@/states/authState";
+import { useModalStore } from "@/states/modalStore";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useToast } from "@/hooks/useToast";
 import IconComponent from "@/components/Asset/Icon";
@@ -33,9 +32,12 @@ type LoginType = "GOOGLE" | "KAKAO";
 
 export default function Login() {
   const APP_KEY = process.env.NEXT_PUBLIC_KAKAO_APP_KEY;
-  const [, setAuth] = useRecoilState(authState);
-  const [, setModal] = useRecoilState(modalState);
+  const setAccessToken = useAuthStore((state) => state.setAccessToken);
+  const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
+  const setUserId = useAuthStore((state) => state.setUserId);
+  const openModal = useModalStore((state) => state.openModal);
   const { showToast } = useToast();
+  const closeModal = useModalStore((state) => state.closeModal);
 
   const { mutateAsync, isLoading } = useMutation({
     mutationFn: async ({
@@ -52,13 +54,11 @@ export default function Login() {
       return response.data;
     },
     onSuccess: (data: LoginResponse) => {
-      setAuth({
-        access_token: data.accessToken,
-        isLoggedIn: true,
-        user_id: data.id,
-      });
-
-      setModal({ isOpen: false, type: null, data: null });
+      setAccessToken(data.accessToken);
+      setIsLoggedIn(true);
+      setUserId(data.id);
+      closeModal();
+      showToast("로그인되었습니다.", "success");
 
       localStorage.setItem("access_token", data.accessToken);
       localStorage.setItem("refresh_token", data.refreshToken);
@@ -79,8 +79,7 @@ export default function Login() {
           });
         } catch (error: any) {
           if (error?.response?.status === 404) {
-            setModal({
-              isOpen: true,
+            openModal({
               type: "NICKNAME",
               data: { accessToken: authObj.access_token, provider: "KAKAO" },
             });
@@ -106,8 +105,7 @@ export default function Login() {
         });
       } catch (error) {
         if (error instanceof AxiosError && error.response?.status === 404) {
-          setModal({
-            isOpen: true,
+          openModal({
             type: "NICKNAME",
             data: { accessToken: tokenResponse.access_token, provider: "GOOGLE" },
           });

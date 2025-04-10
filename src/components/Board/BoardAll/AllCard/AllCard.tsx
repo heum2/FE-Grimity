@@ -7,12 +7,11 @@ import Link from "next/link";
 import { deletePostsSave, putPostsSave } from "@/api/posts/putDeletePostsIdSave";
 import { useState } from "react";
 import Dropdown from "@/components/Dropdown/Dropdown";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { modalState } from "@/states/modalState";
+import { useModalStore } from "@/states/modalStore";
 import { deletePostsFeeds } from "@/api/posts/deletePostsId";
 import { useRouter } from "next/router";
 import { useToast } from "@/hooks/useToast";
-import { isMobileState } from "@/states/isMobileState";
+import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
 export function getTypeLabel(type: string): string {
@@ -30,9 +29,9 @@ export function getTypeLabel(type: string): string {
 }
 
 export default function AllCard({ post, case: cardCase, hasChip = false }: AllCardProps) {
-  const isMobile = useRecoilValue(isMobileState);
+  const isMobile = useDeviceStore((state) => state.isMobile);
   useIsMobile();
-  const [, setModal] = useRecoilState(modalState);
+  const openModal = useModalStore((state) => state.openModal);
   const { showToast } = useToast();
 
   const [isSaved, setIsSaved] = useState(true);
@@ -49,8 +48,7 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
 
   const handleDelete = async () => {
     try {
-      setModal({
-        isOpen: true,
+      openModal({
         type: null,
         data: {
           title: "글을 정말 삭제하시겠어요?",
@@ -73,8 +71,7 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
 
   const handleOpenShareModal = () => {
     if (post) {
-      setModal({
-        isOpen: true,
+      openModal({
         type: "SHAREPOST",
         data: { postId: post.id, title: post.title },
       });

@@ -1,14 +1,13 @@
 import styles from "./Join.module.scss";
 import Button from "@/components/Button/Button";
 import router from "next/router";
-import { modalState } from "@/states/modalState";
-import { useRecoilState } from "recoil";
+import { useModalStore } from "@/states/modalStore";
 
 export default function Join() {
-  const [, setModal] = useRecoilState(modalState);
+  const openModal = useModalStore((state) => state.openModal);
 
   const handleStart = () => {
-    setModal({ isOpen: false, type: null, data: null });
+    openModal({ type: null, data: null });
     router.push("/");
   };
 

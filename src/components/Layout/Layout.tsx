@@ -4,13 +4,12 @@ import Header from "./Header/Header";
 import { LayoutProps } from "./Layout.types";
 import IconComponent from "../Asset/Icon";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { useRecoilValue } from "recoil";
-import { isMobileState, isTabletState } from "@/states/isMobileState";
+import { useDeviceStore } from "@/states/deviceStore";
 
 export default function Layout({ children }: LayoutProps) {
   const [isScrollAbove, setIsScrollAbove] = useState(false);
-  const isMobile = useRecoilValue(isMobileState);
-  const isTablet = useRecoilValue(isTabletState);
+  const isMobile = useDeviceStore((state) => state.isMobile);
+  const isTablet = useDeviceStore((state) => state.isTablet);
   useIsMobile();
 
   // 스크롤 위치 감지

@@ -1,22 +1,21 @@
 import { useToast } from "@/hooks/useToast";
 import styles from "./Share.module.scss";
 import { ShareBtnProps } from "@/components/Detail/ShareBtn/ShareBtn.types";
-import { modalState } from "@/states/modalState";
-import { useRecoilState } from "recoil";
+import { useModalStore } from "@/states/modalStore";
 import Button from "@/components/Button/Button";
 import { serviceUrl } from "@/constants/serviceurl";
 import IconComponent from "@/components/Asset/Icon";
 
 export default function Share({ feedId, title, image }: ShareBtnProps) {
   const { showToast } = useToast();
-  const [, setModal] = useRecoilState(modalState);
+  const openModal = useModalStore((state) => state.openModal);
   const url = `${serviceUrl}/feeds/${feedId}`;
 
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(url);
       showToast("클립보드에 복사되었습니다.", "success");
-      setModal({ isOpen: false, type: null, data: null });
+      openModal({ type: null, data: null });
     } catch {
       showToast("클립보드 복사에 실패했습니다.", "error");
     }
@@ -43,7 +42,7 @@ export default function Share({ feedId, title, image }: ShareBtnProps) {
       },
     });
 
-    setModal({ isOpen: false, type: null, data: null });
+    openModal({ type: null, data: null });
   };
 
   const handleTwitterShare = () => {

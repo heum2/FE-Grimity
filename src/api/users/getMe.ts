@@ -1,6 +1,5 @@
 import { useQuery } from "react-query";
-import { useRecoilValue } from "recoil";
-import { authState } from "@/states/authState";
+import { useAuthStore } from "@/states/authState";
 import axiosInstance from "@/constants/baseurl";
 import { MyProfileResponse } from "@grimity/dto";
 
@@ -16,7 +15,7 @@ export async function getMyInfo(): Promise<MyProfileResponse> {
 }
 
 export function useMyData() {
-  const { isLoggedIn } = useRecoilValue(authState);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
 
   return useQuery<MyProfileResponse>("myInfo", getMyInfo, {

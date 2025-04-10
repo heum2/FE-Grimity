@@ -2,8 +2,7 @@ import styles from "./Author.module.scss";
 import { formatCurrency } from "@/utils/formatCurrency";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { authState } from "@/states/authState";
-import { useRecoilValue } from "recoil";
+import { useAuthStore } from "@/states/authState";
 import { putFollow } from "@/api/users/putIdFollow";
 import { deleteFollow } from "@/api/users/deleteIdFollow";
 import { useToast } from "@/hooks/useToast";
@@ -16,19 +15,20 @@ import { useUserForDetail } from "@/api/users/getIdFeeds";
 import SquareCard from "@/components/Layout/SquareCard/SquareCard";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 import Loader from "@/components/Layout/Loader/Loader";
-import { isMobileState } from "@/states/isMobileState";
+import { useDeviceStore } from "@/states/deviceStore";
 import { useRouter } from "next/router";
 
 export default function Author({ authorId, authorUrl, feedId }: AuthorProps) {
   const { data: userData } = useUserData(authorId);
   const { data: userDataByUrl } = useUserDataByUrl(authorUrl);
-  const { isLoggedIn, user_id } = useRecoilValue(authState);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const user_id = useAuthStore((state) => state.user_id);
   const imgRef = usePreventRightClick<HTMLImageElement>();
   const divRef = usePreventRightClick<HTMLDivElement>();
   const [isFollowing, setIsFollowing] = useState(false);
   const [followerCount, setFollowerCount] = useState(0);
   const { showToast } = useToast();
-  const isMobile = useRecoilValue(isMobileState);
+  const isMobile = useDeviceStore((state) => state.isMobile);
   const { pathname } = useRouter();
 
   useEffect(() => {

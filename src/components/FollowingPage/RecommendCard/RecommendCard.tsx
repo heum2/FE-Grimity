@@ -8,8 +8,7 @@ import { useToast } from "@/hooks/useToast";
 import { putFollow } from "@/api/users/putIdFollow";
 import { deleteFollow } from "@/api/users/deleteIdFollow";
 import IconComponent from "@/components/Asset/Icon";
-import { useRecoilValue } from "recoil";
-import { authState } from "@/states/authState";
+import { useAuthStore } from "@/states/authState";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 
 export default function RecommendCard({
@@ -22,7 +21,7 @@ export default function RecommendCard({
   isFollowing: initialIsFollowing,
   thumbnails,
 }: PopularUserResponse) {
-  const { user_id } = useRecoilValue(authState);
+  const user_id = useAuthStore((state) => state.user_id);
   const { showToast } = useToast();
   const [isFollowing, setIsFollowing] = useState(initialIsFollowing);
   const [followerCount, setFollowerCount] = useState(initialFollowerCount);

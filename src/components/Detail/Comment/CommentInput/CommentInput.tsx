@@ -4,8 +4,7 @@ import styles from "./CommentInput.module.scss";
 import Button from "@/components/Button/Button";
 import { usePostFeedsComments } from "@/api/feeds-comments/postFeedComments";
 import TextArea from "@/components/TextArea/TextArea";
-import { useRecoilValue } from "recoil";
-import { isMobileState } from "@/states/isMobileState";
+import { useDeviceStore } from "@/states/deviceStore";
 
 interface CommentInputProps {
   feedId: string;
@@ -22,7 +21,7 @@ export default function CommentInput({
   showToast,
   onCommentSubmitSuccess,
 }: CommentInputProps) {
-  const isMobile = useRecoilValue(isMobileState);
+  const isMobile = useDeviceStore((state) => state.isMobile);
   const [comment, setComment] = useState("");
   const postCommentMutation = usePostFeedsComments();
 

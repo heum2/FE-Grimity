@@ -1,8 +1,7 @@
 import styles from "./FollowingFeed.module.scss";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
-import { authState } from "@/states/authState";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useAuthStore } from "@/states/authState";
 import { useToast } from "@/hooks/useToast";
 import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
 import Link from "next/link";
@@ -13,7 +12,7 @@ import { usePreventScroll } from "@/hooks/usePreventScroll";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { timeAgo } from "@/utils/timeAgo";
-import { modalState } from "@/states/modalState";
+import { useModalStore } from "@/states/modalStore";
 import { deleteSave, putSave } from "@/api/feeds/putDeleteFeedsIdSave";
 import IconComponent from "@/components/Asset/Icon";
 import Dropdown from "@/components/Dropdown/Dropdown";
@@ -24,7 +23,7 @@ import CommentInput from "@/components/Detail/Comment/CommentInput/CommentInput"
 import Comment from "@/components/Detail/Comment/Comment";
 import { useGetFeedsComments } from "@/api/feeds-comments/getFeedComments";
 import { useMyData } from "@/api/users/getMe";
-import { isMobileState } from "@/states/isMobileState";
+import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { FollowingFeedsResponse } from "@/api/feeds/getFeedsFollowing";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
@@ -36,7 +35,8 @@ interface FollowingFeedProps {
 }
 
 export default function FollowingFeed({ id, commentCount, details }: FollowingFeedProps) {
-  const { isLoggedIn, user_id } = useRecoilValue(authState);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const user_id = useAuthStore((state) => state.user_id);
   const { data: myData } = useMyData();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isContentExpanded, setIsContentExpanded] = useState(false);
@@ -48,14 +48,14 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
   const [viewCounted, setViewCounted] = useState(false);
   const [overlayImage, setOverlayImage] = useState<string | null>(null);
   const router = useRouter();
-  const [, setModal] = useRecoilState(modalState);
+  const openModal = useModalStore((state) => state.openModal);
   const { refetch: refetchComments } = useGetFeedsComments({
     feedId: id,
     enabled: isCommentExpanded,
   });
   const [isContentTooLong, setIsContentTooLong] = useState(false);
   const contentRef = useRef<HTMLParagraphElement | null>(null);
-  const isMobile = useRecoilValue(isMobileState);
+  const isMobile = useDeviceStore((state) => state.isMobile);
   const imgRef = usePreventRightClick<HTMLImageElement>();
   const divRef = usePreventRightClick<HTMLDivElement>();
   const sectionRef = usePreventRightClick<HTMLElement>();
@@ -181,8 +181,7 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
 
   const handleOpenShareModal = () => {
     if (details) {
-      setModal({
-        isOpen: true,
+      openModal({
         type: "SHARE",
         data: { id, details },
       });
@@ -191,15 +190,13 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
 
   const handleOpenReportModal = () => {
     if (isMobile) {
-      setModal({
-        isOpen: true,
+      openModal({
         type: "REPORT",
         data: { refType: "FEED", refId: details?.author.id },
         isFill: true,
       });
     } else {
-      setModal({
-        isOpen: true,
+      openModal({
         type: "REPORT",
         data: { refType: "FEED", refId: details?.author.id },
       });

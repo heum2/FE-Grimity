@@ -4,8 +4,7 @@ import { useDetails } from "@/api/feeds/getFeedsId";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import Dropdown from "../Dropdown/Dropdown";
-import { authState } from "@/states/authState";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useAuthStore } from "@/states/authState";
 import { useToast } from "@/hooks/useToast";
 import IconComponent from "../Asset/Icon";
 import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
@@ -22,16 +21,17 @@ import Author from "./Author/Author";
 import ShareBtn from "./ShareBtn/ShareBtn";
 import { timeAgo } from "@/utils/timeAgo";
 import Chip from "../Chip/Chip";
-import { modalState } from "@/states/modalState";
+import { useModalStore } from "@/states/modalStore";
 import { deleteSave, putSave } from "@/api/feeds/putDeleteFeedsIdSave";
 import Comment from "./Comment/Comment";
 import NewFeed from "../Layout/NewFeed/NewFeed";
-import { isMobileState } from "@/states/isMobileState";
+import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 
 export default function Detail({ id }: DetailProps) {
-  const { isLoggedIn, user_id } = useRecoilValue(authState);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const user_id = useAuthStore((state) => state.user_id);
   const { data: details, isLoading, refetch } = useDetails(id);
   const [isExpanded, setIsExpanded] = useState(false);
   const { showToast } = useToast();
@@ -44,8 +44,8 @@ export default function Detail({ id }: DetailProps) {
   const divRef = usePreventRightClick<HTMLDivElement>();
   const sectionRef = usePreventRightClick<HTMLElement>();
   const router = useRouter();
-  const [, setModal] = useRecoilState(modalState);
-  const isMobile = useRecoilValue(isMobileState);
+  const openModal = useModalStore((state) => state.openModal);
+  const isMobile = useDeviceStore((state) => state.isMobile);
   useIsMobile();
   usePreventScroll(!!overlayImage);
 
@@ -107,8 +107,7 @@ export default function Detail({ id }: DetailProps) {
     if (!id) return;
 
     try {
-      setModal({
-        isOpen: true,
+      openModal({
         type: null,
         data: {
           title: "그림을 정말 삭제하시겠어요?",
@@ -141,14 +140,12 @@ export default function Detail({ id }: DetailProps) {
 
     if (details?.author.id === user_id) {
       if (isMobile) {
-        setModal({
-          isOpen: true,
+        openModal({
           type: "LIKE",
           isFill: true,
         });
       } else {
-        setModal({
-          isOpen: true,
+        openModal({
           type: "LIKE",
         });
       }
@@ -184,8 +181,7 @@ export default function Detail({ id }: DetailProps) {
 
   const handleOpenShareModal = () => {
     if (details) {
-      setModal({
-        isOpen: true,
+      openModal({
         type: "SHARE",
         data: { feedId: id, title: details.title, image: details.thumbnail },
       });
@@ -194,15 +190,13 @@ export default function Detail({ id }: DetailProps) {
 
   const handleOpenReportModal = () => {
     if (isMobile) {
-      setModal({
-        isOpen: true,
+      openModal({
         type: "REPORT",
         data: { refType: "FEED", refId: details?.author.id },
         isFill: true,
       });
     } else {
-      setModal({
-        isOpen: true,
+      openModal({
         type: "REPORT",
         data: { refType: "FEED", refId: details?.author.id },
       });

@@ -5,15 +5,14 @@ import IconComponent from "@/components/Asset/Icon";
 import { formatCurrency } from "@/utils/formatCurrency";
 import Link from "next/link";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { useRecoilValue } from "recoil";
-import { isMobileState } from "@/states/isMobileState";
+import { useDeviceStore } from "@/states/deviceStore";
 
 interface PopularCardProps {
   post: PostResponse;
 }
 
 export default function PopularCard({ post }: PopularCardProps) {
-  const isMobile = useRecoilValue(isMobileState);
+  const isMobile = useDeviceStore((state) => state.isMobile);
 
   useIsMobile();
 

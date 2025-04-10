@@ -3,8 +3,7 @@ import IconComponent from "@/components/Asset/Icon";
 import styles from "./FeedCard.module.scss";
 import { formatCurrency } from "@/utils/formatCurrency";
 import Link from "next/link";
-import { useRecoilValue } from "recoil";
-import { authState } from "@/states/authState";
+import { useAuthStore } from "@/states/authState";
 import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
 import { FeedCardProps } from "./FeedCard.types";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
@@ -18,7 +17,7 @@ export default function FeedCard({
   isLike,
   author,
 }: FeedCardProps) {
-  const { isLoggedIn } = useRecoilValue(authState);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const [isLiked, setIsLiked] = useState(isLike);
   const [currentLikeCount, setCurrentLikeCount] = useState(likeCount);
   const imgRef = usePreventRightClick<HTMLImageElement>();

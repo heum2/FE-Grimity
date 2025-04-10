@@ -13,12 +13,10 @@ import Loader from "@/components/Layout/Loader/Loader";
 import { CreatePostRequest, putEditPosts } from "@/api/posts/putPostsId";
 import { EditPostProps } from "./EditPost.types";
 import { usePostsDetails } from "@/api/posts/getPostsId";
-import { useRecoilState } from "recoil";
-import { modalState } from "@/states/modalState";
-import { useRecoilValue } from "recoil";
-import { isMobileState, isTabletState } from "@/states/isMobileState";
+import { useModalStore } from "@/states/modalStore";
+import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { authState } from "@/states/authState";
+import { useAuthStore } from "@/states/authState";
 import { imageUrl } from "@/constants/imageUrl";
 
 const Editor = dynamic(() => import("@tinymce/tinymce-react").then((mod) => mod.Editor), {
@@ -27,16 +25,18 @@ const Editor = dynamic(() => import("@tinymce/tinymce-react").then((mod) => mod.
 });
 
 export default function EditPost({ id }: EditPostProps) {
-  const { isLoggedIn, user_id } = useRecoilValue(authState);
-  const isMobile = useRecoilValue(isMobileState);
-  const isTablet = useRecoilValue(isTabletState);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const user_id = useAuthStore((state) => state.user_id);
+  const isMobile = useDeviceStore((state) => state.isMobile);
+  const isTablet = useDeviceStore((state) => state.isTablet);
+
   useIsMobile();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("일반");
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
   const { showToast } = useToast();
-  const [, setModal] = useRecoilState(modalState);
+  const openModal = useModalStore((state) => state.openModal);
   const router = useRouter();
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const editorRef = useRef<any>(null);
@@ -104,8 +104,7 @@ export default function EditPost({ id }: EditPostProps) {
 
       router.events.emit("routeChangeError");
 
-      setModal({
-        isOpen: true,
+      openModal({
         type: null,
         data: {
           title: "수정을 취소하고 나가시겠어요?",
@@ -127,7 +126,7 @@ export default function EditPost({ id }: EditPostProps) {
     return () => {
       router.events.off("routeChangeStart", handleRouteChangeStart);
     };
-  }, [router, setModal]);
+  }, [router, openModal]);
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);

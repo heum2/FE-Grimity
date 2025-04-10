@@ -3,14 +3,13 @@ import styles from "./SearchProfile.module.scss";
 import { formatCurrency } from "@/utils/formatCurrency";
 import Image from "next/image";
 import Link from "next/link";
-import { useRecoilValue } from "recoil";
-import { authState } from "@/states/authState";
+import { useAuthStore } from "@/states/authState";
 import { SearchProfileProps } from "./SearchProfile.types";
 import { deleteFollow } from "@/api/users/deleteIdFollow";
 import { putFollow } from "@/api/users/putIdFollow";
 import { useToast } from "@/hooks/useToast";
 import Button from "@/components/Button/Button";
-import { isMobileState, isTabletState } from "@/states/isMobileState";
+import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
 export default function SearchProfile({
@@ -23,12 +22,13 @@ export default function SearchProfile({
   followerCount: initialFollowerCount,
   isFollowing: initialIsFollowing,
 }: SearchProfileProps) {
-  const { isLoggedIn, user_id } = useRecoilValue(authState);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const user_id = useAuthStore((state) => state.user_id);
   const { showToast } = useToast();
   const [isFollowing, setIsFollowing] = useState(initialIsFollowing);
   const [followerCount, setFollowerCount] = useState(initialFollowerCount);
-  const isMobile = useRecoilValue(isMobileState);
-  const isTablet = useRecoilValue(isTabletState);
+  const isMobile = useDeviceStore((state) => state.isMobile);
+  const isTablet = useDeviceStore((state) => state.isTablet);
   useIsMobile();
 
   const handleFollowClick = async () => {

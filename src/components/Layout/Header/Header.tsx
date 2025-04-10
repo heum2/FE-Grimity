@@ -4,14 +4,13 @@ import styles from "./Header.module.scss";
 import Button from "@/components/Button/Button";
 import Link from "next/link";
 import IconComponent from "@/components/Asset/Icon";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { modalState } from "@/states/modalState";
-import { authState } from "@/states/authState";
+import { useModalStore } from "@/states/modalStore";
+import { useAuthStore } from "@/states/authState";
 import { useMyData } from "@/api/users/getMe";
 import { useRouter } from "next/router";
 import { useToast } from "@/hooks/useToast";
 import Notifications from "@/components/Notifications/Notifications";
-import { isMobileState, isTabletState } from "@/states/isMobileState";
+import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { usePreventScroll } from "@/hooks/usePreventScroll";
 import Dropdown from "@/components/Dropdown/Dropdown";
@@ -19,9 +18,11 @@ import Contact from "./Contact/Contact";
 import axiosInstance from "@/constants/baseurl";
 
 export default function Header() {
-  const [, setModal] = useRecoilState(modalState);
-  const [, setAuth] = useRecoilState(authState);
-  const { isLoggedIn } = useRecoilValue(authState);
+  const openModal = useModalStore((state) => state.openModal);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const setAccessToken = useAuthStore((state) => state.setAccessToken);
+  const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
+  const setUserId = useAuthStore((state) => state.setUserId);
   const { data: myData } = useMyData();
   const [activeNav, setActiveNav] = useState("홈");
   const activeItemRef = useRef<HTMLDivElement>(null);
@@ -34,8 +35,8 @@ export default function Header() {
   const [showContact, setShowContact] = useState(false);
   const { showToast } = useToast();
   const router = useRouter();
-  const isMobile = useRecoilValue(isMobileState);
-  const isTablet = useRecoilValue(isTabletState);
+  const isMobile = useDeviceStore((state) => state.isMobile);
+  const isTablet = useDeviceStore((state) => state.isTablet);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
   const isUserPage = router.pathname.startsWith("/[url]");
@@ -133,11 +134,11 @@ export default function Header() {
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
       localStorage.removeItem("user_id");
-      setAuth({
-        access_token: "",
-        isLoggedIn: false,
-        user_id: "",
-      });
+
+      setIsLoggedIn(false);
+      setAccessToken("");
+      setUserId("");
+
       router.push("/");
       window.scrollTo({ top: 0, behavior: "smooth" });
       if (isMobile || isTablet) {
@@ -275,10 +276,7 @@ export default function Header() {
         </div>
         <div className={styles.wrapper}>
           {(isMobile || isTablet) && !isLoggedIn && (
-            <div
-              className={styles.uploadBtn}
-              onClick={() => setModal({ isOpen: true, type: "LOGIN" })}
-            >
+            <div className={styles.uploadBtn} onClick={() => openModal({ type: "LOGIN" })}>
               <Button size="s" type="filled-primary">
                 로그인
               </Button>
@@ -450,10 +448,7 @@ export default function Header() {
                 {showContact && <Contact onClose={() => setShowContact(false)} />}
               </div>
             ) : (
-              <div
-                className={styles.uploadBtn}
-                onClick={() => setModal({ isOpen: true, type: "LOGIN" })}
-              >
+              <div className={styles.uploadBtn} onClick={() => openModal({ type: "LOGIN" })}>
                 <Button size="m" type="filled-primary">
                   로그인
                 </Button>
@@ -509,7 +504,7 @@ export default function Header() {
                     {!isLoggedIn || !myData ? (
                       <div
                         className={isMobile ? styles.uploadBtnContainer : styles.uploadBtn}
-                        onClick={() => setModal({ isOpen: true, type: "LOGIN" })}
+                        onClick={() => openModal({ type: "LOGIN" })}
                       >
                         <Button size="l" type="filled-primary">
                           로그인
