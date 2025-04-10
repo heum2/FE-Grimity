@@ -1,19 +1,7 @@
-import { toastState } from "@/states/toastState";
-import { useRecoilState } from "recoil";
+import { useToastStore } from "@/states/toastState";
 
 export function useToast() {
-  const [toast, setToast] = useRecoilState(toastState);
+  const { message, type, isShow, showToast, removeToast } = useToastStore();
 
-  const showToast = (message: string, type: "success" | "error" | "warning" | "information") => {
-    setToast({ message, type, isShow: true });
-    setTimeout(() => {
-      setToast((prev) => ({ ...prev, isShow: false }));
-    }, 4000);
-  };
-
-  const removeToast = () => {
-    setToast((prev) => ({ ...prev, isShow: false }));
-  };
-
-  return { toast, showToast, removeToast };
+  return { toast: { message, type, isShow }, showToast, removeToast };
 }
