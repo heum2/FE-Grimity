@@ -9,38 +9,36 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Toast from "@/components/Toast/Toast";
 import Script from "next/script";
+import Loader from "@/components/Layout/Loader/Loader";
 
 const queryClient = new QueryClient();
 
-function InitializeAuthState() {
+export default function App({ Component, pageProps }: AppProps) {
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
   const setUserId = useAuthStore((state) => state.setUserId);
-  const [isInitialized, setIsInitialized] = useState(false);
-
-  useEffect(() => {
-    const access_token = localStorage.getItem("access_token");
-    const user_id = localStorage.getItem("user_id");
-
-    if (access_token) {
-      setAccessToken(access_token);
-      setIsLoggedIn(true);
-      if (user_id) {
-        setUserId(user_id);
-      }
-    }
-    setIsInitialized(true);
-  }, []);
-
-  return null;
-}
-
-function PersistAuthState() {
+  const [isInitializing, setIsInitializing] = useState(true);
   const access_token = useAuthStore((state) => state.access_token);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const user_id = useAuthStore((state) => state.user_id);
 
   useEffect(() => {
+    const storedAccessToken = localStorage.getItem("access_token");
+    const storedUserId = localStorage.getItem("user_id");
+
+    if (storedAccessToken) {
+      setAccessToken(storedAccessToken);
+      setIsLoggedIn(true);
+      if (storedUserId) {
+        setUserId(storedUserId);
+      }
+    }
+    setIsInitializing(false);
+  }, [setAccessToken, setIsLoggedIn, setUserId]);
+
+  useEffect(() => {
+    if (isInitializing) return;
+
     if (isLoggedIn) {
       localStorage.setItem("access_token", access_token);
       if (user_id) {
@@ -50,16 +48,14 @@ function PersistAuthState() {
       localStorage.removeItem("access_token");
       localStorage.removeItem("user_id");
     }
-  }, [access_token, isLoggedIn, user_id]);
+  }, [isInitializing, access_token, isLoggedIn, user_id]);
 
-  return null;
-}
+  if (isInitializing) {
+    return <Loader />;
+  }
 
-export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      <InitializeAuthState />
-      <PersistAuthState />
       <QueryClientProvider client={queryClient}>
         <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
           <div className="body">
