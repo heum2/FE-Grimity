@@ -11,10 +11,9 @@ import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useToast } from "@/hooks/useToast";
 import Loader from "@/components/Layout/Loader/Loader";
-import { useRecoilValue } from "recoil";
-import { isMobileState, isTabletState } from "@/states/isMobileState";
+import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { authState } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import { imageUrl } from "@/constants/imageUrl";
 
 const Editor = dynamic(() => import("@tinymce/tinymce-react").then((mod) => mod.Editor), {
@@ -23,9 +22,9 @@ const Editor = dynamic(() => import("@tinymce/tinymce-react").then((mod) => mod.
 });
 
 export default function BoardWrite() {
-  const { isLoggedIn } = useRecoilValue(authState);
-  const isMobile = useRecoilValue(isMobileState);
-  const isTablet = useRecoilValue(isTabletState);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const isMobile = useDeviceStore((state) => state.isMobile);
+  const isTablet = useDeviceStore((state) => state.isTablet);
   useIsMobile();
   const [title, setTitle] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("일반");

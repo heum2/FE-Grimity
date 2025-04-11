@@ -1,14 +1,12 @@
-import { useRecoilState } from "recoil";
-import { modalState } from "@/states/modalState";
+import { useModalStore } from "@/states/modalStore";
 import IconComponent from "@/components/Asset/Icon";
 import { ShareBtnProps } from "./ShareBtn.types";
 
 export default function ShareBtn({ feedId, title, image }: ShareBtnProps) {
-  const [, setModal] = useRecoilState(modalState);
+  const openModal = useModalStore((state) => state.openModal);
 
   const handleOpenShareModal = () => {
-    setModal({
-      isOpen: true,
+    openModal({
       type: "SHARE",
       data: { feedId, title, image },
     });

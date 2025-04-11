@@ -4,9 +4,8 @@ import styles from "./FollowNewFeed.module.scss";
 import Loader from "../Loader/Loader";
 import RectangleCard from "../RectangleCard/RectangleCard";
 import { useFollowingNew } from "@/api/feeds/getFeedsFollowing";
-import { isMobileState, isTabletState } from "@/states/isMobileState";
+import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { useRecoilValue } from "recoil";
 import Button from "@/components/Button/Button";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -17,8 +16,8 @@ import { Navigation } from "swiper/modules";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 
 export default function FollowNewFeed() {
-  const isMobile = useRecoilValue(isMobileState);
-  const isTablet = useRecoilValue(isTabletState);
+  const isMobile = useDeviceStore((state) => state.isMobile);
+  const isTablet = useDeviceStore((state) => state.isTablet);
   const [pageIndex, setPageIndex] = useState(0);
   const itemsPerPage = 2;
   useIsMobile();

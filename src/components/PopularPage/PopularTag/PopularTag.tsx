@@ -5,8 +5,7 @@ import Loader from "@/components/Layout/Loader/Loader";
 import Tag from "./Tag/Tag";
 import Link from "next/link";
 import { useCallback, useEffect, useRef } from "react";
-import { isMobileState, isTabletState } from "@/states/isMobileState";
-import { useRecoilValue } from "recoil";
+import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -14,8 +13,9 @@ import "swiper/css";
 export default function PopularTag() {
   const { data, isLoading } = useTagsPopular();
   const containerRef = useRef<HTMLDivElement>(null);
-  const isMobile = useRecoilValue(isMobileState);
-  const isTablet = useRecoilValue(isTabletState);
+  const isMobile = useDeviceStore((state) => state.isMobile);
+  const isTablet = useDeviceStore((state) => state.isTablet);
+
   useIsMobile();
 
   // 가로 스크롤 시 세로 스크롤 막기

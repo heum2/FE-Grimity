@@ -4,21 +4,20 @@ import styles from "./PopularUser.module.scss";
 import Title from "@/components/Layout/Title/Title";
 import Loader from "@/components/Layout/Loader/Loader";
 import User from "./User/User";
-import { useRecoilValue } from "recoil";
-import { isMobileState, isTabletState } from "@/states/isMobileState";
+import { useDeviceStore } from "@/states/deviceStore";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import { authState } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 
 export default function PopularUser() {
-  const { user_id } = useRecoilValue(authState);
+  const user_id = useAuthStore((state) => state.user_id);
   const { data, isLoading } = usePopular();
   const [randomUsers, setRandomUsers] = useState<PopularUserResponse[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const divRef = usePreventRightClick<HTMLDivElement>();
-  const isMobile = useRecoilValue(isMobileState);
-  const isTablet = useRecoilValue(isTabletState);
+  const isMobile = useDeviceStore((state) => state.isMobile);
+  const isTablet = useDeviceStore((state) => state.isTablet);
 
   // 가로 스크롤 시 세로 스크롤 막기
   const handleWheel = useCallback((e: WheelEvent) => {

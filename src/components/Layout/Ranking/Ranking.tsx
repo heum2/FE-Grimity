@@ -5,8 +5,7 @@ import IconComponent from "@/components/Asset/Icon";
 import styles from "./Ranking.module.scss";
 import { useTodayFeedPopular } from "@/api/feeds/getTodayPopular";
 import Loader from "../Loader/Loader";
-import { useRecoilValue } from "recoil";
-import { isMobileState, isTabletState } from "@/states/isMobileState";
+import { useDeviceStore } from "@/states/deviceStore";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -14,8 +13,9 @@ import "swiper/css/navigation";
 import { useRouter } from "next/router";
 
 export default function Ranking() {
-  const isMobile = useRecoilValue(isMobileState);
-  const isTablet = useRecoilValue(isTabletState);
+  const isMobile = useDeviceStore((state) => state.isMobile);
+  const isTablet = useDeviceStore((state) => state.isTablet);
+
   const [pageIndex, setPageIndex] = useState(0);
   const { data, isLoading, refetch } = useTodayFeedPopular();
   const { pathname } = useRouter();

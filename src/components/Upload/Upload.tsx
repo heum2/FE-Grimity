@@ -12,14 +12,13 @@ import { AxiosError } from "axios";
 import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
 import DraggableImage from "./DraggableImage/DraggableImage";
 import Chip from "../Chip/Chip";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { modalState } from "@/states/modalState";
-import { isMobileState, isTabletState } from "@/states/isMobileState";
+import { useModalStore } from "@/states/modalStore";
+import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { authState } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 
 export default function Upload() {
-  const { isLoggedIn } = useRecoilValue(authState);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const [images, setImages] = useState<{ name: string; originalName: string; url: string }[]>([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -29,12 +28,12 @@ export default function Upload() {
   const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [thumbnailName, setThumbnailName] = useState("");
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-  const [, setModal] = useRecoilState(modalState);
+  const openModal = useModalStore((state) => state.openModal);
   const { showToast } = useToast();
   const hasUnsavedChangesRef = useRef(hasUnsavedChanges);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const isMobile = useRecoilValue(isMobileState);
-  const isTablet = useRecoilValue(isTabletState);
+  const isMobile = useDeviceStore((state) => state.isMobile);
+  const isTablet = useDeviceStore((state) => state.isTablet);
   useIsMobile();
 
   useEffect(() => {
@@ -87,8 +86,7 @@ export default function Upload() {
 
       router.events.emit("routeChangeError");
 
-      setModal({
-        isOpen: true,
+      openModal({
         type: null,
         data: {
           title: "업로드를 취소하고 나가시겠어요?",
@@ -110,7 +108,7 @@ export default function Upload() {
     return () => {
       router.events.off("routeChangeStart", handleRouteChangeStart);
     };
-  }, [router, setModal]);
+  }, [router, openModal]);
 
   const convertToWebP = (file: File): Promise<File> => {
     return new Promise((resolve, reject) => {
@@ -171,8 +169,7 @@ export default function Upload() {
         }
 
         const imageUrl = `${imageDomain}/${thumbnailName}`;
-        setModal({
-          isOpen: true,
+        openModal({
           type: "UPLOAD",
           data: { feedId: response.id, title, image: imageUrl },
         });
@@ -340,8 +337,7 @@ export default function Upload() {
       return;
     }
 
-    setModal({
-      isOpen: true,
+    openModal({
       type: null,
       data: {
         title: "그림을 업로드할까요?",

@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "./Comment.module.scss";
 import Image from "next/image";
-import { authState } from "@/states/authState";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useAuthStore } from "@/states/authStore";
 import { usePostFeedsComments } from "@/api/feeds-comments/postFeedComments";
 import {
   useGetFeedsComments,
@@ -20,11 +19,11 @@ import { timeAgo } from "@/utils/timeAgo";
 import IconComponent from "@/components/Asset/Icon";
 import Button from "@/components/Button/Button";
 import { deleteCommentLike, putCommentLike } from "@/api/feeds-comments/putDeleteCommentsLike";
-import { modalState } from "@/states/modalState";
+import { useModalStore } from "@/states/modalStore";
 import CommentInput from "./CommentInput/CommentInput";
 import TextArea from "@/components/TextArea/TextArea";
 import { useMyData } from "@/api/users/getMe";
-import { isMobileState } from "@/states/isMobileState";
+import { useDeviceStore } from "@/states/deviceStore";
 import { useRouter } from "next/router";
 
 export default function Comment({
@@ -33,10 +32,11 @@ export default function Comment({
   isFollowingPage,
   isExpanded = true,
 }: CommentProps) {
-  const { isLoggedIn, user_id } = useRecoilValue(authState);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const user_id = useAuthStore((state) => state.user_id);
   const { data: userData, isLoading, refetch: userDataRefetch } = useMyData();
   const { showToast } = useToast();
-  const [, setModal] = useRecoilState(modalState);
+  const openModal = useModalStore((state) => state.openModal);
   const queryClient = useQueryClient();
   const [replyText, setReplyText] = useState("");
   const [mentionedUser, setMentionedUser] = useState<{
@@ -54,7 +54,7 @@ export default function Comment({
   const postCommentMutation = usePostFeedsComments();
   const [activeParentReplyId, setActiveParentReplyId] = useState<string | null>(null);
   const [activeChildReplyId, setActiveChildReplyId] = useState<string | null>(null);
-  const isMobile = useRecoilValue(isMobileState);
+  const isMobile = useDeviceStore((state) => state.isMobile);
   const { pathname } = useRouter();
   useEffect(() => {
     refetchComments();
@@ -157,15 +157,13 @@ export default function Comment({
     }
 
     if (isMobile) {
-      setModal({
-        isOpen: true,
+      openModal({
         type: "REPORT",
         data: { refType: "FEED_COMMENT", refId: id },
         isFill: true,
       });
     } else {
-      setModal({
-        isOpen: true,
+      openModal({
         type: "REPORT",
         data: { refType: "FEED_COMMENT", refId: id },
       });
@@ -173,8 +171,7 @@ export default function Comment({
   };
 
   const handleCommentDelete = async (id: string) => {
-    setModal({
-      isOpen: true,
+    openModal({
       type: null,
       data: {
         title: "댓글을 삭제하시겠어요?",

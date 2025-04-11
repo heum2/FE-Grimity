@@ -9,10 +9,9 @@ import { getTypeLabel } from "../BoardAll/AllCard/AllCard";
 import Link from "next/link";
 import Button from "@/components/Button/Button";
 import IconComponent from "@/components/Asset/Icon";
-import { modalState } from "@/states/modalState";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useModalStore } from "@/states/modalStore";
 import { useToast } from "@/hooks/useToast";
-import { authState } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import { useEffect, useState } from "react";
 import { deletePostsSave, putPostsSave } from "@/api/posts/putDeletePostsIdSave";
 import { deletePostsLike, putPostsLike } from "@/api/posts/putDeletePostsLike";
@@ -23,19 +22,20 @@ import BoardAll from "../BoardAll/BoardAll";
 import BoardPopular from "../BoardPopular/BoardPopular";
 import ShareBtn from "./ShareBtn/ShareBtn";
 import PostComment from "./Comment/Comment";
-import { isMobileState, isTabletState } from "@/states/isMobileState";
+import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
 export default function PostDetail({ id }: PostDetailProps) {
-  const { isLoggedIn, user_id } = useRecoilValue(authState);
-  const [, setModal] = useRecoilState(modalState);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const user_id = useAuthStore((state) => state.user_id);
+  const openModal = useModalStore((state) => state.openModal);
   const { showToast } = useToast();
   const [currentLikeCount, setCurrentLikeCount] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const { data: posts, isLoading, refetch } = usePostsDetails(id as string);
-  const isMobile = useRecoilValue(isMobileState);
-  const isTablet = useRecoilValue(isTabletState);
+  const isMobile = useDeviceStore((state) => state.isMobile);
+  const isTablet = useDeviceStore((state) => state.isTablet);
   useIsMobile();
   const router = useRouter();
   const { pathname } = useRouter();
@@ -58,25 +58,20 @@ export default function PostDetail({ id }: PostDetailProps) {
 
   const handleOpenShareModal = () => {
     if (posts) {
-      setModal({
-        isOpen: true,
+      openModal({
         type: "SHAREPOST",
         data: { postId: id, title: posts.title },
       });
     }
   };
-
   const handleOpenReportModal = () => {
     if (isMobile) {
-      setModal({
-        isOpen: true,
+      openModal({
         type: "REPORT",
         data: { refType: "POST", refId: posts?.author.id },
-        isFill: true,
       });
     } else {
-      setModal({
-        isOpen: true,
+      openModal({
         type: "REPORT",
         data: { refType: "POST", refId: posts?.author.id },
       });
@@ -117,8 +112,7 @@ export default function PostDetail({ id }: PostDetailProps) {
     if (!id) return;
 
     try {
-      setModal({
-        isOpen: true,
+      openModal({
         type: null,
         data: {
           title: "글을 정말 삭제하시겠어요?",

@@ -4,8 +4,7 @@ import "@/styles/globals.scss";
 import "@/styles/reset.css";
 import Layout from "@/components/Layout/Layout";
 import Modal from "@/components/Modal/Modal";
-import { RecoilRoot, useRecoilTransactionObserver_UNSTABLE, useSetRecoilState } from "recoil";
-import { authState } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Toast from "@/components/Toast/Toast";
@@ -14,57 +13,51 @@ import Script from "next/script";
 const queryClient = new QueryClient();
 
 function InitializeAuthState() {
-  const setAuth = useSetRecoilState(authState);
+  const setAccessToken = useAuthStore((state) => state.setAccessToken);
+  const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
+  const setUserId = useAuthStore((state) => state.setUserId);
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
     const access_token = localStorage.getItem("access_token");
     const user_id = localStorage.getItem("user_id");
 
-    if (access_token && user_id) {
-      setAuth({
-        access_token,
-        isLoggedIn: true,
-        user_id,
-      });
+    if (access_token) {
+      setAccessToken(access_token);
+      setIsLoggedIn(true);
+      if (user_id) {
+        setUserId(user_id);
+      }
     }
     setIsInitialized(true);
-  }, [setAuth]);
-
-  return <SetIsInitialized isInitialized={isInitialized} />;
-}
-
-function SetIsInitialized({ isInitialized }: { isInitialized: boolean }) {
-  const setAuth = useSetRecoilState(authState);
-
-  useEffect(() => {
-    setAuth((prev) => ({ ...prev, isInitialized }));
-  }, [isInitialized, setAuth]);
+  }, []);
 
   return null;
 }
 
 function PersistAuthState() {
-  useRecoilTransactionObserver_UNSTABLE(({ snapshot }) => {
-    const auth = snapshot.getLoadable(authState).contents;
+  const access_token = useAuthStore((state) => state.access_token);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const user_id = useAuthStore((state) => state.user_id);
 
-    if (auth.isLoggedIn) {
-      localStorage.setItem("access_token", auth.access_token);
-      if (auth.user_id) {
-        localStorage.setItem("user_id", auth.user_id);
+  useEffect(() => {
+    if (isLoggedIn) {
+      localStorage.setItem("access_token", access_token);
+      if (user_id) {
+        localStorage.setItem("user_id", user_id);
       }
     } else {
       localStorage.removeItem("access_token");
       localStorage.removeItem("user_id");
     }
-  });
+  }, [access_token, isLoggedIn, user_id]);
 
   return null;
 }
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <RecoilRoot>
+    <>
       <InitializeAuthState />
       <PersistAuthState />
       <QueryClientProvider client={queryClient}>
@@ -78,22 +71,22 @@ export default function App({ Component, pageProps }: AppProps) {
           <Toast />
           <Script
             strategy="afterInteractive"
-            src="https://www.googletagmanager.com/gtag/js?id=G-315CM7P7E5"
+            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_TRACKING_ID}`}
           />
           <Script
             id="google-analytics"
             strategy="afterInteractive"
             dangerouslySetInnerHTML={{
               __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-315CM7P7E5');
-          `,
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${process.env.NEXT_PUBLIC_GA_TRACKING_ID}');
+              `,
             }}
           />
         </GoogleOAuthProvider>
       </QueryClientProvider>
-    </RecoilRoot>
+    </>
   );
 }

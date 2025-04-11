@@ -1,12 +1,11 @@
 import styles from "./Nickname.module.scss";
 import { useState } from "react";
-import { useRecoilState } from "recoil";
-import { modalState } from "@/states/modalState";
+import { useModalStore } from "@/states/modalStore";
 import { useMutation } from "react-query";
 import TextField from "@/components/TextField/TextField";
 import IconComponent from "@/components/Asset/Icon";
 import Button from "@/components/Button/Button";
-import { authState } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import { useToast } from "@/hooks/useToast";
 import axiosInstance from "@/constants/baseurl";
 
@@ -14,8 +13,11 @@ export default function Nickname() {
   const [nickname, setNickname] = useState("");
   const [agree, setAgree] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [, setAuth] = useRecoilState(authState);
-  const [modal, setModal] = useRecoilState(modalState);
+  const setAccessToken = useAuthStore((state) => state.setAccessToken);
+  const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
+  const setUserId = useAuthStore((state) => state.setUserId);
+  const modal = useModalStore();
+  const openModal = useModalStore((state) => state.openModal);
   const { showToast } = useToast();
 
   const checkNicknameMutation = useMutation({
@@ -49,8 +51,7 @@ export default function Nickname() {
     try {
       await checkNicknameMutation.mutateAsync(nickname.trim());
 
-      setModal({
-        isOpen: true,
+      openModal({
         type: "PROFILE-ID",
         data: {
           accessToken: modal.data.accessToken,

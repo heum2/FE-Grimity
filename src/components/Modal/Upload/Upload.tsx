@@ -1,24 +1,23 @@
 import { useToast } from "@/hooks/useToast";
 import styles from "./Upload.module.scss";
-import { modalState } from "@/states/modalState";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useModalStore } from "@/states/modalStore";
 import Button from "@/components/Button/Button";
 import { UploadModalProps } from "./Upload.types";
-import { isMobileState } from "@/states/isMobileState";
+import { useDeviceStore } from "@/states/deviceStore";
 import { serviceUrl } from "@/constants/serviceurl";
 import IconComponent from "@/components/Asset/Icon";
 
 export default function UploadModal({ feedId, title, image }: UploadModalProps) {
   const { showToast } = useToast();
-  const [, setModal] = useRecoilState(modalState);
+  const openModal = useModalStore((state) => state.openModal);
   const url = `${serviceUrl}feeds/${feedId}`;
-  const isMobile = useRecoilValue(isMobileState);
+  const isMobile = useDeviceStore((state) => state.isMobile);
 
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(url);
       showToast("클립보드에 복사되었습니다.", "success");
-      setModal({ isOpen: false, type: null, data: null });
+      openModal({ type: null, data: null });
     } catch {
       showToast("클립보드 복사에 실패했습니다.", "error");
     }
@@ -45,7 +44,7 @@ export default function UploadModal({ feedId, title, image }: UploadModalProps) 
       },
     });
 
-    setModal({ isOpen: false, type: null, data: null });
+    openModal({ type: null, data: null });
   };
 
   const handleTwitterShare = () => {
@@ -54,7 +53,7 @@ export default function UploadModal({ feedId, title, image }: UploadModalProps) 
   };
 
   const handleClose = () => {
-    setModal({ isOpen: false, type: null, data: null, isComfirm: false });
+    openModal({ type: null, data: null, isComfirm: false });
   };
 
   return (

@@ -1,8 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import ReactCrop, { Crop, PercentCrop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
-import { useRecoilState } from "recoil";
-import { modalState } from "@/states/modalState";
+import { useModalStore } from "@/states/modalStore";
 import Button from "@/components/Button/Button";
 import styles from "./Background.module.scss";
 import { useToast } from "@/hooks/useToast";
@@ -22,7 +21,7 @@ interface BackgroundProps {
 export default function Background({ imageSrc, file }: BackgroundProps) {
   const { refetch } = useMyData();
   useIsMobile();
-  const [, setModal] = useRecoilState(modalState);
+  const openModal = useModalStore((state) => state.openModal);
   const { showToast } = useToast();
   const [crop, setCrop] = useState<Crop>({
     unit: "%",
@@ -123,7 +122,7 @@ export default function Background({ imageSrc, file }: BackgroundProps) {
       }
 
       showToast("커버 이미지가 변경되었습니다!", "success");
-      setModal({ isOpen: false, type: null, data: null });
+      openModal({ type: null, data: null });
       refetch();
     } catch (error) {
       console.error("Cover image upload error:", error);

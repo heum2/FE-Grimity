@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import { useToast } from "@/hooks/useToast";
 import styles from "./Report.module.scss";
-import { modalState } from "@/states/modalState";
-import { useRecoilState } from "recoil";
+import { useModalStore } from "@/states/modalStore";
 import Button from "@/components/Button/Button";
 import { ReportProps } from "./Report.types";
 import { postReports } from "@/api/reports/postReports";
 
 export default function Report({ refType, refId }: ReportProps) {
   const { showToast } = useToast();
-  const [, setModal] = useRecoilState(modalState);
+  const openModal = useModalStore((state) => state.openModal);
   const [reason, setReason] = useState("1");
   const [details, setDetails] = useState("");
 
@@ -19,8 +18,7 @@ export default function Report({ refType, refId }: ReportProps) {
       return;
     }
 
-    setModal({
-      isOpen: true,
+    openModal({
       type: null,
       data: {
         title: "신고하시겠어요?",
@@ -92,7 +90,7 @@ export default function Report({ refType, refId }: ReportProps) {
         <Button
           size="l"
           type="outlined-assistive"
-          onClick={() => setModal({ isOpen: false, type: null, data: null, isComfirm: false })}
+          onClick={() => openModal({ type: null, data: null, isComfirm: false })}
         >
           취소
         </Button>

@@ -1,23 +1,22 @@
 import styles from "./Like.module.scss";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { modalState } from "@/states/modalState";
+import { useModalStore } from "@/states/modalStore";
 import { useFeedsLike } from "@/api/feeds/getFeedsIdLike";
 import Loader from "@/components/Layout/Loader/Loader";
-import { isMobileState } from "@/states/isMobileState";
+import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
 export default function Like() {
-  const [, setModal] = useRecoilState(modalState);
+  const openModal = useModalStore((state) => state.openModal);
   const route = useRouter();
   const { data, isLoading } = useFeedsLike({ id: String(route.query.id) });
-  const isMobile = useRecoilValue(isMobileState);
+  const isMobile = useDeviceStore((state) => state.isMobile);
   useIsMobile();
 
   const handleClickUser = (url: string) => {
     route.push(`${url}`);
-    setModal({ isOpen: false, type: null, data: null });
+    openModal({ type: null, data: null });
   };
 
   if (isLoading) {

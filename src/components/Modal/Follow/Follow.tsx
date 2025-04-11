@@ -4,13 +4,12 @@ import { useMyFollower, useMyFollowing } from "@/api/users/getMeFollow";
 import Image from "next/image";
 import Button from "@/components/Button/Button";
 import { useRouter } from "next/router";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { modalState } from "@/states/modalState";
+import { useModalStore } from "@/states/modalStore";
 import { deleteMyFollowers } from "@/api/users/deleteMeFollowers";
 import { deleteFollow } from "@/api/users/deleteIdFollow";
 import { useToast } from "@/hooks/useToast";
 import { FollowProps } from "./Follow.types";
-import { isMobileState } from "@/states/isMobileState";
+import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
 export default function Follow({ initialTab }: FollowProps) {
@@ -18,11 +17,11 @@ export default function Follow({ initialTab }: FollowProps) {
   const [indicatorPosition, setIndicatorPosition] = useState(0);
   const tabsRef = useRef<HTMLDivElement | null>(null);
   const observerRef = useRef<HTMLDivElement | null>(null);
-  const [, setModal] = useRecoilState(modalState);
+  const openModal = useModalStore((state) => state.openModal);
   const [isFetchingData, setIsFetchingData] = useState(false);
   const route = useRouter();
   const { showToast } = useToast();
-  const isMobile = useRecoilValue(isMobileState);
+  const isMobile = useDeviceStore((state) => state.isMobile);
   useIsMobile();
 
   const {
@@ -112,7 +111,7 @@ export default function Follow({ initialTab }: FollowProps) {
 
   const handleClickUser = (url: string) => {
     route.push(`${url}`);
-    setModal({ isOpen: false, type: null, data: null });
+    openModal({ type: null, data: null });
   };
 
   const handleDeleteFollow = async (id: string) => {

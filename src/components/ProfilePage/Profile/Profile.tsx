@@ -3,15 +3,14 @@ import Button from "../../Button/Button";
 import { useMyData } from "@/api/users/getMe";
 import Image from "next/image";
 import { formatCurrency } from "@/utils/formatCurrency";
-import { useRecoilState, useRecoilValue } from "recoil";
 import { ProfileProps } from "./Profile.types";
 import { useUserDataByUrl } from "@/api/users/getId";
 import { deleteFollow } from "@/api/users/deleteIdFollow";
 import { putFollow } from "@/api/users/putIdFollow";
 import { useToast } from "@/hooks/useToast";
-import { authState } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import IconComponent from "@/components/Asset/Icon";
-import { modalState } from "@/states/modalState";
+import { useModalStore } from "@/states/modalStore";
 import { useEffect, useState } from "react";
 import router, { useRouter } from "next/router";
 import { postPresignedUrl } from "@/api/aws/postPresigned";
@@ -20,23 +19,26 @@ import { putBackgroundImage, putProfileImage } from "@/api/users/putMeImage";
 import { AxiosError } from "axios";
 import { deleteMyBackgroundImage, deleteMyProfileImage } from "@/api/users/deleteMeImage";
 import Dropdown from "@/components/Dropdown/Dropdown";
-import { isMobileState, isTabletState } from "@/states/isMobileState";
+import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { deleteMe } from "@/api/users/deleteMe";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 
 export default function Profile({ isMyProfile, id, url }: ProfileProps) {
-  const { isLoggedIn, user_id } = useRecoilValue(authState);
-  const [, setAuth] = useRecoilState(authState);
-  const [, setModal] = useRecoilState(modalState);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const user_id = useAuthStore((state) => state.user_id);
+  const setAccessToken = useAuthStore((state) => state.setAccessToken);
+  const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
+  const setUserId = useAuthStore((state) => state.setUserId);
+  const openModal = useModalStore((state) => state.openModal);
   const { data: myData, refetch } = useMyData();
   const { data: userData, refetch: refetchUserData } = useUserDataByUrl(url);
   const [profileImage, setProfileImage] = useState<string>("");
   const [coverImage, setCoverImage] = useState<string>("");
   const { showToast } = useToast();
   const imgRef = usePreventRightClick<HTMLImageElement>();
-  const isMobile = useRecoilValue(isMobileState);
-  const isTablet = useRecoilValue(isTabletState);
+  const isMobile = useDeviceStore((state) => state.isMobile);
+  const isTablet = useDeviceStore((state) => state.isTablet);
   useIsMobile();
   const CoverImageMutation = useMutation((imageName: string) => putBackgroundImage(imageName));
   const { pathname } = useRouter();
@@ -79,9 +81,9 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
 
   const handleOpenEditModal = () => {
     if (isMobile) {
-      setModal({ isOpen: true, type: "PROFILE-EDIT", data: null, isFill: true });
+      openModal({ type: "PROFILE-EDIT", data: null, isFill: true });
     } else {
-      setModal({ isOpen: true, type: "PROFILE-EDIT", data: null });
+      openModal({ type: "PROFILE-EDIT", data: null });
     }
   };
 
@@ -177,8 +179,7 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
 
     if (!isMobile && !isTablet) {
       const imageUrl = URL.createObjectURL(file);
-      setModal({
-        isOpen: true,
+      openModal({
         type: "BACKGROUND",
         data: { imageSrc: imageUrl, file },
       });
@@ -234,15 +235,13 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
 
   const handleOpenFollowerModal = () => {
     if (isMobile) {
-      setModal({
-        isOpen: true,
+      openModal({
         type: "FOLLOWER",
         data: null,
         isFill: true,
       });
     } else {
-      setModal({
-        isOpen: true,
+      openModal({
         type: "FOLLOWER",
         data: null,
       });
@@ -251,15 +250,13 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
 
   const handleOpenFollowingModal = () => {
     if (isMobile) {
-      setModal({
-        isOpen: true,
+      openModal({
         type: "FOLLOWING",
         data: null,
         isFill: true,
       });
     } else {
-      setModal({
-        isOpen: true,
+      openModal({
         type: "FOLLOWING",
         data: null,
       });
@@ -284,15 +281,13 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
       showToast("로그인 후 가능합니다.", "warning");
     } else {
       if (isMobile) {
-        setModal({
-          isOpen: true,
+        openModal({
           type: "REPORT",
           data: { refType: "USER", refId: userData?.id },
           isFill: true,
         });
       } else {
-        setModal({
-          isOpen: true,
+        openModal({
           type: "REPORT",
           data: { refType: "USER", refId: userData?.id },
         });
@@ -302,8 +297,7 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
 
   const handleWithdrawal = async () => {
     try {
-      setModal({
-        isOpen: true,
+      openModal({
         type: null,
         data: {
           title: "정말 탈퇴하시겠어요?",
@@ -312,11 +306,9 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
           onClick: async () => {
             try {
               await deleteMe();
-              setAuth({
-                access_token: "",
-                isLoggedIn: false,
-                user_id: "",
-              });
+              setAccessToken("");
+              setIsLoggedIn(false);
+              setUserId("");
               showToast("회원 탈퇴 되었습니다.", "success");
               router.push("/");
             } catch (err) {

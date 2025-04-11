@@ -2,9 +2,8 @@ import { Draggable } from "@hello-pangea/dnd";
 import { DraggableImageProps } from "./DraggableImage.types";
 import styles from "./DraggableImage.module.scss";
 import { useState } from "react";
-import { isMobileState } from "@/states/isMobileState";
+import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { useRecoilValue } from "recoil";
 import IconComponent from "@/components/Asset/Icon";
 
 export default function DraggableImage({
@@ -15,7 +14,7 @@ export default function DraggableImage({
   isThumbnail,
   onThumbnailSelect,
 }: DraggableImageProps) {
-  const isMobile = useRecoilValue(isMobileState);
+  const isMobile = useDeviceStore((state) => state.isMobile);
   useIsMobile();
   const [isLoading, setIsLoading] = useState(true);
 

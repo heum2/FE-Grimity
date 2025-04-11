@@ -3,8 +3,7 @@ import IconComponent from "@/components/Asset/Icon";
 import styles from "./SearchCard.module.scss";
 import { formatCurrency } from "@/utils/formatCurrency";
 import Link from "next/link";
-import { useRecoilValue } from "recoil";
-import { authState } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
 import { SearchCardProps } from "./SearchCard.types";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -22,7 +21,7 @@ export default function SearchCard({
   tags,
   author,
 }: SearchCardProps) {
-  const { isLoggedIn } = useRecoilValue(authState);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const [isLiked, setIsLiked] = useState(isLike);
   const [currentLikeCount, setCurrentLikeCount] = useState(likeCount);
   const imgRef = usePreventRightClick<HTMLImageElement>();

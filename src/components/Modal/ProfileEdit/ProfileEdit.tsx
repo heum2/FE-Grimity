@@ -1,7 +1,6 @@
 import styles from "./ProfileEdit.module.scss";
 import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { modalState } from "@/states/modalState";
+import { useModalStore } from "@/states/modalStore";
 import { useMutation } from "react-query";
 import TextField from "@/components/TextField/TextField";
 import IconComponent from "@/components/Asset/Icon";
@@ -12,7 +11,7 @@ import { UpdateUserRequest, UpdateProfileConflictResponse, putMyInfo } from "@/a
 import { AxiosError } from "axios";
 import Loader from "@/components/Layout/Loader/Loader";
 import router from "next/router";
-import { isMobileState } from "@/states/isMobileState";
+import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { isValidProfileIdFormat, isForbiddenProfileId } from "@/utils/isValidProfileId";
 import { useScrollRestoration } from "@/hooks/useScrollRestoration";
@@ -28,11 +27,11 @@ export default function ProfileEdit() {
     { linkName: "", link: "" },
   ]);
   const [isError, setIsError] = useState(false);
-  const [, setModal] = useRecoilState(modalState);
+  const openModal = useModalStore((state) => state.openModal);
   const { restoreScrollPosition } = useScrollRestoration("profileEdit-scroll");
 
   const { showToast } = useToast();
-  const isMobile = useRecoilValue(isMobileState);
+  const isMobile = useDeviceStore((state) => state.isMobile);
   useIsMobile();
 
   useEffect(() => {
@@ -51,7 +50,7 @@ export default function ProfileEdit() {
   const mutation = useMutation((newInfo: UpdateUserRequest) => putMyInfo(newInfo), {
     onSuccess: () => {
       showToast("프로필 정보가 변경되었습니다!", "success");
-      setModal({ isOpen: false, type: null, data: null });
+      openModal({ type: null, data: null });
       refetch();
       router.reload();
       setNameError("");

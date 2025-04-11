@@ -6,12 +6,13 @@ import PopularCard from "./PopularCard/PopularCard";
 import Loader from "@/components/Layout/Loader/Loader";
 import { BoardPopularProps } from "./BoardPopular.types";
 import { useRouter } from "next/router";
-import { isTabletState } from "@/states/isMobileState";
-import { useRecoilValue } from "recoil";
+import { useDeviceStore } from "@/states/deviceStore";
 
 export default function BoardPopular({ isDetail, isMobileMain }: BoardPopularProps) {
   const { data, isLoading, refetch } = useTodayPopularPosts();
-  const isTablet = useRecoilValue(isTabletState);
+  const isMobile = useDeviceStore((state) => state.isMobile);
+  const isTablet = useDeviceStore((state) => state.isTablet);
+
   const [pageIndex, setPageIndex] = useState(0);
   const { pathname } = useRouter();
   useEffect(() => {

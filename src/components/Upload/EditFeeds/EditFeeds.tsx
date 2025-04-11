@@ -14,15 +14,15 @@ import Loader from "@/components/Layout/Loader/Loader";
 import Chip from "@/components/Chip/Chip";
 import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
 import DraggableImage from "../DraggableImage/DraggableImage";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { modalState } from "@/states/modalState";
-import { isMobileState, isTabletState } from "@/states/isMobileState";
+import { useModalStore } from "@/states/modalStore";
+import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { authState } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import { imageUrl } from "@/constants/imageUrl";
 
 export default function EditFeeds({ id }: EditFeedsProps) {
-  const { isLoggedIn, user_id } = useRecoilValue(authState);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const user_id = useAuthStore((state) => state.user_id);
   const { data: feedData, isLoading } = useDetails(id);
   const router = useRouter();
   const [images, setImages] = useState<{ name: string; originalName: string; url: string }[]>([]);
@@ -34,12 +34,12 @@ export default function EditFeeds({ id }: EditFeedsProps) {
   const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [thumbnailName, setThumbnailName] = useState("");
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-  const [, setModal] = useRecoilState(modalState);
+  const openModal = useModalStore((state) => state.openModal);
   const { showToast } = useToast();
   const hasUnsavedChangesRef = useRef(hasUnsavedChanges);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const isMobile = useRecoilValue(isMobileState);
-  const isTablet = useRecoilValue(isTabletState);
+  const isMobile = useDeviceStore((state) => state.isMobile);
+  const isTablet = useDeviceStore((state) => state.isTablet);
   useIsMobile();
 
   useEffect(() => {
@@ -117,8 +117,7 @@ export default function EditFeeds({ id }: EditFeedsProps) {
 
       router.events.emit("routeChangeError");
 
-      setModal({
-        isOpen: true,
+      openModal({
         type: null,
         data: {
           title: "수정을 취소하고 나가시겠어요?",
@@ -140,7 +139,7 @@ export default function EditFeeds({ id }: EditFeedsProps) {
     return () => {
       router.events.off("routeChangeStart", handleRouteChangeStart);
     };
-  }, [router, setModal]);
+  }, [router, openModal]);
 
   const convertToWebP = (file: File): Promise<File> => {
     return new Promise((resolve, reject) => {
@@ -352,8 +351,7 @@ export default function EditFeeds({ id }: EditFeedsProps) {
       return;
     }
 
-    setModal({
-      isOpen: true,
+    openModal({
       type: null,
       data: {
         title: "수정사항을 업로드할까요?",
@@ -365,8 +363,7 @@ export default function EditFeeds({ id }: EditFeedsProps) {
   };
 
   const handleSave = async () => {
-    setModal({
-      isOpen: false,
+    openModal({
       type: null,
       data: null,
       isComfirm: false,

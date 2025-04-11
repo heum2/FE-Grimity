@@ -1,0 +1,55 @@
+import { create } from "zustand";
+
+export type ModalType =
+  | "LOGIN"
+  | "NICKNAME"
+  | "JOIN"
+  | "PROFILE-ID"
+  | "PROFILE-EDIT"
+  | "BACKGROUND"
+  | "FOLLOWER"
+  | "FOLLOWING"
+  | "SHARE"
+  | "SHAREPOST"
+  | "UPLOAD"
+  | "LIKE"
+  | "REPORT";
+
+export interface ModalState {
+  isOpen: boolean;
+  type: ModalType | null;
+  data?: any;
+  isComfirm?: boolean;
+  onClick?: () => void | Promise<void>;
+  isFill?: boolean;
+}
+
+interface ModalStore extends ModalState {
+  openModal: (modal: Omit<ModalState, "isOpen">) => void;
+  closeModal: () => void;
+}
+
+export const useModalStore = create<ModalStore>((set) => ({
+  isOpen: false,
+  type: null,
+  data: null,
+  isComfirm: false,
+  isFill: false,
+  onClick: undefined,
+
+  openModal: (modal) =>
+    set(() => ({
+      ...modal,
+      isOpen: true,
+    })),
+
+  closeModal: () =>
+    set(() => ({
+      isOpen: false,
+      type: null,
+      data: null,
+      isComfirm: false,
+      onClick: undefined,
+      isFill: false,
+    })),
+}));

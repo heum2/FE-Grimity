@@ -8,14 +8,13 @@ import { putNotificationsId } from "@/api/notifications/putNotifications";
 import { useToast } from "@/hooks/useToast";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useRecoilValue } from "recoil";
-import { isTabletState } from "@/states/isMobileState";
+import { useDeviceStore } from "@/states/deviceStore";
 import { imageUrl as imagePrefix } from "@/constants/imageUrl";
 
 export default function Noti({ notification, onClose, onRefetch }: NotiProps) {
   const { showToast } = useToast();
   const router = useRouter();
-  const isTablet = useRecoilValue(isTabletState);
+  const isTablet = useDeviceStore((state) => state.isTablet);
 
   const renderMessage = () => {
     return notification?.message || "";

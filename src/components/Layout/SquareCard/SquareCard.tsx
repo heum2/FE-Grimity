@@ -5,8 +5,7 @@ import { formatCurrency } from "@/utils/formatCurrency";
 import { SquareCardProps } from "./SquareCard.types";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 import Link from "next/link";
-import { useRecoilValue } from "recoil";
-import { authState } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
 import { timeAgo } from "@/utils/timeAgo";
 
@@ -22,7 +21,7 @@ export default function SquareCard({
   createdAt,
   isSame,
 }: SquareCardProps) {
-  const { isLoggedIn } = useRecoilValue(authState);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const [isLiked, setIsLiked] = useState(isLike);
   const [currentLikeCount, setCurrentLikeCount] = useState(likeCount);
   const hasMultipleImages = cards && cards.length > 1;

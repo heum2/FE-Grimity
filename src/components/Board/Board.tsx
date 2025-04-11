@@ -1,15 +1,15 @@
 import BoardPopular from "@/components/Board/BoardPopular/BoardPopular";
 import styles from "./Board.module.scss";
 import BoardAll from "./BoardAll/BoardAll";
-import { useRecoilValue } from "recoil";
-import { isMobileState, isTabletState } from "@/states/isMobileState";
+import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import Link from "next/link";
 import IconComponent from "../Asset/Icon";
 
 export default function Board() {
-  const isMobile = useRecoilValue(isMobileState);
-  const isTablet = useRecoilValue(isTabletState);
+  const isMobile = useDeviceStore((state) => state.isMobile);
+  const isTablet = useDeviceStore((state) => state.isTablet);
+
   useIsMobile();
 
   return (

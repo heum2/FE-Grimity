@@ -3,9 +3,8 @@ import { useFollowingFeeds } from "@/api/feeds/getFeedsFollowing";
 import styles from "./FollowingPage.module.scss";
 import FollowingFeed from "./FollowingFeed/FollowingFeed";
 import Loader from "../Layout/Loader/Loader";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { authState } from "@/states/authState";
-import { modalState } from "@/states/modalState";
+import { useAuthStore } from "@/states/authStore";
+import { useModalStore } from "@/states/modalStore";
 import Title from "../Layout/Title/Title";
 import { usePopular } from "@/api/users/getPopular";
 import RecommendCard from "./RecommendCard/RecommendCard";
@@ -13,9 +12,10 @@ import { useUserData } from "@/api/users/getId";
 import { useRouter } from "next/router";
 
 export default function FollowingPage() {
-  const { isLoggedIn, user_id } = useRecoilValue(authState);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const user_id = useAuthStore((state) => state.user_id);
   const { data: myData, isLoading: isUserDataLoading } = useUserData(user_id);
-  const setModal = useSetRecoilState(modalState);
+  const openModal = useModalStore((state) => state.openModal);
   const { data: recommendData, isLoading: recommendIsLoading } = usePopular();
   const [randomUsers, setRandomUsers] = useState<any[]>([]);
   const params = isLoggedIn && myData && myData.followingCount > 0 ? { size: 3 } : null;
@@ -37,7 +37,7 @@ export default function FollowingPage() {
 
   useEffect(() => {
     if (!isLoggedIn) {
-      setModal({ isOpen: true, type: "LOGIN" });
+      openModal({ type: "LOGIN" });
       router.push("/");
     }
   }, [isLoggedIn, router]);
@@ -47,11 +47,11 @@ export default function FollowingPage() {
 
   useEffect(() => {
     if (isUserDataLoading && !isLoggedIn) {
-      setModal({ isOpen: true, type: "LOGIN" });
+      openModal({ type: "LOGIN" });
     } else if (!isLoggedIn) {
-      setModal({ isOpen: true, type: "LOGIN" });
+      openModal({ type: "LOGIN" });
     }
-  }, [isUserDataLoading, isLoggedIn, setModal]);
+  }, [isUserDataLoading, isLoggedIn, openModal]);
 
   useEffect(() => {
     if (lastFeedElement.current && observer.current) {

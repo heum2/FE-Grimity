@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef, memo } from "react";
 import styles from "./Comment.module.scss";
-import { authState } from "@/states/authState";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useAuthStore } from "@/states/authStore";
 import { useToast } from "@/hooks/useToast";
 import { useMutation, useQueryClient } from "react-query";
 import Link from "next/link";
@@ -10,7 +9,7 @@ import Dropdown from "@/components/Dropdown/Dropdown";
 import { timeAgo } from "@/utils/timeAgo";
 import IconComponent from "@/components/Asset/Icon";
 import Button from "@/components/Button/Button";
-import { modalState } from "@/states/modalState";
+import { useModalStore } from "@/states/modalStore";
 import TextArea from "@/components/TextArea/TextArea";
 import {
   deletePostsCommentLike,
@@ -23,7 +22,7 @@ import {
   ParentPostCommentResponse,
 } from "@/api/posts-comments/getPostsComments";
 import { PostCommentProps, PostCommentWriter } from "./Comment.types";
-import { isMobileState } from "@/states/isMobileState";
+import { useDeviceStore } from "@/states/deviceStore";
 import { useRouter } from "next/router";
 
 type ToastType = "success" | "error" | "warning" | "information";
@@ -76,9 +75,10 @@ const ReplyInput = memo(
 ReplyInput.displayName = "ReplyInput";
 
 export default function PostComment({ postId, postWriterId }: PostCommentProps) {
-  const { isLoggedIn, user_id } = useRecoilValue(authState);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const user_id = useAuthStore((state) => state.user_id);
   const { showToast } = useToast();
-  const [, setModal] = useRecoilState(modalState);
+  const openModal = useModalStore((state) => state.openModal);
   const queryClient = useQueryClient();
   const [comment, setComment] = useState("");
   const [replyText, setReplyText] = useState("");
@@ -93,7 +93,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
   const postCommentMutation = usePostPostsComments();
   const [activeParentReplyId, setActiveParentReplyId] = useState<string | null>(null);
   const [activeChildReplyId, setActiveChildReplyId] = useState<string | null>(null);
-  const isMobile = useRecoilValue(isMobileState);
+  const isMobile = useDeviceStore((state) => state.isMobile);
   const { pathname } = useRouter();
   useEffect(() => {
     refetchComments();
@@ -195,15 +195,13 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
     }
 
     if (isMobile) {
-      setModal({
-        isOpen: true,
+      openModal({
         type: "REPORT",
         data: { refType: "POST_COMMENT", refId: id },
         isFill: true,
       });
     } else {
-      setModal({
-        isOpen: true,
+      openModal({
         type: "REPORT",
         data: { refType: "POST_COMMENT", refId: id },
       });
@@ -211,8 +209,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
   };
 
   const handleCommentDelete = async (id: string) => {
-    setModal({
-      isOpen: true,
+    openModal({
       type: null,
       data: {
         title: "댓글을 삭제하시겠어요?",

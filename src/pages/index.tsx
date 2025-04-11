@@ -6,12 +6,11 @@ import { useEffect, useState } from "react";
 import Ranking from "@/components/Layout/Ranking/Ranking";
 import NewFeed from "@/components/Layout/NewFeed/NewFeed";
 import FollowNewFeed from "@/components/Layout/FollowNewFeed/FollowNewFeed";
-import { authState } from "@/states/authState";
-import { useRecoilValue } from "recoil";
+import { useAuthStore } from "@/states/authStore";
 import MainBoard from "@/components/Layout/MainBoard/MainBoard";
 import { useScrollRestoration } from "@/hooks/useScrollRestoration";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { isMobileState, isTabletState } from "@/states/isMobileState";
+import { useDeviceStore } from "@/states/deviceStore";
 import BoardPopular from "@/components/Board/BoardPopular/BoardPopular";
 import IconComponent from "@/components/Asset/Icon";
 import Link from "next/link";
@@ -21,10 +20,10 @@ export default function Home() {
   const router = useRouter();
   const [OGTitle] = useState("그리미티");
   const [OGUrl, setOGUrl] = useState(serviceUrl);
-  const { isLoggedIn } = useRecoilValue(authState);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const { restoreScrollPosition } = useScrollRestoration("home-scroll");
-  const isMobile = useRecoilValue(isMobileState);
-  const isTablet = useRecoilValue(isTabletState);
+  const isMobile = useDeviceStore((state) => state.isMobile);
+  const isTablet = useDeviceStore((state) => state.isTablet);
   useIsMobile();
 
   useEffect(() => {

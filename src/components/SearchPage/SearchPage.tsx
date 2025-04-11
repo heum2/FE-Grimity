@@ -7,8 +7,7 @@ import Link from "next/link";
 import SearchFeed from "./Feed/SearchFeed/SearchFeed";
 import SearchAuthor from "./User/SearchAuthor/SearchAuthor";
 import SearchPost from "./Post/SearchPost/SearchPost";
-import { useRecoilValue } from "recoil";
-import { isMobileState } from "@/states/isMobileState";
+import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode } from "swiper/modules";
@@ -21,7 +20,7 @@ export default function SearchPage() {
   const { data: popularData } = useTagsPopular();
   const router = useRouter();
   const { tab } = router.query;
-  const isMobile = useRecoilValue(isMobileState);
+  const isMobile = useDeviceStore((state) => state.isMobile);
   useIsMobile();
 
   useEffect(() => {

@@ -1,8 +1,7 @@
 import styles from "./ProfileId.module.scss";
 import { useState } from "react";
-import { useRecoilState } from "recoil";
-import { modalState } from "@/states/modalState";
-import { authState } from "@/states/authState";
+import { useModalStore } from "@/states/modalStore";
+import { useAuthStore } from "@/states/authStore";
 import Button from "@/components/Button/Button";
 import { useToast } from "@/hooks/useToast";
 import axiosInstance from "@/constants/baseurl";
@@ -12,8 +11,11 @@ import { useMutation } from "react-query";
 
 export default function ProfileId() {
   const [profileId, setProfileId] = useState("");
-  const [, setAuth] = useRecoilState(authState);
-  const [modal, setModal] = useRecoilState(modalState);
+  const setAccessToken = useAuthStore((state) => state.setAccessToken);
+  const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
+  const setUserId = useAuthStore((state) => state.setUserId);
+  const modal = useModalStore();
+  const openModal = useModalStore((state) => state.openModal);
   const { showToast } = useToast();
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -39,15 +41,13 @@ export default function ProfileId() {
       }
     },
     onSuccess: (data) => {
-      setAuth({
-        access_token: data.accessToken,
-        isLoggedIn: true,
-        user_id: data.id,
-      });
+      setAccessToken(data.accessToken);
+      setIsLoggedIn(true);
+      setUserId(data.userId);
 
       localStorage.setItem("access_token", data.accessToken);
       localStorage.setItem("refresh_token", data.refreshToken || "");
-      setModal({ isOpen: true, type: "JOIN", data: null });
+      openModal({ type: "JOIN", data: null });
     },
     onError: (error: any) => {
       if (error.message !== "ErrorHandled") {

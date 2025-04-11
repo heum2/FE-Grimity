@@ -1,14 +1,28 @@
-import { atom } from "recoil";
+import { create } from "zustand";
 
-export const toastState = atom<{
+type ToastType = "success" | "error" | "warning" | "information";
+
+interface ToastState {
   message: string;
-  type: "success" | "error" | "warning" | "information";
+  type: ToastType;
   isShow: boolean;
-}>({
-  key: "toastAtom",
-  default: {
-    message: "",
-    type: "success",
-    isShow: false,
+  showToast: (message: string, type: ToastType) => void;
+  removeToast: () => void;
+}
+
+export const useToastStore = create<ToastState>((set) => ({
+  message: "",
+  type: "success",
+  isShow: false,
+
+  showToast: (message, type) => {
+    set({ message, type, isShow: true });
+    setTimeout(() => {
+      set((state) => ({ ...state, isShow: false }));
+    }, 4000);
   },
-});
+
+  removeToast: () => {
+    set((state) => ({ ...state, isShow: false }));
+  },
+}));

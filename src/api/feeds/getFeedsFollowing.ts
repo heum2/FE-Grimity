@@ -1,7 +1,6 @@
 import axiosInstance from "@/constants/baseurl";
-import { authState } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import { useInfiniteQuery, useQuery } from "react-query";
-import { useRecoilValue } from "recoil";
 import type { FollowingFeedsResponse } from "@grimity/dto";
 export type { FollowingFeedsResponse };
 
@@ -39,7 +38,7 @@ export function useFollowingNew(params: FollowingFeedsRequest) {
 }
 
 export function useFollowingFeeds(params: FollowingFeedsRequest | null) {
-  const { isLoggedIn } = useRecoilValue(authState);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
 
   return useInfiniteQuery<FollowingFeedsResponse>(

@@ -6,10 +6,9 @@ import Image from "next/image";
 import { RectangleCardProps } from "./RectangleCard.types";
 import Link from "next/link";
 import { timeAgo } from "@/utils/timeAgo";
-import { useRecoilValue } from "recoil";
-import { authState } from "@/states/authState";
+import { useAuthStore } from "@/states/authStore";
 import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
-import { isMobileState, isTabletState } from "@/states/isMobileState";
+import { useDeviceStore } from "@/states/deviceStore";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 
 export default function RectangleCard({
@@ -23,9 +22,9 @@ export default function RectangleCard({
   createdAt,
   isLike: initialIsLike,
 }: RectangleCardProps) {
-  const { isLoggedIn } = useRecoilValue(authState);
-  const isMobile = useRecoilValue(isMobileState);
-  const isTablet = useRecoilValue(isTabletState);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const isMobile = useDeviceStore((state) => state.isMobile);
+  const isTablet = useDeviceStore((state) => state.isTablet);
   const [isLiked, setIsLiked] = useState(initialIsLike);
   const [likeCount, setLikeCount] = useState(initialLikeCount);
   const imgRef = usePreventRightClick<HTMLImageElement>();

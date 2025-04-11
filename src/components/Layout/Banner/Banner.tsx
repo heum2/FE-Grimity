@@ -3,13 +3,11 @@ import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import styles from "./Banner.module.scss";
 import Link from "next/link";
-import { useRecoilValue } from "recoil";
-import { isMobileState, isTabletState } from "@/states/isMobileState";
+import { useDeviceStore } from "@/states/deviceStore";
 
 export default function Banner() {
-  const isMobile = useRecoilValue(isMobileState);
-  const isTablet = useRecoilValue(isTabletState);
-
+  const isMobile = useDeviceStore((state) => state.isMobile);
+  const isTablet = useDeviceStore((state) => state.isTablet);
   return (
     <Swiper
       modules={[Autoplay]}
