@@ -4,10 +4,10 @@ import router from "next/router";
 import { useModalStore } from "@/states/modalStore";
 
 export default function Join() {
-  const openModal = useModalStore((state) => state.openModal);
+  const closeModal = useModalStore((state) => state.closeModal);
 
   const handleStart = () => {
-    openModal({ type: null, data: null });
+    closeModal();
     router.push("/");
   };
 

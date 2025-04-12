@@ -17,7 +17,7 @@ export default function Follow({ initialTab }: FollowProps) {
   const [indicatorPosition, setIndicatorPosition] = useState(0);
   const tabsRef = useRef<HTMLDivElement | null>(null);
   const observerRef = useRef<HTMLDivElement | null>(null);
-  const openModal = useModalStore((state) => state.openModal);
+  const closeModal = useModalStore((state) => state.closeModal);
   const [isFetchingData, setIsFetchingData] = useState(false);
   const route = useRouter();
   const { showToast } = useToast();
@@ -111,7 +111,7 @@ export default function Follow({ initialTab }: FollowProps) {
 
   const handleClickUser = (url: string) => {
     route.push(`${url}`);
-    openModal({ type: null, data: null });
+    closeModal();
   };
 
   const handleDeleteFollow = async (id: string) => {

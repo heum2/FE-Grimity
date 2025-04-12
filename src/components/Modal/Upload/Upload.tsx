@@ -10,6 +10,7 @@ import IconComponent from "@/components/Asset/Icon";
 export default function UploadModal({ feedId, title, image }: UploadModalProps) {
   const { showToast } = useToast();
   const openModal = useModalStore((state) => state.openModal);
+  const closeModal = useModalStore((state) => state.closeModal);
   const url = `${serviceUrl}feeds/${feedId}`;
   const isMobile = useDeviceStore((state) => state.isMobile);
 
@@ -17,7 +18,7 @@ export default function UploadModal({ feedId, title, image }: UploadModalProps) 
     try {
       await navigator.clipboard.writeText(url);
       showToast("클립보드에 복사되었습니다.", "success");
-      openModal({ type: null, data: null });
+      closeModal();
     } catch {
       showToast("클립보드 복사에 실패했습니다.", "error");
     }
@@ -44,7 +45,7 @@ export default function UploadModal({ feedId, title, image }: UploadModalProps) 
       },
     });
 
-    openModal({ type: null, data: null });
+    closeModal();
   };
 
   const handleTwitterShare = () => {

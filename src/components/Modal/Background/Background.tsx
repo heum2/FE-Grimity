@@ -21,7 +21,7 @@ interface BackgroundProps {
 export default function Background({ imageSrc, file }: BackgroundProps) {
   const { refetch } = useMyData();
   useIsMobile();
-  const openModal = useModalStore((state) => state.openModal);
+  const closeModal = useModalStore((state) => state.closeModal);
   const { showToast } = useToast();
   const [crop, setCrop] = useState<Crop>({
     unit: "%",
@@ -122,7 +122,7 @@ export default function Background({ imageSrc, file }: BackgroundProps) {
       }
 
       showToast("커버 이미지가 변경되었습니다!", "success");
-      openModal({ type: null, data: null });
+      closeModal();
       refetch();
     } catch (error) {
       console.error("Cover image upload error:", error);
