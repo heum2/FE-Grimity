@@ -8,7 +8,7 @@ import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
 export default function Like() {
-  const openModal = useModalStore((state) => state.openModal);
+  const closeModal = useModalStore((state) => state.closeModal);
   const route = useRouter();
   const { data, isLoading } = useFeedsLike({ id: String(route.query.id) });
   const isMobile = useDeviceStore((state) => state.isMobile);
@@ -16,7 +16,7 @@ export default function Like() {
 
   const handleClickUser = (url: string) => {
     route.push(`${url}`);
-    openModal({ type: null, data: null });
+    closeModal();
   };
 
   if (isLoading) {

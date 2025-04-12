@@ -27,7 +27,7 @@ export default function ProfileEdit() {
     { linkName: "", link: "" },
   ]);
   const [isError, setIsError] = useState(false);
-  const openModal = useModalStore((state) => state.openModal);
+  const closeModal = useModalStore((state) => state.closeModal);
   const { restoreScrollPosition } = useScrollRestoration("profileEdit-scroll");
 
   const { showToast } = useToast();
@@ -50,7 +50,7 @@ export default function ProfileEdit() {
   const mutation = useMutation((newInfo: UpdateUserRequest) => putMyInfo(newInfo), {
     onSuccess: () => {
       showToast("프로필 정보가 변경되었습니다!", "success");
-      openModal({ type: null, data: null });
+      closeModal();
       refetch();
       router.reload();
       setNameError("");
