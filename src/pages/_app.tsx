@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import type { AppProps } from "next/app";
 import "@/styles/globals.scss";
 import "@/styles/reset.css";
@@ -9,7 +9,6 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Toast from "@/components/Toast/Toast";
 import Script from "next/script";
-import Loader from "@/components/Layout/Loader/Loader";
 
 const queryClient = new QueryClient();
 
@@ -17,28 +16,34 @@ export default function App({ Component, pageProps }: AppProps) {
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
   const setUserId = useAuthStore((state) => state.setUserId);
-  const [isInitializing, setIsInitializing] = useState(true);
   const access_token = useAuthStore((state) => state.access_token);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const user_id = useAuthStore((state) => state.user_id);
 
   useEffect(() => {
-    const storedAccessToken = localStorage.getItem("access_token");
-    const storedUserId = localStorage.getItem("user_id");
-
-    if (storedAccessToken) {
-      setAccessToken(storedAccessToken);
+    if (pageProps.isLoggedIn) {
       setIsLoggedIn(true);
-      if (storedUserId) {
-        setUserId(storedUserId);
+      if (pageProps.access_token) {
+        setAccessToken(pageProps.access_token);
+      }
+      if (pageProps.user_id) {
+        setUserId(pageProps.user_id);
+      }
+    } else {
+      const storedAccessToken = localStorage.getItem("access_token");
+      const storedUserId = localStorage.getItem("user_id");
+
+      if (storedAccessToken) {
+        setAccessToken(storedAccessToken);
+        setIsLoggedIn(true);
+        if (storedUserId) {
+          setUserId(storedUserId);
+        }
       }
     }
-    setIsInitializing(false);
-  }, [setAccessToken, setIsLoggedIn, setUserId]);
+  }, [pageProps, setAccessToken, setIsLoggedIn, setUserId]);
 
   useEffect(() => {
-    if (isInitializing) return;
-
     if (isLoggedIn) {
       localStorage.setItem("access_token", access_token);
       if (user_id) {
@@ -48,11 +53,7 @@ export default function App({ Component, pageProps }: AppProps) {
       localStorage.removeItem("access_token");
       localStorage.removeItem("user_id");
     }
-  }, [isInitializing, access_token, isLoggedIn, user_id]);
-
-  if (isInitializing) {
-    return <Loader />;
-  }
+  }, [access_token, isLoggedIn, user_id]);
 
   return (
     <>
