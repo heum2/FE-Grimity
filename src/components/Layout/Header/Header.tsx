@@ -223,26 +223,6 @@ export default function Header() {
 
   usePreventScroll(isMenuOpen || (isMobile && showNotifications));
 
-  const handleSearchKeyDown = (e: React.KeyboardEvent) => {
-    if (e.nativeEvent.isComposing) return;
-
-    if (e.key === "Enter") {
-      const trimmedKeyword = keyword.trim();
-      if (trimmedKeyword.length < 2) {
-        showToast("두 글자 이상 입력해주세요.", "warning");
-        return;
-      }
-      let tab = "feed";
-      if (router.pathname.includes("board")) {
-        tab = "board";
-      } else if (router.pathname.includes("posts")) {
-        tab = "board";
-      }
-      router.push(`/search?tab=${tab}&keyword=${encodeURIComponent(trimmedKeyword)}`);
-      setKeyword("");
-    }
-  };
-
   return (
     <header className={isUserPage ? styles.userPageHeader : styles.header}>
       <div className={styles.container}>
@@ -284,9 +264,13 @@ export default function Header() {
           )}
           <div className={styles.icons}>
             <Link href="/search">
-              <IconComponent name="search" size={24} padding={8} isBtn />
+              {!isUserPage ? (
+                <IconComponent name="search" size={24} padding={8} isBtn />
+              ) : (
+                <IconComponent name="searchWhite" size={24} padding={8} isBtn />
+              )}
             </Link>
-            {isLoggedIn && myData && (
+            {(!isMobile || !isTablet) && isLoggedIn && myData && (
               <div className={styles.notificationWrapper} ref={notificationRef}>
                 <div className={styles.notification} onClick={toggleNotifications}>
                   <IconComponent name={name} size={40} isBtn />
@@ -303,29 +287,16 @@ export default function Header() {
                     className={styles.profileContainer}
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   >
-                    {myData.image !== null ? (
-                      <Image
-                        src={myData.image}
-                        width={28}
-                        height={28}
-                        alt="프로필 이미지"
-                        className={styles.profileImage}
-                        quality={50}
-                        style={{ objectFit: "cover" }}
-                        unoptimized
-                      />
-                    ) : (
-                      <Image
-                        src="/image/default.svg"
-                        width={28}
-                        height={28}
-                        alt="프로필 이미지"
-                        className={styles.profileImage}
-                        quality={50}
-                        style={{ objectFit: "cover" }}
-                        unoptimized
-                      />
-                    )}
+                    <Image
+                      src={myData.image || "/image/default.svg"}
+                      width={28}
+                      height={28}
+                      alt="프로필 이미지"
+                      className={styles.profileImage}
+                      quality={50}
+                      style={{ objectFit: "cover" }}
+                      unoptimized
+                    />
                   </div>
                   {isDropdownOpen && (
                     <div className={styles.dropdown} ref={dropdownRef}>
@@ -337,29 +308,16 @@ export default function Header() {
                             window.scrollTo(0, 0);
                           }}
                         >
-                          {myData.image !== null ? (
-                            <Image
-                              src={myData.image}
-                              width={28}
-                              height={28}
-                              alt="프로필 이미지"
-                              className={styles.dropdownProfileImage}
-                              quality={50}
-                              style={{ objectFit: "cover" }}
-                              unoptimized
-                            />
-                          ) : (
-                            <Image
-                              src="/image/default.svg"
-                              width={28}
-                              height={28}
-                              alt="프로필 이미지"
-                              className={styles.dropdownProfileImage}
-                              quality={50}
-                              style={{ objectFit: "cover" }}
-                              unoptimized
-                            />
-                          )}
+                          <Image
+                            src={myData.image || "/image/default.svg"}
+                            width={28}
+                            height={28}
+                            alt="프로필 이미지"
+                            className={styles.dropdownProfileImage}
+                            quality={50}
+                            style={{ objectFit: "cover" }}
+                            unoptimized
+                          />
                           <span>내 프로필</span>
                         </div>
                       </Link>

@@ -100,4 +100,18 @@ export const ICONS = {
   menuSave: "/icon/menu-save.svg",
   uploadDeleteImage: "/icon/upload-delete-image.svg",
   menuUpload: "/icon/menu-upload.svg",
+  lnbHome: "/icon/sidebar/lnb-home.svg",
+  // sidebar
+  home: "/icon/sidebar/lnb-home.svg",
+  homeHover: "/icon/sidebar/lnb-home-hover.svg",
+  homeActive: "/icon/sidebar/lnb-home-active.svg",
+  popular: "/icon/sidebar/lnb-popular.svg",
+  popularHover: "/icon/sidebar/lnb-popular-hover.svg",
+  popularActive: "/icon/sidebar/lnb-popular-active.svg",
+  board: "/icon/sidebar/lnb-board.svg",
+  boardHover: "/icon/sidebar/lnb-board-hover.svg",
+  boardActive: "/icon/sidebar/lnb-board-active.svg",
+  following: "/icon/sidebar/lnb-following.svg",
+  followingHover: "/icon/sidebar/lnb-following-hover.svg",
+  followingActive: "/icon/sidebar/lnb-following-active.svg",
 };
