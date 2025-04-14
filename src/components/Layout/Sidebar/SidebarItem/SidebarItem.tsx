@@ -3,7 +3,7 @@ import styles from "./SidebarItem.module.scss";
 import IconComponent from "@/components/Asset/Icon";
 import { ICONS } from "@/constants/asset";
 
-type BaseIconName = "home" | "popular" | "board" | "following";
+type BaseIconName = "home" | "popular" | "board";
 
 type IconName = `${BaseIconName}` | `${BaseIconName}Hover` | `${BaseIconName}Active`;
 
