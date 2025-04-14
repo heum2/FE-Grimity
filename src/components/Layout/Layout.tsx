@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Layout.module.scss";
 import Header from "./Header/Header";
+import Sidebar from "./Sidebar/Sidebar";
 import { LayoutProps } from "./Layout.types";
 import IconComponent from "../Asset/Icon";
 import { useIsMobile } from "@/hooks/useIsMobile";
@@ -36,6 +37,7 @@ export default function Layout({ children }: LayoutProps) {
     <div className={styles.layout}>
       <div className={styles.children}>
         <Header />
+        <Sidebar />
         {children}
         {!isMobile && !isTablet && (
           <div
