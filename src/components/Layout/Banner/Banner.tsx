@@ -4,10 +4,33 @@ import "swiper/css";
 import styles from "./Banner.module.scss";
 import Link from "next/link";
 import { useDeviceStore } from "@/states/deviceStore";
+import { baseUrl } from "@/constants/baseurl";
 
 export default function Banner() {
   const isMobile = useDeviceStore((state) => state.isMobile);
   const isTablet = useDeviceStore((state) => state.isTablet);
+  let mainBanner;
+
+  if (isMobile) {
+    mainBanner = (
+      <Link href={`${baseUrl}/posts/048ae290-4b1e-4292-9845-e4b2ca68ea6a`}>
+        <img src="/ima/main-banner-m.png" loading="lazy" className={styles.banner} />
+      </Link>
+    );
+  } else if (isTablet) {
+    mainBanner = (
+      <Link href={`${baseUrl}/posts/048ae290-4b1e-4292-9845-e4b2ca68ea6a`}>
+        <img src="/image/main-banner-t.png" loading="lazy" className={styles.banner} />
+      </Link>
+    );
+  } else {
+    mainBanner = (
+      <Link href={`${baseUrl}/posts/048ae290-4b1e-4292-9845-e4b2ca68ea6a`}>
+        <img src="/image/main-banner.png" loading="lazy" className={styles.banner} />
+      </Link>
+    );
+  }
+
   return (
     <Swiper
       modules={[Autoplay]}
@@ -17,28 +40,7 @@ export default function Banner() {
       loop={true}
       className={styles.bannerSwiper}
     >
-      <SwiperSlide>
-        {isMobile || isTablet ? (
-          <Link href="https://www.grimity.com/posts/048ae290-4b1e-4292-9845-e4b2ca68ea6a">
-            <img src="/image/m-banner1.png" loading="lazy" className={styles.banner} />
-          </Link>
-        ) : (
-          <Link href="https://www.grimity.com/posts/048ae290-4b1e-4292-9845-e4b2ca68ea6a">
-            <img src="/image/banner1.png" loading="lazy" className={styles.banner} />
-          </Link>
-        )}
-      </SwiperSlide>
-      {/* <SwiperSlide>
-        {isMobile || isTablet ? (
-          <Link href="https://www.grimity.com/posts/f3ee6b5b-2db6-4d85-98ad-3be95ef8d093">
-            <img src="/image/m-banner2.png" loading="lazy" className={styles.banner} />
-          </Link>
-        ) : (
-          <Link href="https://www.grimity.com/posts/f3ee6b5b-2db6-4d85-98ad-3be95ef8d093">
-            <img src="/image/banner2.png" loading="lazy" className={styles.banner} />
-          </Link>
-        )}
-      </SwiperSlide> */}
+      <SwiperSlide>{mainBanner}</SwiperSlide>
     </Swiper>
   );
 }
