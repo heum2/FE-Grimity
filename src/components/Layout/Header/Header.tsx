@@ -14,7 +14,6 @@ import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { usePreventScroll } from "@/hooks/usePreventScroll";
 import Dropdown from "@/components/Dropdown/Dropdown";
-import Contact from "./Contact/Contact";
 import axiosInstance from "@/constants/baseurl";
 
 export default function Header() {
@@ -32,7 +31,6 @@ export default function Header() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const notificationRef = useRef<HTMLDivElement>(null);
   const [showNotifications, setShowNotifications] = useState(false);
-  const [showContact, setShowContact] = useState(false);
   const { showToast } = useToast();
   const router = useRouter();
   const isMobile = useDeviceStore((state) => state.isMobile);
@@ -101,7 +99,7 @@ export default function Header() {
 
   const handleNavClick = (item: { name: string; path: string }) => {
     setActiveNav(item.name);
-    if (isMobile || isTablet) {
+    if (isMobile) {
       setIsMenuOpen(false);
     }
 
@@ -194,7 +192,7 @@ export default function Header() {
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [showNotifications, showContact]);
+  }, [showNotifications]);
 
   const handleClickLogo = () => {
     if (router.pathname === "/") {
@@ -207,10 +205,6 @@ export default function Header() {
 
   const toggleNotifications = () => {
     setShowNotifications((prev) => !prev);
-  };
-
-  const toggleContact = () => {
-    setShowContact((prev) => !prev);
   };
 
   const toggleMenu = () => {
@@ -236,23 +230,6 @@ export default function Header() {
               loading="lazy"
             />
           </div>
-          {!isMobile && !isTablet && (
-            <nav className={styles.nav}>
-              {navItems.map((item, index) => (
-                <div key={index} className={styles.navItem} onClick={() => handleNavClick(item)}>
-                  <p
-                    className={`${isUserPage ? styles.userPageitem : styles.item} ${
-                      isNavPage && (activeNav === item.name ? styles.active : "")
-                    }`}
-                    ref={item.name === activeNav ? activeItemRef : null}
-                  >
-                    {item.name}
-                  </p>
-                </div>
-              ))}
-              {isNavPage && <div ref={indicatorRef} className={styles.indicator} />}
-            </nav>
-          )}
         </div>
         <div className={styles.wrapper}>
           {(isMobile || isTablet) && !isLoggedIn && (
@@ -382,28 +359,6 @@ export default function Header() {
                       </Link>
                     ))}
                 </div>
-                {!isMobile && !isTablet && (
-                  <div className={styles.contactBtn}>
-                    <Dropdown
-                      isSide
-                      trigger={
-                        <IconComponent
-                          name={isUserPage ? "contactKebabWhite" : "contactKebab"}
-                          padding={8}
-                          size={24}
-                          isBtn
-                        />
-                      }
-                      menuItems={[
-                        {
-                          label: "문의하기",
-                          onClick: () => toggleContact(),
-                        },
-                      ]}
-                    />
-                  </div>
-                )}
-                {showContact && <Contact onClose={() => setShowContact(false)} />}
               </div>
             ) : (
               <div className={styles.uploadBtn} onClick={() => openModal({ type: "LOGIN" })}>
@@ -547,46 +502,6 @@ export default function Header() {
                       </div>
                     )}
                   </div>
-                  <section className={styles.footer}>
-                    <div className={styles.contact}>
-                      <div className={styles.content}>
-                        <label className={styles.label}>제휴/광고 문의</label>
-                        <button onClick={copyToClipboard} className={styles.link}>
-                          메일쓰기
-                        </button>
-                      </div>
-                      <div className={styles.content}>
-                        <label className={styles.label}>불편신고/건의</label>
-                        <a
-                          href="https://open.kakao.com/o/sKYFewgh"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={styles.link}
-                        >
-                          카카오톡 오픈채팅
-                        </a>
-                      </div>
-                    </div>
-                    <div className={styles.bar} />
-                    <div className={styles.links}>
-                      <a
-                        href="https://nostalgic-patch-498.notion.site/1930ac6bf29881b9aa19ff623c69b8e6?pvs=74"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={styles.subLink}
-                      >
-                        개인정보취급방침
-                      </a>
-                      <a
-                        href="https://nostalgic-patch-498.notion.site/1930ac6bf29881e9a3e4c405e7f49f2b?pvs=73"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={styles.subLink}
-                      >
-                        이용약관
-                      </a>
-                    </div>
-                  </section>
                 </div>
               </div>
             </>
