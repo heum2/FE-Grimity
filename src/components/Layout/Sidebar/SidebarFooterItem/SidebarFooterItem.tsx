@@ -10,6 +10,7 @@ interface SidebarFooterItemProps {
   label: string;
   onClickItem: () => void;
   isHaveDropdown: boolean;
+  isDropdownOpen: boolean;
 }
 
 const SidebarFooterItem = ({
@@ -17,16 +18,11 @@ const SidebarFooterItem = ({
   label,
   onClickItem,
   isHaveDropdown,
+  isDropdownOpen,
 }: SidebarFooterItemProps) => {
   if (!ICONS[icon as keyof typeof ICONS]) {
     return null;
   }
-
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  const HandleClickItem = (e: React.MouseEvent) => {
-    setIsDropdownOpen((prev) => !prev);
-  };
 
   return (
     <div className={styles.sidebarItem} onClick={onClickItem}>
@@ -41,7 +37,6 @@ const SidebarFooterItem = ({
               name={isDropdownOpen ? "footerDropdownHover" : "footerDropdown"}
               size={10}
               padding={6}
-              // isBtn
             />
           </div>
         )}
