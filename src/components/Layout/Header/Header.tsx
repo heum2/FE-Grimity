@@ -234,7 +234,7 @@ export default function Header() {
           </div>
         </div>
         <div className={styles.wrapper}>
-          {(isMobile || isTablet) && !isLoggedIn && (
+          {isMobile && !isLoggedIn && (
             <div className={styles.uploadBtn} onClick={() => openModal({ type: "LOGIN" })}>
               <Button size="s" type="filled-primary">
                 로그인
@@ -243,6 +243,7 @@ export default function Header() {
           )}
           {!hideBtn &&
             !isMobile &&
+            isLoggedIn &&
             (isPostPage ? (
               <Link href="/board/write">
                 <Button size="m" type="filled-primary">
@@ -302,16 +303,29 @@ export default function Header() {
                             window.scrollTo(0, 0);
                           }}
                         >
-                          <Image
-                            src={myData.image || "/image/default.svg"}
-                            width={28}
-                            height={28}
-                            alt="프로필 이미지"
-                            className={styles.dropdownProfileImage}
-                            quality={50}
-                            style={{ objectFit: "cover" }}
-                            unoptimized
-                          />
+                          {myData.image !== null ? (
+                            <Image
+                              src={myData.image}
+                              width={32}
+                              height={32}
+                              alt="프로필 이미지"
+                              className={styles.profileImage}
+                              quality={50}
+                              style={{ objectFit: "cover" }}
+                              unoptimized
+                            />
+                          ) : (
+                            <Image
+                              src="/image/default.svg"
+                              width={32}
+                              height={32}
+                              alt="프로필 이미지"
+                              className={styles.profileImage}
+                              quality={50}
+                              style={{ objectFit: "cover" }}
+                              unoptimized
+                            />
+                          )}
                           <span>내 프로필</span>
                         </div>
                       </Link>
@@ -361,20 +375,6 @@ export default function Header() {
                       </div>
                     </div>
                   )}
-                  {/* {!hideBtn &&
-                    (isPostPage ? (
-                      <Link href="/board/write">
-                        <Button size="m" type="filled-primary">
-                          글 쓰기
-                        </Button>
-                      </Link>
-                    ) : (
-                      <Link href="/write">
-                        <Button size="m" type="filled-primary">
-                          그림 업로드
-                        </Button>
-                      </Link>
-                    ))} */}
                 </div>
               </div>
             ) : (
@@ -431,7 +431,7 @@ export default function Header() {
                         ))}
                       </nav>
                     </div>
-                    {!isLoggedIn || !myData ? (
+                    {(!isLoggedIn || !myData) && !isMobile ? (
                       <div
                         className={isMobile ? styles.uploadBtnContainer : styles.uploadBtn}
                         onClick={() => openModal({ type: "LOGIN" })}
@@ -444,31 +444,18 @@ export default function Header() {
                       <div className={styles.mobileProfile}>
                         <div className={styles.bar} />
                         <div className={styles.profileSubmenu}>
-                          <Link href={`/${myData.url}`} className={styles.mobileMyInfo}>
-                            {myData.image !== null ? (
-                              <Image
-                                src={myData.image}
-                                width={32}
-                                height={32}
-                                alt="프로필 이미지"
-                                className={styles.profileImage}
-                                quality={50}
-                                style={{ objectFit: "cover" }}
-                                unoptimized
-                              />
-                            ) : (
-                              <Image
-                                src="/image/default.svg"
-                                width={32}
-                                height={32}
-                                alt="프로필 이미지"
-                                className={styles.profileImage}
-                                quality={50}
-                                style={{ objectFit: "cover" }}
-                                unoptimized
-                              />
-                            )}
-                            <span className={styles.name}>{myData.name}</span>
+                          <Link href={`/${myData?.url}`} className={styles.mobileMyInfo}>
+                            <Image
+                              src={myData?.image || "/image/default.svg"}
+                              width={32}
+                              height={32}
+                              alt="프로필 이미지"
+                              className={styles.profileImage}
+                              quality={50}
+                              style={{ objectFit: "cover" }}
+                              unoptimized
+                            />
+                            <span className={styles.name}>{myData?.name}</span>
                           </Link>
                           <div
                             className={styles.submenu}
@@ -494,28 +481,6 @@ export default function Header() {
                             </button>
                           </div>
                         )}
-                        {isLoggedIn &&
-                          (isPostPage ? (
-                            <Link href="/board/write" className={styles.uploadBtnContainer}>
-                              <Button
-                                size="l"
-                                type="filled-primary"
-                                leftIcon={<IconComponent name="menuUpload" size={20} />}
-                              >
-                                글 쓰기
-                              </Button>
-                            </Link>
-                          ) : (
-                            <Link href="/write" className={styles.uploadBtnContainer}>
-                              <Button
-                                size="l"
-                                type="filled-primary"
-                                leftIcon={<IconComponent name="menuUpload" size={20} />}
-                              >
-                                그림 업로드
-                              </Button>
-                            </Link>
-                          ))}
                       </div>
                     )}
                   </div>
