@@ -34,7 +34,7 @@ const SidebarFooterItem = ({
         {isHaveDropdown && (
           <div className={styles.dropdownIcon}>
             <IconComponent
-              name={isDropdownOpen ? "footerDropdownHover" : "footerDropdown"}
+              name={isDropdownOpen ? "footerDropdownActive" : "footerDropdown"}
               size={10}
               padding={6}
             />

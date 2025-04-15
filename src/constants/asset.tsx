@@ -117,5 +117,5 @@ export const ICONS = {
   noti: "/icon/sidebar/footer-noti.svg",
   ask: "/icon/sidebar/footer-ask.svg",
   footerDropdown: "/icon/sidebar/footer-dropdown.svg",
-  footerDropdownHover: "/icon/sidebar/footer-dropdown-hover.svg",
+  footerDropdownActive: "/icon/sidebar/footer-dropdown-active.svg",
 };
