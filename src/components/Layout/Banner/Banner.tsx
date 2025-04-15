@@ -14,7 +14,7 @@ export default function Banner() {
   if (isMobile) {
     mainBanner = (
       <Link href={`${baseUrl}/posts/048ae290-4b1e-4292-9845-e4b2ca68ea6a`}>
-        <img src="/ima/main-banner-m.png" loading="lazy" className={styles.banner} />
+        <img src="/image/main-banner-m.png" loading="lazy" className={styles.banner} />
       </Link>
     );
   } else if (isTablet) {
