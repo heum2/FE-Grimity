@@ -4,30 +4,19 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: 234px;
-  height: 50px;
+  max-width: 234px;
+  height: 32px;
   padding: 0 20px;
+  @include Body1;
   color: $gray60;
   cursor: pointer;
-  transition: background 0.3s, color 0.3s;
-
-  &:hover {
-    background-color: $gray20;
-    color: $gray70;
-    border-radius: 8px;
-  }
-
-  &.active {
-    color: $secandary1;
-  }
 
   @include Size("tablet") {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    text-align: center;
     border-radius: 16px;
-    width: 60px;
+    max-width: 60px;
     height: 98px;
     padding: 7px 8px;
     white-space: pre-wrap;
@@ -55,12 +44,21 @@
 }
 
 .label {
-  @include Sub1;
-  margin-left: 20px;
+  @include Body1;
+  margin-left: 10px;
+  color: $gray70;
 
   @include Size("tablet") {
     margin-left: 0;
     font-size: 12px;
     line-height: 1.4;
+  }
+}
+
+.dropdownIcon {
+  cursor: pointer;
+
+  @include Size("tablet") {
+    display: none;
   }
 }

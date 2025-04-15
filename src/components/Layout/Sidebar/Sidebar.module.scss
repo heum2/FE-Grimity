@@ -3,6 +3,8 @@
 .container {
   position: fixed;
   display: flex;
+  max-width: 258px;
+  max-height: 880px;
   flex-direction: column;
   align-items: flex-start;
   top: 0;
@@ -21,13 +23,68 @@
     margin-top: 16px;
   }
 
-  @include Size("tablet") {
-    width: 80px;
-    justify-content: flex-start;
-    align-items: center;
+  .menu {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
   }
 
-  @include Size("mobile") {
-    visibility: hidden;
+  .footer {
+    margin-bottom: 80px;
+
+    @include Size("tablet") {
+      margin-bottom: 24px;
+    }
+
+    .subLink {
+      display: block;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+      color: $gray60;
+      @include Label3;
+      margin-top: 24px;
+      padding-left: 26px;
+
+      a {
+        list-style: none;
+        text-decoration: none;
+        color: $gray60;
+
+        &::after {
+          color: $gray50;
+          content: " • ";
+          padding-left: 6px;
+        }
+        &:last-child::after {
+          content: none;
+        }
+      }
+
+      @include Size("tablet") {
+        display: none;
+      }
+    }
+
+    .copy {
+      @include Label3;
+      color: $gray60;
+      margin-top: 12px;
+      padding-left: 26px;
+
+      @include Size("tablet") {
+        display: none;
+      }
+    }
+
+    @include Size("tablet") {
+      max-width: 80px;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    // @include Size("mobile") {
+    //   display: none;
+    // }
   }
 }

@@ -114,4 +114,8 @@ export const ICONS = {
   following: "/icon/sidebar/lnb-following.svg",
   followingHover: "/icon/sidebar/lnb-following-hover.svg",
   followingActive: "/icon/sidebar/lnb-following-active.svg",
+  noti: "/icon/sidebar/footer-noti.svg",
+  ask: "/icon/sidebar/footer-ask.svg",
+  footerDropdown: "/icon/sidebar/footer-dropdown.svg",
+  footerDropdownHover: "/icon/sidebar/footer-dropdown-hover.svg",
 };
