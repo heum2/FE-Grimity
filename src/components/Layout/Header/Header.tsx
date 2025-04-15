@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/useToast";
 import Notifications from "@/components/Notifications/Notifications";
 import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import useAuthCheck from "@/hooks/useAuthCheck";
 import { usePreventScroll } from "@/hooks/usePreventScroll";
 import Dropdown from "@/components/Dropdown/Dropdown";
 import Contact from "./Contact/Contact";
@@ -49,6 +50,8 @@ export default function Header() {
   const hideBtn = ["/write", "/feeds/[id]/edit", "/board/write", "/posts/[id]/edit"].includes(
     router.pathname,
   );
+  const [isHome, setIsHome] = useState(false);
+  useAuthCheck(setIsHome);
   useIsMobile();
   const email = "grimity.official@gmail.com";
   const navItems = [
