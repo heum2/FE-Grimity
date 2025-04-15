@@ -14,7 +14,6 @@ import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import useAuthCheck from "@/hooks/useAuthCheck";
 import { usePreventScroll } from "@/hooks/usePreventScroll";
-import Dropdown from "@/components/Dropdown/Dropdown";
 import axiosInstance from "@/constants/baseurl";
 
 export default function Header() {
@@ -242,6 +241,21 @@ export default function Header() {
               </Button>
             </div>
           )}
+          {!hideBtn &&
+            !isMobile &&
+            (isPostPage ? (
+              <Link href="/board/write">
+                <Button size="m" type="filled-primary">
+                  글 쓰기
+                </Button>
+              </Link>
+            ) : (
+              <Link href="/write">
+                <Button size="m" type="filled-primary">
+                  그림 업로드
+                </Button>
+              </Link>
+            ))}
           <div className={styles.icons}>
             <Link href="/search">
               {!isUserPage ? (
@@ -259,7 +273,7 @@ export default function Header() {
               </div>
             )}
           </div>
-          {!isMobile && !isTablet ? (
+          {!isMobile ? (
             isLoggedIn && myData ? (
               <div className={styles.profileContact}>
                 <div className={styles.profileSection}>
@@ -347,7 +361,7 @@ export default function Header() {
                       </div>
                     </div>
                   )}
-                  {!hideBtn &&
+                  {/* {!hideBtn &&
                     (isPostPage ? (
                       <Link href="/board/write">
                         <Button size="m" type="filled-primary">
@@ -360,7 +374,7 @@ export default function Header() {
                           그림 업로드
                         </Button>
                       </Link>
-                    ))}
+                    ))} */}
                 </div>
               </div>
             ) : (
