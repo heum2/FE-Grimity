@@ -37,7 +37,6 @@ export default function Header() {
   const isTablet = useDeviceStore((state) => state.isTablet);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
-  const isUserPage = router.pathname.startsWith("/[url]");
   const isPostPage = ["/board", "/board/write", "/posts/[id]", "/posts/[id]/edit"].includes(
     router.pathname,
   );
@@ -61,14 +60,10 @@ export default function Header() {
     navItems.push({ name: "팔로잉", path: "/following" });
   }
 
-  let name: "bellWhiteActive" | "bellActive" | "bellWhite" | "bell";
+  let name: "bellActive" | "bell";
 
-  if (myData?.hasNotification && isUserPage) {
-    name = "bellWhiteActive";
-  } else if (myData?.hasNotification && !isUserPage) {
+  if (myData?.hasNotification) {
     name = "bellActive";
-  } else if (!myData?.hasNotification && isUserPage) {
-    name = "bellWhite";
   } else {
     name = "bell";
   }
@@ -220,17 +215,11 @@ export default function Header() {
   usePreventScroll(isMenuOpen || (isMobile && showNotifications));
 
   return (
-    <header className={isUserPage ? styles.userPageHeader : styles.header}>
+    <header className={styles.header}>
       <div className={styles.container}>
         <div className={styles.leftSection}>
           <div className={styles.cursor} onClick={handleClickLogo}>
-            <img
-              src={isUserPage ? "/image/logo-white.svg" : "/image/logo.svg"}
-              width={100}
-              height={29}
-              alt="logo"
-              loading="lazy"
-            />
+            <img src={"/image/logo.svg"} width={100} height={29} alt="logo" loading="lazy" />
           </div>
         </div>
         <div className={styles.wrapper}>
@@ -259,11 +248,7 @@ export default function Header() {
             ))}
           <div className={styles.icons}>
             <Link href="/search">
-              {!isUserPage ? (
-                <IconComponent name="search" size={24} padding={8} isBtn />
-              ) : (
-                <IconComponent name="searchWhite" size={24} padding={8} isBtn />
-              )}
+              <IconComponent name="search" size={24} padding={8} isBtn />
             </Link>
             {(!isMobile || !isTablet) && isLoggedIn && myData && (
               <div className={styles.notificationWrapper} ref={notificationRef}>
@@ -387,12 +372,7 @@ export default function Header() {
           ) : (
             <>
               <div onClick={toggleMenu}>
-                <IconComponent
-                  name={isUserPage ? "hamburgerWhite" : "hamburger"}
-                  size={24}
-                  padding={8}
-                  isBtn
-                />
+                <IconComponent name="hamburger" size={24} padding={8} isBtn />
               </div>
               <div
                 className={`${styles.overlay} ${isMenuOpen ? styles.open : ""}`}

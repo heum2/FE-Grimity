@@ -24,13 +24,6 @@
   cursor: pointer;
 }
 
-.userPageHeader {
-  @extend .header;
-  background: rgba(152, 152, 152, 0.2);
-  backdrop-filter: blur(75px);
-  @include Drag;
-}
-
 .container {
   padding: 10px 0;
   width: 100%;
@@ -101,11 +94,6 @@
         padding: 14px 0;
         @include Title3;
       }
-    }
-
-    .userPageitem {
-      @extend .item;
-      color: $gray0;
     }
   }
 
