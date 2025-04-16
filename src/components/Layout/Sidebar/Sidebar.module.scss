@@ -4,7 +4,7 @@
   position: fixed;
   display: flex;
   max-width: 258px;
-  max-height: 880px;
+  max-height: 100vh;
   flex-direction: column;
   align-items: flex-start;
   top: 0;
@@ -31,10 +31,6 @@
 
   .footer {
     margin-bottom: 80px;
-
-    @include Size("tablet") {
-      margin-bottom: 24px;
-    }
 
     .subLink {
       display: block;
