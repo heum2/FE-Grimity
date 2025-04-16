@@ -411,7 +411,7 @@ export default function Header() {
                         ))}
                       </nav>
                     </div>
-                    {(!isLoggedIn || !myData) && !isMobile ? (
+                    {!isLoggedIn || !myData ? (
                       <div
                         className={isMobile ? styles.uploadBtnContainer : styles.uploadBtn}
                         onClick={() => openModal({ type: "LOGIN" })}
