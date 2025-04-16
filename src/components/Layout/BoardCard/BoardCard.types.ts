@@ -4,4 +4,5 @@ export interface BoardCardProps {
   commentCount: number;
   viewCount: number;
   createdAt: string | Date;
+  thumbnail?: string | null;
 }

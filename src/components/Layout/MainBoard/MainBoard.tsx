@@ -65,7 +65,7 @@ export default function MainBoard({ type }: MainBoardProps) {
           noticePosts && noticePosts.length > 0 ? (
             noticePosts.map((post, index, arr) => (
               <React.Fragment key={post.id}>
-                <BoardCard {...post} />
+                <BoardCard {...post} thumbnail={post.thumbnail} />
                 {index < arr.length - 1 && <div className={styles.bar} />}
               </React.Fragment>
             ))
@@ -75,7 +75,7 @@ export default function MainBoard({ type }: MainBoardProps) {
         ) : latestPosts && latestPosts.posts.length > 0 ? (
           latestPosts.posts.map((post, index, arr) => (
             <React.Fragment key={post.id}>
-              <BoardCard {...post} />
+              <BoardCard {...post} thumbnail={post.thumbnail} />
               {index < arr.length - 1 && <div className={styles.bar} />}
             </React.Fragment>
           ))

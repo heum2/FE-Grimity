@@ -11,9 +11,21 @@ export default function BoardCard({
   commentCount,
   viewCount,
   createdAt,
+  thumbnail,
 }: BoardCardProps) {
   return (
     <div className={styles.container}>
+      {thumbnail && (
+        <div className={styles.thumbnailContainer}>
+          <img
+            src={thumbnail}
+            alt="썸네일"
+            width={48}
+            height={48}
+            className={styles.thumbnailImage}
+          />
+        </div>
+      )}
       <div className={styles.infoContainer}>
         <Link href={`/posts/${id}`}>
           <h3 className={styles.title}>{title}</h3>
