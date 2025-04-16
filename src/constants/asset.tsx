@@ -14,6 +14,7 @@ export const ICONS = {
   ranking1: "/icon/ranking1.svg",
   ranking2: "/icon/ranking2.svg",
   ranking3: "/icon/ranking3.svg",
+  ranking4: "/icon/ranking4.svg",
   boardLike: "/icon/board-like.svg",
   boardComment: "/icon/board-comment.svg",
   boardView: "/icon/board-view.svg",
