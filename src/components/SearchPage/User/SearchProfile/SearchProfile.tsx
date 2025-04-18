@@ -85,10 +85,10 @@ export default function SearchProfile({
         </div>
       </Link>
       <div className={styles.profile}>
-        <Link href={`/${url}`}>
-          {image !== null ? (
+        <div className={styles.topRow}>
+          <Link href={`/${url}`}>
             <Image
-              src={image}
+              src={image !== null ? image : "/image/default.svg"}
               alt="프로필"
               width={64}
               height={64}
@@ -96,31 +96,10 @@ export default function SearchProfile({
               className={styles.image}
               unoptimized
             />
-          ) : (
-            <Image
-              src="/image/default.svg"
-              alt="프로필"
-              width={64}
-              height={64}
-              quality={50}
-              className={styles.image}
-              unoptimized
-            />
-          )}
-        </Link>
-        <div className={styles.infoContainer}>
-          <div className={styles.spaceBetween}>
-            <div className={styles.nameCount}>
-              <Link href={`/${url}`}>
-                <p className={styles.name}>{name}</p>
-              </Link>
-              <div className={styles.follower}>
-                팔로워<p className={styles.count}>{formatCurrency(followerCount)}</p>
-              </div>
-            </div>
-            {isLoggedIn &&
-              id !== user_id &&
-              (isFollowing ? (
+          </Link>
+          {isLoggedIn && id !== user_id && (
+            <div className={styles.followButton}>
+              {isFollowing ? (
                 <Button size="s" type="outlined-assistive" onClick={handleUnfollowClick}>
                   팔로잉
                 </Button>
@@ -128,7 +107,18 @@ export default function SearchProfile({
                 <Button size="s" type="filled-primary" onClick={handleFollowClick}>
                   팔로우
                 </Button>
-              ))}
+              )}
+            </div>
+          )}
+        </div>
+        <div className={styles.infoContainer}>
+          <div className={styles.nameCount}>
+            <Link href={`/${url}`}>
+              <p className={styles.name}>{name}</p>
+            </Link>
+            <div className={styles.follower}>
+              팔로워<p className={styles.count}>{formatCurrency(followerCount)}</p>
+            </div>
           </div>
           <p className={styles.description}>{description}</p>
         </div>
