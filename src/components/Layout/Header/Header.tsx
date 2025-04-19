@@ -288,29 +288,16 @@ export default function Header() {
                             window.scrollTo(0, 0);
                           }}
                         >
-                          {myData.image !== null ? (
-                            <Image
-                              src={myData.image}
-                              width={32}
-                              height={32}
-                              alt="프로필 이미지"
-                              className={styles.profileImage}
-                              quality={50}
-                              style={{ objectFit: "cover" }}
-                              unoptimized
-                            />
-                          ) : (
-                            <Image
-                              src="/image/default.svg"
-                              width={32}
-                              height={32}
-                              alt="프로필 이미지"
-                              className={styles.profileImage}
-                              quality={50}
-                              style={{ objectFit: "cover" }}
-                              unoptimized
-                            />
-                          )}
+                          <Image
+                            src={myData.image ?? "/image/default.svg"}
+                            width={32}
+                            height={32}
+                            alt="프로필 이미지"
+                            className={styles.profileImage}
+                            quality={50}
+                            style={{ objectFit: "cover" }}
+                            unoptimized
+                          />
                           <span>내 프로필</span>
                         </div>
                       </Link>
@@ -337,6 +324,7 @@ export default function Header() {
                           저장한 그림
                         </div>
                       </Link>
+                      <div className={styles.divider} />
                       <Link href="/mypage?tab=saved-posts">
                         <div
                           className={styles.dropdownItem}

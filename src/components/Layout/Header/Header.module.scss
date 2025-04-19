@@ -175,13 +175,16 @@
     }
 
     .dropdownProfileImage {
-      margin-right: 8px;
       width: 28px;
       height: 28px;
       border: 1px solid $gray20;
       object-fit: cover;
       border-radius: 50px;
       overflow: hidden;
+    }
+
+    span {
+      padding-left: 8px;
     }
   }
 
