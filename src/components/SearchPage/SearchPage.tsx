@@ -29,7 +29,7 @@ export default function SearchPage() {
       setSearchValue(keyword);
       setSearchKeyword(keyword);
     }
-  }, [router.query]);
+  }, [router.query.keyword]);
 
   const getTabComponent = () => {
     switch (tab) {

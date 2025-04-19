@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import IconComponent from "@/components/Asset/Icon";
 import styles from "./SearchCard.module.scss";
 import { formatCurrency } from "@/utils/formatCurrency";
@@ -8,6 +8,7 @@ import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
 import { SearchCardProps } from "./SearchCard.types";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
+import { SearchHighlightContext } from "@/pages/search";
 import "swiper/css";
 
 export default function SearchCard({
@@ -25,6 +26,7 @@ export default function SearchCard({
   const [isLiked, setIsLiked] = useState(isLike);
   const [currentLikeCount, setCurrentLikeCount] = useState(likeCount);
   const imgRef = usePreventRightClick<HTMLImageElement>();
+  const { highlight } = useContext(SearchHighlightContext);
 
   const handleLikeClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -65,11 +67,11 @@ export default function SearchCard({
       )}
       <div className={styles.infoContainer}>
         <Link href={`/feeds/${id}`}>
-          <h3 className={styles.title}>{title}</h3>
+          <h3 className={styles.title}>{highlight(title)}</h3>
         </Link>
         <div className={styles.profileContainer}>
           <Link href={`/${author?.url}`}>
-            <p className={styles.author}>{author?.name}</p>
+            <p className={styles.author}>{highlight(author?.name)}</p>
           </Link>
           <IconComponent name="dot" size={3} />
           <div className={styles.countContainer}>

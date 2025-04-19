@@ -5,7 +5,7 @@ import { timeAgo } from "@/utils/timeAgo";
 import { AllCardProps } from "./AllCard.types";
 import Link from "next/link";
 import { deletePostsSave, putPostsSave } from "@/api/posts/putDeletePostsIdSave";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Dropdown from "@/components/Dropdown/Dropdown";
 import { useModalStore } from "@/states/modalStore";
 import { deletePostsFeeds } from "@/api/posts/deletePostsId";
@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import { useToast } from "@/hooks/useToast";
 import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { SearchHighlightContext } from "@/pages/search";
 
 export function getTypeLabel(type: string): string {
   switch (type) {
@@ -29,6 +30,7 @@ export function getTypeLabel(type: string): string {
 }
 
 export default function AllCard({ post, case: cardCase, hasChip = false }: AllCardProps) {
+  const { highlight } = useContext(SearchHighlightContext);
   const isMobile = useDeviceStore((state) => state.isMobile);
   const isTablet = useDeviceStore((state) => state.isTablet);
   useIsMobile();
@@ -106,10 +108,10 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
                   <div className={styles.mobileChip}>{getTypeLabel(post.type)}</div>
                 ))}
               {post.thumbnail !== null && <IconComponent name="boardAllImage" size={16} />}
-              <h2 className={styles.title}>{post.title}</h2>
+              <h2 className={styles.title}>{highlight(post.title)}</h2>
               <div className={styles.comment}>{post.commentCount}</div>
             </div>
-            <p className={styles.content}>{post.content}</p>
+            <p className={styles.content}>{highlight(post.content)}</p>
           </div>
         </Link>
         <div className={styles.rightContainer}>
@@ -206,10 +208,10 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
                 <IconComponent name="boardAllView" size={16} />
                 {post.viewCount}
               </div>
-              <div className={styles.comment}>
+              {/* <div className={styles.comment}>
                 <IconComponent name="boardAllComment" size={16} />
                 {post.commentCount}
-              </div>
+              </div> */}
               <IconComponent name="dot" size={3} />
               <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
               {post.type !== "NOTICE" && (
@@ -231,11 +233,6 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
               <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
             </div>
           )}
-          {/* {post.type !== "NOTICE" && cardCase !== "saved-posts" && post.author && !isMobile && (
-            <Link href={`/${post.author?.url}`}>
-              <p className={styles.author}>{post.author.name}</p>
-            </Link>
-          )} */}
         </div>
       </div>
       {isMobile && cardCase === "saved-posts" && (

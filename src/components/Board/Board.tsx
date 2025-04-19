@@ -14,7 +14,6 @@ export default function Board() {
   return (
     <div className={styles.container}>
       <div className={styles.center}>
-        <div className={styles.bar} />
         <BoardAll hasChip={true} />
         {(isMobile || isTablet) && (
           <Link href="/board/write">
