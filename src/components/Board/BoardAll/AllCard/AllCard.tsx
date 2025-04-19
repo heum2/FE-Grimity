@@ -83,30 +83,21 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
 
   return (
     <div className={styles.container}>
-      {cardCase !== "my-posts" && hasChip && !isMobile && (
-        <div className={styles.chipContainer}>
-          {post.type === "NOTICE" ? (
-            <Chip size="s" type="filled-secondary">
-              {getTypeLabel(post.type)}
-            </Chip>
-          ) : (
-            <Chip size="s" type="filled-assistive">
-              {getTypeLabel(post.type)}
-            </Chip>
-          )}
-        </div>
-      )}
+      <div className={styles.chipContainer}>
+        {post.type === "NOTICE" ? (
+          <Chip size="s" type="filled-secondary">
+            {getTypeLabel(post.type)}
+          </Chip>
+        ) : (
+          <Chip size="s" type="filled-assistive">
+            {getTypeLabel(post.type)}
+          </Chip>
+        )}
+      </div>
       <div className={styles.spaceBetween}>
         <Link href={`/posts/${post.id}`}>
           <div className={styles.titleContent}>
             <div className={styles.titleContainer}>
-              {cardCase === "board" &&
-                isMobile &&
-                (post.type === "NOTICE" ? (
-                  <div className={styles.mobileChipNotice}>{getTypeLabel(post.type)}</div>
-                ) : (
-                  <div className={styles.mobileChip}>{getTypeLabel(post.type)}</div>
-                ))}
               {post.thumbnail !== null && <IconComponent name="boardAllImage" size={16} />}
               <h2 className={styles.title}>{highlight(post.title)}</h2>
               <div className={styles.comment}>{post.commentCount}</div>
@@ -208,10 +199,6 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
                 <IconComponent name="boardAllView" size={16} />
                 {post.viewCount}
               </div>
-              {/* <div className={styles.comment}>
-                <IconComponent name="boardAllComment" size={16} />
-                {post.commentCount}
-              </div> */}
               <IconComponent name="dot" size={3} />
               <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
               {post.type !== "NOTICE" && (

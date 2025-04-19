@@ -21,18 +21,6 @@
     }
   }
 
-  .mobileChip {
-    @include Cap1;
-    color: $gray50;
-    padding: 2px 0;
-    flex-shrink: 0;
-  }
-
-  .mobileChipNotice {
-    @extend .mobileChip;
-    color: $secandary1;
-  }
-
   .spaceBetween {
     width: 100%;
     display: flex;
