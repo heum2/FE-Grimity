@@ -1,5 +1,5 @@
 import axios, { InternalAxiosRequestConfig } from "axios";
-
+import { useAuthStore } from "@/states/authStore";
 export const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 const axiosInstance = axios.create({
@@ -9,15 +9,15 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = localStorage.getItem("access_token");
+    const { access_token } = useAuthStore.getState();
 
     if (config.headers["exclude-access-token"]) {
       delete config.headers["exclude-access-token"];
       return config;
     }
 
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    if (access_token) {
+      config.headers.Authorization = `Bearer ${access_token}`;
     }
     return config;
   },
@@ -45,7 +45,7 @@ axiosInstance.interceptors.response.use(
       const refreshToken = localStorage.getItem("refresh_token");
 
       if (!refreshToken) {
-        clearAuthAndReload();
+        useAuthStore.getState().clearAuth();
         return Promise.reject(error);
       }
 
@@ -59,14 +59,18 @@ axiosInstance.interceptors.response.use(
             },
           });
 
-          localStorage.setItem("access_token", response.data.accessToken);
-          localStorage.setItem("refresh_token", response.data.refreshToken);
+          const { accessToken, refreshToken: newRefreshToken } = response.data;
 
-          originalRequest.headers.Authorization = `Bearer ${response.data.accessToken}`;
+          useAuthStore.getState().setAccessToken(accessToken);
+          useAuthStore.getState().setIsLoggedIn(true);
+          localStorage.setItem("access_token", accessToken);
+          localStorage.setItem("refresh_token", newRefreshToken);
+
+          originalRequest.headers.Authorization = `Bearer ${accessToken}`;
           return axiosInstance(originalRequest);
         } catch (refreshError) {
           console.error("Failed to refresh token", refreshError);
-          clearAuthAndReload();
+          useAuthStore.getState().clearAuth();
           return Promise.reject(refreshError);
         }
       }
@@ -75,12 +79,5 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   },
 );
-
-function clearAuthAndReload() {
-  localStorage.removeItem("access_token");
-  localStorage.removeItem("refresh_token");
-  localStorage.removeItem("user_id");
-  window.location.reload();
-}
 
 export default axiosInstance;
