@@ -17,6 +17,7 @@
 
   @include Size("mobile") {
     padding: 0;
+    border-bottom: 0;
   }
 }
 

@@ -348,12 +348,10 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                     {isMobile ? (
                       <div className={styles.coverEditBtn}>
                         <IconComponent name="editCover" size={14} isBtn />
-                        수정
                       </div>
                     ) : (
                       <div className={styles.coverEditBtn}>
                         <IconComponent name="editCover" size={20} isBtn />
-                        커버 수정
                       </div>
                     )}
                   </label>
@@ -368,12 +366,10 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                     {isMobile ? (
                       <div className={styles.coverEditBtn}>
                         <IconComponent name="deleteCover" size={14} isBtn />
-                        삭제
                       </div>
                     ) : (
                       <div className={styles.coverEditBtn}>
                         <IconComponent name="deleteCover" size={20} isBtn />
-                        커버 삭제
                       </div>
                     )}
                   </div>
