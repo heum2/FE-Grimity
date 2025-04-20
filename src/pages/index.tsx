@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Ranking from "@/components/Layout/Ranking/Ranking";
 import NewFeed from "@/components/Layout/NewFeed/NewFeed";
-// import FollowNewFeed from "@/components/Layout/FollowNewFeed/FollowNewFeed";
 import { useAuthStore } from "@/states/authStore";
 import MainBoard from "@/components/Layout/MainBoard/MainBoard";
 import { useScrollRestoration } from "@/hooks/useScrollRestoration";

@@ -10,8 +10,8 @@
   padding: 0 24px 100px;
 
   @include Size("tablet") {
-    margin-left: 80px;
-    padding: 0 16px 10px;
+    margin-left: 40px;
+    padding: 0 16px 100px;
   }
 
   @include Size("mobile") {
@@ -27,6 +27,11 @@
 
     @include Size("mobile") {
       max-width: 100%;
+    }
+
+    @include Size("tablet") {
+      max-width: 924px;
+      width: 92%;
     }
   }
 

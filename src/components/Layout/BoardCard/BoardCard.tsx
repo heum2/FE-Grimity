@@ -32,15 +32,15 @@ export default function BoardCard({
           <div className={styles.bottomContainer}>
             <div className={styles.countContainer}>
               <div className={styles.likeContainer}>
-                <IconComponent name="boardAllComment" size={16} />
+                <IconComponent name="commentCount" size={16} />
                 <p className={styles.commentCount}>{formatCurrency(commentCount)}</p>
               </div>
               <div className={styles.likeContainer}>
-                <IconComponent name="boardView" size={16} />
+                <IconComponent name="viewCount" size={18} />
                 <p className={styles.count}>{formatCurrency(viewCount)}</p>
               </div>
             </div>
-            <IconComponent name="dot" size={3} />
+            {/* <IconComponent name="dot" size={4} /> */}
             <p className={styles.createdAt}>{timeAgo(createdAt)}</p>
           </div>
         </Link>
