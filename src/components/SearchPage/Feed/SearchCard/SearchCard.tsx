@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useAuthStore } from "@/states/authStore";
 import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
 import { SearchCardProps } from "./SearchCard.types";
-import { Swiper, SwiperSlide } from "swiper/react";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 import { SearchHighlightContext } from "@/pages/search";
 import "swiper/css";
@@ -19,7 +18,6 @@ export default function SearchCard({
   likeCount,
   commentCount,
   isLike,
-  tags,
   author,
 }: SearchCardProps) {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -52,19 +50,6 @@ export default function SearchCard({
           <img src={thumbnail} alt={title} loading="lazy" className={styles.image} ref={imgRef} />
         </Link>
       </div>
-      {tags.length > 0 && (
-        <div className={styles.chips}>
-          <Swiper spaceBetween={8} slidesPerView="auto" grabCursor={true} className={styles.swiper}>
-            {tags.map((tag: string, index: number) => (
-              <SwiperSlide key={index} className={styles.slide}>
-                <Link href={`/search?tab=feed&keyword=${tag}`}>
-                  <div className={styles.chip}>{tag}</div>
-                </Link>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-      )}
       <div className={styles.infoContainer}>
         <Link href={`/feeds/${id}`}>
           <h3 className={styles.title}>{highlight(title)}</h3>
@@ -84,7 +69,7 @@ export default function SearchCard({
               <p className={styles.count}>{formatCurrency(commentCount)}</p>
             </div>
             <div className={styles.likeContainer}>
-              <IconComponent name="viewCount" size={16} />
+              <IconComponent name="viewCount" size={18} />
               <p className={styles.count}>{formatCurrency(viewCount)}</p>
             </div>
           </div>

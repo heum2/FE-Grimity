@@ -69,7 +69,9 @@ export default function SearchPost() {
         ) : (
           <div>
             <div className={styles.sortWrapper}>
-              <h2 className={styles.title}>글 {data ? data.totalCount : 0}개</h2>
+              <h2 className={styles.title}>
+                검색결과 <span className={styles.searchCount}>{data ? data.totalCount : 0}</span>건
+              </h2>
               <div className={styles.sort}>
                 <Dropdown
                   menuItems={sortOptions.map((option) => ({
