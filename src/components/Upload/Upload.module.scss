@@ -18,7 +18,7 @@
 
     // 높이가 낮은 노트북
     @media (max-height: 800px) {
-      padding-top: 0px;
+      padding-top: 60px;
     }
 
     // 폭이 좁은 노트북
@@ -32,6 +32,7 @@
 
     @include Size("tablet") {
       padding-top: 32px;
+      margin: 0 20px;
     }
 
     .uploadBtnContainer {
