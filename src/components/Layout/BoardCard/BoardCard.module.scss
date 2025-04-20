@@ -7,6 +7,16 @@
   gap: 12px;
   width: 100%;
 
+  .thumbnailContainer {
+    margin-right: 12px;
+    flex-shrink: 0;
+  }
+
+  .thumbnailImage {
+    object-fit: cover;
+    border-radius: 6px;
+  }
+
   .infoContainer {
     width: 100%;
     display: flex;
@@ -14,8 +24,11 @@
 
     .title {
       overflow: hidden;
-      color: $gray80;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
       text-overflow: ellipsis;
+      color: $gray80;
       @include Sub4;
     }
 
@@ -28,30 +41,44 @@
 
       .createdAt {
         @include Label1;
-        color: $gray50;
+        color: $gray60;
       }
 
       .countContainer {
         display: flex;
+        align-items: center;
         gap: 6px;
+
+        &::after {
+          color: $gray50;
+          content: " • ";
+        }
+
+        &:last-child::after {
+          content: none;
+        }
       }
 
       .likeContainer {
         display: flex;
         align-items: center;
         gap: 2px;
+
+        p {
+          margin: 0;
+          line-height: 1;
+        }
       }
 
       .count {
         @include MEDIUM;
-        font-size: 12px;
-        line-height: 12px;
-        color: $secandary1;
+        @include Cap2;
+        color: $gray60;
       }
 
       .commentCount {
         @extend .count;
-        color: $red;
+        color: $gray60;
       }
     }
   }

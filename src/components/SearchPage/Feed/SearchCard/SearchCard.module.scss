@@ -38,47 +38,6 @@
     }
   }
 
-  .chips {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    width: 100%;
-    max-width: 258px;
-    height: 30px;
-    overflow: hidden;
-
-    @include Size("mobile") {
-      max-width: none;
-    }
-
-    :global(.swiper) {
-      width: 100%;
-      height: 100%;
-    }
-
-    :global(.swiper-wrapper) {
-      display: flex;
-    }
-
-    .chip {
-      display: flex;
-      padding: 6px 12px;
-      justify-content: center;
-      align-items: center;
-      border-radius: 50px;
-      background-color: $gray10;
-      @include Cap1;
-      color: $gray60;
-      @include Drag;
-    }
-
-    .slide {
-      width: auto !important;
-      flex-shrink: 0;
-      height: 100%;
-    }
-  }
-
   .infoContainer {
     display: flex;
     flex-direction: column;
@@ -94,10 +53,6 @@
       display: -webkit-box;
       -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
-
-      @include Size("mobile") {
-        @include Label1;
-      }
     }
 
     .profileContainer {
@@ -107,10 +62,10 @@
 
       .author {
         @include Label1;
-        color: $gray50;
+        color: $gray60;
 
         @include Size("mobile") {
-          @include Cap2;
+          @include Cap1;
         }
       }
 
@@ -122,7 +77,13 @@
         .likeContainer {
           display: flex;
           align-items: center;
+          line-height: normal;
           gap: 2px;
+
+          p {
+            margin: 0;
+            line-height: 1;
+          }
 
           .count {
             @include Cap2;

@@ -5,7 +5,7 @@ import { timeAgo } from "@/utils/timeAgo";
 import { AllCardProps } from "./AllCard.types";
 import Link from "next/link";
 import { deletePostsSave, putPostsSave } from "@/api/posts/putDeletePostsIdSave";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Dropdown from "@/components/Dropdown/Dropdown";
 import { useModalStore } from "@/states/modalStore";
 import { deletePostsFeeds } from "@/api/posts/deletePostsId";
@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import { useToast } from "@/hooks/useToast";
 import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { SearchHighlightContext } from "@/pages/search";
 
 export function getTypeLabel(type: string): string {
   switch (type) {
@@ -29,7 +30,9 @@ export function getTypeLabel(type: string): string {
 }
 
 export default function AllCard({ post, case: cardCase, hasChip = false }: AllCardProps) {
+  const { highlight } = useContext(SearchHighlightContext);
   const isMobile = useDeviceStore((state) => state.isMobile);
+  const isTablet = useDeviceStore((state) => state.isTablet);
   useIsMobile();
   const openModal = useModalStore((state) => state.openModal);
   const { showToast } = useToast();
@@ -80,76 +83,62 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
 
   return (
     <div className={styles.container}>
-      {cardCase !== "my-posts" && hasChip && !isMobile && (
-        <div className={styles.chipContainer}>
-          {post.type === "NOTICE" ? (
-            <Chip size="s" type="filled-secondary">
-              {getTypeLabel(post.type)}
-            </Chip>
-          ) : (
-            <Chip size="s" type="filled-assistive">
-              {getTypeLabel(post.type)}
-            </Chip>
-          )}
-        </div>
-      )}
+      <div className={styles.chipContainer}>
+        {post.type === "NOTICE" ? (
+          <Chip size="s" type="filled-secondary">
+            {getTypeLabel(post.type)}
+          </Chip>
+        ) : (
+          <Chip size="s" type="filled-assistive">
+            {getTypeLabel(post.type)}
+          </Chip>
+        )}
+      </div>
       <div className={styles.spaceBetween}>
         <Link href={`/posts/${post.id}`}>
           <div className={styles.titleContent}>
             <div className={styles.titleContainer}>
-              {cardCase === "board" &&
-                isMobile &&
-                (post.type === "NOTICE" ? (
-                  <div className={styles.mobileChipNotice}>{getTypeLabel(post.type)}</div>
-                ) : (
-                  <div className={styles.mobileChip}>{getTypeLabel(post.type)}</div>
-                ))}
-              <h2 className={styles.title}>{post.title}</h2>
               {post.thumbnail !== null && <IconComponent name="boardAllImage" size={16} />}
-              {!isMobile && (
-                <div className={cardCase === "my-posts" ? styles.myCount : styles.comment}>
-                  <IconComponent
-                    name={cardCase === "my-posts" ? "commentCount" : "boardAllComment"}
-                    size={16}
-                  />
-                  {post.commentCount}
-                </div>
-              )}
+              <h2 className={styles.title}>{highlight(post.title)}</h2>
+              <div className={styles.comment}>{post.commentCount}</div>
             </div>
-            <p className={styles.content}>{post.content}</p>
+            <p className={styles.content}>{highlight(post.content)}</p>
           </div>
         </Link>
         <div className={styles.rightContainer}>
+          {post.type !== "NOTICE" && cardCase !== "saved-posts" && post.author && !isMobile && (
+            <Link href={`/${post.author?.url}`}>
+              <p className={styles.author}>{post.author.name}</p>
+            </Link>
+          )}
           {cardCase === "saved-posts" ? (
             isMobile ? (
               <div className={styles.savedPosts}>
                 <div className={styles.savedCreatedAtView}>
+                  <div className={styles.author}>{post.author?.name}</div>
+                  <IconComponent name="dot" size={3} />
+                  <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
+                  <IconComponent name="dot" size={3} />
                   <div className={styles.viewCount}>
                     <IconComponent name="boardAllView" size={16} />
                     {post.viewCount}
                   </div>
-                  <div className={styles.commentCount}>
-                    <IconComponent name="boardAllComment" size={16} />
-                    {post.commentCount}
-                  </div>
-                  <IconComponent name="dot" size={3} />
-                  <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
                 </div>
               </div>
             ) : (
               <div className={styles.savedPosts}>
                 <div className={styles.savedCreatedAtView}>
+                  <Link href={`${post.author?.url}`}>
+                    <p className={styles.author}>{post.author?.name}</p>
+                  </Link>
                   <div className={styles.savedPc}>
+                    <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
+                    <IconComponent name="dot" size={3} />
                     <div className={styles.viewCount}>
                       <IconComponent name="boardAllView" size={16} />
                       {post.viewCount}
                     </div>
-                    <IconComponent name="dot" size={3} />
-                    <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
                   </div>
-                  <Link href={`${post.author?.url}`}>
-                    <p className={styles.author}>{post.author?.name}</p>
-                  </Link>
                 </div>
                 <div onClick={handleSaveClick}>
                   <IconComponent
@@ -210,10 +199,6 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
                 <IconComponent name="boardAllView" size={16} />
                 {post.viewCount}
               </div>
-              <div className={styles.commentCount}>
-                <IconComponent name="boardAllComment" size={16} />
-                {post.commentCount}
-              </div>
               <IconComponent name="dot" size={3} />
               <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
               {post.type !== "NOTICE" && (
@@ -234,11 +219,6 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
               <IconComponent name="dot" size={3} />
               <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
             </div>
-          )}
-          {post.type !== "NOTICE" && cardCase !== "saved-posts" && post.author && !isMobile && (
-            <Link href={`/${post.author?.url}`}>
-              <p className={styles.author}>{post.author.name}</p>
-            </Link>
           )}
         </div>
       </div>

@@ -34,7 +34,7 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
   const { query } = router;
   const currentType = (query.type as string) || "all";
   const currentPage = Number(query.page) || 1;
-  const totalPages = Math.ceil(totalCount / 10);
+  const totalPages = Math.ceil(totalCount / 5);
   const { showToast } = useToast();
   const isMobile = useDeviceStore((state) => state.isMobile);
   useIsMobile();
@@ -48,14 +48,14 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
   } = usePostsLatest({
     type: currentType.toUpperCase() as "ALL" | "QUESTION" | "FEEDBACK",
     page: currentPage,
-    size: 10,
+    size: 5,
   });
 
   const { data: searchData, isLoading: isSearchLoading } = usePostSearch(
     query.keyword
       ? {
           searchBy: (query.searchBy as "combined" | "name") || "combined",
-          size: 10,
+          size: 5,
           page: currentPage,
           keyword: query.keyword as string,
         }
@@ -111,11 +111,11 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
   };
 
   const getPageRange = (currentPage: number, totalPages: number) => {
-    let start = Math.max(1, currentPage - 4);
-    let end = Math.min(start + 9, totalPages);
+    let start = Math.max(1, currentPage);
+    let end = Math.min(start + 4, totalPages);
 
     if (end === totalPages) {
-      start = Math.max(1, end - 9);
+      start = Math.max(1, end - 4);
     }
 
     return Array.from({ length: end - start + 1 }, (_, i) => start + i);
@@ -288,7 +288,7 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
           <AllCard key={post.id} post={post} case="board" hasChip={hasChip} />
         ))}
       </section>
-      {posts.length === 0 && <div className={styles.noResults}>검색 결과가 없습니다</div>}
+      {posts.length === 0 && <div className={styles.noResults}>검색 결과가 없어요</div>}
       {!isMobile && isLoggedIn && !isDetail && (
         <section className={styles.uploadBtn}>
           <Link href="/board/write">

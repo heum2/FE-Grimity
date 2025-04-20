@@ -14,8 +14,6 @@ import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import useAuthCheck from "@/hooks/useAuthCheck";
 import { usePreventScroll } from "@/hooks/usePreventScroll";
-import Dropdown from "@/components/Dropdown/Dropdown";
-import Contact from "./Contact/Contact";
 import axiosInstance from "@/constants/baseurl";
 
 export default function Header() {
@@ -33,14 +31,12 @@ export default function Header() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const notificationRef = useRef<HTMLDivElement>(null);
   const [showNotifications, setShowNotifications] = useState(false);
-  const [showContact, setShowContact] = useState(false);
   const { showToast } = useToast();
   const router = useRouter();
   const isMobile = useDeviceStore((state) => state.isMobile);
   const isTablet = useDeviceStore((state) => state.isTablet);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
-  const isUserPage = router.pathname.startsWith("/[url]");
   const isPostPage = ["/board", "/board/write", "/posts/[id]", "/posts/[id]/edit"].includes(
     router.pathname,
   );
@@ -64,14 +60,10 @@ export default function Header() {
     navItems.push({ name: "팔로잉", path: "/following" });
   }
 
-  let name: "bellWhiteActive" | "bellActive" | "bellWhite" | "bell";
+  let name: "bellActive" | "bell";
 
-  if (myData?.hasNotification && isUserPage) {
-    name = "bellWhiteActive";
-  } else if (myData?.hasNotification && !isUserPage) {
+  if (myData?.hasNotification) {
     name = "bellActive";
-  } else if (!myData?.hasNotification && isUserPage) {
-    name = "bellWhite";
   } else {
     name = "bell";
   }
@@ -104,7 +96,7 @@ export default function Header() {
 
   const handleNavClick = (item: { name: string; path: string }) => {
     setActiveNav(item.name);
-    if (isMobile || isTablet) {
+    if (isMobile) {
       setIsMenuOpen(false);
     }
 
@@ -197,7 +189,7 @@ export default function Header() {
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [showNotifications, showContact]);
+  }, [showNotifications]);
 
   const handleClickLogo = () => {
     if (router.pathname === "/") {
@@ -212,10 +204,6 @@ export default function Header() {
     setShowNotifications((prev) => !prev);
   };
 
-  const toggleContact = () => {
-    setShowContact((prev) => !prev);
-  };
-
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
   };
@@ -227,51 +215,40 @@ export default function Header() {
   usePreventScroll(isMenuOpen || (isMobile && showNotifications));
 
   return (
-    <header className={isUserPage ? styles.userPageHeader : styles.header}>
+    <header className={styles.header}>
       <div className={styles.container}>
         <div className={styles.leftSection}>
           <div className={styles.cursor} onClick={handleClickLogo}>
-            <img
-              src={isUserPage ? "/image/logo-white.svg" : "/image/logo.svg"}
-              width={100}
-              height={29}
-              alt="logo"
-              loading="lazy"
-            />
+            <img src={"/image/logo.svg"} width={100} height={29} alt="logo" loading="lazy" />
           </div>
-          {!isMobile && !isTablet && (
-            <nav className={styles.nav}>
-              {navItems.map((item, index) => (
-                <div key={index} className={styles.navItem} onClick={() => handleNavClick(item)}>
-                  <p
-                    className={`${isUserPage ? styles.userPageitem : styles.item} ${
-                      isNavPage && (activeNav === item.name ? styles.active : "")
-                    }`}
-                    ref={item.name === activeNav ? activeItemRef : null}
-                  >
-                    {item.name}
-                  </p>
-                </div>
-              ))}
-              {isNavPage && <div ref={indicatorRef} className={styles.indicator} />}
-            </nav>
-          )}
         </div>
         <div className={styles.wrapper}>
-          {(isMobile || isTablet) && !isLoggedIn && (
+          {isMobile && !isLoggedIn && (
             <div className={styles.uploadBtn} onClick={() => openModal({ type: "LOGIN" })}>
               <Button size="s" type="filled-primary">
                 로그인
               </Button>
             </div>
           )}
+          {!hideBtn &&
+            !isMobile &&
+            isLoggedIn &&
+            (isPostPage ? (
+              <Link href="/board/write">
+                <Button size="m" type="filled-primary">
+                  글 쓰기
+                </Button>
+              </Link>
+            ) : (
+              <Link href="/write">
+                <Button size="m" type="filled-primary">
+                  그림 업로드
+                </Button>
+              </Link>
+            ))}
           <div className={styles.icons}>
             <Link href="/search">
-              {!isUserPage ? (
-                <IconComponent name="search" size={24} padding={8} isBtn />
-              ) : (
-                <IconComponent name="searchWhite" size={24} padding={8} isBtn />
-              )}
+              <IconComponent name="search" size={24} padding={8} isBtn />
             </Link>
             {(!isMobile || !isTablet) && isLoggedIn && myData && (
               <div className={styles.notificationWrapper} ref={notificationRef}>
@@ -282,7 +259,7 @@ export default function Header() {
               </div>
             )}
           </div>
-          {!isMobile && !isTablet ? (
+          {!isMobile ? (
             isLoggedIn && myData ? (
               <div className={styles.profileContact}>
                 <div className={styles.profileSection}>
@@ -312,11 +289,11 @@ export default function Header() {
                           }}
                         >
                           <Image
-                            src={myData.image || "/image/default.svg"}
-                            width={28}
-                            height={28}
+                            src={myData.image ?? "/image/default.svg"}
+                            width={32}
+                            height={32}
                             alt="프로필 이미지"
-                            className={styles.dropdownProfileImage}
+                            className={styles.profileImage}
                             quality={50}
                             style={{ objectFit: "cover" }}
                             unoptimized
@@ -347,6 +324,7 @@ export default function Header() {
                           저장한 그림
                         </div>
                       </Link>
+                      <div className={styles.divider} />
                       <Link href="/mypage?tab=saved-posts">
                         <div
                           className={styles.dropdownItem}
@@ -370,43 +348,7 @@ export default function Header() {
                       </div>
                     </div>
                   )}
-                  {!hideBtn &&
-                    (isPostPage ? (
-                      <Link href="/board/write">
-                        <Button size="m" type="filled-primary">
-                          글 쓰기
-                        </Button>
-                      </Link>
-                    ) : (
-                      <Link href="/write">
-                        <Button size="m" type="filled-primary">
-                          그림 업로드
-                        </Button>
-                      </Link>
-                    ))}
                 </div>
-                {!isMobile && !isTablet && (
-                  <div className={styles.contactBtn}>
-                    <Dropdown
-                      isSide
-                      trigger={
-                        <IconComponent
-                          name={isUserPage ? "contactKebabWhite" : "contactKebab"}
-                          padding={8}
-                          size={24}
-                          isBtn
-                        />
-                      }
-                      menuItems={[
-                        {
-                          label: "문의하기",
-                          onClick: () => toggleContact(),
-                        },
-                      ]}
-                    />
-                  </div>
-                )}
-                {showContact && <Contact onClose={() => setShowContact(false)} />}
               </div>
             ) : (
               <div className={styles.uploadBtn} onClick={() => openModal({ type: "LOGIN" })}>
@@ -418,12 +360,7 @@ export default function Header() {
           ) : (
             <>
               <div onClick={toggleMenu}>
-                <IconComponent
-                  name={isUserPage ? "hamburgerWhite" : "hamburger"}
-                  size={24}
-                  padding={8}
-                  isBtn
-                />
+                <IconComponent name="hamburger" size={24} padding={8} isBtn />
               </div>
               <div
                 className={`${styles.overlay} ${isMenuOpen ? styles.open : ""}`}
@@ -475,31 +412,18 @@ export default function Header() {
                       <div className={styles.mobileProfile}>
                         <div className={styles.bar} />
                         <div className={styles.profileSubmenu}>
-                          <Link href={`/${myData.url}`} className={styles.mobileMyInfo}>
-                            {myData.image !== null ? (
-                              <Image
-                                src={myData.image}
-                                width={32}
-                                height={32}
-                                alt="프로필 이미지"
-                                className={styles.profileImage}
-                                quality={50}
-                                style={{ objectFit: "cover" }}
-                                unoptimized
-                              />
-                            ) : (
-                              <Image
-                                src="/image/default.svg"
-                                width={32}
-                                height={32}
-                                alt="프로필 이미지"
-                                className={styles.profileImage}
-                                quality={50}
-                                style={{ objectFit: "cover" }}
-                                unoptimized
-                              />
-                            )}
-                            <span className={styles.name}>{myData.name}</span>
+                          <Link href={`/${myData?.url}`} className={styles.mobileMyInfo}>
+                            <Image
+                              src={myData?.image || "/image/default.svg"}
+                              width={32}
+                              height={32}
+                              alt="프로필 이미지"
+                              className={styles.profileImage}
+                              quality={50}
+                              style={{ objectFit: "cover" }}
+                              unoptimized
+                            />
+                            <span className={styles.name}>{myData?.name}</span>
                           </Link>
                           <div
                             className={styles.submenu}
@@ -525,71 +449,9 @@ export default function Header() {
                             </button>
                           </div>
                         )}
-                        {isLoggedIn &&
-                          (isPostPage ? (
-                            <Link href="/board/write" className={styles.uploadBtnContainer}>
-                              <Button
-                                size="l"
-                                type="filled-primary"
-                                leftIcon={<IconComponent name="menuUpload" size={20} />}
-                              >
-                                글 쓰기
-                              </Button>
-                            </Link>
-                          ) : (
-                            <Link href="/write" className={styles.uploadBtnContainer}>
-                              <Button
-                                size="l"
-                                type="filled-primary"
-                                leftIcon={<IconComponent name="menuUpload" size={20} />}
-                              >
-                                그림 업로드
-                              </Button>
-                            </Link>
-                          ))}
                       </div>
                     )}
                   </div>
-                  <section className={styles.footer}>
-                    <div className={styles.contact}>
-                      <div className={styles.content}>
-                        <label className={styles.label}>제휴/광고 문의</label>
-                        <button onClick={copyToClipboard} className={styles.link}>
-                          메일쓰기
-                        </button>
-                      </div>
-                      <div className={styles.content}>
-                        <label className={styles.label}>불편신고/건의</label>
-                        <a
-                          href="https://open.kakao.com/o/sKYFewgh"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={styles.link}
-                        >
-                          카카오톡 오픈채팅
-                        </a>
-                      </div>
-                    </div>
-                    <div className={styles.bar} />
-                    <div className={styles.links}>
-                      <a
-                        href="https://nostalgic-patch-498.notion.site/1930ac6bf29881b9aa19ff623c69b8e6?pvs=74"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={styles.subLink}
-                      >
-                        개인정보취급방침
-                      </a>
-                      <a
-                        href="https://nostalgic-patch-498.notion.site/1930ac6bf29881e9a3e4c405e7f49f2b?pvs=73"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={styles.subLink}
-                      >
-                        이용약관
-                      </a>
-                    </div>
-                  </section>
                 </div>
               </div>
             </>

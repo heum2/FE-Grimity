@@ -25,7 +25,7 @@ export default function Ranking() {
 
   if (isLoading) return <Loader />;
 
-  const itemsPerPage = 3;
+  const itemsPerPage = 4;
   const totalSlides = Math.ceil((data?.length || 0) / itemsPerPage);
   const paginatedFeeds = data || [];
   const isEmpty = !data || data.length === 0;
@@ -47,13 +47,13 @@ export default function Ranking() {
         <div className={styles.rankingContainer}>
           <Swiper
             spaceBetween={12}
-            slidesPerView={isMobile ? 1.5 : 3}
+            slidesPerView={isMobile ? 1.5 : isTablet ? 3.5 : itemsPerPage}
             onSlideChange={(swiper) => setPageIndex(swiper.activeIndex)}
           >
             {paginatedFeeds.map((feed, idx) => (
               <SwiperSlide key={feed.id}>
                 <div className={styles.cardWrapper}>
-                  {idx < 3 && (
+                  {idx < 4 && (
                     <div className={styles.rankingIconWrapper}>
                       <IconComponent
                         name={idx === 0 ? "ranking1" : idx === 1 ? "ranking2" : "ranking3"}
@@ -101,7 +101,7 @@ export default function Ranking() {
                 const absoluteIdx = pageIndex * itemsPerPage + idx;
                 return (
                   <div key={feed.id} className={styles.cardWrapper}>
-                    {absoluteIdx < 3 && (
+                    {absoluteIdx < 4 && (
                       <div className={styles.rankingIconWrapper}>
                         <IconComponent
                           name={
@@ -109,7 +109,9 @@ export default function Ranking() {
                               ? "ranking1"
                               : absoluteIdx === 1
                               ? "ranking2"
-                              : "ranking3"
+                              : absoluteIdx === 2
+                              ? "ranking3"
+                              : "ranking4"
                           }
                           size={30}
                         />
