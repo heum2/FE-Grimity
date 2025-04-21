@@ -5,9 +5,9 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-self: flex-start;
   gap: 50px;
   margin-top: 30px;
-  padding: 0 100px;
 
   @include Size("mobile") {
     margin-top: 40px;
@@ -18,8 +18,6 @@
   }
 
   @include Size("tablet") {
-    margin-top: 20px;
-    padding: 0 10px;
     gap: 0;
   }
 
