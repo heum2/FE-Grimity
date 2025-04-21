@@ -23,17 +23,24 @@
     max-width: 1462px;
     width: 100%;
     display: flex;
-    margin-top: 60px; //header
+    align-items: flex-start;
+    margin-top: 60px; // header
+    margin-bottom: 80px;
 
     @include Size("mobile") {
       max-width: 390px;
-      width: 100%;
+
+      @media (min-width: 540px) {
+        max-width: 767px;
+      }
     }
 
     @include Size("tablet") {
-      max-width: 768px;
-      width: 100%;
-      padding: 0 20px;
+      padding-left: 20px;
+
+      @media (min-width: 920px) {
+        padding-left: 24px;
+      }
     }
   }
 

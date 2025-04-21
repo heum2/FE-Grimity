@@ -62,7 +62,7 @@
 
       .author {
         @include Label1;
-        color: $gray50;
+        color: $gray60;
       }
 
       .countContainer {
@@ -74,11 +74,8 @@
           display: flex;
           align-items: center;
           gap: 2px;
-
-          .count {
-            @include Cap2;
-            color: $gray50;
-          }
+          @include Cap2;
+          color: $gray60;
         }
       }
     }

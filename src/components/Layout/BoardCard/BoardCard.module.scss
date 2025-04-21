@@ -35,7 +35,7 @@
     .bottomContainer {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 4px;
       @include Drag;
       margin-top: 4px;
 
@@ -45,13 +45,13 @@
       }
 
       .countContainer {
-        display: flex;
+        display: inline-flex;
         align-items: center;
         gap: 6px;
 
         &::after {
           color: $gray50;
-          content: " • ";
+          content: "•";
         }
 
         &:last-child::after {
@@ -71,7 +71,6 @@
       }
 
       .count {
-        @include MEDIUM;
         @include Cap2;
         color: $gray60;
       }

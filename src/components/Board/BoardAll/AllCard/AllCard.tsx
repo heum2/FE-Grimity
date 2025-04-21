@@ -99,8 +99,8 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
           <div className={styles.titleContent}>
             <div className={styles.titleContainer}>
               {post.thumbnail !== null && <IconComponent name="boardAllImage" size={16} />}
-              <h2 className={styles.title}>{highlight(post.title)}</h2>
-              <div className={styles.comment}>{post.commentCount}</div>
+              <span className={styles.title}>{highlight(post.title)}</span>
+              <span className={styles.comment}>{post.commentCount}</span>
             </div>
             <p className={styles.content}>{highlight(post.content)}</p>
           </div>

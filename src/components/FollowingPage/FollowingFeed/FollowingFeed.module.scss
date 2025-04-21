@@ -64,7 +64,7 @@
 
         .createdAt {
           @include Label1;
-          color: $gray50;
+          color: $gray60;
           @include Drag;
         }
       }
@@ -265,6 +265,7 @@
       line-height: 0;
       margin: 16px 0;
       @include Drag;
+      color: $gray60;
 
       .statIcon {
         width: 16px;
@@ -277,21 +278,9 @@
         display: flex;
         align-items: center;
         gap: 2px;
-        color: $gray50;
         @include Cap2;
         line-height: 12px;
       }
-    }
-
-    .aiBtn {
-      display: flex;
-      @include Label2;
-      color: $gray50;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 16px;
-      margin-top: 20px;
-      @include Drag;
     }
 
     .tags {
