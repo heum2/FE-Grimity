@@ -12,19 +12,16 @@
   }
 
   .title {
-    @include Title3;
+    @include Sub2;
     color: $gray60;
     @include Drag;
 
     .searchCount {
       color: $gray70;
     }
-    @include Size("mobile") {
-      @include Sub2;
-    }
 
-    @include Size("tablet") {
-      @include Title4;
+    @include Size("mobile") {
+      @include Label2;
     }
   }
 
