@@ -56,7 +56,15 @@ export default function Ranking() {
                   {idx < 4 && (
                     <div className={styles.rankingIconWrapper}>
                       <IconComponent
-                        name={idx === 0 ? "ranking1" : idx === 1 ? "ranking2" : "ranking3"}
+                        name={
+                          idx === 0
+                            ? "ranking1"
+                            : idx === 1
+                            ? "ranking2"
+                            : idx === 2
+                            ? "ranking3"
+                            : "ranking4"
+                        }
                         size={30}
                       />
                     </div>
