@@ -34,7 +34,7 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
   const { query } = router;
   const currentType = (query.type as string) || "all";
   const currentPage = Number(query.page) || 1;
-  const totalPages = Math.ceil(totalCount / 5);
+  const totalPages = Math.ceil(totalCount / 10);
   const { showToast } = useToast();
   const isMobile = useDeviceStore((state) => state.isMobile);
   useIsMobile();
@@ -48,14 +48,14 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
   } = usePostsLatest({
     type: currentType.toUpperCase() as "ALL" | "QUESTION" | "FEEDBACK",
     page: currentPage,
-    size: 5,
+    size: 10,
   });
 
   const { data: searchData, isLoading: isSearchLoading } = usePostSearch(
     query.keyword
       ? {
           searchBy: (query.searchBy as "combined" | "name") || "combined",
-          size: 5,
+          size: 10,
           page: currentPage,
           keyword: query.keyword as string,
         }
@@ -111,11 +111,11 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
   };
 
   const getPageRange = (currentPage: number, totalPages: number) => {
-    let start = Math.max(1, currentPage);
-    let end = Math.min(start + 4, totalPages);
+    let start = Math.max(1, currentPage - 4);
+    let end = Math.min(start + 9, totalPages);
 
     if (end === totalPages) {
-      start = Math.max(1, end - 4);
+      start = Math.max(1, end - 9);
     }
 
     return Array.from({ length: end - start + 1 }, (_, i) => start + i);
