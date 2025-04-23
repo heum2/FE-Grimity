@@ -57,33 +57,18 @@ export default function SearchProfile({
     <div className={styles.container}>
       <Link href={`/${url}`}>
         <div className={styles.cover}>
-          {backgroundImage !== null ? (
-            <img
-              src={backgroundImage}
-              alt="배경이미지"
-              width={630}
-              height={isMobile ? 130 : isTablet ? 140 : 178}
-              style={{
-                width: "100%",
-                height: isMobile ? "130px" : isTablet ? "140px" : "178px",
-                objectFit: "cover",
-              }}
-              loading="lazy"
-            />
-          ) : (
-            <img
-              src="/image/search-default-cover.svg"
-              alt="배경이미지"
-              width={630}
-              height={isMobile ? 130 : isTablet ? 140 : 178}
-              style={{
-                width: "100%",
-                height: isMobile ? "130px" : isTablet ? "140px" : "178px",
-                objectFit: "cover",
-              }}
-              loading="lazy"
-            />
-          )}
+          <img
+            src={backgroundImage !== null ? backgroundImage : "/image/search-default-cover.svg"}
+            alt="배경이미지"
+            width={630}
+            height={isMobile ? 130 : 150}
+            style={{
+              width: "100%",
+              height: isMobile ? "130px" : "150px",
+              objectFit: "cover",
+            }}
+            loading="lazy"
+          />
         </div>
       </Link>
       <div className={styles.profile}>

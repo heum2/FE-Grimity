@@ -3,7 +3,8 @@
 .container {
   width: 100%;
   max-width: 630px;
-  height: 290px;
+  min-height: 290px;
+  height: auto;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -11,18 +12,15 @@
   border: 1px solid $gray30;
   background-color: $gray0;
   position: relative;
+  box-sizing: border-box;
 
   @include Size("mobile") {
-    height: 250px;
-  }
-
-  @include Size("tablet") {
-    height: 270px;
+    min-height: 270px;
   }
 
   .coverContainer {
     width: 100%;
-    height: 178px;
+    height: 150px;
     border-radius: 12px 12px 0 0;
     object-fit: cover;
     overflow: hidden;
@@ -38,7 +36,7 @@
     border-radius: 12px 12px 0 0;
     overflow: hidden;
     width: 100%;
-    height: 50%;
+    height: 140px;
     position: absolute;
     top: 0;
     left: 0;
@@ -54,39 +52,36 @@
 
   .profile {
     width: 100%;
-    padding: 30px;
+    padding: 0 24px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 16px;
     position: absolute;
-    top: 80px;
-
-    @include Size("tablet") {
-      padding: 16px 24px;
-    }
+    top: 120px;
 
     @include Size("mobile") {
-      padding: 16px 24px;
-      gap: 8px;
+      top: 110px;
     }
 
     .topRow {
       display: flex;
-      align-items: flex-start;
+      align-items: flex-end;
       justify-content: space-between;
+      position: relative;
+      height: 64px;
+
+      a {
+        line-height: 0;
+      }
 
       .image {
         border-radius: 50%;
         border: 4px solid $gray0;
         object-fit: cover;
-        width: 64px;
-        height: 64px;
         @include Drag;
       }
 
       .followButton {
-        margin-top: 50px;
-
         @include Size("mobile") {
           margin-top: 44px;
         }
