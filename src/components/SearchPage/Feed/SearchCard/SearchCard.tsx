@@ -9,6 +9,7 @@ import { SearchCardProps } from "./SearchCard.types";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 import { SearchHighlightContext } from "@/pages/search";
 import "swiper/css";
+import { useDeviceStore } from "@/states/deviceStore";
 
 export default function SearchCard({
   id,
@@ -24,6 +25,7 @@ export default function SearchCard({
   const [isLiked, setIsLiked] = useState(isLike);
   const [currentLikeCount, setCurrentLikeCount] = useState(likeCount);
   const imgRef = usePreventRightClick<HTMLImageElement>();
+  const isMobile = useDeviceStore((state) => state.isMobile);
   const { highlight } = useContext(SearchHighlightContext);
 
   const handleLikeClick = async (e: React.MouseEvent) => {
@@ -43,7 +45,11 @@ export default function SearchCard({
       <div className={styles.imageContainer}>
         {isLoggedIn && (
           <div className={styles.likeBtn} onClick={handleLikeClick}>
-            <IconComponent name={isLiked ? "cardLikeOn" : "cardLikeOff"} isBtn size={35} />
+            <IconComponent
+              name={isLiked ? "cardLikeOn" : "cardLikeOff"}
+              isBtn
+              size={isMobile ? 24 : 35}
+            />
           </div>
         )}
         <Link href={`/feeds/${id}`}>
@@ -60,18 +66,18 @@ export default function SearchCard({
           </Link>
           <IconComponent name="dot" size={3} />
           <div className={styles.countContainer}>
-            <div className={styles.likeContainer}>
+            <span className={styles.likeContainer}>
               <IconComponent name="likeCount" size={16} />
-              <p className={styles.count}>{formatCurrency(currentLikeCount)}</p>
-            </div>
-            <div className={styles.likeContainer}>
+              <span className={styles.count}>{formatCurrency(currentLikeCount)}</span>
+            </span>
+            <span className={styles.likeContainer}>
               <IconComponent name="commentCount" size={16} />
-              <p className={styles.count}>{formatCurrency(commentCount)}</p>
-            </div>
-            <div className={styles.likeContainer}>
-              <IconComponent name="viewCount" size={18} />
-              <p className={styles.count}>{formatCurrency(viewCount)}</p>
-            </div>
+              <span className={styles.count}>{formatCurrency(commentCount)}</span>
+            </span>
+            <span className={styles.likeContainer}>
+              <IconComponent name="viewCount" size={16} />
+              <span className={styles.count}>{formatCurrency(viewCount)}</span>
+            </span>
           </div>
         </div>
       </div>
