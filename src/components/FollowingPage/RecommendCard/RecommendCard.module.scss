@@ -11,6 +11,7 @@
     display: flex;
     @include Drag;
     aspect-ratio: 2/1;
+    background-color: rgba(0, 0, 0, 0.02);
 
     .imageContainer {
       position: relative;

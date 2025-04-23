@@ -26,6 +26,7 @@
     position: relative;
     cursor: pointer;
     @include Drag;
+    background-color: rgba(0, 0, 0, 0.02);
 
     .image {
       object-fit: cover;

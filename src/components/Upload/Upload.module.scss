@@ -87,6 +87,7 @@
           white-space: nowrap;
           padding-bottom: 8px;
           @include Drag;
+          background-color: rgba(0, 0, 0, 0.02);
 
           &::-webkit-scrollbar {
             height: 8px;
