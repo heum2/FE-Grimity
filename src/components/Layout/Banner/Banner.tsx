@@ -4,12 +4,11 @@ import "swiper/css";
 import styles from "./Banner.module.scss";
 import Link from "next/link";
 import { useDeviceStore } from "@/states/deviceStore";
-import { serviceUrl } from "@/constants/serviceurl";
 
 export default function Banner() {
   const isMobile = useDeviceStore((state) => state.isMobile);
   const isTablet = useDeviceStore((state) => state.isTablet);
-  const noticeUrl = `${serviceUrl}/posts/048ae290-4b1e-4292-9845-e4b2ca68ea6a`;
+  const noticeUrl = "/posts/048ae290-4b1e-4292-9845-e4b2ca68ea6a";
   const imageSrc = isMobile
     ? "/image/main-banner-m.png"
     : isTablet
