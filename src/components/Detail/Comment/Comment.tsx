@@ -312,7 +312,7 @@ export default function Comment({
                       {reply.content}
                     </div>
                     <div className={styles.likeReplyBtn}>
-                      <div
+                      <span
                         className={reply.isLike ? styles.likeOnButton : styles.likeButton}
                         onClick={(e) => {
                           e.stopPropagation();
@@ -321,11 +321,11 @@ export default function Comment({
                       >
                         <IconComponent
                           name={reply.isLike ? "commentLikeOn" : "commentLikeOff"}
-                          size={24}
+                          size={16}
                           isBtn
                         />
                         {reply.likeCount}
-                      </div>
+                      </span>
                       <p
                         onClick={() =>
                           handleChildReply(reply.id, parentId, {
@@ -422,7 +422,7 @@ export default function Comment({
                 </div>
                 <p className={styles.commentText}>{comment.content}</p>
                 <div className={styles.likeReplyBtn}>
-                  <div
+                  <span
                     className={comment.isLike ? styles.likeOnButton : styles.likeButton}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -431,11 +431,11 @@ export default function Comment({
                   >
                     <IconComponent
                       name={comment.isLike ? "commentLikeOn" : "commentLikeOff"}
-                      size={24}
+                      size={16}
                       isBtn
                     />
                     {comment.likeCount}
-                  </div>
+                  </span>
                   <p
                     onClick={() =>
                       handleParentReply(comment.id, {
