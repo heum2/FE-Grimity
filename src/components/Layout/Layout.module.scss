@@ -7,31 +7,40 @@
   min-height: 100vh;
   height: 100%;
   margin-left: 258px;
-  padding: 0 24px 100px;
+  padding: 0 24px 0;
 
   @include Size("tablet") {
-    margin-left: 40px;
-    padding: 0 16px 100px;
+    margin-left: 60px;
+    padding: 0 16px 0;
   }
 
   @include Size("mobile") {
     margin-left: 0;
-    padding: 0 16px 40px;
+    padding: 0 16px 0;
   }
 
   .children {
-    max-width: 1280px;
+    max-width: 1462px;
     width: 100%;
     display: flex;
-    margin-top: 60px; //header
+    align-items: flex-start;
+    margin-top: 60px; // header
+    margin-bottom: 80px;
 
     @include Size("mobile") {
-      max-width: 100%;
+      max-width: 390px;
+
+      @media (min-width: 540px) {
+        max-width: 767px;
+      }
     }
 
     @include Size("tablet") {
-      max-width: 924px;
-      width: 92%;
+      padding-left: 20px;
+
+      @media (min-width: 920px) {
+        padding-left: 24px;
+      }
     }
   }
 

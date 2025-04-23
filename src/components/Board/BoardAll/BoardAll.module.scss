@@ -16,6 +16,7 @@
     justify-content: space-between;
     margin-bottom: 32px;
     @include Drag;
+    align-items: center;
 
     @include Size("mobile") {
       height: auto;
@@ -80,10 +81,7 @@
         border-radius: 12px;
         @include Label1;
         line-height: 20px;
-
-        @include Size("mobile") {
-          height: 40px;
-        }
+        height: 40px;
 
         &:hover {
           background-color: darken($gray0, 4%);

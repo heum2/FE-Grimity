@@ -365,14 +365,14 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
                 </div>
               )} */}
               <div className={styles.stats}>
-                <div className={styles.stat}>
+                <span className={styles.stat}>
                   <IconComponent name="likeCount" size={16} />
                   {currentLikeCount}
-                </div>
-                <div className={styles.stat}>
+                </span>
+                <span className={styles.stat}>
                   <IconComponent name="viewCount" size={16} />
                   {details.viewCount}
-                </div>
+                </span>
               </div>
               {details.tags.length > 0 && (
                 <div className={styles.tags}>

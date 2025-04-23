@@ -75,8 +75,7 @@ export default function SearchAuthor() {
     <section className={styles.results}>
       <div className={styles.sortWrapper}>
         <h2 className={styles.title}>
-          검색결과
-          <span className={styles.searchCount}>{data?.pages?.[0]?.totalCount || 0}</span>건
+          검색결과 <span className={styles.searchCount}>{data?.pages?.[0]?.totalCount || 0}</span>건
         </h2>
         <div className={styles.sort}>
           <Dropdown

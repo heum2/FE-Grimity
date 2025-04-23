@@ -36,7 +36,7 @@ export default function IconComponent({
 
   if (typeof iconSrc === "string") {
     return (
-      <div
+      <span
         style={{
           padding: padding,
           paddingBottom: additionalPadding,
@@ -52,9 +52,9 @@ export default function IconComponent({
               svg.setAttribute("fill", selectedColor);
             }
           }}
-          style={{ display: "inline-block" }}
+          style={{ display: "inline-block", paddingTop: "3px" }}
         />
-      </div>
+      </span>
     );
   }
 

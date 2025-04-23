@@ -96,7 +96,7 @@ const Sidebar = () => {
             {isAskDropdownOpen && (
               <div className={styles.dropdown} ref={dropdownRef}>
                 <a
-                  href="https://open.kakao.com/o/sKYFewg"
+                  href="https://open.kakao.com/o/sKYFewgh"
                   target="_blank"
                   rel="noopener noreferrer"
                   className={styles.dropdownItem}

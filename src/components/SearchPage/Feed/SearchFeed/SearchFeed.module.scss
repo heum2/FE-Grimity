@@ -16,7 +16,7 @@
   }
 
   .title {
-    @include Title3;
+    @include Sub2;
     color: $gray60;
     @include Drag;
 
@@ -25,11 +25,7 @@
     }
 
     @include Size("mobile") {
-      @include Sub2;
-    }
-
-    @include Size("tablet") {
-      @include Title4;
+      @include Label2;
     }
   }
 

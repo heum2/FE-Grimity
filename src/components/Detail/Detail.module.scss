@@ -74,6 +74,15 @@
           line-height: 0;
           @include Drag;
 
+          // &::after {
+          //   color: $gray50;
+          //   content: "•";
+          //   padding-left: 6px;
+          // }
+          // &:last-child::after {
+          //   content: none;
+          // }
+
           .createdAt {
             @include Label1;
             color: $gray50;
@@ -276,7 +285,7 @@
 
       .createdAt {
         @include Label1;
-        color: $gray50;
+        color: $gray60;
       }
 
       .statIcon {
@@ -290,20 +299,10 @@
         display: flex;
         align-items: center;
         gap: 2px;
-        color: $gray50;
+        color: $gray60;
         @include Cap2;
         line-height: 12px;
       }
-    }
-
-    .aiBtn {
-      @include Drag;
-      display: flex;
-      @include Label2;
-      color: $gray50;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 16px;
     }
 
     .tags {

@@ -26,6 +26,7 @@
     position: relative;
     cursor: pointer;
     @include Drag;
+    background-color: rgba(0, 0, 0, 0.02);
 
     .image {
       object-fit: cover;
@@ -63,6 +64,7 @@
       text-overflow: ellipsis;
       display: -webkit-box;
       -webkit-line-clamp: 1;
+      line-clamp: 1;
       -webkit-box-orient: vertical;
       @include Sub4;
 
@@ -78,17 +80,18 @@
 
       .author {
         @include Label1;
-        color: $gray50;
+        color: $gray60;
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;
         -webkit-line-clamp: 1;
+        line-clamp: 1;
         -webkit-box-orient: vertical;
       }
 
       .createdAt {
         @include Label1;
-        color: $gray50;
+        color: $gray60;
         @include Drag;
       }
 
@@ -102,11 +105,8 @@
           display: flex;
           align-items: center;
           gap: 2px;
-
-          .count {
-            @include Label2;
-            color: $gray50;
-          }
+          @include Cap2;
+          color: $gray60;
         }
       }
     }

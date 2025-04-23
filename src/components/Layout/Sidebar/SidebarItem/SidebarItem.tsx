@@ -37,9 +37,9 @@ const SidebarItem = ({ icon, label, onClick, isActive }: SidebarItemProps) => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className={styles.wrapper}>
-        <div className={styles.icon}>
-          <IconComponent name={currentIconName as keyof typeof ICONS} size={19} padding={8} isBtn />
-        </div>
+        <span className={styles.icon}>
+          <IconComponent name={currentIconName as keyof typeof ICONS} size={20} isBtn />
+        </span>
         <span className={styles.label}>{label}</span>
       </div>
     </div>

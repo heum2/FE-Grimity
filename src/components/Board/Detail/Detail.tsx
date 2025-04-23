@@ -155,13 +155,13 @@ export default function PostDetail({ id }: PostDetailProps) {
               </div>
               {isMobile ? (
                 <>
+                  <h1 className={styles.title}>{posts.title}</h1>
                   <div className={styles.authorCreatedAt}>
                     {posts.type !== "NOTICE" && (
                       <p className={styles.author}>{posts.author.name}</p>
                     )}
                     <p className={styles.createdAt}>{timeAgo(posts.createdAt)}</p>
                   </div>
-                  <h1 className={styles.title}>{posts.title}</h1>
                 </>
               ) : (
                 <>

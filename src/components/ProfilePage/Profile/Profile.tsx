@@ -211,7 +211,6 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
       showToast("커버 이미지가 변경되었습니다!", "success");
       setCoverImage(data.imageName);
       refetchUserData();
-      router.reload();
     } catch (error) {
       console.error("File change error:", error);
       showToast("커버 이미지 업로드에 실패했습니다.", "error");
@@ -375,6 +374,7 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                   </div>
                 </div>
               )}
+              <div className={styles.gradientOverlay} />
             </div>
           ) : (
             <div className={styles.backgroundDefaultImageContainer}>

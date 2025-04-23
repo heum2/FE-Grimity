@@ -4,9 +4,7 @@
   height: fit-content;
   position: relative;
   width: fit-content;
-  transition:
-    transform 0.2s ease,
-    opacity 0.2s ease;
+  transition: transform 0.2s ease, opacity 0.2s ease;
 
   &.dragging {
     opacity: 0.5;
@@ -37,6 +35,7 @@
 
 .imageContainer {
   height: 100%;
+  background-color: rgba(0, 0, 0, 0.02);
 
   @include Size("mobile") {
     height: fit-content;

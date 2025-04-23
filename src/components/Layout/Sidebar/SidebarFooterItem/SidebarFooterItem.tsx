@@ -28,7 +28,7 @@ const SidebarFooterItem = ({
     <div className={styles.sidebarItem} onClick={onClickItem}>
       <div className={styles.wrapper}>
         <div className={styles.icon}>
-          <IconComponent name={icon} size={15} padding={8} />
+          <IconComponent name={icon} size={15} />
         </div>
         <span className={styles.label}>{label}</span>
         {isHaveDropdown && (
