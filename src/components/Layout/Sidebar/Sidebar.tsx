@@ -31,7 +31,7 @@ const Sidebar = () => {
 
   const handleItemClick = (index: number, route: string) => {
     setActiveIndex(index);
-    router.push(`/${route}`);
+    router.push(`${route}`);
   };
 
   const handleFooterClick = (itemIcon: FooterIconName, route?: string) => {
