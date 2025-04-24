@@ -1,4 +1,4 @@
-@import "@/styles/globals.scss";
+@use "@/styles/globals.scss" as *;
 
 .container {
   width: 100%;
@@ -86,9 +86,7 @@
     bottom: -1px;
     height: 2px;
     background: #000;
-    transition:
-      width 0.3s ease,
-      left 0.3s ease;
+    transition: width 0.3s ease, left 0.3s ease;
     z-index: 1;
     padding: 0 12px;
   }

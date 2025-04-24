@@ -1,4 +1,5 @@
-@import "@/styles/globals.scss";
+@use "@/styles/globals.scss" as *;
+@use "sass:color";
 
 .button {
   display: inline-flex;
@@ -37,11 +38,11 @@
   background-color: $gray0;
 
   &:hover {
-    background-color: darken($gray0, 4%);
+    background-color: color.adjust($gray0, $lightness: 4%);
   }
 
   &:active {
-    background-color: darken($gray0, 8%);
+    background-color: color.adjust($gray0, $lightness: 8%);
   }
 }
 
@@ -56,11 +57,11 @@
   background-color: $gray0;
 
   &:hover {
-    background-color: darken($gray0, 4%);
+    background-color: color.adjust($gray0, $lightness: 4%);
   }
 
   &:active {
-    background-color: darken($gray0, 8%);
+    background-color: color.adjust($gray0, $lightness: 8%);
   }
 }
 
@@ -75,11 +76,11 @@
   background-color: $gray0;
 
   &:hover {
-    background-color: darken($gray0, 4%);
+    background-color: color.adjust($gray0, $lightness: 4%);
   }
 
   &:active {
-    background-color: darken($gray0, 8%);
+    background-color: color.adjust($gray0, $lightness: 8%);
   }
 }
 

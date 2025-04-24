@@ -1,4 +1,5 @@
-@import "@/styles/globals.scss";
+@use "@/styles/globals.scss" as *;
+@use "sass:color";
 
 .container {
   width: 100%;
@@ -31,7 +32,7 @@
     }
 
     &::-webkit-scrollbar-thumb:hover {
-      background: darken($gray30, 10%);
+      background: color.adjust($gray30, 10%);
     }
 
     @include Size("mobile") {

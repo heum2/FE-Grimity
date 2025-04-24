@@ -1,4 +1,5 @@
-@import "@/styles/globals.scss";
+@use "@/styles/globals.scss" as *;
+@use "sass:color";
 
 .mobileContainer {
   margin-top: 64px;
@@ -180,11 +181,11 @@
       @include Drag;
 
       &:hover {
-        background-color: darken($gray0, 4%);
+        background-color: color.adjust($gray0, $lightness: 4%);
       }
 
       &:active {
-        background-color: darken($gray0, 8%);
+        background-color: color.adjust($gray0, $lightness: 8%);
       }
     }
   }
@@ -291,9 +292,7 @@
 
     .toggle {
       cursor: pointer;
-      transition:
-        transform 0.5s ease,
-        opacity 0.5s ease;
+      transition: transform 0.5s ease, opacity 0.5s ease;
     }
 
     .columnContainer {

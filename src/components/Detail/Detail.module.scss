@@ -1,4 +1,5 @@
-@import "@/styles/globals.scss";
+@use "@/styles/globals.scss" as *;
+@use "sass:color";
 
 .container {
   width: 100%;
@@ -73,15 +74,6 @@
           gap: 8px;
           line-height: 0;
           @include Drag;
-
-          // &::after {
-          //   color: $gray50;
-          //   content: "•";
-          //   padding-left: 6px;
-          // }
-          // &:last-child::after {
-          //   content: none;
-          // }
 
           .createdAt {
             @include Label1;
@@ -231,11 +223,11 @@
       @include Btn1;
 
       &:hover {
-        background-color: darken($gray0, 4%);
+        background-color: color.adjust($gray0, $lightness: 4%);
       }
 
       &:active {
-        background-color: darken($gray0, 8%);
+        background-color: color.adjust($gray0, $lightness: 8%);
       }
     }
 

@@ -1,4 +1,5 @@
-@import "@/styles/globals.scss";
+@use "@/styles/globals.scss" as *;
+@use "sass:color";
 
 .background {
   width: 100%;
@@ -103,7 +104,7 @@
           }
 
           &::-webkit-scrollbar-thumb:hover {
-            background: darken($secandary1, 10%);
+            background: color.adjust($secandary1, 10%);
           }
 
           // 폭이 좁은 노트북
@@ -182,11 +183,11 @@
         @include Btn2;
 
         &:hover {
-          background-color: darken($gray0, 4%);
+          background-color: color.adjust($gray0, $lightness: 4%);
         }
 
         &:active {
-          background-color: darken($gray0, 8%);
+          background-color: color.adjust($gray0, $lightness: 8%);
         }
       }
 

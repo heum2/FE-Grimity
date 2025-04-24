@@ -1,4 +1,4 @@
-@import "@/styles/globals.scss";
+@use "@/styles/globals.scss" as *;
 
 .results {
   width: 100%;

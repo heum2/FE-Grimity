@@ -1,3 +1,5 @@
+@use "sass:map";
+
 @font-face {
   font-family: "Pretendard";
   font-style: normal;
@@ -244,7 +246,7 @@ $min-breakpoints: (
 );
 
 @mixin Size($device) {
-  @media (min-width: map-get($min-breakpoints, $device)) and (max-width: map-get($max-breakpoints, $device)) {
+  @media (min-width: map.get($min-breakpoints, $device)) and (max-width: map.get($max-breakpoints, $device)) {
     @content;
   }
 }

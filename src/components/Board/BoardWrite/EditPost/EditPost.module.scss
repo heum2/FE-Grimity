@@ -1,4 +1,4 @@
-@import "@/styles/globals.scss";
+@use "@/styles/globals.scss" as *;
 
 .container {
   padding-top: 40px;
