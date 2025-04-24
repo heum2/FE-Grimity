@@ -126,14 +126,10 @@ export default function Header() {
     } catch (error) {
       console.error("Logout failed", error);
     } finally {
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("refresh_token");
-      localStorage.removeItem("user_id");
-
+      localStorage.clear();
       setIsLoggedIn(false);
       setAccessToken("");
       setUserId("");
-
       router.push("/");
       window.scrollTo({ top: 0, behavior: "smooth" });
       if (isMobile || isTablet) {
