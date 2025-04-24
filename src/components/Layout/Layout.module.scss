@@ -4,6 +4,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  align-self: center;
   min-height: 100vh;
   height: 100%;
   margin-left: 258px;
@@ -11,10 +12,6 @@
 
   @include Size("tablet") {
     margin-left: 60px;
-
-    @media (max-width: 1462px) {
-      margin-left: 40px;
-    }
   }
 
   @include Size("mobile") {

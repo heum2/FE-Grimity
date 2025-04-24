@@ -35,9 +35,9 @@ export default function Layout({ children }: LayoutProps) {
 
   return (
     <div className={styles.layout}>
+      <Header />
+      <Sidebar />
       <div className={styles.children}>
-        <Header />
-        <Sidebar />
         {children}
         {!isMobile && !isTablet && (
           <div
