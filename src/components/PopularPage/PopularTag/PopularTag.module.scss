@@ -31,7 +31,7 @@
     }
 
     &::-webkit-scrollbar-thumb:hover {
-      background: color.adjust($gray30, 10%);
+      background: color.adjust($gray30, $lightness: 10%);
     }
 
     @include Size("mobile") {

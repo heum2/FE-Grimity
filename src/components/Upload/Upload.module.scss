@@ -106,7 +106,7 @@
           }
 
           &::-webkit-scrollbar-thumb:hover {
-            background: color.adjust($secandary1, 10%);
+            background: color.adjust($secandary1, $lightness: 10%);
           }
 
           // 폭이 좁은 노트북
