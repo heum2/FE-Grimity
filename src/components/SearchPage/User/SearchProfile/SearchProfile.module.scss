@@ -1,9 +1,10 @@
-@import "@/styles/globals.scss";
+@use "@/styles/globals.scss" as *;
 
 .container {
   width: 100%;
   max-width: 630px;
-  height: 400px;
+  min-height: 290px;
+  height: auto;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -11,18 +12,15 @@
   border: 1px solid $gray30;
   background-color: $gray0;
   position: relative;
+  box-sizing: border-box;
 
   @include Size("mobile") {
-    height: 250px;
-  }
-
-  @include Size("tablet") {
-    height: 300px;
+    min-height: 270px;
   }
 
   .coverContainer {
     width: 100%;
-    height: 178px;
+    height: 150px;
     border-radius: 12px 12px 0 0;
     object-fit: cover;
     overflow: hidden;
@@ -32,16 +30,13 @@
     @include Size("mobile") {
       height: 130px;
     }
-
-    @include Size("tablet") {
-      height: 140px;
-    }
   }
 
   .cover {
     border-radius: 12px 12px 0 0;
     overflow: hidden;
     width: 100%;
+    height: 140px;
     position: absolute;
     top: 0;
     left: 0;
@@ -53,61 +48,56 @@
     @include Size("mobile") {
       height: 130px;
     }
-
-    @include Size("tablet") {
-      height: 140px;
-    }
   }
 
   .profile {
     width: 100%;
-    height: 220px;
-    padding: 30px;
+    padding: 0 24px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
     position: absolute;
-    bottom: 60px;
+    top: 120px;
 
     @include Size("mobile") {
-      top: 130px;
-      flex-direction: row;
-      padding: 16px;
+      top: 110px;
     }
 
-    @include Size("tablet") {
-      top: 80px;
-    }
-
-    .image {
-      border-radius: 50%;
-      border: 4px solid $gray0;
-      object-fit: cover;
-      width: 64px;
-      height: 64px;
-      @include Drag;
-    }
-  }
-
-  .infoContainer {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-
-    @include Size("mobile") {
-      gap: 8px;
-    }
-
-    .spaceBetween {
+    .topRow {
       display: flex;
-      align-items: flex-start;
+      align-items: flex-end;
       justify-content: space-between;
+      position: relative;
+      height: 64px;
+
+      a {
+        line-height: 0;
+      }
+
+      .image {
+        border-radius: 50%;
+        border: 4px solid $gray0;
+        object-fit: cover;
+        @include Drag;
+      }
+
+      .followButton {
+        @include Size("mobile") {
+          margin-top: 44px;
+        }
+      }
+    }
+
+    .infoContainer {
       width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
 
       .nameCount {
         display: flex;
-        flex-direction: column;
+        flex-wrap: wrap;
+        align-items: center;
         gap: 4px;
 
         .name {
@@ -116,6 +106,12 @@
 
           @include Size("mobile") {
             @include Sub4;
+          }
+
+          &::after {
+            content: " • ";
+            color: $gray40;
+            margin: 0 4px;
           }
         }
 
@@ -132,17 +128,18 @@
           }
         }
       }
-    }
 
-    .description {
-      @include Label2;
-      color: $gray60;
-      @include Drag;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      -webkit-line-clamp: 1;
-      -webkit-box-orient: vertical;
+      .description {
+        @include Label2;
+        color: $gray60;
+        @include Drag;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        line-clamp: 1;
+        -webkit-box-orient: vertical;
+      }
     }
   }
 }

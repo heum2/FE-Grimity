@@ -1,0 +1,64 @@
+@use "@/styles/globals.scss" as *;
+
+.sidebarItem {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 234px;
+  height: 50px;
+  padding: 0 20px;
+  color: $gray60;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+
+  &:hover {
+    background-color: $gray20;
+    color: $gray70;
+    border-radius: 8px;
+  }
+
+  &.active {
+    color: $secandary1;
+  }
+
+  @include Size("tablet") {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 16px;
+    width: 60px;
+    height: 98px;
+    padding: 0;
+    white-space: pre-wrap;
+  }
+
+  .wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+
+    @include Size("tablet") {
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .icon {
+      @include Size("tablet") {
+        margin-top: 0;
+      }
+    }
+  }
+}
+
+.label {
+  @include Sub1;
+  margin-left: 20px;
+
+  @include Size("tablet") {
+    margin-left: 0;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+}

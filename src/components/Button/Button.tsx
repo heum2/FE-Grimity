@@ -9,6 +9,7 @@ export default function Button({
   onClick,
   leftIcon,
   rightIcon,
+  width,
 }: ButtonProps) {
   let className = `${styles.button} ${styles[type]} ${styles[size]}`;
 
@@ -17,7 +18,7 @@ export default function Button({
   }
 
   return (
-    <button className={className} disabled={disabled} onClick={onClick}>
+    <button className={className} disabled={disabled} onClick={onClick} style={{ width }}>
       {leftIcon && <div className={styles.icon}>{leftIcon}</div>}
       {children}
       {rightIcon && <div className={styles.icon}>{rightIcon}</div>}

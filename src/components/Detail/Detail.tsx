@@ -249,13 +249,12 @@ export default function Detail({ id }: DetailProps) {
                   </Link>
                   <div className={styles.stats}>
                     <p className={styles.createdAt}>{timeAgo(details.createdAt)}</p>
-                    <IconComponent name="dot" size={3} />
                     <div className={styles.stat}>
-                      <IconComponent name="likeCount" size={16} />
+                      <IconComponent name="detailLikeCount" size={16} />
                       {currentLikeCount}
                     </div>
                     <div className={styles.stat}>
-                      <IconComponent name="viewCount" size={16} />
+                      <IconComponent name="detailViewCount" size={16} />
                       {details.viewCount}
                     </div>
                   </div>
@@ -368,18 +367,12 @@ export default function Detail({ id }: DetailProps) {
                 className={styles.content}
                 dangerouslySetInnerHTML={{ __html: formattedContent }}
               />
-              {/* {details.isAI && (
-                <div className={styles.aiBtn}>
-                  <IconComponent name="aiMessage" size={20} />
-                  해당 컨텐츠는 AI로 생성되었어요
-                </div>
-              )} */}
               <div className={styles.stats}>
                 <p className={styles.createdAt}>{timeAgo(details.createdAt)}</p>
                 <IconComponent name="dot" size={3} />
                 <div className={styles.stat}>
-                  <IconComponent name="likeCount" size={16} />
-                  {currentLikeCount}
+                  <IconComponent name="commentCount" size={16} />
+                  {details.commentCount}
                 </div>
                 <div className={styles.stat}>
                   <IconComponent name="viewCount" size={16} />

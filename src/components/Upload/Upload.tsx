@@ -424,18 +424,6 @@ export default function Upload() {
   return (
     <div className={styles.background}>
       <div className={styles.container}>
-        {!isMobile && (
-          <div className={styles.uploadBtnContainer}>
-            <Button
-              size="m"
-              type="filled-primary"
-              disabled={isDisabled || isLoading}
-              onClick={handleSubmit}
-            >
-              {isLoading ? "업로드 중..." : "업로드"}
-            </Button>
-          </div>
-        )}
         <div className={styles.sectionContainer}>
           <section className={styles.imageSection} onDrop={handleDrop} onDragOver={handleDragOver}>
             <div className={styles.addBtnContainer}>
@@ -635,10 +623,22 @@ export default function Upload() {
             </div>
           </section>
         </div>
-        {isMobile && (
+        {isMobile ? (
           <Button size="l" type="filled-primary" disabled={isDisabled} onClick={handleSubmit}>
             업로드
           </Button>
+        ) : (
+          <div className={styles.uploadBtn}>
+            <Button
+              size="l"
+              type="filled-primary"
+              disabled={isDisabled || isLoading}
+              onClick={handleSubmit}
+              width="200px"
+            >
+              {isLoading ? "업로드 중..." : "업로드"}
+            </Button>
+          </div>
         )}
       </div>
     </div>

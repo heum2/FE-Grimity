@@ -1,4 +1,5 @@
-@import "@/styles/globals.scss";
+@use "@/styles/globals.scss" as *;
+@use "sass:color";
 
 .container {
   width: 100%;
@@ -18,17 +19,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    .bar {
-      width: 100%;
-      height: 1px;
-      background-color: $gray30;
-      margin: 20px 0;
-
-      @include Size("mobile") {
-        margin: 12px 0;
-      }
-    }
 
     .header {
       width: 100%;
@@ -233,11 +223,11 @@
       @include Btn1;
 
       &:hover {
-        background-color: darken($gray0, 4%);
+        background-color: color.adjust($gray0, $lightness: 4%);
       }
 
       &:active {
-        background-color: darken($gray0, 8%);
+        background-color: color.adjust($gray0, $lightness: 8%);
       }
     }
 
@@ -260,9 +250,10 @@
     .title {
       color: $gray80;
       @include Title3;
+      padding-bottom: 20px;
 
       @include Size("mobile") {
-        @include Sub4;
+        @include Sub1;
       }
     }
 
@@ -272,12 +263,7 @@
       white-space: pre-line;
       word-break: break-word;
       overflow-wrap: break-word;
-      min-height: 120px;
       margin-bottom: 20px;
-
-      @include Size("mobile") {
-        min-height: 100px;
-      }
     }
 
     .stats {
@@ -291,7 +277,7 @@
 
       .createdAt {
         @include Label1;
-        color: $gray50;
+        color: $gray60;
       }
 
       .statIcon {
@@ -305,20 +291,10 @@
         display: flex;
         align-items: center;
         gap: 2px;
-        color: $gray50;
+        color: $gray60;
         @include Cap2;
         line-height: 12px;
       }
-    }
-
-    .aiBtn {
-      @include Drag;
-      display: flex;
-      @include Label2;
-      color: $gray50;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 16px;
     }
 
     .tags {

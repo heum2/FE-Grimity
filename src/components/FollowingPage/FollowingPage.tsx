@@ -104,19 +104,22 @@ export default function FollowingPage() {
           <section className={styles.recommendContainer}>
             <Title>추천 작가</Title>
             <div className={styles.cards}>
-              {randomUsers.map((user) => (
-                <RecommendCard
-                  key={user.id}
-                  id={user.id}
-                  url={user.url}
-                  name={user.name}
-                  image={user.image}
-                  description={user.description}
-                  followerCount={user.followerCount}
-                  isFollowing={user.isFollowing}
-                  thumbnails={user.thumbnails}
-                />
-              ))}
+              {randomUsers.map(
+                (user) =>
+                  user.id !== user_id && (
+                    <RecommendCard
+                      key={user.id}
+                      id={user.id}
+                      url={user.url}
+                      name={user.name}
+                      image={user.image}
+                      description={user.description}
+                      followerCount={user.followerCount}
+                      isFollowing={user.isFollowing}
+                      thumbnails={user.thumbnails}
+                    />
+                  ),
+              )}
             </div>
           </section>
         </div>
@@ -132,19 +135,22 @@ export default function FollowingPage() {
           <section className={styles.recommendContainer}>
             <Title>추천 작가</Title>
             <div className={styles.cards}>
-              {randomUsers.map((user) => (
-                <RecommendCard
-                  key={user.id}
-                  id={user.id}
-                  url={user.url}
-                  name={user.name}
-                  image={user.image}
-                  description={user.description}
-                  followerCount={user.followerCount}
-                  isFollowing={user.isFollowing}
-                  thumbnails={user.thumbnails}
-                />
-              ))}
+              {randomUsers.map(
+                (user) =>
+                  user.id !== user_id && (
+                    <RecommendCard
+                      key={user.id}
+                      id={user.id}
+                      url={user.url}
+                      name={user.name}
+                      image={user.image}
+                      description={user.description}
+                      followerCount={user.followerCount}
+                      isFollowing={user.isFollowing}
+                      thumbnails={user.thumbnails}
+                    />
+                  ),
+              )}
             </div>
           </section>
         </div>

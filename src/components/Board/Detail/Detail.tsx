@@ -19,7 +19,6 @@ import { PostDetailProps } from "./Detail.types";
 import Dropdown from "@/components/Dropdown/Dropdown";
 import { deletePostsFeeds } from "@/api/posts/deletePostsId";
 import BoardAll from "../BoardAll/BoardAll";
-import BoardPopular from "../BoardPopular/BoardPopular";
 import ShareBtn from "./ShareBtn/ShareBtn";
 import PostComment from "./Comment/Comment";
 import { useDeviceStore } from "@/states/deviceStore";
@@ -156,13 +155,13 @@ export default function PostDetail({ id }: PostDetailProps) {
               </div>
               {isMobile ? (
                 <>
+                  <h1 className={styles.title}>{posts.title}</h1>
                   <div className={styles.authorCreatedAt}>
                     {posts.type !== "NOTICE" && (
                       <p className={styles.author}>{posts.author.name}</p>
                     )}
                     <p className={styles.createdAt}>{timeAgo(posts.createdAt)}</p>
                   </div>
-                  <h1 className={styles.title}>{posts.title}</h1>
                 </>
               ) : (
                 <>
@@ -347,9 +346,6 @@ export default function PostDetail({ id }: PostDetailProps) {
             )}
           </section>
           <BoardAll isDetail hasChip={true} />
-          <div className={styles.boardPopular}>
-            {isTablet ? <BoardPopular /> : <BoardPopular isDetail />}
-          </div>
         </div>
       )}
     </div>

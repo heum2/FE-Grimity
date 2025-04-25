@@ -1,4 +1,4 @@
-@import "@/styles/globals.scss";
+@use "@/styles/globals.scss" as *;
 
 .container {
   display: flex;
@@ -14,6 +14,7 @@
     position: relative;
     cursor: pointer;
     @include Drag;
+    background-color: rgba(0, 0, 0, 0.02);
 
     .image {
       object-fit: cover;
@@ -53,6 +54,7 @@
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 1;
+      line-clamp: 1;
     }
 
     .profileContainer {
@@ -62,7 +64,7 @@
 
       .author {
         @include Label1;
-        color: $gray50;
+        color: $gray60;
       }
 
       .countContainer {
@@ -74,11 +76,8 @@
           display: flex;
           align-items: center;
           gap: 2px;
-
-          .count {
-            @include Cap2;
-            color: $gray50;
-          }
+          @include Cap2;
+          color: $gray60;
         }
       }
     }

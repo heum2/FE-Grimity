@@ -1,4 +1,4 @@
-@import "@/styles/globals.scss";
+@use "@/styles/globals.scss" as *;
 
 .container {
   width: 100%;
@@ -55,7 +55,7 @@
 
   .createdAt {
     @include Cap2;
-    color: $gray50;
+    color: $gray60;
     @include Drag;
   }
 
@@ -87,15 +87,17 @@
     align-items: center;
     gap: 20px;
   }
+
   .likeButton {
     display: flex;
     align-items: center;
-    gap: 2px;
+    gap: 3px;
     @include Cap1;
-    color: $gray50;
+    color: $gray60;
     cursor: pointer;
     @include Drag;
   }
+
   .likeOnButton {
     @extend .likeButton;
     color: $red;

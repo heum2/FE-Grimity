@@ -1,4 +1,4 @@
-@import "@/styles/globals.scss";
+@use "@/styles/globals.scss" as *;
 
 .container {
   width: 100%;
@@ -11,6 +11,7 @@
     display: flex;
     @include Drag;
     aspect-ratio: 2/1;
+    background-color: rgba(0, 0, 0, 0.02);
 
     .imageContainer {
       position: relative;
@@ -84,6 +85,7 @@
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 1;
+      line-clamp: 1;
     }
   }
 }

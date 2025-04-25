@@ -29,7 +29,7 @@ export default function SearchPage() {
       setSearchValue(keyword);
       setSearchKeyword(keyword);
     }
-  }, [router.query]);
+  }, [router.query.keyword]);
 
   const getTabComponent = () => {
     switch (tab) {
@@ -111,7 +111,7 @@ export default function SearchPage() {
             className={`${styles.button} ${getTabClass("author")}`}
             onClick={() => router.push(`?tab=author&keyword=${searchKeyword}`)}
           >
-            작가
+            유저
           </button>
           <div className={styles.bar} />
           <button

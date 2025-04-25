@@ -1,25 +1,37 @@
-@import "@/styles/globals.scss";
+@use "@/styles/globals.scss" as *;
+@use "sass:color";
 
 .layout {
   width: 100%;
   display: flex;
   justify-content: center;
+  align-self: center;
   min-height: 100vh;
   height: 100%;
-  padding: 8px 80px 80px 80px;
+  margin-left: 258px;
+  padding: 0 16px 0;
+
+  @include Size("tablet") {
+    margin-left: 60px;
+  }
 
   @include Size("mobile") {
-    padding: 0 16px 40px;
+    margin-left: 0;
   }
 
   .children {
-    max-width: 1280px;
-    width: 100%;
+    width: 98%;
     display: flex;
-    margin-top: 65px; //header
+    align-items: flex-start;
+    margin-top: 60px; // header
+    margin-bottom: 80px;
 
-    @include Size("mobile") {
-      max-width: 100%;
+    @include Size("tablet") {
+      width: 96%;
+
+      @media (max-width: 1462px) {
+        width: 92%;
+      }
     }
   }
 
@@ -43,7 +55,7 @@
     }
 
     &:hover {
-      background-color: darken($primary4, 10%);
+      background-color: color.adjust($primary4, $lightness: 10%);
     }
   }
 

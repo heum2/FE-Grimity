@@ -60,6 +60,7 @@ export default function Login() {
       closeModal();
       localStorage.setItem("access_token", data.accessToken);
       localStorage.setItem("refresh_token", data.refreshToken);
+      localStorage.setItem("user_id", data.id);
     },
   });
 

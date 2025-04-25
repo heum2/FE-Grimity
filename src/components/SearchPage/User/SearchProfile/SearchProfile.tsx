@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import styles from "./SearchProfile.module.scss";
 import { formatCurrency } from "@/utils/formatCurrency";
 import Image from "next/image";
@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/useToast";
 import Button from "@/components/Button/Button";
 import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { SearchHighlightContext } from "@/pages/search";
 
 export default function SearchProfile({
   id,
@@ -30,6 +31,7 @@ export default function SearchProfile({
   const isMobile = useDeviceStore((state) => state.isMobile);
   const isTablet = useDeviceStore((state) => state.isTablet);
   useIsMobile();
+  const { highlight } = useContext(SearchHighlightContext);
 
   const handleFollowClick = async () => {
     try {
@@ -55,40 +57,25 @@ export default function SearchProfile({
     <div className={styles.container}>
       <Link href={`/${url}`}>
         <div className={styles.cover}>
-          {backgroundImage !== null ? (
-            <img
-              src={backgroundImage}
-              alt="배경이미지"
-              width={630}
-              height={isMobile ? 130 : isTablet ? 140 : 178}
-              style={{
-                width: "100%",
-                height: isMobile ? "130px" : isTablet ? "140px" : "178px",
-                objectFit: "cover",
-              }}
-              loading="lazy"
-            />
-          ) : (
-            <img
-              src="/image/search-default-cover.svg"
-              alt="배경이미지"
-              width={630}
-              height={isMobile ? 130 : isTablet ? 140 : 178}
-              style={{
-                width: "100%",
-                height: isMobile ? "130px" : isTablet ? "140px" : "178px",
-                objectFit: "cover",
-              }}
-              loading="lazy"
-            />
-          )}
+          <img
+            src={backgroundImage !== null ? backgroundImage : "/image/search-default-cover.svg"}
+            alt="배경이미지"
+            width={630}
+            height={isMobile ? 130 : 150}
+            style={{
+              width: "100%",
+              height: isMobile ? "130px" : "150px",
+              objectFit: "cover",
+            }}
+            loading="lazy"
+          />
         </div>
       </Link>
       <div className={styles.profile}>
-        <Link href={`/${url}`}>
-          {image !== null ? (
+        <div className={styles.topRow}>
+          <Link href={`/${url}`}>
             <Image
-              src={image}
+              src={image !== null ? image : "/image/default.svg"}
               alt="프로필"
               width={64}
               height={64}
@@ -96,31 +83,10 @@ export default function SearchProfile({
               className={styles.image}
               unoptimized
             />
-          ) : (
-            <Image
-              src="/image/default.svg"
-              alt="프로필"
-              width={64}
-              height={64}
-              quality={50}
-              className={styles.image}
-              unoptimized
-            />
-          )}
-        </Link>
-        <div className={styles.infoContainer}>
-          <div className={styles.spaceBetween}>
-            <div className={styles.nameCount}>
-              <Link href={`/${url}`}>
-                <p className={styles.name}>{name}</p>
-              </Link>
-              <div className={styles.follower}>
-                팔로워<p className={styles.count}>{formatCurrency(followerCount)}</p>
-              </div>
-            </div>
-            {isLoggedIn &&
-              id !== user_id &&
-              (isFollowing ? (
+          </Link>
+          {isLoggedIn && id !== user_id && (
+            <div className={styles.followButton}>
+              {isFollowing ? (
                 <Button size="s" type="outlined-assistive" onClick={handleUnfollowClick}>
                   팔로잉
                 </Button>
@@ -128,9 +94,20 @@ export default function SearchProfile({
                 <Button size="s" type="filled-primary" onClick={handleFollowClick}>
                   팔로우
                 </Button>
-              ))}
+              )}
+            </div>
+          )}
+        </div>
+        <div className={styles.infoContainer}>
+          <div className={styles.nameCount}>
+            <Link href={`/${url}`}>
+              <p className={styles.name}>{highlight(name)}</p>
+            </Link>
+            <div className={styles.follower}>
+              팔로워<p className={styles.count}>{formatCurrency(followerCount)}</p>
+            </div>
           </div>
-          <p className={styles.description}>{description}</p>
+          <p className={styles.description}>{highlight(description)}</p>
         </div>
       </div>
     </div>

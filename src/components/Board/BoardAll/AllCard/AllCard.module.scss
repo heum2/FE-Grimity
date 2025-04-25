@@ -1,4 +1,4 @@
-@import "@/styles/globals.scss";
+@use "@/styles/globals.scss" as *;
 
 .container {
   width: 100%;
@@ -7,6 +7,7 @@
   border-bottom: 1px solid $gray30;
 
   @include Size("mobile") {
+    flex-direction: column;
     padding-bottom: 16px;
     border-bottom: 1px solid $gray20;
   }
@@ -17,20 +18,9 @@
 
     @include Size("mobile") {
       width: auto;
+      margin-bottom: 6px;
       margin-right: 8px;
     }
-  }
-
-  .mobileChip {
-    @include Cap1;
-    color: $gray50;
-    padding: 2px 0;
-    flex-shrink: 0;
-  }
-
-  .mobileChipNotice {
-    @extend .mobileChip;
-    color: $secandary1;
   }
 
   .spaceBetween {
@@ -62,6 +52,7 @@
       display: flex;
       align-items: center;
       gap: 4px;
+
       @include Size("mobile") {
         width: 100%;
       }
@@ -71,18 +62,20 @@
         color: $gray80;
         overflow: hidden;
         text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 1;
+        white-space: nowrap;
+        display: inline-flex;
+        align-items: center;
       }
 
       .comment {
-        @include Cap2;
+        @include Label2;
         color: $red;
+        border: 1px solid $gray30;
+        padding: 0 4px;
         display: flex;
-        gap: 2px;
+        gap: 3px;
         align-items: center;
-        @include Drag;
+        border-radius: 8px;
       }
     }
 
@@ -93,7 +86,8 @@
       overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
-      -webkit-line-clamp: 2;
+      -webkit-line-clamp: 1;
+      line-clamp: 1;
       -webkit-box-orient: vertical;
     }
   }
@@ -108,7 +102,7 @@
 
   .rightContainer {
     width: 100%;
-    max-width: 200px;
+    max-width: 340px;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -117,6 +111,15 @@
     @include Size("mobile") {
       max-width: auto;
       align-items: flex-start;
+    }
+
+    .author {
+      @include Label2;
+      color: $gray60;
+
+      @include Size("mobile") {
+        @include Cap2;
+      }
     }
 
     .createdAtView {
@@ -142,14 +145,20 @@
         align-items: center;
       }
 
-      .commentCount {
-        @extend .viewCount;
+      .comment {
+        @include Label2;
         color: $red;
+        border: 1px solid $gray30;
+        padding: 0 4px;
+        display: flex;
+        gap: 3px;
+        align-items: center;
+        border-radius: 8px;
       }
     }
 
     .savedPosts {
-      width: 150px;
+      max-width: 340px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -165,12 +174,12 @@
           width: auto;
           align-items: flex-start;
           flex-direction: row;
-          align-items: center;
         }
       }
 
       .savedPc {
         display: flex;
+        flex-direction: row;
         align-items: center;
         gap: 6px;
       }

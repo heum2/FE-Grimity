@@ -1,4 +1,5 @@
-@import "@/styles/globals.scss";
+@use "@/styles/globals.scss" as *;
+@use "sass:color";
 
 .background {
   width: 100%;
@@ -18,7 +19,7 @@
 
     // 높이가 낮은 노트북
     @media (max-height: 800px) {
-      padding-top: 0px;
+      padding-top: 60px;
     }
 
     // 폭이 좁은 노트북
@@ -32,6 +33,7 @@
 
     @include Size("tablet") {
       padding-top: 32px;
+      margin: 0 20px;
     }
 
     .uploadBtnContainer {
@@ -86,6 +88,7 @@
           white-space: nowrap;
           padding-bottom: 8px;
           @include Drag;
+          background-color: rgba(0, 0, 0, 0.02);
 
           &::-webkit-scrollbar {
             height: 8px;
@@ -103,7 +106,7 @@
           }
 
           &::-webkit-scrollbar-thumb:hover {
-            background: darken($secandary1, 10%);
+            background: color.adjust($secandary1, $lightness: 10%);
           }
 
           // 폭이 좁은 노트북
@@ -182,11 +185,11 @@
         @include Btn2;
 
         &:hover {
-          background-color: darken($gray0, 4%);
+          background-color: color.adjust($gray0, $lightness: 4%);
         }
 
         &:active {
-          background-color: darken($gray0, 8%);
+          background-color: color.adjust($gray0, $lightness: 8%);
         }
       }
 

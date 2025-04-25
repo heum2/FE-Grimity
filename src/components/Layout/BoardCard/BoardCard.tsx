@@ -11,24 +11,35 @@ export default function BoardCard({
   commentCount,
   viewCount,
   createdAt,
+  thumbnail,
 }: BoardCardProps) {
   return (
     <div className={styles.container}>
+      {thumbnail && (
+        <div className={styles.thumbnailContainer}>
+          <img
+            src={thumbnail}
+            alt="썸네일"
+            width={48}
+            height={48}
+            className={styles.thumbnailImage}
+          />
+        </div>
+      )}
       <div className={styles.infoContainer}>
         <Link href={`/posts/${id}`}>
           <h3 className={styles.title}>{title}</h3>
           <div className={styles.bottomContainer}>
             <div className={styles.countContainer}>
               <div className={styles.likeContainer}>
-                <IconComponent name="boardAllComment" size={16} />
-                <p className={styles.commentCount}>{formatCurrency(commentCount)}</p>
+                <IconComponent name="commentCount" size={16} />
+                <span className={styles.commentCount}>{formatCurrency(commentCount)}</span>
               </div>
               <div className={styles.likeContainer}>
-                <IconComponent name="boardView" size={16} />
-                <p className={styles.count}>{formatCurrency(viewCount)}</p>
+                <IconComponent name="viewCount" size={16} />
+                <span className={styles.count}>{formatCurrency(viewCount)}</span>
               </div>
             </div>
-            <IconComponent name="dot" size={3} />
             <p className={styles.createdAt}>{timeAgo(createdAt)}</p>
           </div>
         </Link>

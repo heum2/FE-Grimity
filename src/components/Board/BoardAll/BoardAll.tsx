@@ -288,7 +288,7 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
           <AllCard key={post.id} post={post} case="board" hasChip={hasChip} />
         ))}
       </section>
-      {posts.length === 0 && <div className={styles.noResults}>검색 결과가 없습니다</div>}
+      {posts.length === 0 && <div className={styles.noResults}>검색 결과가 없어요</div>}
       {!isMobile && isLoggedIn && !isDetail && (
         <section className={styles.uploadBtn}>
           <Link href="/board/write">

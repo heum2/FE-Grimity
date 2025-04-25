@@ -1,4 +1,4 @@
-@import "@/styles/globals.scss";
+@use "@/styles/globals.scss" as *;
 
 .container {
   width: 100%;
@@ -8,6 +8,11 @@
   align-items: center;
   justify-content: space-between;
   padding-top: 28px;
+
+  .uploadBtn {
+    display: flex;
+    flex: 1;
+  }
 
   .messageContainer {
     display: flex;

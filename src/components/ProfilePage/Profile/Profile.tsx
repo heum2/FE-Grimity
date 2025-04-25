@@ -211,7 +211,6 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
       showToast("커버 이미지가 변경되었습니다!", "success");
       setCoverImage(data.imageName);
       refetchUserData();
-      router.reload();
     } catch (error) {
       console.error("File change error:", error);
       showToast("커버 이미지 업로드에 실패했습니다.", "error");
@@ -348,12 +347,10 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                     {isMobile ? (
                       <div className={styles.coverEditBtn}>
                         <IconComponent name="editCover" size={14} isBtn />
-                        수정
                       </div>
                     ) : (
                       <div className={styles.coverEditBtn}>
                         <IconComponent name="editCover" size={20} isBtn />
-                        커버 수정
                       </div>
                     )}
                   </label>
@@ -368,17 +365,16 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                     {isMobile ? (
                       <div className={styles.coverEditBtn}>
                         <IconComponent name="deleteCover" size={14} isBtn />
-                        삭제
                       </div>
                     ) : (
                       <div className={styles.coverEditBtn}>
                         <IconComponent name="deleteCover" size={20} isBtn />
-                        커버 삭제
                       </div>
                     )}
                   </div>
                 </div>
               )}
+              <div className={styles.gradientOverlay} />
             </div>
           ) : (
             <div className={styles.backgroundDefaultImageContainer}>

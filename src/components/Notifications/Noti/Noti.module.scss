@@ -1,4 +1,4 @@
-@import "@/styles/globals.scss";
+@use "@/styles/globals.scss" as *;
 
 .container {
   width: 100%;
@@ -69,6 +69,7 @@
     .thumbnail {
       object-fit: cover;
       aspect-ratio: 1 / 1;
+      background-color: rgba(0, 0, 0, 0.02);
     }
 
     .actorImage {

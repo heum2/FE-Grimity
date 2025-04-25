@@ -6,7 +6,6 @@ export interface SearchCardProps {
   likeCount: number;
   commentCount: number;
   isLike?: boolean;
-  tags: string[];
   author: {
     id: string;
     name: string;

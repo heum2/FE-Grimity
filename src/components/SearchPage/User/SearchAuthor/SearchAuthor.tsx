@@ -74,7 +74,9 @@ export default function SearchAuthor() {
   return (
     <section className={styles.results}>
       <div className={styles.sortWrapper}>
-        <h2 className={styles.title}>유저 {data?.pages?.[0]?.totalCount || 0}명</h2>
+        <h2 className={styles.title}>
+          검색결과 <span className={styles.searchCount}>{data?.pages?.[0]?.totalCount || 0}</span>건
+        </h2>
         <div className={styles.sort}>
           <Dropdown
             menuItems={sortOptions.map((option) => ({
