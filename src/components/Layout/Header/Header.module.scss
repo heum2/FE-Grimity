@@ -13,7 +13,7 @@
   background: $gray0;
   border-bottom: 1px solid $gray30;
   align-items: center;
-  box-sizing: content-box;
+  // box-sizing: content-box;
 
   @include Drag;
 
