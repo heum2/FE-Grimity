@@ -2,6 +2,7 @@
 
 .header {
   width: 100%;
+  height: 60px;
   position: fixed;
   top: 0px;
   left: 0;
@@ -12,6 +13,7 @@
   background: $gray0;
   border-bottom: 1px solid $gray30;
   align-items: center;
+  box-sizing: content-box;
 
   @include Drag;
 
@@ -28,6 +30,7 @@
 .container {
   padding: 10px 0;
   width: 100%;
+  height: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
