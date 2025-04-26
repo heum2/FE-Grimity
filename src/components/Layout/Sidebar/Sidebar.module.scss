@@ -92,6 +92,11 @@
   z-index: 10;
   width: 180px;
   overflow: hidden;
+
+  @include Size("tablet") {
+    bottom: 160px;
+    left: 16px;
+  }
 }
 
 .dropdownItem,
