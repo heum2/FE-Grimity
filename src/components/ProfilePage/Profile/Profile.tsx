@@ -330,14 +330,12 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
             <div className={styles.backgroundImage}>
               <img
                 src={coverImage}
-                width={1400} // 임의 지정
-                height={isMobile ? 240 : isTablet ? 300 : 400}
                 alt="backgroundImage"
                 loading="lazy"
                 style={{
-                  width: "100vw",
-                  height: isMobile ? "240px" : isTablet ? "300px" : "400px",
                   objectFit: "cover",
+                  width: "100%",
+                  height: "100%",
                 }}
                 ref={imgRef}
               />
