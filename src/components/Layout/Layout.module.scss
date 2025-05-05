@@ -20,18 +20,26 @@
   }
 
   .children {
-    width: 98%;
+    width: 100%;
+    max-width: 1280px;
     display: flex;
+    flex-direction: column;
     align-items: flex-start;
     margin-top: 60px; // header
     margin-bottom: 80px;
+    padding: 0 16px;
+
+    @media (max-width: 1400px) {
+      max-width: 1024px;
+    }
 
     @include Size("tablet") {
-      width: 96%;
+      max-width: 880px;
+      padding: 0 20px;
+    }
 
-      @media (max-width: 1462px) {
-        width: 92%;
-      }
+    @include Size("mobile") {
+      padding: 0;
     }
   }
 
