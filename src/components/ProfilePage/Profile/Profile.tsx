@@ -588,32 +588,71 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                 <div
                   className={styles.descriptionContainer}
                   style={{
-                    gap: userData.description && userData.links.length > 0 ? "20px" : "0",
+                    gap: userData.description && userData.links.length > 0 ? "12px" : "0",
                   }}
                 >
                   {userData.description !== "" && (
                     <p className={styles.description}>{userData.description}</p>
                   )}
                   <div className={styles.linkContainer}>
-                    {userData.links.map(({ linkName, link }, index) => {
+                    {userData.links.slice(0, isMobile ? 1 : 3).map(({ linkName, link }, index) => {
                       const isEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(
                         link,
                       );
+                      const linkType = linkName.toLowerCase();
+                      type IconName =
+                        | "linkInstagram"
+                        | "linkX"
+                        | "linkYoutube"
+                        | "linkPixiv"
+                        | "linkMail"
+                        | "linkCustom";
+                      let iconName: IconName = "linkCustom";
+
+                      if (linkType === "instagram") iconName = "linkInstagram";
+                      else if (linkType === "x") iconName = "linkX";
+                      else if (linkType === "youtube") iconName = "linkYoutube";
+                      else if (linkType === "pixiv") iconName = "linkPixiv";
+                      else if (isEmail) iconName = "linkMail";
+
+                      const displayName = isEmail
+                        ? link
+                        : linkType === "instagram" ||
+                          linkType === "x" ||
+                          linkType === "youtube" ||
+                          linkType === "pixiv"
+                        ? `@${link.split("/").pop()}`
+                        : linkName;
 
                       return (
                         <div key={index} className={styles.linkWrapper}>
-                          <IconComponent name="link" size={20} />
+                          <IconComponent name={iconName} size={20} />
                           <a
                             href={isEmail ? `mailto:${link}` : link}
                             className={styles.link}
                             target="_blank"
                             rel="noopener noreferrer"
                           >
-                            {linkName}
+                            {displayName}
                           </a>
                         </div>
                       );
                     })}
+                    {userData.links.length > (isMobile ? 1 : 3) && (
+                      <div
+                        onClick={() =>
+                          openModal({
+                            type: "PROFILE-LINK",
+                            data: null,
+                            isFill: isMobile,
+                          })
+                        }
+                      >
+                        <span className={styles.moreLinksText}>
+                          외 링크 {userData.links.length - (isMobile ? 1 : 3)}개
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

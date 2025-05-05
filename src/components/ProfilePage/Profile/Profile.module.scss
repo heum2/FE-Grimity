@@ -191,7 +191,7 @@
     .name {
       @include Title2;
       color: $gray80;
-      margin-bottom: 8px;
+      margin-bottom: 2px;
 
       @include Size("mobile") {
         @include Title4;
@@ -207,7 +207,6 @@
     .descriptionContainer {
       display: flex;
       flex-direction: column;
-      gap: 20px;
     }
 
     .description {
@@ -260,18 +259,25 @@
 
   .linkContainer {
     display: flex;
-    flex-direction: column;
-    gap: 4px;
+    align-items: center;
+    gap: 10px;
 
     .linkWrapper {
       display: flex;
+      align-items: center;
       gap: 4px;
       @include Drag;
     }
 
     .link {
-      @include Label1;
+      @include Label2;
       color: $gray60;
+    }
+
+    .moreLinksText {
+      @include Label2;
+      color: $secandary1;
+      cursor: pointer;
     }
   }
 }
