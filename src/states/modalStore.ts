@@ -7,6 +7,7 @@ export type ModalType =
   | "PROFILE-ID"
   | "PROFILE-EDIT"
   | "PROFILE-LINK"
+  | "SHARE-PROFILE"
   | "BACKGROUND"
   | "FOLLOWER"
   | "FOLLOWING"

@@ -82,7 +82,7 @@ export default function UploadModal({ feedId, title, image }: UploadModalProps) 
             onClick={handleTwitterShare}
             leftIcon={<IconComponent name="twitter" size={20} />}
           >
-            {isMobile ? "트위터 공유" : "트위터에 공유"}
+            {isMobile ? "X 공유" : "X로 공유"}
           </Button>
           <Button
             size="l"

@@ -322,6 +322,13 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
     }
   };
 
+  const handleShareProfile = () => {
+    openModal({
+      type: "SHARE-PROFILE",
+      data: { id: userData?.url, name: userData?.name, image: userData?.image },
+    });
+  };
+
   return (
     <div className={styles.container}>
       {userData && (
@@ -518,6 +525,10 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                                 }
                                 menuItems={[
                                   {
+                                    label: "프로필 공유",
+                                    onClick: handleShareProfile,
+                                  },
+                                  {
                                     label: "회원 탈퇴",
                                     onClick: handleWithdrawal,
                                     isDelete: true,
@@ -547,6 +558,10 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                                 }
                                 menuItems={[
                                   {
+                                    label: "프로필 공유",
+                                    onClick: handleShareProfile,
+                                  },
+                                  {
                                     label: "신고하기",
                                     onClick: handleOpenReportModal,
                                     isDelete: true,
@@ -571,6 +586,10 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                                   </div>
                                 }
                                 menuItems={[
+                                  {
+                                    label: "프로필 공유",
+                                    onClick: handleShareProfile,
+                                  },
                                   {
                                     label: "신고하기",
                                     onClick: handleOpenReportModal,
@@ -676,6 +695,10 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                         }
                         menuItems={[
                           {
+                            label: "프로필 공유",
+                            onClick: handleShareProfile,
+                          },
+                          {
                             label: "회원 탈퇴",
                             onClick: handleWithdrawal,
                             isDelete: true,
@@ -701,6 +724,10 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                         }
                         menuItems={[
                           {
+                            label: "프로필 공유",
+                            onClick: handleShareProfile,
+                          },
+                          {
                             label: "신고하기",
                             onClick: handleOpenReportModal,
                             isDelete: true,
@@ -718,12 +745,17 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                     </div>
                     <div className={styles.dropdown}>
                       <Dropdown
+                        isSide
                         trigger={
                           <div className={styles.menuBtn}>
                             <IconComponent name="meatball" size={16} />
                           </div>
                         }
                         menuItems={[
+                          {
+                            label: "프로필 공유",
+                            onClick: handleShareProfile,
+                          },
                           {
                             label: "신고하기",
                             onClick: handleOpenReportModal,
