@@ -22,7 +22,6 @@ export default function Upload() {
   const [images, setImages] = useState<{ name: string; originalName: string; url: string }[]>([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  // const [isAI, setIsAI] = useState(false);
   const [tag, setTag] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [thumbnailUrl, setThumbnailUrl] = useState("");
@@ -34,6 +33,23 @@ export default function Upload() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const isMobile = useDeviceStore((state) => state.isMobile);
   const isTablet = useDeviceStore((state) => state.isTablet);
+  const [selectedAlbumId, setSelectedAlbumId] = useState<string | null>(null);
+  const [selectedAlbumName, setSelectedAlbumName] = useState("");
+
+  const handleOpenAlbumSelect = () => {
+    openModal({
+      type: "ALBUM-SELECT",
+      data: {
+        hideCloseButton: true,
+        albumId: selectedAlbumId,
+        onSelect: (id: string, name: string) => {
+          setSelectedAlbumId(id);
+          setSelectedAlbumName(name);
+        },
+      },
+    });
+  };
+
   useIsMobile();
 
   useEffect(() => {
@@ -351,14 +367,23 @@ export default function Upload() {
   const handleUpload = async () => {
     if (isLoading) return;
 
-    uploadFeed({
+    const feedData: CreateFeedRequest = {
       title,
       cards: images.map((image) => image.name),
-      // isAI,
       content,
       tags,
       thumbnail: thumbnailName,
-    });
+      albumId: selectedAlbumId && selectedAlbumId.trim() !== "" ? selectedAlbumId : null,
+    };
+
+    if (selectedAlbumId && selectedAlbumId.trim() !== "") {
+      feedData.albumId = selectedAlbumId;
+    } else {
+      feedData.albumId = null;
+    }
+
+    console.log("Sending feed with albumId:", feedData.albumId);
+    uploadFeed(feedData);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -571,7 +596,7 @@ export default function Upload() {
                     <input
                       className={styles.input}
                       type="text"
-                      placeholder="엔터를 통해 태그를 10개까지 등록할 수 있어요"
+                      placeholder="엔터를 통해 10개까지 입력할 수 있어요"
                       maxLength={10}
                       value={tag}
                       onChange={(e) => setTag(e.target.value)}
@@ -608,18 +633,15 @@ export default function Upload() {
                   ))}
                 </div>
               </div>
-              {/* <div className={styles.optionContainer}>
-                <label className={styles.label}>추가 옵션</label>
-                <div className={styles.options}>
-                  <p className={styles.subtitle}>AI 생성 작품이에요</p>
-                  <div
-                    className={`${styles.option} ${isAI ? styles.selected : ""}`}
-                    onClick={() => setIsAI((prev) => !prev)}
-                  >
-                    <IconComponent name={isAI ? "checkedbox" : "checkbox"} size={24} isBtn />
+              <div className={styles.tagContainer}>
+                <div className={styles.tagInputContainer}>
+                  <label className={styles.label}>앨범</label>
+                  <div className={styles.inputContainer} onClick={handleOpenAlbumSelect}>
+                    <div className={styles.text}>{selectedAlbumName || "앨범 선택"}</div>
+                    <IconComponent name="openAlbumSelect" size={14} isBtn />
                   </div>
                 </div>
-              </div> */}
+              </div>
             </div>
           </section>
         </div>

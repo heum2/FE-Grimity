@@ -15,26 +15,31 @@ export default function ProfileCard({
   id,
   createdAt,
   viewCount,
+  albumId,
+  isEditMode = false,
+  isSelected = false,
 }: ProfileCardProps) {
   const hasMultipleImages = cards && cards.length > 1;
   const imgRef = usePreventRightClick<HTMLImageElement>();
 
-  return (
-    <div className={styles.container}>
+  const child = (
+    <div className={`${styles.container} ${isSelected ? styles.selected : ""}`}>
       <div className={styles.imageContainer}>
         {hasMultipleImages && (
           <div className={styles.overlapIcon}>
             <IconComponent name="overlap" size={24} />
           </div>
         )}
-        <Link href={`/feeds/${id}`}>
-          <img src={thumbnail} alt={title} loading="lazy" className={styles.image} ref={imgRef} />
-        </Link>
+        <img src={thumbnail} alt={title} loading="lazy" className={styles.image} ref={imgRef} />
+
+        {isSelected && (
+          <div className={styles.checkmark}>
+            <IconComponent name="checkedbox" size={20} />
+          </div>
+        )}
       </div>
       <div className={styles.infoContainer}>
-        <Link href={`/feeds/${id}`}>
-          <h3 className={styles.title}>{title}</h3>
-        </Link>
+        <h3 className={styles.title}>{title}</h3>
         <div className={styles.profileContainer}>
           <div className={styles.countContainer}>
             <div className={styles.likeContainer}>
@@ -55,4 +60,6 @@ export default function ProfileCard({
       </div>
     </div>
   );
+
+  return isEditMode ? child : <Link href={`/feeds/${id}`}>{child}</Link>;
 }

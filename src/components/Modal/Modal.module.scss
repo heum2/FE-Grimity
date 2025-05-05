@@ -19,6 +19,7 @@
   border-radius: 12px;
   width: 404px;
   min-height: 394px;
+  max-height: 760px;
   position: relative;
 
   @include Size("mobile") {
@@ -37,6 +38,11 @@
 .followModal {
   @extend .modal;
   width: 540px;
+}
+
+.albumSelectModal {
+  @extend .modal;
+  min-height: 256px;
 }
 
 .closeButton {

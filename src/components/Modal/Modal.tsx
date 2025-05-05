@@ -17,6 +17,8 @@ import UploadModal from "./Upload/Upload";
 import SharePost from "./SharePost/SharePost";
 import Like from "./Like/Like";
 import Report from "./Report/Report";
+import Album from "./Album/Album";
+import AlbumSelect from "./AlbumSelect/AlbumSelect";
 
 export default function Modal() {
   const router = useRouter();
@@ -80,6 +82,10 @@ export default function Modal() {
         return <Like />;
       case "REPORT":
         return <Report {...data} />;
+      case "ALBUM":
+        return <Album {...data} />;
+      case "ALBUM-SELECT":
+        return <AlbumSelect {...data} />;
       default:
         return null;
     }
@@ -109,18 +115,22 @@ export default function Modal() {
           ) : (
             <div
               className={
-                type === "PROFILE-EDIT"
+                type === "PROFILE-EDIT" || type == "ALBUM"
                   ? styles.profileEditModal
                   : type === "FOLLOWER" || type === "FOLLOWING" || type === "LIKE"
                   ? styles.followModal
+                  : type == "ALBUM-SELECT"
+                  ? styles.albumSelectModal
                   : styles.modal
               }
               onClick={(e) => e.stopPropagation()}
             >
               {renderModalContent()}
-              <button className={styles.closeButton} onClick={handleCloseModal}>
-                <IconComponent name="x" size={24} isBtn />
-              </button>
+              {!data?.hideCloseButton && (
+                <button className={styles.closeButton} onClick={handleCloseModal}>
+                  <IconComponent name="x" size={24} isBtn />
+                </button>
+              )}
             </div>
           )}
         </div>

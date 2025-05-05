@@ -4,7 +4,7 @@ import styles from "./EditFeeds.module.scss";
 import IconComponent from "../../Asset/Icon";
 import { useToast } from "@/hooks/useToast";
 import { postPresignedUrls, PresignedUrlRequest } from "@/api/aws/postPresigned";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { CreateFeedRequest, putEditFeeds } from "@/api/feeds/putFeedsId";
@@ -23,12 +23,12 @@ import { imageUrl } from "@/constants/imageUrl";
 export default function EditFeeds({ id }: EditFeedsProps) {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const user_id = useAuthStore((state) => state.user_id);
-  const { data: feedData, isLoading } = useDetails(id);
+  const { data: feedData } = useDetails(id);
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [images, setImages] = useState<{ name: string; originalName: string; url: string }[]>([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  // const [isAI, setIsAI] = useState(false);
   const [tag, setTag] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [thumbnailUrl, setThumbnailUrl] = useState("");
@@ -41,6 +41,22 @@ export default function EditFeeds({ id }: EditFeedsProps) {
   const isMobile = useDeviceStore((state) => state.isMobile);
   const isTablet = useDeviceStore((state) => state.isTablet);
   useIsMobile();
+  const [selectedAlbumId, setSelectedAlbumId] = useState<string | null>(null);
+  const [selectedAlbumName, setSelectedAlbumName] = useState("");
+
+  const handleOpenAlbumSelect = () => {
+    openModal({
+      type: "ALBUM-SELECT",
+      data: {
+        hideCloseButton: true,
+        albumId: selectedAlbumId,
+        onSelect: (id: string, name: string) => {
+          setSelectedAlbumId(id);
+          setSelectedAlbumName(name);
+        },
+      },
+    });
+  };
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -72,25 +88,30 @@ export default function EditFeeds({ id }: EditFeedsProps) {
 
       setTitle(feedData.title);
       setContent(feedData.content);
-      // setIsAI(feedData.isAI);
       setTags(feedData.tags);
       setImages(initialImages);
       setThumbnailUrl(feedData.thumbnail);
       setThumbnailName(feedData.thumbnail);
+      setSelectedAlbumId(feedData.album?.id || null);
+      setSelectedAlbumName(feedData.album?.name || "");
     }
   }, [feedData]);
 
   // 변경 사항 감지
   useEffect(() => {
-    const hasChanges =
-      title !== feedData?.title ||
-      content !== feedData?.content ||
-      // isAI !== feedData?.isAI ||
-      thumbnailUrl !== feedData?.thumbnail ||
-      JSON.stringify(tags) !== JSON.stringify(feedData?.tags) ||
-      JSON.stringify(images) !== JSON.stringify(feedData?.cards);
-    setHasUnsavedChanges(hasChanges);
-  }, [feedData, images, title, content, tags]);
+    if (feedData) {
+      const hasChanges =
+        title !== feedData.title ||
+        content !== feedData.content ||
+        thumbnailUrl !== feedData.thumbnail ||
+        JSON.stringify(tags) !== JSON.stringify(feedData.tags) ||
+        JSON.stringify(images.map((img) => img.name)) !== JSON.stringify(feedData.cards) ||
+        selectedAlbumId !== feedData.album?.id;
+      setHasUnsavedChanges(hasChanges);
+    } else {
+      setHasUnsavedChanges(false);
+    }
+  }, [feedData, images, title, content, tags, thumbnailUrl, selectedAlbumId]);
 
   // 브라우저 이벤트 핸들러
   useEffect(() => {
@@ -189,19 +210,24 @@ export default function EditFeeds({ id }: EditFeedsProps) {
     });
   };
 
-  const { mutate: editFeed } = useMutation((data: CreateFeedRequest) => putEditFeeds(id, data), {
-    onSuccess: () => {
-      hasUnsavedChangesRef.current = false;
-      showToast("수정이 완료되었습니다!", "success");
-      router.push(`/feeds/${id}`);
+  const { mutate: editFeed, isLoading } = useMutation(
+    (data: CreateFeedRequest) => putEditFeeds(id, data),
+    {
+      onSuccess: () => {
+        hasUnsavedChangesRef.current = false;
+        showToast("수정이 완료되었습니다!", "success");
+        queryClient.invalidateQueries({ queryKey: ["feeds", id] });
+        queryClient.invalidateQueries({ queryKey: ["feeds"] });
+        router.push(`/feeds/${id}`);
+      },
+      onError: (error: AxiosError) => {
+        showToast("수정 중 오류가 발생했습니다. 다시 시도해주세요.", "error");
+        if (error.response?.status === 400) {
+          showToast("잘못된 요청입니다. 입력값을 확인해주세요.", "error");
+        }
+      },
     },
-    onError: (error: AxiosError) => {
-      showToast("수정 중 오류가 발생했습니다. 다시 시도해주세요.", "error");
-      if (error.response?.status === 400) {
-        showToast("잘못된 요청입니다. 입력값을 확인해주세요.", "error");
-      }
-    },
-  });
+  );
 
   const getFileExtension = (fileName: string) => {
     const ext = fileName.split(".").pop()?.toLowerCase();
@@ -363,6 +389,8 @@ export default function EditFeeds({ id }: EditFeedsProps) {
   };
 
   const handleSave = async () => {
+    if (isLoading) return;
+
     openModal({
       type: null,
       data: null,
@@ -372,10 +400,10 @@ export default function EditFeeds({ id }: EditFeedsProps) {
     editFeed({
       title,
       cards: images.map((image) => image.name.replace(`${imageUrl}/`, "")),
-      // isAI,
       content,
       tags,
       thumbnail: thumbnailName.replace(`${imageUrl}/`, ""),
+      albumId: selectedAlbumId || null,
     });
   };
 
@@ -444,13 +472,6 @@ export default function EditFeeds({ id }: EditFeedsProps) {
   return (
     <div className={styles.background}>
       <div className={styles.container}>
-        {!isMobile && (
-          <div className={styles.uploadBtnContainer}>
-            <Button size="m" type="filled-primary" disabled={isDisabled} onClick={handleSubmit}>
-              수정 완료
-            </Button>
-          </div>
-        )}
         <div className={styles.sectionContainer}>
           <section className={styles.imageSection} onDrop={handleDrop} onDragOver={handleDragOver}>
             <div className={styles.addBtnContainer}>
@@ -632,25 +653,39 @@ export default function EditFeeds({ id }: EditFeedsProps) {
                   ))}
                 </div>
               </div>
-              {/* <div className={styles.optionContainer}>
-                <label className={styles.label}>추가 옵션</label>
-                <div className={styles.options}>
-                  <p className={styles.subtitle}>AI 생성 작품이에요</p>
-                  <div
-                    className={`${styles.option} ${isAI ? styles.selected : ""}`}
-                    onClick={() => setIsAI((prev) => !prev)}
-                  >
-                    <IconComponent name={isAI ? "checkedbox" : "checkbox"} size={14} isBtn />
+              <div className={styles.tagContainer}>
+                <div className={styles.tagInputContainer}>
+                  <label className={styles.label}>앨범</label>
+                  <div className={styles.inputContainer} onClick={handleOpenAlbumSelect}>
+                    <div className={styles.text}>{selectedAlbumName || "앨범 선택"}</div>
+                    <IconComponent name="openAlbumSelect" size={14} isBtn />
                   </div>
                 </div>
-              </div> */}
+              </div>
             </div>
           </section>
         </div>
-        {isMobile && (
-          <Button size="l" type="filled-primary" disabled={isDisabled} onClick={handleSubmit}>
-            수정 완료
+        {isMobile ? (
+          <Button
+            size="l"
+            type="filled-primary"
+            disabled={isDisabled || isLoading}
+            onClick={handleSubmit}
+          >
+            {isLoading ? "수정 중..." : "수정 완료"}
           </Button>
+        ) : (
+          <div className={styles.uploadBtn}>
+            <Button
+              size="l"
+              type="filled-primary"
+              disabled={isDisabled || isLoading}
+              onClick={handleSubmit}
+              width="200px"
+            >
+              {isLoading ? "수정 중..." : "수정 완료"}
+            </Button>
+          </div>
         )}
       </div>
     </div>

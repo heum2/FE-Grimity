@@ -7,4 +7,7 @@ export interface ProfileCardProps {
   likeCount: number;
   commentCount: number;
   viewCount?: number;
+  albumId?: string;
+  isEditMode?: boolean;
+  isSelected?: boolean;
 }
