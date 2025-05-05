@@ -7,6 +7,7 @@ export interface UserFeedsRequest {
   size?: number;
   sort?: "latest" | "like" | "oldest";
   cursor?: string;
+  albumId?: string | null;
 }
 
 export async function getUserFeeds({
@@ -14,6 +15,7 @@ export async function getUserFeeds({
   size,
   sort = "latest",
   cursor,
+  albumId,
 }: UserFeedsRequest): Promise<UserFeedsResponse> {
   try {
     const response = await axiosInstance.get<UserFeedsResponse>(`/users/${id}/feeds`, {
@@ -21,6 +23,7 @@ export async function getUserFeeds({
         sort,
         cursor,
         size,
+        albumId,
       },
     });
 
@@ -46,8 +49,10 @@ export function useUserForDetail({ id, sort, cursor, size }: UserFeedsRequest) {
 }
 
 export function useUserFeeds(params: UserFeedsRequest) {
+  const queryKey = ["userFeeds", params.id, params.sort, params.size, params.albumId || "null"];
+
   return useInfiniteQuery<UserFeedsResponse>(
-    ["userFeeds", params.id, params.sort, params.size],
+    queryKey,
     ({ pageParam = undefined }) =>
       getUserFeeds({
         ...params,
