@@ -27,6 +27,8 @@
 .albumInfo {
   margin: 24px 0;
   padding: 0 16px;
+  width: 100%;
+  box-sizing: border-box;
 
   .albumName {
     @include Title1;
@@ -56,6 +58,9 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
   padding: 0 16px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 80px;
 
   @include Size("tablet") {
     grid-template-columns: repeat(3, 1fr);
@@ -65,6 +70,11 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
   }
+}
+
+.cardWrapper {
+  width: 100%;
+  height: auto;
 }
 
 .emptyState {
@@ -88,12 +98,12 @@
   right: 0;
   height: 64px;
   background-color: white;
-  // box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 24px;
-  z-index: 100;
+  z-index: 1000; // Increased z-index to ensure it's above other elements
 
   .leftSection {
     display: flex;

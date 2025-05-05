@@ -45,6 +45,8 @@ export default function EditableProfileCard({
     ? albums.find((album) => album.id === activeAlbum)
     : { name: "전체", feedCount: feeds.length };
 
+  const filteredFeeds = activeAlbum ? feeds.filter((feed) => feed.albumId === activeAlbum) : feeds;
+
   const handleCardSelect = (feedId: string, event: React.MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
@@ -105,18 +107,18 @@ export default function EditableProfileCard({
         <div className={styles.albumInfo}>
           <h1 className={styles.albumName}>{currentAlbum?.name}</h1>
           <p className={styles.feedCountContainer}>
-            그림 <span className={styles.feedCount}> {currentAlbum?.feedCount}</span>
+            그림 <span className={styles.feedCount}> {filteredFeeds.length}</span>
           </p>
         </div>
 
         {/* 그림 카드 그리드 모음 */}
-        {feeds.length === 0 ? (
+        {filteredFeeds.length === 0 ? (
           <div className={styles.emptyState}>
             <p>그림이 없습니다.</p>
           </div>
         ) : (
           <div className={styles.cardGrid}>
-            {feeds.map((feed) => (
+            {filteredFeeds.map((feed) => (
               <div
                 key={feed.id}
                 className={`${styles.cardWrapper} ${
