@@ -118,4 +118,9 @@ export const ICONS = {
   ask: "/icon/sidebar/footer-ask.svg",
   footerDropdown: "/icon/sidebar/footer-dropdown.svg",
   footerDropdownActive: "/icon/sidebar/footer-dropdown-active.svg",
+  checkAlbum: "/icon/check-album.svg",
+  moveAlbum: "/icon/move-album.svg",
+  editAlbumOrder: "/icon/edit-album-order.svg",
+  openAlbumSelect: "/icon/open-album-select.svg",
+  deleteAlbum: "/icon/delete-album.svg",
 };
