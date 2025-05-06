@@ -70,10 +70,7 @@ export default function Album({ defaultName, albumId }: AlbumModalProps) {
     }
     try {
       await createAlbums({ name });
-      showToast("앨범이 추가되었습니다!", "success");
-      closeModal();
       refetch();
-      router.reload();
     } catch (err: any) {
       if (err?.message === "앨범 이름 중복") {
         setError("중복된 이름은 사용하실 수 없어요");

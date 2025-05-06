@@ -17,7 +17,6 @@
     padding: 0 8px;
     display: flex;
     flex-direction: column;
-    align-items: stretch;
     box-sizing: border-box;
 
     @include Size("mobile") {
@@ -204,7 +203,6 @@
     row-gap: 40px;
     column-gap: 16px;
     margin-top: 12px;
-    justify-items: start;
 
     @include Size("mobile") {
       grid-template-columns: repeat(2, 1fr);

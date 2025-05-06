@@ -1,6 +1,5 @@
 @use "@/styles/globals.scss" as *;
 
-// TODO: 모바일 스타일 필요
 .container {
   display: flex;
   flex-direction: column;
@@ -22,6 +21,16 @@
     .title {
       @include Title3;
       color: $gray70;
+    }
+
+    .subtitle {
+      @include Sub4;
+      color: $gray60;
+      text-align: center;
+
+      .count {
+        color: $gray70;
+      }
     }
   }
 
@@ -71,7 +80,6 @@
 
     @include Size("mobile") {
       height: 100%;
-      gap: 0;
 
       &::-webkit-scrollbar {
         width: 0;

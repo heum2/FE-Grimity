@@ -5,6 +5,7 @@ import Button from "@/components/Button/Button";
 import IconComponent from "@/components/Asset/Icon";
 import { useModalStore } from "@/states/modalStore";
 import { useRouter } from "next/router";
+import { useDeviceStore } from "@/states/deviceStore";
 
 interface Feed {
   id: string;
@@ -39,6 +40,7 @@ export default function FeedAlbumEditor({
 }: FeedAlbumEditorProps) {
   const [selectedCards, setSelectedCards] = useState<string[]>([]);
   const openModal = useModalStore((state) => state.openModal);
+  const isMobile = useDeviceStore((state) => state.isMobile);
   const router = useRouter();
   const currentAlbum = activeAlbum ? albums.find((album) => album.id === activeAlbum) : null;
   const displayName = currentAlbum ? currentAlbum.name : "전체";
@@ -58,15 +60,23 @@ export default function FeedAlbumEditor({
 
   const handleMoveAlbum = () => {
     if (selectedCards.length === 0) return;
-    openModal({
+
+    const modalData: any = {
       type: "ALBUM-MOVE",
       data: {
+        title: "앨범 이동",
         selectedFeedIds: selectedCards,
         onComplete: () => {
           setSelectedCards([]);
         },
       },
-    });
+    };
+
+    if (isMobile) {
+      modalData.isFill = true;
+    }
+
+    openModal(modalData);
   };
 
   const handleDeleteSelected = () => {

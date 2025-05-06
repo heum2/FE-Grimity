@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useMyAlbums } from "@/api/me/getMyAlbums";
-import Button from "@/components/Button/Button";
 import { useDeviceStore } from "@/states/deviceStore";
 import { useModalStore } from "@/states/modalStore";
 import styles from "./AlbumSelect.module.scss";
+import Button from "@/components/Button/Button";
 import IconComponent from "@/components/Asset/Icon";
 
 export default function AlbumSelect() {
@@ -23,17 +23,14 @@ export default function AlbumSelect() {
     closeModal();
   };
 
-  const handleConfirmOnly = () => {
-    closeModal();
-  };
-
   const isEmpty = albums.length === 0;
 
   return (
     <div className={styles.container}>
-      {!isEmpty && (
+      {!isMobile && (
         <div className={styles.titleContainer}>
           <h2 className={styles.title}>앨범 선택</h2>
+          <p className={styles.subtitle}>그림을 업로드할 앨범을 선택해주세요</p>
         </div>
       )}
 
@@ -43,7 +40,7 @@ export default function AlbumSelect() {
           <p className={styles.subtitle}>
             전체 앨범에 업로드 되며, <br />새 앨범은 프로필 화면에서 추가할 수 있어요
           </p>
-          <Button size="l" type="filled-primary" onClick={handleConfirmOnly}>
+          <Button size="l" type="filled-primary" onClick={closeModal}>
             확인
           </Button>
         </div>
@@ -72,7 +69,7 @@ export default function AlbumSelect() {
               </Button>
             </div>
             <div className={styles.submitBtn}>
-              <Button size="l" type="filled-primary" onClick={handleSubmit}>
+              <Button size="l" type="filled-primary" onClick={handleSubmit} disabled={!selectedId}>
                 완료
               </Button>
             </div>

@@ -1,6 +1,7 @@
 @use "@/styles/globals.scss" as *;
 @use "sass:color";
 
+// TODO: 모바일 디자인 + 프로필에서 커버 이미지 부분 분리 필요
 .container {
   width: 100%;
   min-height: 100vh;
@@ -12,16 +13,11 @@
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-    padding: 0 8px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     box-sizing: border-box;
     position: relative;
-
-    @include Size("mobile") {
-      padding: 0;
-    }
   }
 }
 
@@ -50,12 +46,12 @@
 
     @include Size("tablet") {
       margin-left: 81px;
-      padding: 0 24px;
+      padding: 0 8px;
     }
 
     @include Size("mobile") {
       margin-left: 0;
-      padding: 0 16px;
+      padding: 0 8px;
     }
   }
 
@@ -77,7 +73,6 @@
 
 .albumInfo {
   margin: 24px 0;
-  padding: 0 16px;
   width: 100%;
   box-sizing: border-box;
 
@@ -108,7 +103,6 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
-  padding: 0 16px;
   width: 100%;
   box-sizing: border-box;
   margin-bottom: 80px;

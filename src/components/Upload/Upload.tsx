@@ -37,16 +37,23 @@ export default function Upload() {
   const [selectedAlbumName, setSelectedAlbumName] = useState("");
 
   const handleOpenAlbumSelect = () => {
+    const data = {
+      hideCloseButton: true,
+      albumId: selectedAlbumId,
+      onSelect: (id: string, name: string) => {
+        setSelectedAlbumId(id);
+        setSelectedAlbumName(name);
+      },
+    };
     openModal({
       type: "ALBUM-SELECT",
-      data: {
-        hideCloseButton: true,
-        albumId: selectedAlbumId,
-        onSelect: (id: string, name: string) => {
-          setSelectedAlbumId(id);
-          setSelectedAlbumName(name);
+      data,
+      ...(isMobile && {
+        isFill: true,
+        data: {
+          title: "앨범 선택",
         },
-      },
+      }),
     });
   };
 

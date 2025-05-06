@@ -81,7 +81,13 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
 
   const handleOpenEditModal = () => {
     if (isMobile) {
-      openModal({ type: "PROFILE-EDIT", data: null, isFill: true });
+      openModal({
+        type: "PROFILE-EDIT",
+        data: {
+          title: "프로필 편집",
+        },
+        isFill: true,
+      });
     } else {
       openModal({ type: "PROFILE-EDIT", data: null });
     }

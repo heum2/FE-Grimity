@@ -101,7 +101,20 @@ export default function Modal() {
 
   return (
     <>
-      {!isFill ? (
+      {isOpen && isFill && (
+        <div className={styles.mobileHeader}>
+          <h2>{data?.title}</h2>
+          <button onClick={handleCloseModal}>
+            <IconComponent name="x" size={24} isBtn />
+          </button>
+        </div>
+      )}
+
+      {isFill ? (
+        <div className={styles.fill} onClick={(e) => e.stopPropagation()}>
+          {renderModalContent()}
+        </div>
+      ) : (
         <div className={styles.overlay} onClick={handleCloseModal}>
           {isComfirm ? (
             <div className={styles.comfirmModal}>
@@ -139,10 +152,6 @@ export default function Modal() {
               )}
             </div>
           )}
-        </div>
-      ) : (
-        <div className={styles.fill} onClick={(e) => e.stopPropagation()}>
-          {renderModalContent()}
         </div>
       )}
     </>
