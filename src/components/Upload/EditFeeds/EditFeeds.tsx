@@ -78,6 +78,14 @@ export default function EditFeeds({ id }: EditFeedsProps) {
     }
   }, [images]);
 
+  const removePrefix = (url: string) => {
+    if (url.startsWith("http")) {
+      const parts = url.split("/");
+      return parts.slice(3).join("/");
+    }
+    return url.replace(`${imageUrl}/`, "");
+  };
+
   useEffect(() => {
     if (feedData) {
       const initialImages = feedData.cards.map((name) => ({
@@ -399,10 +407,10 @@ export default function EditFeeds({ id }: EditFeedsProps) {
 
     editFeed({
       title,
-      cards: images.map((image) => image.name.replace(`${imageUrl}/`, "")),
+      cards: images.map((image) => removePrefix(image.name)),
       content,
       tags,
-      thumbnail: thumbnailName.replace(`${imageUrl}/`, ""),
+      thumbnail: removePrefix(thumbnailName),
       albumId: selectedAlbumId || null,
     });
   };
