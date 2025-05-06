@@ -55,12 +55,8 @@ export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) 
   const toggleEditMode = () => {
     setIsEditMode(!isEditMode);
     setSelectedCards([]);
-    if (!isEditMode) {
-      setActiveCategory(null);
-      refetch();
-    }
+    refetch();
   };
-
   const handleCategoryClick = (categoryId: string | null) => {
     setActiveCategory(categoryId);
   };
@@ -88,7 +84,7 @@ export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) 
     id,
     sort: sortBy,
     size: PAGE_SIZE,
-    albumId: isEditMode ? null : activeCategory,
+    albumId: activeCategory,
   });
 
   const totalPages = Math.ceil((userData?.postCount || 0) / 10);
@@ -184,7 +180,13 @@ export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) 
     setSortBy(option);
   };
 
-  const allFeeds = feedsData?.pages.flatMap((page) => page.feeds) || [];
+  const allFeeds =
+    feedsData?.pages.flatMap((page) =>
+      page.feeds.map((feed) => ({
+        ...feed,
+        albumId: activeCategory || undefined,
+      })),
+    ) || [];
 
   // 현재 활성화된 앨범
   const currentAlbum = activeCategory
@@ -198,9 +200,7 @@ export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) 
         {/* 그림 정리 모드 */}
         {isEditMode ? (
           <EditableProfileCard
-            feeds={allFeeds.map((feed) => ({
-              ...feed,
-            }))}
+            feeds={allFeeds}
             albums={userData?.albums || []}
             activeAlbum={activeCategory}
             onExitEditMode={toggleEditMode}

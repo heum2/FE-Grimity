@@ -40,12 +40,10 @@ export default function EditableProfileCard({
   const [selectedCards, setSelectedCards] = useState<string[]>([]);
   const openModal = useModalStore((state) => state.openModal);
   const router = useRouter();
-
-  const currentAlbum = activeAlbum
-    ? albums.find((album) => album.id === activeAlbum)
-    : { name: "전체", feedCount: feeds.length };
-
-  const filteredFeeds = activeAlbum ? feeds.filter((feed) => feed.albumId === activeAlbum) : feeds;
+  const currentAlbum = activeAlbum ? albums.find((album) => album.id === activeAlbum) : null;
+  const displayName = currentAlbum ? currentAlbum.name : "전체";
+  const filteredFeeds = feeds;
+  const displayCount = filteredFeeds.length;
 
   const handleCardSelect = (feedId: string, event: React.MouseEvent) => {
     event.preventDefault();
@@ -74,7 +72,7 @@ export default function EditableProfileCard({
     });
   };
 
-  // 삭제 확인 모달 열기
+  // TODO: 삭제 확인 모달 열기
   const handleDeleteSelected = () => {
     if (selectedCards.length === 0) return;
 
@@ -91,7 +89,7 @@ export default function EditableProfileCard({
     });
   };
 
-  // 돌아가기 핸들러
+  // TODO: 돌아가기
   const handleGoBack = () => {
     if (onExitEditMode) {
       onExitEditMode();
@@ -105,16 +103,16 @@ export default function EditableProfileCard({
       <div className={styles.center}>
         {/* 헤딩 */}
         <div className={styles.albumInfo}>
-          <h1 className={styles.albumName}>{currentAlbum?.name}</h1>
+          <h1 className={styles.albumName}>{displayName}</h1>
           <p className={styles.feedCountContainer}>
-            그림 <span className={styles.feedCount}> {filteredFeeds.length}</span>
+            그림 <span className={styles.feedCount}>{displayCount}</span>
           </p>
         </div>
 
         {/* 그림 카드 그리드 모음 */}
         {filteredFeeds.length === 0 ? (
           <div className={styles.emptyState}>
-            <p>그림이 없습니다.</p>
+            <p>선택한 앨범에 그림이 없습니다.</p>
           </div>
         ) : (
           <div className={styles.cardGrid}>
