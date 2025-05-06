@@ -15,7 +15,9 @@ export type ModalType =
   | "LIKE"
   | "REPORT"
   | "ALBUM"
-  | "ALBUM-SELECT";
+  | "ALBUM-SELECT"
+  | "ALBUM-MOVE"
+  | "ALBUM-DELETE";
 
 export interface ModalState {
   isOpen: boolean;

@@ -23,7 +23,11 @@ export default function ProfileCard({
   const imgRef = usePreventRightClick<HTMLImageElement>();
 
   const child = (
-    <div className={`${styles.container} ${isSelected ? styles.selected : ""}`}>
+    <div
+      className={`${styles.container} 
+      ${isEditMode ? styles.editmode : ""} 
+      ${isSelected ? styles.selected : ""}`}
+    >
       <div className={styles.imageContainer}>
         {hasMultipleImages && (
           <div className={styles.overlapIcon}>
@@ -32,9 +36,9 @@ export default function ProfileCard({
         )}
         <img src={thumbnail} alt={title} loading="lazy" className={styles.image} ref={imgRef} />
 
-        {isSelected && (
+        {isEditMode && (
           <div className={styles.checkmark}>
-            <IconComponent name="checkedbox" size={20} />
+            <IconComponent name={isSelected ? "checkedbox" : "checkbox"} size={20} />
           </div>
         )}
       </div>

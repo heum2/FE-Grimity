@@ -20,6 +20,10 @@
     align-items: center;
     box-sizing: border-box;
 
+    @include Size("mobile") {
+      padding: 0;
+    }
+
     @media (min-width: 1024px) and (max-width: 1500px) {
       max-width: 780px;
     }
@@ -155,6 +159,7 @@
         height: 40px;
 
         .label {
+          @include Body1;
           color: $gray70;
         }
 

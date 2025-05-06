@@ -19,6 +19,8 @@ import Like from "./Like/Like";
 import Report from "./Report/Report";
 import Album from "./Album/Album";
 import AlbumSelect from "./AlbumSelect/AlbumSelect";
+import AlbumMove from "./AlbumMove/AlbumMove";
+import AlbumDelete from "./AlbumDelete/AlbumDelete";
 
 export default function Modal() {
   const router = useRouter();
@@ -86,6 +88,10 @@ export default function Modal() {
         return <Album {...data} />;
       case "ALBUM-SELECT":
         return <AlbumSelect {...data} />;
+      case "ALBUM-MOVE":
+        return <AlbumMove {...data} />;
+      case "ALBUM-DELETE":
+        return <AlbumDelete {...data} />;
       default:
         return null;
     }
@@ -119,7 +125,7 @@ export default function Modal() {
                   ? styles.profileEditModal
                   : type === "FOLLOWER" || type === "FOLLOWING" || type === "LIKE"
                   ? styles.followModal
-                  : type == "ALBUM-SELECT"
+                  : type == "ALBUM-SELECT" || type == "ALBUM-MOVE" || type == "ALBUM-DELETE"
                   ? styles.albumSelectModal
                   : styles.modal
               }

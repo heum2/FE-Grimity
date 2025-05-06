@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styles from "./EditableProfileCard.module.scss";
+import styles from "./FeedAlbumEditor.module.scss";
 import ProfileCard from "@/components/Layout/ProfileCard/ProfileCard";
 import Button from "@/components/Button/Button";
 import IconComponent from "@/components/Asset/Icon";
@@ -24,19 +24,19 @@ interface Album {
   feedCount: number;
 }
 
-interface EditableProfileCardProps {
+interface FeedAlbumEditorProps {
   feeds: Feed[];
   albums: Album[];
   activeAlbum: string | null;
   onExitEditMode?: () => void;
 }
 
-export default function EditableProfileCard({
+export default function FeedAlbumEditor({
   feeds,
   albums,
   activeAlbum,
   onExitEditMode,
-}: EditableProfileCardProps) {
+}: FeedAlbumEditorProps) {
   const [selectedCards, setSelectedCards] = useState<string[]>([]);
   const openModal = useModalStore((state) => state.openModal);
   const router = useRouter();
@@ -56,40 +56,33 @@ export default function EditableProfileCard({
     }
   };
 
-  // 앨범 이동 모달 열기
   const handleMoveAlbum = () => {
     if (selectedCards.length === 0) return;
-
     openModal({
-      type: "MOVE_ALBUM",
-      props: {
+      type: "ALBUM-MOVE",
+      data: {
         selectedFeedIds: selectedCards,
         onComplete: () => {
           setSelectedCards([]);
-          // 이동 후 데이터를 새로고침하는 로직이 필요할 수 있음
         },
       },
     });
   };
 
-  // TODO: 삭제 확인 모달 열기
   const handleDeleteSelected = () => {
     if (selectedCards.length === 0) return;
-
     openModal({
-      type: "CONFIRM_DELETE",
-      props: {
+      type: "ALBUM-DELETE",
+      data: {
         selectedFeedIds: selectedCards,
         count: selectedCards.length,
-        onConfirm: () => {
-          // 삭제 후 데이터를 새로고침하는 로직이 필요할 수 있음
+        onComplete: () => {
           setSelectedCards([]);
         },
       },
     });
   };
 
-  // TODO: 돌아가기
   const handleGoBack = () => {
     if (onExitEditMode) {
       onExitEditMode();
@@ -109,7 +102,6 @@ export default function EditableProfileCard({
           </p>
         </div>
 
-        {/* 그림 카드 그리드 모음 */}
         {filteredFeeds.length === 0 ? (
           <div className={styles.emptyState}>
             <p>선택한 앨범에 그림이 없습니다.</p>
@@ -141,35 +133,38 @@ export default function EditableProfileCard({
           </div>
         )}
 
-        {/* 하단 푸터 (고정) */}
         <div className={styles.footer}>
-          <div className={styles.leftSection}>
-            <Button
-              type="text-primary"
-              size="m"
-              leftIcon={<IconComponent name="backBtn" size={16} />}
-              onClick={handleGoBack}
-            >
-              돌아가기
-            </Button>
-          </div>
-          <div className={styles.rightSection}>
-            <Button
-              type="outlined-primary"
-              size="m"
-              disabled={selectedCards.length === 0}
-              onClick={handleDeleteSelected}
-            >
-              선택 삭제
-            </Button>
-            <Button
-              type="filled-primary"
-              size="m"
-              disabled={selectedCards.length === 0}
-              onClick={handleMoveAlbum}
-            >
-              앨범 이동
-            </Button>
+          <div className={styles.inner}>
+            <div className={styles.leftSection}>
+              <Button
+                type="text-primary"
+                size="m"
+                leftIcon={<IconComponent name="backBtn" size={16} />}
+                onClick={handleGoBack}
+              >
+                돌아가기
+              </Button>
+            </div>
+            <div className={styles.rightSection}>
+              <Button
+                type="text-primary"
+                size="m"
+                leftIcon={<IconComponent name="x" size={16} />}
+                onClick={handleDeleteSelected}
+                disabled={selectedCards.length === 0}
+              >
+                선택 삭제
+              </Button>
+              <Button
+                type="text-primary"
+                size="m"
+                leftIcon={<IconComponent name="x" size={16} />}
+                onClick={handleMoveAlbum}
+                disabled={selectedCards.length === 0}
+              >
+                앨범 이동
+              </Button>
+            </div>
           </div>
         </div>
       </div>

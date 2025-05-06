@@ -15,7 +15,7 @@ import { useRouter } from "next/router";
 import AllCard from "../Board/BoardAll/AllCard/AllCard";
 import Category from "./Profile/CategoryBar/Category/Category";
 import { useDeviceStore } from "@/states/deviceStore";
-import EditableProfileCard from "./EditableProfileCard/EditableProfileCard";
+import FeedAlbumEditor from "./FeedAlbumEditor/FeedAlbumEditor";
 import { useDragScroll } from "@/hooks/useDragScroll";
 
 type SortOption = "latest" | "like" | "oldest";
@@ -51,12 +51,12 @@ export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) 
   const [selectedCards, setSelectedCards] = useState<string[]>([]);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
-  // 그림 정리 모드 토글
   const toggleEditMode = () => {
     setIsEditMode(!isEditMode);
     setSelectedCards([]);
     refetch();
   };
+
   const handleCategoryClick = (categoryId: string | null) => {
     setActiveCategory(categoryId);
   };
@@ -199,7 +199,7 @@ export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) 
         <Profile isMyProfile={isMyProfile} id={id} url={url} />
         {/* 그림 정리 모드 */}
         {isEditMode ? (
-          <EditableProfileCard
+          <FeedAlbumEditor
             feeds={allFeeds}
             albums={userData?.albums || []}
             activeAlbum={activeCategory}
@@ -236,7 +236,6 @@ export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) 
             <div className={styles.feedContainer}>
               {activeTab === "feeds" && (
                 <section className={styles.header}>
-                  {/* 카테고리 섹션 */}
                   <div className={styles.categoryContainer}>
                     <div className={`${styles.categoryBar}`} ref={categoryBarRef}>
                       <Category
@@ -256,7 +255,6 @@ export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) 
                         </Category>
                       ))}
                     </div>
-                    {/* 카테고리 추가버튼 */}
                     {isMyProfile && (
                       <button className={styles.addCategoryBtn} onClick={handleAddCategoryClick}>
                         <img
@@ -270,7 +268,6 @@ export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) 
                     )}
                   </div>
 
-                  {/* 그림 정리와 정렬 옵션은 그림이 있을 때만 표시 */}
                   {allFeeds.length > 0 && (
                     <div className={styles.rightBar}>
                       {isMyProfile && (
@@ -279,7 +276,6 @@ export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) 
                           <span className={styles.label}>그림 정리</span>
                         </button>
                       )}
-                      {/* 정렬 드롭다운 */}
                       <div className={styles.sortWrapper}>
                         <Dropdown
                           menuItems={sortOptions.map((option) => ({

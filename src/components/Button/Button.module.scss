@@ -92,10 +92,10 @@
 .text-primary {
   color: $gray70;
   background-color: $gray0;
-}
 
-.text-primary .disabled {
-  color: $gray30;
+  &.disabled {
+    color: $gray30;
+  }
 }
 
 .text-assistive {
