@@ -161,6 +161,10 @@
         .label {
           @include Body1;
           color: $gray70;
+
+          @include Size("mobile") {
+            @include Label2;
+          }
         }
 
         @include Size("mobile") {

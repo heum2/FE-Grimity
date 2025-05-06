@@ -286,7 +286,7 @@ export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) 
                           onOpenChange={handleDropdownToggle}
                           trigger={
                             <Button
-                              type="text-assistive"
+                              type="text-assistive-category"
                               size="l"
                               rightIcon={
                                 isDropdownOpen ? (

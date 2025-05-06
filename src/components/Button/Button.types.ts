@@ -4,7 +4,8 @@ export type ButtonType =
   | "outlined-secondary"
   | "outlined-assistive"
   | "text-primary"
-  | "text-assistive";
+  | "text-assistive"
+  | "text-assistive-category";
 
 export type ButtonSize = "l" | "m" | "s";
 
