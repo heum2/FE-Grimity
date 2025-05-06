@@ -20,18 +20,22 @@ interface AlbumModalProps {
 }
 
 export default function Album({ defaultName, albumId }: AlbumModalProps) {
-  const closeModal = useModalStore((state) => state.closeModal);
   const { data, isLoading, isError, refetch } = useMyAlbums();
+  const closeModal = useModalStore((state) => state.closeModal);
+  const isMobile = useDeviceStore((state) => state.isMobile);
+  const { showToast } = useToast();
+  // 앨범 추가 관리
+  const albumsRef = useRef<any[]>([]);
   const [albums, setAlbums] = useState<any[]>([]);
-  const [editingAlbums, setEditingAlbums] = useState<any[]>([]);
   const [name, setName] = useState("");
   const [error, setError] = useState("");
+  // 앨범 순서 편집 관리
+  const [editingAlbums, setEditingAlbums] = useState<any[]>([]);
   const [isEditingOrder, setIsEditingOrder] = useState(false);
-  const { showToast } = useToast();
-  const isMobile = useDeviceStore((state) => state.isMobile);
+  // 앨범명 편집 관리
+  const [isEditing, setIsEditing] = useState<{ [key: string]: boolean }>({});
   const [inputValues, setInputValues] = useState<{ [key: string]: string }>({});
   const debounceTimers = useRef<{ [key: string]: NodeJS.Timeout }>({});
-  const albumsRef = useRef<any[]>([]);
 
   useEffect(() => {
     albumsRef.current = albums;
@@ -54,17 +58,16 @@ export default function Album({ defaultName, albumId }: AlbumModalProps) {
     refetch();
   }, [refetch]);
 
+  // 앨범 추가
   const handleCreateAlbum = async () => {
     if (name.trim() === "" || name.trim().length < 1) {
       setError("앨범명은 비워둘 수 없습니다.");
       return;
     }
-
     if (albums.length >= 8) {
       setError("최대 8개의 앨범을 만들 수 있어요.");
       return;
     }
-
     try {
       await createAlbums({ name });
       showToast("앨범이 추가되었습니다!", "success");
@@ -80,7 +83,6 @@ export default function Album({ defaultName, albumId }: AlbumModalProps) {
     }
   };
 
-  // 순서 편집: 드래그 앤 드롭
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) return;
 
@@ -91,7 +93,6 @@ export default function Album({ defaultName, albumId }: AlbumModalProps) {
     setEditingAlbums(reordered);
   };
 
-  // 편집 모드 토글
   const toggleEditingOrder = async () => {
     if (isEditingOrder) {
       const originalIds = albums.map((a) => a.id).join();
@@ -110,7 +111,6 @@ export default function Album({ defaultName, albumId }: AlbumModalProps) {
           showToast("앨범 순서 변경에 실패했습니다.", "error");
           setEditingAlbums(albums);
         }
-      } else {
       }
     } else {
       setEditingAlbums([...albums]);
@@ -118,36 +118,44 @@ export default function Album({ defaultName, albumId }: AlbumModalProps) {
     setIsEditingOrder(!isEditingOrder);
   };
 
-  // TODO: 비워졌을때 실패하는 현상 고치기 (디바운싱 문제)
-  // 앨범명 업데이트
-  const updateAlbumName = async (id: string, newName: string) => {
-    try {
-      await patchAlbums(id, { name: newName });
-      refetch();
-    } catch (err: any) {
-      showToast(
-        err?.message === "앨범 이름 중복"
-          ? "중복된 이름은 사용하실 수 없어요"
-          : "앨범 이름 변경에 실패했습니다.",
-        "error",
-      );
+  const updateAlbumName = useCallback(
+    async (id: string, newName: string) => {
+      setIsEditing((prev) => ({ ...prev, [id]: true }));
 
-      const originalAlbum = albumsRef.current.find((a) => a.id === id);
-      if (originalAlbum) {
-        setInputValues((prev) => ({ ...prev, [id]: originalAlbum.name }));
+      try {
+        await patchAlbums(id, { name: newName });
+        setAlbums((prevAlbums) =>
+          prevAlbums.map((album) => (album.id === id ? { ...album, name: newName } : album)),
+        );
+        refetch();
+      } catch (err: any) {
+        showToast(
+          err?.message === "앨범 이름 중복"
+            ? "중복된 이름은 사용하실 수 없어요"
+            : "앨범 이름 변경에 실패했습니다.",
+          "error",
+        );
+
+        const originalAlbum = albumsRef.current.find((a) => a.id === id);
+        if (originalAlbum) {
+          setInputValues((prev) => ({ ...prev, [id]: originalAlbum.name }));
+        }
+      } finally {
+        setIsEditing((prev) => ({ ...prev, [id]: false }));
       }
-    }
-  };
+    },
+    [showToast, refetch],
+  );
 
   const handleInputChange = useCallback(
     (id: string, value: string) => {
-      setInputValues((prev) => ({ ...prev, [id]: value }));
-
       if (debounceTimers.current[id]) {
         clearTimeout(debounceTimers.current[id]);
       }
+      setInputValues((prev) => ({ ...prev, [id]: value }));
       debounceTimers.current[id] = setTimeout(() => {
         const trimmedValue = value.trim();
+
         if (!trimmedValue) {
           showToast("앨범명은 비워둘 수 없습니다.", "error");
           const originalAlbum = albumsRef.current.find((a) => a.id === id);
@@ -163,7 +171,7 @@ export default function Album({ defaultName, albumId }: AlbumModalProps) {
         }
       }, 1000); // 디바운싱 딜레이
     },
-    [showToast],
+    [showToast, updateAlbumName],
   );
 
   useEffect(() => {
@@ -171,7 +179,7 @@ export default function Album({ defaultName, albumId }: AlbumModalProps) {
       Object.values(debounceTimers.current).forEach((timer) => clearTimeout(timer));
       closeModal();
     };
-  }, []);
+  }, [closeModal]);
 
   const handleDeleteAlbum = async (id: string) => {
     try {
@@ -259,6 +267,7 @@ export default function Album({ defaultName, albumId }: AlbumModalProps) {
                         value={inputValues[album.id] ?? album.name ?? ""}
                         className={styles.albumItem}
                         onChange={(e) => handleInputChange(album.id, e.target.value)}
+                        disabled={isEditing[album.id]}
                         maxLength={15}
                       />
                       <div className={styles.removeAlbumButton}>
