@@ -62,9 +62,7 @@ export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) 
   };
 
   const handleAddCategoryClick = () => {
-    openModal({
-      type: "ALBUM",
-    });
+    isMobile ? openModal({ type: "ALBUM", isFill: true }) : openModal({ type: "ALBUM" });
   };
 
   const { data: postsData } = useUserPosts({

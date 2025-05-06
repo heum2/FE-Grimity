@@ -212,113 +212,117 @@ export default function Album({ defaultName, albumId }: AlbumModalProps) {
         </div>
       )}
 
-      <div className={styles.innerContainer}>
-        <p className={styles.titleText}>앨범 추가</p>
-        <div className={styles.addAlbumContainer}>
-          <div className={`${styles.inputWrapper} ${error ? styles.error : ""}`}>
-            <input
-              id="name"
-              className={styles.inputField}
-              placeholder="예시 : '크로키' 또는 '일러스트'"
-              value={name}
-              onChange={(e) => {
-                setError("");
-                setName(e.target.value);
-              }}
-              maxLength={15}
-            />
-            {name && (
-              <div className={styles.countTotal}>
-                <p className={styles.count}>{name.length}</p>/15
+      <div className={styles.textBtnContainer}>
+        <div>
+          <div className={styles.addAlbumContainer}>
+            <p className={styles.titleText}>앨범 추가</p>
+            <div className={styles.inputArea}>
+              <div className={`${styles.inputWrapper} ${error ? styles.error : ""}`}>
+                <input
+                  id="name"
+                  className={styles.inputField}
+                  placeholder="예시 : '크로키' 또는 '일러스트'"
+                  value={name}
+                  onChange={(e) => {
+                    setError("");
+                    setName(e.target.value);
+                  }}
+                  maxLength={15}
+                />
+                {name && (
+                  <div className={styles.countTotal}>
+                    <p className={styles.count}>{name.length}</p>/15
+                  </div>
+                )}
+                {error && <p className={styles.errorMessage}>{error}</p>}
               </div>
+              <Button onClick={handleCreateAlbum} type="filled-primary" size="l">
+                추가
+              </Button>
+            </div>
+          </div>
+
+          <div className={styles.editAlbumContainer}>
+            <div className={styles.editBar}>
+              <p className={styles.titleText}>앨범 목록</p>
+              <p
+                className={`${styles.editOrderBtn} ${isEditingOrder ? styles.completeBtn : ""}`}
+                onClick={toggleEditingOrder}
+              >
+                {isEditingOrder ? "완료" : "순서 편집"}
+              </p>
+            </div>
+
+            {isError && (
+              <div className={styles.errorMessage}>앨범 목록을 불러오는데 실패했습니다.</div>
             )}
-            {error && <p className={styles.errorMessage}>{error}</p>}
-          </div>
-          <Button onClick={handleCreateAlbum} type="filled-primary" size="l">
-            추가
-          </Button>
-        </div>
 
-        <div className={styles.editAlbumContainer}>
-          <div className={styles.editBar}>
-            <p className={styles.titleText}>앨범 목록</p>
-            <p
-              className={`${styles.editOrderBtn} ${isEditingOrder ? styles.completeBtn : ""}`}
-              onClick={toggleEditingOrder}
-            >
-              {isEditingOrder ? "완료" : "순서 편집"}
-            </p>
-          </div>
-
-          {isError && (
-            <div className={styles.errorMessage}>앨범 목록을 불러오는데 실패했습니다.</div>
-          )}
-
-          {albums.length === 0 && !isError && !isLoading ? (
-            <div>아직 앨범이 없어요.</div>
-          ) : (
-            <div className={styles.albumListContainer}>
-              {!isEditingOrder ? (
-                <div className={styles.albumList}>
-                  {albums.map((album) => (
-                    <div key={album.id} className={styles.albumsContainer}>
-                      <input
-                        type="text"
-                        value={inputValues[album.id] ?? album.name ?? ""}
-                        className={styles.albumItem}
-                        onChange={(e) => handleInputChange(album.id, e.target.value)}
-                        disabled={isEditing[album.id]}
-                        maxLength={15}
-                      />
-                      <div className={styles.removeAlbumButton}>
-                        <div onClick={() => handleDeleteAlbum(album.id)}>
-                          <IconComponent name="deleteAlbum" />
+            {albums.length === 0 && !isError && !isLoading ? (
+              <div>아직 앨범이 없어요.</div>
+            ) : (
+              <div>
+                {!isEditingOrder ? (
+                  <div className={styles.albumList}>
+                    {albums.map((album) => (
+                      <div key={album.id} className={styles.albumsContainer}>
+                        <input
+                          type="text"
+                          value={inputValues[album.id] ?? album.name ?? ""}
+                          className={styles.albumItem}
+                          onChange={(e) => handleInputChange(album.id, e.target.value)}
+                          disabled={isEditing[album.id]}
+                          maxLength={15}
+                        />
+                        <div className={styles.removeAlbumButton}>
+                          <div onClick={() => handleDeleteAlbum(album.id)}>
+                            <IconComponent name="deleteAlbum" />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <DragDropContext onDragEnd={handleDragEnd}>
-                  <Droppable droppableId="albumList" direction="vertical">
-                    {(provided) => (
-                      <div
-                        {...provided.droppableProps}
-                        ref={provided.innerRef}
-                        className={styles.albumList}
-                      >
-                        {editingAlbums.map((album, index) => (
-                          <Draggable key={album.id} draggableId={album.id} index={index}>
-                            {(provided) => (
-                              <div
-                                className={styles.albumsContainer}
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                              >
-                                <input
-                                  type="text"
-                                  value={album.name || ""}
-                                  disabled={true}
-                                  className={styles.albumItem}
-                                />
+                    ))}
+                  </div>
+                ) : (
+                  <DragDropContext onDragEnd={handleDragEnd}>
+                    <Droppable droppableId="albumList" direction="vertical">
+                      {(provided) => (
+                        <div
+                          {...provided.droppableProps}
+                          ref={provided.innerRef}
+                          className={styles.albumList}
+                        >
+                          {editingAlbums.map((album, index) => (
+                            <Draggable key={album.id} draggableId={album.id} index={index}>
+                              {(provided) => (
                                 <div
-                                  className={styles.removeAlbumButton}
-                                  {...provided.dragHandleProps}
+                                  className={styles.albumsContainer}
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
                                 >
-                                  <IconComponent name="editAlbumOrder" />
+                                  <input
+                                    type="text"
+                                    value={album.name || ""}
+                                    disabled={true}
+                                    className={styles.albumItem}
+                                  />
+                                  <div
+                                    className={styles.removeAlbumButton}
+                                    {...provided.dragHandleProps}
+                                  >
+                                    <IconComponent name="editAlbumOrder" />
+                                  </div>
                                 </div>
-                              </div>
-                            )}
-                          </Draggable>
-                        ))}
-                        {provided.placeholder}
-                      </div>
-                    )}
-                  </Droppable>
-                </DragDropContext>
-              )}
-            </div>
-          )}
+                              )}
+                            </Draggable>
+                          ))}
+                          {provided.placeholder}
+                        </div>
+                      )}
+                    </Droppable>
+                  </DragDropContext>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
