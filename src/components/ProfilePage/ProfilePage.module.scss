@@ -17,7 +17,7 @@
     padding: 0 8px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     box-sizing: border-box;
 
     @include Size("mobile") {
@@ -33,13 +33,12 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
 
     .header {
       width: 100%;
       display: flex;
       flex-direction: row;
-      justify-content: row;
+      justify-content: flex-start;
       @include Body1;
       align-items: center;
       margin: 12px 0;
@@ -63,6 +62,8 @@
         align-items: center;
         min-width: 0;
         flex: 1 1 auto;
+        min-width: 0;
+        max-width: 100%;
         margin-right: 8px;
         width: auto;
         gap: 8px;
@@ -202,7 +203,8 @@
     grid-template-columns: repeat(4, 1fr);
     row-gap: 40px;
     column-gap: 16px;
-    margin-top: 12px 0;
+    margin-top: 12px;
+    justify-items: start;
 
     @include Size("mobile") {
       grid-template-columns: repeat(2, 1fr);
