@@ -14,12 +14,7 @@ import { useModalStore } from "@/states/modalStore";
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
 import router from "next/router";
 
-interface AlbumModalProps {
-  defaultName: string;
-  albumId: string;
-}
-
-export default function Album({ defaultName, albumId }: AlbumModalProps) {
+export default function Album() {
   const { data, isLoading, isError, refetch } = useMyAlbums();
   const closeModal = useModalStore((state) => state.closeModal);
   const isMobile = useDeviceStore((state) => state.isMobile);
@@ -234,15 +229,14 @@ export default function Album({ defaultName, albumId }: AlbumModalProps) {
                 {error && <p className={styles.errorMessage}>{error}</p>}
               </div>
               <div className={styles.btn}>
-                {isMobile ? (
-                  <Button onClick={handleCreateAlbum} type="filled-primary" size="m" width="100">
-                    추가
-                  </Button>
-                ) : (
-                  <Button onClick={handleCreateAlbum} type="filled-primary" size="l">
-                    추가
-                  </Button>
-                )}
+                <Button
+                  onClick={handleCreateAlbum}
+                  type="filled-primary"
+                  size={isMobile ? "m" : "l"}
+                  disabled={isError}
+                >
+                  추가
+                </Button>
               </div>
             </div>
           </div>

@@ -141,10 +141,11 @@
   background: $gray0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: row;
   padding: 0 16px;
   z-index: 1501;
   border-bottom: 1px solid $gray20;
+  gap: 10px;
 
   h2 {
     @include Title5;

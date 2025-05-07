@@ -109,10 +109,10 @@ export default function Modal() {
     <>
       {isOpen && isFill && (
         <div className={styles.mobileHeader}>
-          <h2>{data?.title}</h2>
           <button onClick={handleCloseModal}>
             <IconComponent name="x" size={24} isBtn />
           </button>
+          <h2>{data?.title}</h2>
         </div>
       )}
 

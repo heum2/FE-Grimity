@@ -117,6 +117,7 @@
         flex: 1;
 
         @include Size("mobile") {
+          margin-top: 10px;
           width: 100px;
           height: 40px;
         }
@@ -131,7 +132,6 @@
     max-height: 552px;
 
     @include Size("mobile") {
-      max-height: calc(100% - 150px);
       flex: 1;
 
       &::-webkit-scrollbar {
@@ -149,7 +149,7 @@
       justify-content: space-between;
       align-items: center;
       margin-top: 0;
-      margin-bottom: 12px;
+      margin-bottom: 20px;
 
       .titleText {
         flex: 1;
@@ -227,7 +227,7 @@
         outline: none;
         @include Label2;
         color: $gray80;
-        background-color: $gray10;
+        background-color: $gray0;
         gap: 8px;
 
         &:focus-within {
@@ -236,8 +236,8 @@
         }
 
         @include Size("mobile") {
+          @include Label3;
           height: 52px;
-          margin-bottom: 12px;
         }
       }
 
