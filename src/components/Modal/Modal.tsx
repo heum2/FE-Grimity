@@ -21,6 +21,8 @@ import Album from "./Album/Album";
 import AlbumSelect from "./AlbumSelect/AlbumSelect";
 import AlbumMove from "./AlbumMove/AlbumMove";
 import AlbumDelete from "./AlbumDelete/AlbumDelete";
+import ProfileLink from "./ProfileLink/ProfileLink";
+import ShareProfile from "./ShareProfile/ShareProfile";
 
 export default function Modal() {
   const router = useRouter();
@@ -68,6 +70,10 @@ export default function Modal() {
         return <Join />;
       case "PROFILE-EDIT":
         return <ProfileEdit />;
+      case "PROFILE-LINK":
+        return <ProfileLink />;
+      case "SHARE-PROFILE":
+        return <ShareProfile {...data} />;
       case "BACKGROUND":
         return <Background imageSrc={data?.imageSrc} file={data?.file} />;
       case "FOLLOWER":

@@ -71,7 +71,7 @@ export default function Share({ feedId, title, image }: ShareBtnProps) {
           onClick={handleTwitterShare}
           leftIcon={<IconComponent name="twitter" size={20} />}
         >
-          트위터에 공유
+          X로 공유
         </Button>
         <Button
           size="l"
