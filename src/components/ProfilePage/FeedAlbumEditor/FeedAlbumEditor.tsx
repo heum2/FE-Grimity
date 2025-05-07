@@ -84,6 +84,7 @@ export default function FeedAlbumEditor({
     openModal({
       type: "ALBUM-DELETE",
       data: {
+        hideCloseButton: true,
         selectedFeedIds: selectedCards,
         count: selectedCards.length,
         onComplete: () => {

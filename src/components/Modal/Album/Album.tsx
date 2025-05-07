@@ -212,7 +212,7 @@ export default function Album({ defaultName, albumId }: AlbumModalProps) {
       <div className={styles.textBtnContainer}>
         <div>
           <div className={styles.addAlbumContainer}>
-            <p className={styles.titleText}>앨범 추가</p>
+            <p className={styles.titleText}>새 앨범 추가</p>
             <div className={styles.inputArea}>
               <div className={`${styles.inputWrapper} ${error ? styles.error : ""}`}>
                 <input
@@ -233,9 +233,17 @@ export default function Album({ defaultName, albumId }: AlbumModalProps) {
                 )}
                 {error && <p className={styles.errorMessage}>{error}</p>}
               </div>
-              <Button onClick={handleCreateAlbum} type="filled-primary" size="l">
-                추가
-              </Button>
+              <div className={styles.btn}>
+                {isMobile ? (
+                  <Button onClick={handleCreateAlbum} type="filled-primary" size="m" width="100">
+                    추가
+                  </Button>
+                ) : (
+                  <Button onClick={handleCreateAlbum} type="filled-primary" size="l">
+                    추가
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
 

@@ -194,11 +194,6 @@ export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) 
       })),
     ) || [];
 
-  // 현재 활성화된 앨범
-  const currentAlbum = activeCategory
-    ? userData?.albums?.find((album) => album.id === activeCategory)
-    : { name: "전체", feedCount: allFeeds.length };
-
   return (
     <div className={styles.container}>
       <div className={styles.center}>

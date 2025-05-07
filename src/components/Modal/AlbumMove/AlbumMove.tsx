@@ -54,7 +54,7 @@ export default function AlbumMove() {
     <div className={styles.container}>
       {!isEmpty && (
         <div className={styles.titleContainer}>
-          <h2 className={styles.title}>앨범 이동</h2>
+          {!isMobile && <h2 className={styles.title}>앨범 이동</h2>}
           <p className={styles.subtitle}>
             <span className={styles.count}>{selectedFeedIds.length}</span>개의 그림 선택
           </p>

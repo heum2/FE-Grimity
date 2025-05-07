@@ -138,8 +138,10 @@ export default function Modal() {
                   ? styles.profileEditModal
                   : type === "FOLLOWER" || type === "FOLLOWING" || type === "LIKE"
                   ? styles.followModal
-                  : type == "ALBUM-SELECT" || type == "ALBUM-MOVE" || type == "ALBUM-DELETE"
+                  : type == "ALBUM-SELECT" || type == "ALBUM-MOVE"
                   ? styles.albumSelectModal
+                  : type == "ALBUM-DELETE"
+                  ? styles.albumDeleteModal
                   : styles.modal
               }
               onClick={(e) => e.stopPropagation()}
