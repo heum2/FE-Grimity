@@ -241,36 +241,41 @@ export default function ProfileEdit() {
           />
           <div className={styles.linkContainer}>
             <label className={styles.label}>외부 링크</label>
-            {links.map((link, index) => (
-              <div key={index} className={styles.linkInputContainer}>
-                {link.linkName === "직접 입력" ? (
+            {links.map((link, index) => {
+              const isFullUrl = /^https?:\/\//.test(link.link);
+              const prefix = isFullUrl ? "" : PLATFORM_URLS[link.linkName] || "";
+
+              return (
+                <div key={index} className={styles.linkInputContainer}>
+                  {link.linkName === "직접 입력" ? (
+                    <TextField
+                      placeholder="링크 이름"
+                      value={link.customName || ""}
+                      onChange={(e) => {
+                        const newLinks = [...links];
+                        newLinks[index].customName = e.target.value;
+                        setLinks(newLinks);
+                      }}
+                    />
+                  ) : (
+                    <SelectBox
+                      options={Object.keys(PLATFORM_URLS).map((k) => ({ value: k, label: k }))}
+                      value={link.linkName}
+                      onChange={(val) => handlePlatformChange(index, val)}
+                    />
+                  )}
                   <TextField
-                    placeholder="링크 이름"
-                    value={link.customName || ""}
-                    onChange={(e) => {
-                      const newLinks = [...links];
-                      newLinks[index].customName = e.target.value;
-                      setLinks(newLinks);
-                    }}
+                    placeholder="링크 입력"
+                    value={link.link}
+                    onChange={(e) => handleLinkChange(index, e.target.value)}
+                    prefix={prefix}
                   />
-                ) : (
-                  <SelectBox
-                    options={Object.keys(PLATFORM_URLS).map((k) => ({ value: k, label: k }))}
-                    value={link.linkName}
-                    onChange={(val) => handlePlatformChange(index, val)}
-                  />
-                )}
-                <TextField
-                  placeholder="링크 입력"
-                  value={link.link}
-                  onChange={(e) => handleLinkChange(index, e.target.value)}
-                  prefix={PLATFORM_URLS[link.linkName] || ""}
-                />
-                <div onClick={() => handleRemoveLink(index)} className={styles.removeLinkButton}>
-                  <IconComponent name="deleteLink" size={24} isBtn />
+                  <div onClick={() => handleRemoveLink(index)} className={styles.removeLinkButton}>
+                    <IconComponent name="deleteLink" size={24} isBtn />
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
             <div className={styles.addBtn}>
               <Button
                 type="outlined-assistive"
