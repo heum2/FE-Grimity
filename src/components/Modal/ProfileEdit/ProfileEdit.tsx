@@ -23,6 +23,16 @@ interface LinkItem {
   customName?: string;
 }
 
+// 플랫폼별 기본 URL
+const PLATFORM_URLS: Record<string, string> = {
+  X: "x.com/",
+  인스타그램: "instagram.com/",
+  유튜브: "youtube.com/",
+  픽시브: "pixiv.net/users/",
+  이메일: "",
+  "직접 입력": "",
+};
+
 export default function ProfileEdit() {
   const { data: myData, isLoading, refetch } = useMyData();
   const [name, setName] = useState("");
@@ -30,7 +40,7 @@ export default function ProfileEdit() {
   const [description, setDescription] = useState<string>("");
   const [profileId, setProfileId] = useState<string>("");
   const [profileIdError, setProfileIdError] = useState<string>("");
-  const [links, setLinks] = useState<LinkItem[]>([{ linkName: "x", link: "" }]);
+  const [links, setLinks] = useState<LinkItem[]>([]);
   const [isError, setIsError] = useState(false);
   const closeModal = useModalStore((state) => state.closeModal);
   const { restoreScrollPosition } = useScrollRestoration("profileEdit-scroll");
@@ -38,67 +48,33 @@ export default function ProfileEdit() {
   const isMobile = useDeviceStore((state) => state.isMobile);
   useIsMobile();
 
-  // 플랫폼별 기본 URL 매핑
-  const PLATFORM_URLS: Record<string, string> = {
-    x: "x.com/",
-    instagram: "instagram.com/",
-    youtube: "youtube.com/",
-    pixiv: "pixiv.net/users/",
-    email: "",
-    custom: "",
-  };
-
   useEffect(() => {
     if (myData) {
-      setName(myData.name?.replace(/\s+$/, "") || "");
+      setName(myData.name?.trim() || "");
       setDescription(myData.description || "");
       setProfileId(myData.url || "");
 
       if (myData.links?.length) {
         const processedLinks = myData.links.map((link) => {
           let processedLink: LinkItem = { ...link };
-
-          // custom 링크인 경우 customName에 링크 이름 저장
-          if (
-            link.linkName !== "x" &&
-            link.linkName !== "instagram" &&
-            link.linkName !== "youtube" &&
-            link.linkName !== "pixiv" &&
-            link.linkName !== "email"
-          ) {
+          const known = ["X", "인스타그램", "유튜브", "픽시브", "이메일"];
+          if (!known.includes(link.linkName)) {
             processedLink = {
               ...processedLink,
               customName: link.linkName,
-              linkName: "custom",
+              linkName: "직접 입력",
             };
           }
-
-          // URL에서 플랫폼 prefix 제거
-          if (link.linkName !== "custom" && link.linkName !== "email") {
-            const prefix = PLATFORM_URLS[link.linkName];
-            if (prefix && link.link.includes(prefix)) {
-              // https:// 제거
-              let cleanLink = link.link.replace(/^https?:\/\//, "");
-              // prefix 부분 제거
-              cleanLink = cleanLink.replace(prefix, "");
-              // 유튜브 @ 제거
-              if (link.linkName === "youtube") {
-                cleanLink = cleanLink.replace(/^@/, "");
-              }
-              processedLink.link = cleanLink;
-            }
-          }
-
           return processedLink;
         });
-
         setLinks(processedLinks);
       } else {
-        setLinks([{ linkName: "x", link: "" }]);
+        setLinks([]);
       }
     }
 
-    if (sessionStorage.getItem("profileEdit-scroll") !== null) {
+    const scrollPos = sessionStorage.getItem("profileEdit-scroll");
+    if (scrollPos !== null) {
       restoreScrollPosition();
       sessionStorage.removeItem("profileEdit-scroll");
     }
@@ -128,72 +104,45 @@ export default function ProfileEdit() {
   });
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
-    setName(inputValue);
-    if (nameError) {
-      setNameError("");
-    }
+    setName(e.target.value);
+    if (nameError) setNameError("");
   };
 
   const handleProfileIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value.trim();
-    setProfileId(inputValue);
-    if (profileIdError) {
-      setProfileIdError("");
-    }
+    setProfileId(e.target.value.trim());
+    if (profileIdError) setProfileIdError("");
   };
 
   const handlePlatformChange = (index: number, platform: string) => {
     const newLinks = [...links];
-    // 직접입력으로 변경할 때 customName 속성 추가
-    if (platform === "custom") {
-      newLinks[index] = {
-        ...newLinks[index],
-        linkName: platform,
-        customName: "",
-        link: newLinks[index].link || "",
-      };
-    } else {
-      newLinks[index] = {
-        ...newLinks[index],
-        linkName: platform,
-        link: newLinks[index].link || "",
-      };
-    }
+    newLinks[index] = {
+      ...newLinks[index],
+      linkName: platform,
+      customName: platform === "직접 입력" ? "" : undefined,
+    };
     setLinks(newLinks);
   };
 
   const handleLinkChange = (index: number, value: string) => {
     const newLinks = [...links];
     const platform = newLinks[index].linkName;
+    let cleanValue = value.trim();
 
-    if (platform === "custom") {
-      newLinks[index].link = value;
-    } else {
-      if (platform === "youtube") {
-        // 유튜브는 prefix에 @ 설정해놓고 입력값엔 @ 제외하도록 처리
-        const pureId = value
-          .replace(/https?:\/\/(www\.)?/, "")
-          .replace("youtube.com/", "")
-          .replace("youtube.com@", "")
-          .replace("@", "")
-          .replace(/\//g, "");
-        newLinks[index].link = pureId;
-      } else {
-        const baseUrl = PLATFORM_URLS[platform] || "";
-        const pureId = value
-          .replace(/https?:\/\/(www\.)?/, "")
-          .replace(baseUrl, "")
-          .replace(/\//g, "");
-        newLinks[index].link = pureId;
-      }
+    if (platform !== "직접 입력" && platform !== "이메일") {
+      const baseUrl = PLATFORM_URLS[platform];
+      cleanValue = cleanValue
+        .replace(/^https?:\/\/(www\.)?/, "")
+        .replace(baseUrl, "")
+        .replace(/^@/, "")
+        .replace(/\//g, "");
     }
 
+    newLinks[index].link = cleanValue;
     setLinks(newLinks);
   };
 
   const handleAddLink = () => {
-    setLinks([...links, { linkName: "x", link: "" }]);
+    setLinks([...links, { linkName: "X", link: "" }]);
   };
 
   const handleRemoveLink = (index: number) => {
@@ -201,104 +150,46 @@ export default function ProfileEdit() {
   };
 
   const handleSave = () => {
+    const trimmedName = name.trim();
+    const trimmedProfileId = profileId.trim();
     setNameError("");
     setProfileIdError("");
 
-    const nameWithoutTrailingSpace = name?.replace(/\s+$/, "") || "";
-    const profileIdTrimmed = profileId.trim();
+    if (!trimmedName) return setNameError("닉네임을 입력해주세요.");
+    if (trimmedName.length < 2) return showToast("닉네임은 두 글자 이상 입력해야 합니다.", "error");
+    if (!trimmedProfileId) return setProfileIdError("프로필 URL을 입력해주세요.");
+    if (!isValidProfileIdFormat(trimmedProfileId))
+      return setProfileIdError("숫자, 영문(소문자), 언더바(_)만 입력 가능합니다.");
+    if (isForbiddenProfileId(trimmedProfileId))
+      return setProfileIdError("사용할 수 없는 ID입니다.");
 
-    if (!nameWithoutTrailingSpace) {
-      setNameError("닉네임을 입력해주세요.");
-      return;
-    }
-
-    if (nameWithoutTrailingSpace.trim().length < 2) {
-      showToast("닉네임은 두 글자 이상 입력해야 합니다.", "error");
-      return;
-    }
-
-    if (!profileIdTrimmed) {
-      setProfileIdError("프로필 URL을 입력해주세요.");
-      return;
-    }
-
-    if (!isValidProfileIdFormat(profileIdTrimmed)) {
-      setProfileIdError("숫자, 영문(소문자), 언더바(_)만 입력 가능합니다.");
-      return;
-    }
-
-    if (isForbiddenProfileId(profileIdTrimmed)) {
-      setProfileIdError("사용할 수 없는 ID입니다.");
-      return;
-    }
-
-    const hasInvalidLinks = links.some((link) => {
-      if (link.linkName || link.link) {
-        return !link.linkName || !link.link;
-      }
-      return false;
-    });
-
-    if (hasInvalidLinks) {
-      showToast("링크 이름과 URL을 모두 입력해주세요.", "error");
-      return;
-    }
+    const hasInvalidLinks = links.some((l) => (l.linkName && !l.link) || (!l.linkName && l.link));
+    if (hasInvalidLinks) return showToast("링크 이름과 URL을 모두 입력해주세요.", "error");
 
     const formattedLinks = links
-      .filter((link) => link.linkName && link.link)
-      .map((link) => {
-        let finalUrl = link.link;
-        let linkName = link.linkName === "custom" ? link.customName || "custom" : link.linkName;
-
-        // 이미 https://가 포함된 경우 중복 추가 방지
-        const hasHttpProtocol = finalUrl.startsWith("http://") || finalUrl.startsWith("https://");
-
-        if (link.linkName !== "custom" && link.linkName !== "email") {
-          const baseUrl = PLATFORM_URLS[link.linkName] || "";
-
-          if (link.linkName === "youtube") {
-            if (!hasHttpProtocol) {
-              finalUrl = `https://${baseUrl}@${link.link}`; // 유튜브는 @ 추가
-            }
-          } else {
-            if (!hasHttpProtocol) {
-              finalUrl = `https://${baseUrl}${link.link}`;
-            }
-          }
+      .filter((l) => l.linkName && l.link)
+      .map((l) => {
+        const name = l.linkName === "직접 입력" ? l.customName || "custom" : l.linkName;
+        let url = l.link.trim();
+        const hasProtocol = /^https?:\/\//.test(url);
+        if (!hasProtocol) {
+          const base = PLATFORM_URLS[l.linkName] || "";
+          url = l.linkName === "유튜브" ? `https://${base}@${url}` : `https://${base}${url}`;
         }
-        // 커스텀 링크 http/https 없으면 추가
-        else if (link.linkName === "custom") {
-          if (!hasHttpProtocol) {
-            finalUrl = `https://${finalUrl}`;
-          }
-        }
-
-        return {
-          linkName,
-          link: finalUrl,
-        };
+        return { linkName: name, link: url };
       });
 
     const updatedInfo: UpdateUserRequest = {
-      name: nameWithoutTrailingSpace,
+      name: trimmedName,
       description,
       links: formattedLinks,
-      url: profileIdTrimmed,
+      url: trimmedProfileId,
     };
 
     mutation.mutate(updatedInfo);
   };
 
-  if (isLoading || name === null) {
-    return <Loader />;
-  }
-
-  const getLinkPrefix = (linkName: string) => {
-    if (linkName === "youtube") {
-      return "youtube.com/@";
-    }
-    return PLATFORM_URLS[linkName] || "";
-  };
+  if (isLoading || name === null) return <Loader />;
 
   return (
     <div className={styles.container}>
@@ -312,11 +203,11 @@ export default function ProfileEdit() {
           <TextField
             label="닉네임"
             placeholder="프로필에 노출될 닉네임을 입력해주세요."
-            errorMessage="중복된 닉네임입니다."
             maxLength={12}
             value={name}
             onChange={handleNameChange}
-            isError={isError}
+            isError={!!nameError}
+            errorMessage={nameError}
           />
           <div className={styles.contentContainer}>
             <label className={styles.label} htmlFor="description">
@@ -333,8 +224,7 @@ export default function ProfileEdit() {
               />
               {description && (
                 <div className={styles.countTotal}>
-                  <p className={styles.count}>{description.length}</p>
-                  /200
+                  <p className={styles.count}>{description.length}</p>/200
                 </div>
               )}
             </div>
@@ -353,44 +243,29 @@ export default function ProfileEdit() {
             <label className={styles.label}>외부 링크</label>
             {links.map((link, index) => (
               <div key={index} className={styles.linkInputContainer}>
-                {link.linkName === "custom" ? (
-                  <div className={styles.linkName}>
-                    <TextField
-                      placeholder="링크 이름"
-                      value={link.customName || ""}
-                      onChange={(e) => {
-                        const newLinks = [...links];
-                        newLinks[index] = {
-                          ...newLinks[index],
-                          linkName: "custom",
-                          customName: e.target.value,
-                        };
-                        setLinks(newLinks);
-                      }}
-                    />
-                  </div>
+                {link.linkName === "직접 입력" ? (
+                  <TextField
+                    placeholder="링크 이름"
+                    value={link.customName || ""}
+                    onChange={(e) => {
+                      const newLinks = [...links];
+                      newLinks[index].customName = e.target.value;
+                      setLinks(newLinks);
+                    }}
+                  />
                 ) : (
                   <SelectBox
-                    options={[
-                      { value: "x", label: "X" },
-                      { value: "instagram", label: "인스타그램" },
-                      { value: "youtube", label: "유튜브" },
-                      { value: "pixiv", label: "픽시브" },
-                      { value: "email", label: "이메일" },
-                      { value: "custom", label: "직접 입력" },
-                    ]}
-                    value={link.linkName || "x"}
-                    onChange={(value) => handlePlatformChange(index, value)}
+                    options={Object.keys(PLATFORM_URLS).map((k) => ({ value: k, label: k }))}
+                    value={link.linkName}
+                    onChange={(val) => handlePlatformChange(index, val)}
                   />
                 )}
-                <div className={styles.urlInput}>
-                  <TextField
-                    placeholder="링크 입력"
-                    value={link.link}
-                    onChange={(e) => handleLinkChange(index, e.target.value)}
-                    prefix={getLinkPrefix(link.linkName)}
-                  />
-                </div>
+                <TextField
+                  placeholder="링크 입력"
+                  value={link.link}
+                  onChange={(e) => handleLinkChange(index, e.target.value)}
+                  prefix={PLATFORM_URLS[link.linkName] || ""}
+                />
                 <div onClick={() => handleRemoveLink(index)} className={styles.removeLinkButton}>
                   <IconComponent name="deleteLink" size={24} isBtn />
                 </div>
