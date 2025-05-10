@@ -34,11 +34,12 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
   const { query } = router;
   const currentType = (query.type as string) || "all";
   const currentPage = Number(query.page) || 1;
-  const totalPages = Math.ceil(totalCount / 10);
+  const totalPages = Math.ceil(totalCount / (isDetail ? 5 : 10));
   const { showToast } = useToast();
   const isMobile = useDeviceStore((state) => state.isMobile);
   useIsMobile();
   const { pathname } = useRouter();
+  const postsPerPage = isDetail ? 5 : 10;
 
   const { data: noticesData } = usePostsNotices();
   const {
@@ -48,14 +49,14 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
   } = usePostsLatest({
     type: currentType.toUpperCase() as "ALL" | "QUESTION" | "FEEDBACK",
     page: currentPage,
-    size: 10,
+    size: postsPerPage,
   });
 
   const { data: searchData, isLoading: isSearchLoading } = usePostSearch(
     query.keyword
       ? {
           searchBy: (query.searchBy as "combined" | "name") || "combined",
-          size: 10,
+          size: postsPerPage,
           page: currentPage,
           keyword: query.keyword as string,
         }
@@ -76,7 +77,7 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
       }
     } else if (noticesData && latestData) {
       const mergedPosts =
-        currentPage === 1 ? [...noticesData, ...latestData.posts] : latestData.posts;
+        currentPage === 1 && !isDetail ? [...noticesData, ...latestData.posts] : latestData.posts;
 
       setPosts(mergedPosts);
       setTotalCount(latestData.totalCount + (currentPage === 1 ? noticesData.length : 0));
@@ -183,7 +184,7 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
 
   return (
     <div className={styles.container}>
-      {isMobile && currentType === "all" && (
+      {isMobile && currentType === "all" && !isDetail && (
         <div className={styles.search}>
           <div className={styles.dropdown}>
             <Dropdown
