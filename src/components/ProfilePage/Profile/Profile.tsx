@@ -340,6 +340,8 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
     });
   };
 
+  const MAX_VISIBLE_LINKS = 3;
+
   return (
     <div className={styles.container}>
       {userData && (
@@ -625,7 +627,7 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                     <p className={styles.description}>{userData.description}</p>
                   )}
                   <div className={styles.linkContainer}>
-                    {userData.links.slice(0, isMobile ? 1 : 3).map(({ linkName, link }, index) => {
+                    {userData.links.slice(0, MAX_VISIBLE_LINKS).map(({ linkName, link }, index) => {
                       const isEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(
                         link,
                       );
@@ -658,8 +660,7 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                         </div>
                       );
                     })}
-
-                    {userData.links.length > (isMobile ? 1 : 3) && (
+                    {userData.links.length > MAX_VISIBLE_LINKS && (
                       <div
                         onClick={() =>
                           openModal({
@@ -670,7 +671,7 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                         }
                       >
                         <span className={styles.moreLinksText}>
-                          외 링크 {userData.links.length - (isMobile ? 1 : 3)}개
+                          외 링크 {userData.links.length - MAX_VISIBLE_LINKS}개
                         </span>
                       </div>
                     )}
