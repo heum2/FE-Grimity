@@ -19,7 +19,7 @@
   @include Label2;
 
   &:focus-within {
-    border: 1px solid $secandary1;
+    border: 1px solid $gray70;
     background-color: $gray0;
   }
 }

@@ -17,6 +17,8 @@ import UploadModal from "./Upload/Upload";
 import SharePost from "./SharePost/SharePost";
 import Like from "./Like/Like";
 import Report from "./Report/Report";
+import ProfileLink from "./ProfileLink/ProfileLink";
+import ShareProfile from "./ShareProfile/ShareProfile";
 
 export default function Modal() {
   const router = useRouter();
@@ -64,6 +66,10 @@ export default function Modal() {
         return <Join />;
       case "PROFILE-EDIT":
         return <ProfileEdit />;
+      case "PROFILE-LINK":
+        return <ProfileLink />;
+      case "SHARE-PROFILE":
+        return <ShareProfile {...data} />;
       case "BACKGROUND":
         return <Background imageSrc={data?.imageSrc} file={data?.file} />;
       case "FOLLOWER":
@@ -111,6 +117,8 @@ export default function Modal() {
               className={
                 type === "PROFILE-EDIT"
                   ? styles.profileEditModal
+                  : type === "PROFILE-LINK"
+                  ? styles.profileLinkModal
                   : type === "FOLLOWER" || type === "FOLLOWING" || type === "LIKE"
                   ? styles.followModal
                   : styles.modal

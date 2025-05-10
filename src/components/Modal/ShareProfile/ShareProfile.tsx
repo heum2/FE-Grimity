@@ -1,15 +1,15 @@
 import { useToast } from "@/hooks/useToast";
-import styles from "./SharePost.module.scss";
+import styles from "./ShareProfile.module.scss";
 import { useModalStore } from "@/states/modalStore";
 import Button from "@/components/Button/Button";
 import { serviceUrl } from "@/constants/serviceurl";
-import { ShareBtnProps } from "@/components/Board/Detail/ShareBtn/ShareBtn.types";
 import IconComponent from "@/components/Asset/Icon";
+import { ShareProfileProps } from "./ShareProfile.types";
 
-export default function SharePost({ postId, title }: ShareBtnProps) {
+export default function ShareProfile({ id, name, image }: ShareProfileProps) {
   const { showToast } = useToast();
   const closeModal = useModalStore((state) => state.closeModal);
-  const url = `${serviceUrl}/posts/${postId}`;
+  const url = `${serviceUrl}/${id}`;
 
   const copyToClipboard = async () => {
     try {
@@ -36,8 +36,8 @@ export default function SharePost({ postId, title }: ShareBtnProps) {
       objectType: "feed",
       content: {
         title: "그림 커뮤니티 그리미티",
-        description: title,
-        imageUrl: "https://avatars.githubusercontent.com/u/194518500?s=200&v=4",
+        description: name,
+        imageUrl: image || "https://avatars.githubusercontent.com/u/194518500?s=200&v=4",
         link: { mobileWebUrl: url, webUrl: url },
       },
     });
@@ -46,7 +46,7 @@ export default function SharePost({ postId, title }: ShareBtnProps) {
   };
 
   const handleTwitterShare = () => {
-    const text = "이 글 같이 봐요!";
+    const text = `${name}님의 프로필을 공유해보세요!`;
     window.open("https://twitter.com/intent/tweet?text=" + text + "&url=" + url);
   };
 
@@ -54,7 +54,7 @@ export default function SharePost({ postId, title }: ShareBtnProps) {
     <div className={styles.container}>
       <div className={styles.messageContainer}>
         <img src="/image/logo.svg" width={120} height={34} alt="logo" loading="lazy" />
-        <p className={styles.text}>그리미티의 글을 공유해보세요!</p>
+        <p className={styles.text}>프로필을 공유해보세요!</p>
       </div>
       <div className={styles.buttonContainer}>
         <Button

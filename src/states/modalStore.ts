@@ -6,6 +6,8 @@ export type ModalType =
   | "JOIN"
   | "PROFILE-ID"
   | "PROFILE-EDIT"
+  | "PROFILE-LINK"
+  | "SHARE-PROFILE"
   | "BACKGROUND"
   | "FOLLOWER"
   | "FOLLOWING"

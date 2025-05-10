@@ -23,8 +23,21 @@ import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { deleteMe } from "@/api/users/deleteMe";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
+import { useClipboard } from "@/utils/copyToClipboard";
+
+type IconName = "linkInstagram" | "linkX" | "linkYoutube" | "linkPixiv" | "linkMail" | "linkCustom";
+
+const ICON_MAP_KO: Record<string, IconName> = {
+  인스타그램: "linkInstagram",
+  유튜브: "linkYoutube",
+  픽시브: "linkPixiv",
+  X: "linkX",
+  이메일: "linkMail",
+  "직접 입력": "linkCustom",
+};
 
 export default function Profile({ isMyProfile, id, url }: ProfileProps) {
+  const { copyToClipboard } = useClipboard();
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const user_id = useAuthStore((state) => state.user_id);
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
@@ -322,6 +335,15 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
     }
   };
 
+  const handleShareProfile = () => {
+    openModal({
+      type: "SHARE-PROFILE",
+      data: { id: userData?.url, name: userData?.name, image: userData?.image },
+    });
+  };
+
+  const MAX_VISIBLE_LINKS = 3;
+
   return (
     <div className={styles.container}>
       {userData && (
@@ -516,6 +538,10 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                                 }
                                 menuItems={[
                                   {
+                                    label: "프로필 공유",
+                                    onClick: handleShareProfile,
+                                  },
+                                  {
                                     label: "회원 탈퇴",
                                     onClick: handleWithdrawal,
                                     isDelete: true,
@@ -545,6 +571,10 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                                 }
                                 menuItems={[
                                   {
+                                    label: "프로필 공유",
+                                    onClick: handleShareProfile,
+                                  },
+                                  {
                                     label: "신고하기",
                                     onClick: handleOpenReportModal,
                                     isDelete: true,
@@ -570,6 +600,10 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                                 }
                                 menuItems={[
                                   {
+                                    label: "프로필 공유",
+                                    onClick: handleShareProfile,
+                                  },
+                                  {
                                     label: "신고하기",
                                     onClick: handleOpenReportModal,
                                     isDelete: true,
@@ -586,29 +620,67 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                 <div
                   className={styles.descriptionContainer}
                   style={{
-                    gap: userData.description && userData.links.length > 0 ? "20px" : "0",
+                    gap: userData.description && userData.links.length > 0 ? "12px" : "0",
                   }}
                 >
                   {userData.description !== "" && (
                     <p className={styles.description}>{userData.description}</p>
                   )}
                   <div className={styles.linkContainer}>
-                    {userData.links.map(({ linkName, link }, index) => {
+                    {userData.links.slice(0, MAX_VISIBLE_LINKS).map(({ linkName, link }, index) => {
                       const isEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(
                         link,
                       );
+                      const iconName: IconName = isEmail
+                        ? "linkMail"
+                        : ICON_MAP_KO[linkName] || "linkCustom";
+
+                      const displayName = (() => {
+                        if (isEmail) return link;
+                        if (linkName === "X") {
+                          const handleMatch = link.match(
+                            /^https?:\/\/(?:www\.)?x\.com\/([a-zA-Z0-9_]+)/i,
+                          );
+                          return handleMatch ? `@${handleMatch[1]}` : linkName;
+                        }
+                        return linkName;
+                      })();
 
                       return (
                         <div key={index} className={styles.linkWrapper}>
-                          <IconComponent name="link" size={20} />
-                          <a
-                            href={isEmail ? `mailto:${link}` : link}
-                            className={styles.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {linkName}
-                          </a>
+                          <IconComponent name={iconName} size={18} />
+                          {isEmail ? (
+                            <span
+                              className={styles.link}
+                              onClick={() => copyToClipboard(link, "이메일 주소가 복사되었습니다.")}
+                            >
+                              {displayName}
+                            </span>
+                          ) : (
+                            <a
+                              href={link}
+                              className={styles.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {displayName}
+                            </a>
+                          )}
+                          {index === MAX_VISIBLE_LINKS - 1 &&
+                            userData.links.length > MAX_VISIBLE_LINKS && (
+                              <span
+                                className={styles.moreLinksText}
+                                onClick={() =>
+                                  openModal({
+                                    type: "PROFILE-LINK",
+                                    data: null,
+                                    isFill: isMobile,
+                                  })
+                                }
+                              >
+                                외 링크 {userData.links.length - MAX_VISIBLE_LINKS}개
+                              </span>
+                            )}
                         </div>
                       );
                     })}
@@ -635,6 +707,10 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                         }
                         menuItems={[
                           {
+                            label: "프로필 공유",
+                            onClick: handleShareProfile,
+                          },
+                          {
                             label: "회원 탈퇴",
                             onClick: handleWithdrawal,
                             isDelete: true,
@@ -660,6 +736,10 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                         }
                         menuItems={[
                           {
+                            label: "프로필 공유",
+                            onClick: handleShareProfile,
+                          },
+                          {
                             label: "신고하기",
                             onClick: handleOpenReportModal,
                             isDelete: true,
@@ -677,12 +757,17 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                     </div>
                     <div className={styles.dropdown}>
                       <Dropdown
+                        isSide
                         trigger={
                           <div className={styles.menuBtn}>
                             <IconComponent name="meatball" size={16} />
                           </div>
                         }
                         menuItems={[
+                          {
+                            label: "프로필 공유",
+                            onClick: handleShareProfile,
+                          },
                           {
                             label: "신고하기",
                             onClick: handleOpenReportModal,
