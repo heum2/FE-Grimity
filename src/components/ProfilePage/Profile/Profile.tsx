@@ -648,7 +648,7 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
 
                       return (
                         <div key={index} className={styles.linkWrapper}>
-                          <IconComponent name={iconName} size={20} />
+                          <IconComponent name={iconName} size={18} />
                           <a
                             href={isEmail ? `mailto:${link}` : link}
                             className={styles.link}
@@ -657,24 +657,24 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                           >
                             {displayName}
                           </a>
+                          {index === MAX_VISIBLE_LINKS - 1 &&
+                            userData.links.length > MAX_VISIBLE_LINKS && (
+                              <span
+                                className={styles.moreLinksText}
+                                onClick={() =>
+                                  openModal({
+                                    type: "PROFILE-LINK",
+                                    data: null,
+                                    isFill: isMobile,
+                                  })
+                                }
+                              >
+                                외 링크 {userData.links.length - MAX_VISIBLE_LINKS}개
+                              </span>
+                            )}
                         </div>
                       );
                     })}
-                    {userData.links.length > MAX_VISIBLE_LINKS && (
-                      <div
-                        onClick={() =>
-                          openModal({
-                            type: "PROFILE-LINK",
-                            data: null,
-                            isFill: isMobile,
-                          })
-                        }
-                      >
-                        <span className={styles.moreLinksText}>
-                          외 링크 {userData.links.length - MAX_VISIBLE_LINKS}개
-                        </span>
-                      </div>
-                    )}
                   </div>
                 </div>
               </div>
