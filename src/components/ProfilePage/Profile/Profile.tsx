@@ -633,11 +633,16 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                         ? "linkMail"
                         : ICON_MAP_KO[linkName] || "linkCustom";
 
-                      const displayName = isEmail
-                        ? link
-                        : ["인스타그램", "X", "유튜브", "픽시브", "이메일"].includes(linkName)
-                        ? `@${link.split("/").pop()}`
-                        : linkName;
+                      const displayName = (() => {
+                        if (isEmail) return link;
+                        if (linkName === "X") {
+                          const handleMatch = link.match(
+                            /^https?:\/\/(?:www\.)?x\.com\/([a-zA-Z0-9_]+)/i,
+                          );
+                          return handleMatch ? `@${handleMatch[1]}` : linkName;
+                        }
+                        return linkName;
+                      })();
 
                       return (
                         <div key={index} className={styles.linkWrapper}>

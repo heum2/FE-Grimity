@@ -108,17 +108,26 @@ export default function ProfileEdit() {
     const hasInvalidLinks = links.some((l) => (l.linkName && !l.link) || (!l.linkName && l.link));
     if (hasInvalidLinks) return showToast("링크 이름과 URL을 모두 입력해주세요.", "error");
 
-    const formattedLinks = links
-      .filter((l) => l.linkName && l.link)
-      .map((l) => {
-        const name = l.linkName === "직접 입력" ? l.customName || "custom" : l.linkName;
-        let url = l.link.trim();
-        if (!/^https?:\/\//.test(url)) {
-          const base = PLATFORM_URLS[l.linkName] || "";
-          url = l.linkName === "유튜브" ? `https://${base}@${url}` : `https://${base}${url}`;
-        }
-        return { linkName: name, link: url };
-      });
+    const formattedLinks: { linkName: string; link: string }[] = [];
+
+    for (const l of links) {
+      if (!l.linkName || !l.link) continue;
+
+      const name = l.linkName === "직접 입력" ? l.customName || "custom" : l.linkName;
+      let url = l.link.trim();
+
+      if (!/^https?:\/\//i.test(url)) {
+        const base = PLATFORM_URLS[l.linkName] || "";
+        url = `https://${base}${url}`;
+      }
+
+      try {
+        new URL(url);
+        formattedLinks.push({ linkName: name, link: url });
+      } catch {
+        return showToast("올바른 URL 형식이 아닙니다.", "error");
+      }
+    }
 
     mutation.mutate({
       name: trimmedName,
@@ -208,10 +217,6 @@ export default function ProfileEdit() {
                 {(provided) => (
                   <div ref={provided.innerRef} {...provided.droppableProps}>
                     {links.map((link, index) => {
-                      const prefix = /^https?:\/\//.test(link.link)
-                        ? ""
-                        : PLATFORM_URLS[link.linkName] || "";
-
                       return (
                         <Draggable
                           key={index}
@@ -256,27 +261,18 @@ export default function ProfileEdit() {
                                 />
                               )}
                               <TextField
-                                placeholder="링크 입력"
+                                placeholder={
+                                  link.linkName === "직접 입력"
+                                    ? "전체 URL을 입력해주세요."
+                                    : `${PLATFORM_URLS[link.linkName]}`
+                                }
                                 value={link.link}
                                 onChange={(e) => {
                                   const value = e.target.value.trim();
                                   const newLinks = [...links];
-                                  const platform = newLinks[index].linkName;
-                                  let cleanValue = value;
-
-                                  if (platform !== "직접 입력" && platform !== "이메일") {
-                                    const baseUrl = PLATFORM_URLS[platform];
-                                    cleanValue = cleanValue
-                                      .replace(/^https?:\/\/(www\.)?/, "")
-                                      .replace(baseUrl, "")
-                                      .replace(/^@/, "")
-                                      .replace(/\//g, "");
-                                  }
-
-                                  newLinks[index].link = cleanValue;
+                                  newLinks[index].link = value;
                                   setLinks(newLinks);
                                 }}
-                                prefix={prefix}
                               />
                               {isEditingOrder ? (
                                 <div {...provided.dragHandleProps} className={styles.dragHandle}>
