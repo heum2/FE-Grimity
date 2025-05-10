@@ -4,8 +4,10 @@ import { useIsMobile } from "@/hooks/useIsMobile";
 import IconComponent from "@/components/Asset/Icon";
 import { useUserDataByUrl } from "@/api/users/getId";
 import { useRouter } from "next/router";
+import { useClipboard } from "@/utils/copyToClipboard";
 
 export default function ProfileLink() {
+  const { copyToClipboard } = useClipboard();
   const isMobile = useDeviceStore((state) => state.isMobile);
   const { query } = useRouter();
   const { data: userData } = useUserDataByUrl(query.url as string);
@@ -39,15 +41,24 @@ export default function ProfileLink() {
               <IconComponent name={iconName} size={32} isBtn />
               <div className={styles.linkInfo}>
                 <span className={styles.linkLabel}>{linkName}</span>
-                <a
-                  href={isEmail ? `mailto:${link}` : link}
-                  className={styles.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title={link}
-                >
-                  {link}
-                </a>
+                {isEmail ? (
+                  <span
+                    className={styles.link}
+                    onClick={() => copyToClipboard(link, "이메일 주소가 복사되었습니다.")}
+                  >
+                    {link}
+                  </span>
+                ) : (
+                  <a
+                    href={link}
+                    className={styles.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={link}
+                  >
+                    {link}
+                  </a>
+                )}
               </div>
             </div>
           );

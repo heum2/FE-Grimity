@@ -23,6 +23,7 @@ import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { deleteMe } from "@/api/users/deleteMe";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
+import { useClipboard } from "@/utils/copyToClipboard";
 
 type IconName = "linkInstagram" | "linkX" | "linkYoutube" | "linkPixiv" | "linkMail" | "linkCustom";
 
@@ -36,6 +37,7 @@ const ICON_MAP_KO: Record<string, IconName> = {
 };
 
 export default function Profile({ isMyProfile, id, url }: ProfileProps) {
+  const { copyToClipboard } = useClipboard();
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const user_id = useAuthStore((state) => state.user_id);
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
@@ -649,14 +651,23 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                       return (
                         <div key={index} className={styles.linkWrapper}>
                           <IconComponent name={iconName} size={18} />
-                          <a
-                            href={isEmail ? `mailto:${link}` : link}
-                            className={styles.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {displayName}
-                          </a>
+                          {isEmail ? (
+                            <span
+                              className={styles.link}
+                              onClick={() => copyToClipboard(link, "이메일 주소가 복사되었습니다.")}
+                            >
+                              {displayName}
+                            </span>
+                          ) : (
+                            <a
+                              href={link}
+                              className={styles.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {displayName}
+                            </a>
+                          )}
                           {index === MAX_VISIBLE_LINKS - 1 &&
                             userData.links.length > MAX_VISIBLE_LINKS && (
                               <span
