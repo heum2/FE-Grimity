@@ -114,13 +114,21 @@ export default function ProfileEdit() {
       if (!l.linkName || !l.link) continue;
 
       const name = l.linkName === "직접 입력" ? l.customName || "custom" : l.linkName;
-      let url = l.link.trim();
+      const url = l.link.trim();
 
-      try {
-        new URL(url);
+      if (l.linkName === "이메일") {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(url)) {
+          return showToast("올바른 이메일 형식이 아닙니다.", "error");
+        }
         formattedLinks.push({ linkName: name, link: url });
-      } catch {
-        return showToast("올바른 URL 형식이 아닙니다.", "error");
+      } else {
+        try {
+          new URL(url);
+          formattedLinks.push({ linkName: name, link: url });
+        } catch {
+          return showToast("올바른 URL 형식이 아닙니다.", "error");
+        }
       }
     }
 
