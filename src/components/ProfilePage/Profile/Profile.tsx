@@ -24,6 +24,17 @@ import { useIsMobile } from "@/hooks/useIsMobile";
 import { deleteMe } from "@/api/users/deleteMe";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 
+type IconName = "linkInstagram" | "linkX" | "linkYoutube" | "linkPixiv" | "linkMail" | "linkCustom";
+
+const ICON_MAP_KO: Record<string, IconName> = {
+  인스타그램: "linkInstagram",
+  유튜브: "linkYoutube",
+  픽시브: "linkPixiv",
+  X: "linkX",
+  이메일: "linkMail",
+  "직접 입력": "linkCustom",
+};
+
 export default function Profile({ isMyProfile, id, url }: ProfileProps) {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const user_id = useAuthStore((state) => state.user_id);
@@ -618,28 +629,13 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                       const isEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(
                         link,
                       );
-                      const linkType = linkName.toLowerCase();
-                      type IconName =
-                        | "linkInstagram"
-                        | "linkX"
-                        | "linkYoutube"
-                        | "linkPixiv"
-                        | "linkMail"
-                        | "linkCustom";
-                      let iconName: IconName = "linkCustom";
-
-                      if (linkType === "instagram") iconName = "linkInstagram";
-                      else if (linkType === "x") iconName = "linkX";
-                      else if (linkType === "youtube") iconName = "linkYoutube";
-                      else if (linkType === "pixiv") iconName = "linkPixiv";
-                      else if (isEmail) iconName = "linkMail";
+                      const iconName: IconName = isEmail
+                        ? "linkMail"
+                        : ICON_MAP_KO[linkName] || "linkCustom";
 
                       const displayName = isEmail
                         ? link
-                        : linkType === "instagram" ||
-                          linkType === "x" ||
-                          linkType === "youtube" ||
-                          linkType === "pixiv"
+                        : ["인스타그램", "X", "유튜브", "픽시브", "이메일"].includes(linkName)
                         ? `@${link.split("/").pop()}`
                         : linkName;
 
@@ -657,6 +653,7 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                         </div>
                       );
                     })}
+
                     {userData.links.length > (isMobile ? 1 : 3) && (
                       <div
                         onClick={() =>

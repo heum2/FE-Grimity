@@ -225,18 +225,6 @@ export default function ProfileEdit() {
                               ref={provided.innerRef}
                               {...provided.draggableProps}
                             >
-                              {/* {isEditingOrder ? (
-                                <div {...provided.dragHandleProps} className={styles.dragHandle}>
-                                  <IconComponent name="editAlbumOrder" size={16} isBtn />
-                                </div>
-                              ) : (
-                                <div
-                                  onClick={() => setLinks(links.filter((_, i) => i !== index))}
-                                  className={styles.removeLinkButton}
-                                >
-                                  <IconComponent name="deleteLink" size={24} isBtn />
-                                </div>
-                              )} */}
                               {link.linkName === "직접 입력" ? (
                                 <TextField
                                   placeholder="링크 이름"
