@@ -226,15 +226,17 @@ export default function ProfileEdit() {
                               {...provided.draggableProps}
                             >
                               {link.linkName === "직접 입력" ? (
-                                <TextField
-                                  placeholder="링크 이름"
-                                  value={link.customName || ""}
-                                  onChange={(e) => {
-                                    const newLinks = [...links];
-                                    newLinks[index].customName = e.target.value;
-                                    setLinks(newLinks);
-                                  }}
-                                />
+                                <div className={styles.linkName}>
+                                  <TextField
+                                    placeholder="링크 이름"
+                                    value={link.customName || ""}
+                                    onChange={(e) => {
+                                      const newLinks = [...links];
+                                      newLinks[index].customName = e.target.value;
+                                      setLinks(newLinks);
+                                    }}
+                                  />
+                                </div>
                               ) : (
                                 <SelectBox
                                   options={Object.keys(PLATFORM_URLS).map((k) => ({
