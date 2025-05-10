@@ -76,7 +76,7 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
       }
     } else if (noticesData && latestData) {
       const mergedPosts =
-        currentPage === 1 ? [...noticesData, ...latestData.posts] : latestData.posts;
+        currentPage === 1 && !isDetail ? [...noticesData, ...latestData.posts] : latestData.posts;
 
       setPosts(mergedPosts);
       setTotalCount(latestData.totalCount + (currentPage === 1 ? noticesData.length : 0));
