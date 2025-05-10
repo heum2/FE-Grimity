@@ -278,7 +278,7 @@ export default function ProfileEdit() {
                               />
                               {isEditingOrder ? (
                                 <div {...provided.dragHandleProps} className={styles.dragHandle}>
-                                  <IconComponent name="editAlbumOrder" size={16} isBtn />
+                                  <IconComponent name="editOrder" size={16} isBtn />
                                 </div>
                               ) : (
                                 <div
