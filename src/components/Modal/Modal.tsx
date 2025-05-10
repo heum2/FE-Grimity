@@ -117,6 +117,8 @@ export default function Modal() {
               className={
                 type === "PROFILE-EDIT"
                   ? styles.profileEditModal
+                  : type === "PROFILE-LINK"
+                  ? styles.profileLinkModal
                   : type === "FOLLOWER" || type === "FOLLOWING" || type === "LIKE"
                   ? styles.followModal
                   : styles.modal
