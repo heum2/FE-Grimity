@@ -183,7 +183,7 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
 
   return (
     <div className={styles.container}>
-      {isMobile && currentType === "all" && (
+      {isMobile && currentType === "all" && !isDetail && (
         <div className={styles.search}>
           <div className={styles.dropdown}>
             <Dropdown
