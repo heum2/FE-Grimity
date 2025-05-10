@@ -2,7 +2,7 @@ import axiosInstance from "@/constants/baseurl";
 
 export async function deleteMe(): Promise<void> {
   try {
-    await axiosInstance.delete("/users/me", {
+    await axiosInstance.delete("/me", {
       headers: {
         "is-delete-account": "true",
       },

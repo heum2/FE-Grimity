@@ -12,7 +12,7 @@ export async function getMySaveList({
   cursor,
 }: MySaveListRequest): Promise<MyLikeFeedsResponse> {
   try {
-    const response = await axiosInstance.get("/users/me/save-feeds", { params: { size, cursor } });
+    const response = await axiosInstance.get("/me/save-feeds", { params: { size, cursor } });
 
     return response.data;
   } catch (error) {

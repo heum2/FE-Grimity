@@ -13,7 +13,7 @@ export async function putMyInfo({
   links,
   url,
 }: UpdateUserRequest): Promise<void> {
-  await axiosInstance.put("/users/me", {
+  await axiosInstance.put("/me", {
     name,
     description,
     links,
