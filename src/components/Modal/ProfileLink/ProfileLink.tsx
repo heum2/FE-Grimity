@@ -12,33 +12,14 @@ export default function ProfileLink() {
   useIsMobile();
 
   const getIconName = (linkName: string, link: string) => {
-    const linkType = linkName.toLowerCase();
     const isEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(link);
 
-    if (linkType === "instagram") return "linkInstagram";
-    if (linkType === "x") return "linkX";
-    if (linkType === "youtube") return "linkYoutube";
-    if (linkType === "pixiv") return "linkPixiv";
-    if (isEmail) return "linkMail";
+    if (linkName === "인스타그램") return "linkInstagram";
+    if (linkName === "X") return "linkX";
+    if (linkName === "유튜브") return "linkYoutube";
+    if (linkName === "픽시브") return "linkPixiv";
+    if (linkName === "이메일" || isEmail) return "linkMail";
     return "linkCustom";
-  };
-
-  const getDisplayName = (linkName: string, link: string) => {
-    const linkType = linkName.toLowerCase();
-    const isEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(link);
-
-    if (isEmail) return link;
-    return link;
-  };
-
-  const formatLinkName = (linkName: string) => {
-    const linkType = linkName.toLowerCase();
-    if (linkType === "instagram") return "Instagram";
-    if (linkType === "x") return "X";
-    if (linkType === "youtube") return "YouTube";
-    if (linkType === "pixiv") return "Pixiv";
-    if (linkType === "email") return "Mail";
-    return linkName.charAt(0).toUpperCase() + linkName.slice(1);
   };
 
   return (
@@ -52,20 +33,20 @@ export default function ProfileLink() {
         {userData?.links.map(({ linkName, link }, index) => {
           const isEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(link);
           const iconName = getIconName(linkName, link);
-          const displayName = getDisplayName(linkName, link);
 
           return (
             <div key={index} className={styles.linkItem}>
               <IconComponent name={iconName} size={32} isBtn />
               <div className={styles.linkInfo}>
+                <span className={styles.linkLabel}>{linkName}</span>
                 <a
                   href={isEmail ? `mailto:${link}` : link}
                   className={styles.link}
                   target="_blank"
                   rel="noopener noreferrer"
+                  title={link}
                 >
-                  <span className={styles.linkLabel}>{formatLinkName(linkName)}</span>
-                  {displayName}
+                  {link}
                 </a>
               </div>
             </div>
