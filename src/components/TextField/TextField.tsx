@@ -4,6 +4,7 @@ import { forwardRef } from "react";
 
 interface ExtendedTextFieldProps extends TextFieldProps {
   prefix?: string;
+  isProfileEdit?: boolean;
 }
 
 const TextField = forwardRef<HTMLInputElement, ExtendedTextFieldProps>(
@@ -19,6 +20,7 @@ const TextField = forwardRef<HTMLInputElement, ExtendedTextFieldProps>(
       onKeyDown,
       onFocus,
       isReply,
+      isProfileEdit,
       prefix,
     },
     ref,
@@ -43,9 +45,11 @@ const TextField = forwardRef<HTMLInputElement, ExtendedTextFieldProps>(
           </div>
         )}
         <div
-          className={`${isReply ? styles.inputReplyContainer : styles.inputContainer} ${
-            isError && styles.error
-          }`}
+          className={`
+          ${isReply ? styles.inputReplyContainer : styles.inputContainer}
+          ${isError ? styles.error : ""}
+          ${isProfileEdit ? styles.isProfileEdit : ""}
+        `}
         >
           {prefix && <span className={styles.prefix}>{prefix}</span>}
           <input

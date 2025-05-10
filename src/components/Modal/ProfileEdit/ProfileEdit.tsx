@@ -240,6 +240,7 @@ export default function ProfileEdit() {
                                       newLinks[index].customName = e.target.value;
                                       setLinks(newLinks);
                                     }}
+                                    isProfileEdit
                                   />
                                 </div>
                               ) : (
