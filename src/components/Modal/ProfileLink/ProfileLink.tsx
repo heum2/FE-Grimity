@@ -13,14 +13,12 @@ export default function ProfileLink() {
   const { data: userData } = useUserDataByUrl(query.url as string);
   useIsMobile();
 
-  const getIconName = (linkName: string, link: string) => {
-    const isEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(link);
-
+  const getIconName = (linkName: string) => {
     if (linkName === "인스타그램") return "linkInstagram";
     if (linkName === "X") return "linkX";
     if (linkName === "유튜브") return "linkYoutube";
     if (linkName === "픽시브") return "linkPixiv";
-    if (linkName === "이메일" || isEmail) return "linkMail";
+    if (linkName === "이메일") return "linkMail";
     return "linkCustom";
   };
 
@@ -33,15 +31,14 @@ export default function ProfileLink() {
       )}
       <div className={styles.linksContainer}>
         {userData?.links.map(({ linkName, link }, index) => {
-          const isEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(link);
-          const iconName = getIconName(linkName, link);
+          const iconName = getIconName(linkName);
 
           return (
             <div key={index} className={styles.linkItem}>
               <IconComponent name={iconName} size={32} isBtn />
               <div className={styles.linkInfo}>
                 <span className={styles.linkLabel}>{linkName}</span>
-                {isEmail ? (
+                {linkName === "이메일" ? (
                   <span
                     className={styles.link}
                     onClick={() => copyToClipboard(link, "이메일 주소가 복사되었습니다.")}
