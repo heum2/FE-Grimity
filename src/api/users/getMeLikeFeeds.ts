@@ -27,7 +27,7 @@ export async function getMyLikeList({
   cursor,
 }: MyLikeListRequest): Promise<MyLikeFeedsResponse> {
   try {
-    const response = await axiosInstance.get("/users/me/like-feeds", { params: { size, cursor } });
+    const response = await axiosInstance.get("/me/like-feeds", { params: { size, cursor } });
 
     return response.data;
   } catch (error) {

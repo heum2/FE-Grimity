@@ -5,7 +5,7 @@ import { MyProfileResponse } from "@grimity/dto";
 
 export async function getMyInfo(): Promise<MyProfileResponse> {
   try {
-    const response = await axiosInstance.get("/users/me");
+    const response = await axiosInstance.get("/me");
 
     return response.data;
   } catch (error) {
