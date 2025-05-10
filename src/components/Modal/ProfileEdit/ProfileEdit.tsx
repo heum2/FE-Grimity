@@ -116,11 +116,6 @@ export default function ProfileEdit() {
       const name = l.linkName === "직접 입력" ? l.customName || "custom" : l.linkName;
       let url = l.link.trim();
 
-      if (!/^https?:\/\//i.test(url)) {
-        const base = PLATFORM_URLS[l.linkName] || "";
-        url = `https://${base}${url}`;
-      }
-
       try {
         new URL(url);
         formattedLinks.push({ linkName: name, link: url });
