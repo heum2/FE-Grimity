@@ -194,6 +194,19 @@
   }
 
   .linkContainer {
+    .editBar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .editOrderBtn {
+        align-items: flex-end;
+        @include Label2;
+        color: $gray60;
+        cursor: pointer;
+      }
+    }
+
     .urlInput {
       width: 100%;
     }

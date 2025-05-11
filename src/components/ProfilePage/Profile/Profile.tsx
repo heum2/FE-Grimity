@@ -23,8 +23,21 @@ import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { deleteMe } from "@/api/users/deleteMe";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
+import { useClipboard } from "@/utils/copyToClipboard";
+
+type IconName = "linkInstagram" | "linkX" | "linkYoutube" | "linkPixiv" | "linkMail" | "linkCustom";
+
+const ICON_MAP_KO: Record<string, IconName> = {
+  인스타그램: "linkInstagram",
+  유튜브: "linkYoutube",
+  픽시브: "linkPixiv",
+  X: "linkX",
+  이메일: "linkMail",
+  "직접 입력": "linkCustom",
+};
 
 export default function Profile({ isMyProfile, id, url }: ProfileProps) {
+  const { copyToClipboard } = useClipboard();
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const user_id = useAuthStore((state) => state.user_id);
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
@@ -335,6 +348,8 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
     });
   };
 
+  const MAX_VISIBLE_LINKS = 3;
+
   return (
     <div className={styles.container}>
       {userData && (
@@ -618,64 +633,63 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                     <p className={styles.description}>{userData.description}</p>
                   )}
                   <div className={styles.linkContainer}>
-                    {userData.links.slice(0, isMobile ? 1 : 3).map(({ linkName, link }, index) => {
+                    {userData.links.slice(0, MAX_VISIBLE_LINKS).map(({ linkName, link }, index) => {
                       const isEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(
                         link,
                       );
-                      const linkType = linkName.toLowerCase();
-                      type IconName =
-                        | "linkInstagram"
-                        | "linkX"
-                        | "linkYoutube"
-                        | "linkPixiv"
-                        | "linkMail"
-                        | "linkCustom";
-                      let iconName: IconName = "linkCustom";
+                      const iconName: IconName = isEmail
+                        ? "linkMail"
+                        : ICON_MAP_KO[linkName] || "linkCustom";
 
-                      if (linkType === "instagram") iconName = "linkInstagram";
-                      else if (linkType === "x") iconName = "linkX";
-                      else if (linkType === "youtube") iconName = "linkYoutube";
-                      else if (linkType === "pixiv") iconName = "linkPixiv";
-                      else if (isEmail) iconName = "linkMail";
-
-                      const displayName = isEmail
-                        ? link
-                        : linkType === "instagram" ||
-                          linkType === "x" ||
-                          linkType === "youtube" ||
-                          linkType === "pixiv"
-                        ? `@${link.split("/").pop()}`
-                        : linkName;
+                      const displayName = (() => {
+                        if (isEmail) return link;
+                        if (linkName === "X") {
+                          const handleMatch = link.match(
+                            /^https?:\/\/(?:www\.)?x\.com\/([a-zA-Z0-9_]+)/i,
+                          );
+                          return handleMatch ? `@${handleMatch[1]}` : linkName;
+                        }
+                        return linkName;
+                      })();
 
                       return (
                         <div key={index} className={styles.linkWrapper}>
-                          <IconComponent name={iconName} size={20} />
-                          <a
-                            href={isEmail ? `mailto:${link}` : link}
-                            className={styles.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {displayName}
-                          </a>
+                          <IconComponent name={iconName} size={18} />
+                          {isEmail ? (
+                            <span
+                              className={styles.link}
+                              onClick={() => copyToClipboard(link, "이메일 주소가 복사되었습니다.")}
+                            >
+                              {displayName}
+                            </span>
+                          ) : (
+                            <a
+                              href={link}
+                              className={styles.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {displayName}
+                            </a>
+                          )}
+                          {index === MAX_VISIBLE_LINKS - 1 &&
+                            userData.links.length > MAX_VISIBLE_LINKS && (
+                              <span
+                                className={styles.moreLinksText}
+                                onClick={() =>
+                                  openModal({
+                                    type: "PROFILE-LINK",
+                                    data: null,
+                                    isFill: isMobile,
+                                  })
+                                }
+                              >
+                                외 링크 {userData.links.length - MAX_VISIBLE_LINKS}개
+                              </span>
+                            )}
                         </div>
                       );
                     })}
-                    {userData.links.length > (isMobile ? 1 : 3) && (
-                      <div
-                        onClick={() =>
-                          openModal({
-                            type: "PROFILE-LINK",
-                            data: null,
-                            isFill: isMobile,
-                          })
-                        }
-                      >
-                        <span className={styles.moreLinksText}>
-                          외 링크 {userData.links.length - (isMobile ? 1 : 3)}개
-                        </span>
-                      </div>
-                    )}
                   </div>
                 </div>
               </div>

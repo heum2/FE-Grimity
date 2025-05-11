@@ -16,6 +16,7 @@ import { useIsMobile } from "@/hooks/useIsMobile";
 import { isValidProfileIdFormat, isForbiddenProfileId } from "@/utils/isValidProfileId";
 import { useScrollRestoration } from "@/hooks/useScrollRestoration";
 import { SelectBox } from "@/components/SelectBox/SelectBox";
+import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
 
 interface LinkItem {
   linkName: string;
@@ -33,19 +34,31 @@ const PLATFORM_URLS: Record<string, string> = {
   "직접 입력": "",
 };
 
+// 플랫폼별 기본 URL
+const PLATFORM_URLS: Record<string, string> = {
+  X: "x.com/",
+  인스타그램: "instagram.com/",
+  유튜브: "youtube.com/",
+  픽시브: "pixiv.net/users/",
+  이메일: "",
+  "직접 입력": "",
+};
+
 export default function ProfileEdit() {
   const { data: myData, isLoading, refetch } = useMyData();
   const [name, setName] = useState("");
-  const [nameError, setNameError] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [profileId, setProfileId] = useState<string>("");
-  const [profileIdError, setProfileIdError] = useState<string>("");
+  const [description, setDescription] = useState("");
+  const [profileId, setProfileId] = useState("");
   const [links, setLinks] = useState<LinkItem[]>([]);
+  const [nameError, setNameError] = useState("");
+  const [profileIdError, setProfileIdError] = useState("");
   const [isError, setIsError] = useState(false);
-  const closeModal = useModalStore((state) => state.closeModal);
+  const [isEditingOrder, setIsEditingOrder] = useState(false);
+
+  const closeModal = useModalStore((s) => s.closeModal);
   const { restoreScrollPosition } = useScrollRestoration("profileEdit-scroll");
   const { showToast } = useToast();
-  const isMobile = useDeviceStore((state) => state.isMobile);
+  const isMobile = useDeviceStore((s) => s.isMobile);
   useIsMobile();
 
   useEffect(() => {
@@ -54,23 +67,15 @@ export default function ProfileEdit() {
       setDescription(myData.description || "");
       setProfileId(myData.url || "");
 
-      if (myData.links?.length) {
-        const processedLinks = myData.links.map((link) => {
-          let processedLink: LinkItem = { ...link };
-          const known = ["X", "인스타그램", "유튜브", "픽시브", "이메일"];
-          if (!known.includes(link.linkName)) {
-            processedLink = {
-              ...processedLink,
-              customName: link.linkName,
-              linkName: "직접 입력",
-            };
-          }
-          return processedLink;
-        });
-        setLinks(processedLinks);
-      } else {
-        setLinks([]);
-      }
+      const processed =
+        myData.links?.map((link) => {
+          const known = Object.keys(PLATFORM_URLS);
+          return !known.includes(link.linkName)
+            ? { ...link, customName: link.linkName, linkName: "직접 입력" }
+            : link;
+        }) || [];
+
+      setLinks(processed);
     }
 
     const scrollPos = sessionStorage.getItem("profileEdit-scroll");
@@ -80,80 +85,27 @@ export default function ProfileEdit() {
     }
   }, [myData]);
 
-  const mutation = useMutation((newInfo: UpdateUserRequest) => putMyInfo(newInfo), {
+  const mutation = useMutation((data: UpdateUserRequest) => putMyInfo(data), {
     onSuccess: () => {
       showToast("프로필 정보가 변경되었습니다!", "success");
       closeModal();
       refetch();
       router.reload();
-      setNameError("");
     },
     onError: (error: AxiosError<UpdateProfileConflictResponse>) => {
       if (error.response?.status === 409) {
         setIsError(true);
-        const message = error.response?.data?.message;
-        if (message === "NAME") {
-          setNameError("이미 사용 중인 닉네임입니다.");
-        } else if (message === "URL") {
-          setProfileIdError("이미 사용 중인 프로필 URL입니다.");
-        } else {
-          showToast("오류가 발생했습니다. 다시 시도해주세요.", "error");
-        }
+        const msg = error.response?.data?.message;
+        if (msg === "NAME") setNameError("이미 사용 중인 닉네임입니다.");
+        else if (msg === "URL") setProfileIdError("이미 사용 중인 프로필 URL입니다.");
+        else showToast("오류가 발생했습니다. 다시 시도해주세요.", "error");
       }
     },
   });
 
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
-    if (nameError) setNameError("");
-  };
-
-  const handleProfileIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setProfileId(e.target.value.trim());
-    if (profileIdError) setProfileIdError("");
-  };
-
-  const handlePlatformChange = (index: number, platform: string) => {
-    const newLinks = [...links];
-    newLinks[index] = {
-      ...newLinks[index],
-      linkName: platform,
-      customName: platform === "직접 입력" ? "" : undefined,
-    };
-    setLinks(newLinks);
-  };
-
-  const handleLinkChange = (index: number, value: string) => {
-    const newLinks = [...links];
-    const platform = newLinks[index].linkName;
-    let cleanValue = value.trim();
-
-    if (platform !== "직접 입력" && platform !== "이메일") {
-      const baseUrl = PLATFORM_URLS[platform];
-      cleanValue = cleanValue
-        .replace(/^https?:\/\/(www\.)?/, "")
-        .replace(baseUrl, "")
-        .replace(/^@/, "")
-        .replace(/\//g, "");
-    }
-
-    newLinks[index].link = cleanValue;
-    setLinks(newLinks);
-  };
-
-  const handleAddLink = () => {
-    setLinks([...links, { linkName: "X", link: "" }]);
-  };
-
-  const handleRemoveLink = (index: number) => {
-    setLinks(links.filter((_, i) => i !== index));
-  };
-
   const handleSave = () => {
     const trimmedName = name.trim();
     const trimmedProfileId = profileId.trim();
-    setNameError("");
-    setProfileIdError("");
 
     if (!trimmedName) return setNameError("닉네임을 입력해주세요.");
     if (trimmedName.length < 2) return showToast("닉네임은 두 글자 이상 입력해야 합니다.", "error");
@@ -166,30 +118,47 @@ export default function ProfileEdit() {
     const hasInvalidLinks = links.some((l) => (l.linkName && !l.link) || (!l.linkName && l.link));
     if (hasInvalidLinks) return showToast("링크 이름과 URL을 모두 입력해주세요.", "error");
 
-    const formattedLinks = links
-      .filter((l) => l.linkName && l.link)
-      .map((l) => {
-        const name = l.linkName === "직접 입력" ? l.customName || "custom" : l.linkName;
-        let url = l.link.trim();
-        const hasProtocol = /^https?:\/\//.test(url);
-        if (!hasProtocol) {
-          const base = PLATFORM_URLS[l.linkName] || "";
-          url = l.linkName === "유튜브" ? `https://${base}@${url}` : `https://${base}${url}`;
-        }
-        return { linkName: name, link: url };
-      });
+    const formattedLinks: { linkName: string; link: string }[] = [];
 
-    const updatedInfo: UpdateUserRequest = {
+    for (const l of links) {
+      if (!l.linkName || !l.link) continue;
+
+      const name = l.linkName === "직접 입력" ? l.customName || "custom" : l.linkName;
+      const url = l.link.trim();
+
+      if (l.linkName === "이메일") {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(url)) {
+          return showToast("올바른 이메일 형식이 아닙니다.", "error");
+        }
+        formattedLinks.push({ linkName: name, link: url });
+      } else {
+        try {
+          new URL(url);
+          formattedLinks.push({ linkName: name, link: url });
+        } catch {
+          return showToast("올바른 URL 형식이 아닙니다.", "error");
+        }
+      }
+    }
+
+    mutation.mutate({
       name: trimmedName,
       description,
-      links: formattedLinks,
       url: trimmedProfileId,
-    };
-
-    mutation.mutate(updatedInfo);
+      links: formattedLinks,
+    });
   };
 
-  if (isLoading || name === null) return <Loader />;
+  const handleLinkDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+    const newLinks = [...links];
+    const [moved] = newLinks.splice(result.source.index, 1);
+    newLinks.splice(result.destination.index, 0, moved);
+    setLinks(newLinks);
+  };
+
+  if (isLoading) return <Loader />;
 
   return (
     <div className={styles.container}>
@@ -205,7 +174,10 @@ export default function ProfileEdit() {
             placeholder="프로필에 노출될 닉네임을 입력해주세요."
             maxLength={12}
             value={name}
-            onChange={handleNameChange}
+            onChange={(e) => {
+              setName(e.target.value);
+              if (nameError) setNameError("");
+            }}
             isError={!!nameError}
             errorMessage={nameError}
           />
@@ -234,54 +206,117 @@ export default function ProfileEdit() {
             placeholder="url을 입력해주세요."
             maxLength={20}
             value={profileId}
-            onChange={handleProfileIdChange}
+            onChange={(e) => {
+              setProfileId(e.target.value.trim());
+              if (profileIdError) setProfileIdError("");
+            }}
             isError={!!profileIdError}
             errorMessage={profileIdError}
             prefix="www.grimity.com/"
           />
           <div className={styles.linkContainer}>
-            <label className={styles.label}>외부 링크</label>
-            {links.map((link, index) => {
-              const isFullUrl = /^https?:\/\//.test(link.link);
-              const prefix = isFullUrl ? "" : PLATFORM_URLS[link.linkName] || "";
+            <div className={styles.editBar}>
+              <label className={styles.label}>외부 링크</label>
+              <p
+                className={`${styles.editOrderBtn} ${isEditingOrder ? styles.completeBtn : ""}`}
+                onClick={() => setIsEditingOrder((prev) => !prev)}
+              >
+                {isEditingOrder ? "완료" : "순서 편집"}
+              </p>
+            </div>
 
-              return (
-                <div key={index} className={styles.linkInputContainer}>
-                  {link.linkName === "직접 입력" ? (
-                    <TextField
-                      placeholder="링크 이름"
-                      value={link.customName || ""}
-                      onChange={(e) => {
-                        const newLinks = [...links];
-                        newLinks[index].customName = e.target.value;
-                        setLinks(newLinks);
-                      }}
-                    />
-                  ) : (
-                    <SelectBox
-                      options={Object.keys(PLATFORM_URLS).map((k) => ({ value: k, label: k }))}
-                      value={link.linkName}
-                      onChange={(val) => handlePlatformChange(index, val)}
-                    />
-                  )}
-                  <TextField
-                    placeholder="링크 입력"
-                    value={link.link}
-                    onChange={(e) => handleLinkChange(index, e.target.value)}
-                    prefix={prefix}
-                  />
-                  <div onClick={() => handleRemoveLink(index)} className={styles.removeLinkButton}>
-                    <IconComponent name="deleteLink" size={24} isBtn />
+            <DragDropContext onDragEnd={handleLinkDragEnd}>
+              <Droppable droppableId="links">
+                {(provided) => (
+                  <div ref={provided.innerRef} {...provided.droppableProps}>
+                    {links.map((link, index) => {
+                      return (
+                        <Draggable
+                          key={index}
+                          draggableId={`link-${index}`}
+                          index={index}
+                          isDragDisabled={!isEditingOrder}
+                        >
+                          {(provided) => (
+                            <div
+                              className={styles.linkInputContainer}
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                            >
+                              {link.linkName === "직접 입력" ? (
+                                <div className={styles.linkName}>
+                                  <TextField
+                                    placeholder="링크 이름"
+                                    value={link.customName || ""}
+                                    onChange={(e) => {
+                                      const newLinks = [...links];
+                                      newLinks[index].customName = e.target.value;
+                                      setLinks(newLinks);
+                                    }}
+                                    isProfileEdit
+                                  />
+                                </div>
+                              ) : (
+                                <SelectBox
+                                  options={Object.keys(PLATFORM_URLS).map((k) => ({
+                                    value: k,
+                                    label: k,
+                                  }))}
+                                  value={link.linkName}
+                                  onChange={(val) => {
+                                    const newLinks = [...links];
+                                    newLinks[index] = {
+                                      ...newLinks[index],
+                                      linkName: val,
+                                      customName: val === "직접 입력" ? "" : undefined,
+                                    };
+                                    setLinks(newLinks);
+                                  }}
+                                />
+                              )}
+                              <TextField
+                                placeholder={
+                                  link.linkName === "직접 입력"
+                                    ? "전체 URL을 입력해주세요."
+                                    : `${PLATFORM_URLS[link.linkName]}`
+                                }
+                                value={link.link}
+                                onChange={(e) => {
+                                  const value = e.target.value.trim();
+                                  const newLinks = [...links];
+                                  newLinks[index].link = value;
+                                  setLinks(newLinks);
+                                }}
+                              />
+                              {isEditingOrder ? (
+                                <div {...provided.dragHandleProps} className={styles.dragHandle}>
+                                  <IconComponent name="editOrder" size={16} isBtn />
+                                </div>
+                              ) : (
+                                <div
+                                  onClick={() => setLinks(links.filter((_, i) => i !== index))}
+                                  className={styles.removeLinkButton}
+                                >
+                                  <IconComponent name="deleteLink" size={24} isBtn />
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </Draggable>
+                      );
+                    })}
+                    {provided.placeholder}
                   </div>
-                </div>
-              );
-            })}
+                )}
+              </Droppable>
+            </DragDropContext>
+
             <div className={styles.addBtn}>
               <Button
                 type="outlined-assistive"
                 size="m"
                 leftIcon={<IconComponent name="addLink" size={16} isBtn />}
-                onClick={handleAddLink}
+                onClick={() => setLinks([...links, { linkName: "X", link: "" }])}
               >
                 링크 추가
               </Button>

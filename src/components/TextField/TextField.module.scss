@@ -49,7 +49,7 @@
   border: none;
   outline: none;
   padding: 0;
-  background-color: $gray10;
+  background-color: transparent;
 
   &:focus-within {
     background-color: $gray0;
@@ -79,4 +79,8 @@
 .prefix {
   color: $gray60;
   white-space: nowrap;
+}
+
+.isProfileEdit {
+  background-color: $gray0;
 }

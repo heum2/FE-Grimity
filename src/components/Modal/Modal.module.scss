@@ -35,6 +35,11 @@
   width: 500px;
 }
 
+.profileLinkModal {
+  @extend .modal;
+  width: 500px;
+}
+
 .followModal {
   @extend .modal;
   width: 540px;

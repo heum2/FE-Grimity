@@ -13,7 +13,7 @@ export async function getMyFollower({
   cursor,
 }: MyFollowerRequest): Promise<MyFollowersResponse> {
   try {
-    const response = await axiosInstance.get("/users/me/followers", {
+    const response = await axiosInstance.get("/me/followers", {
       params: { size, cursor },
     });
 
@@ -51,7 +51,7 @@ export async function getMyFollowing({
   cursor,
 }: MyFollowerRequest): Promise<MyFollowingsResponse> {
   try {
-    const response = await axiosInstance.get("/users/me/followings", {
+    const response = await axiosInstance.get("/me/followings", {
       params: { size, cursor },
     });
 

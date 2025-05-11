@@ -130,4 +130,5 @@ export const ICONS = {
   openAlbumSelect: "/icon/open-album-select.svg",
   deleteAlbum: "/icon/delete-album.svg",
   moveFeedAlbum: "/icon/move-feed-album.svg",
+  editOrder: "/icon/edit-order.svg",
 };

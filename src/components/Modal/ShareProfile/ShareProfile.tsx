@@ -37,7 +37,7 @@ export default function ShareProfile({ id, name, image }: ShareProfileProps) {
       content: {
         title: "그림 커뮤니티 그리미티",
         description: name,
-        imageUrl: image,
+        imageUrl: image || "https://avatars.githubusercontent.com/u/194518500?s=200&v=4",
         link: { mobileWebUrl: url, webUrl: url },
       },
     });

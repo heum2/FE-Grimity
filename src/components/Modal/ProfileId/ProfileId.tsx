@@ -8,6 +8,7 @@ import axiosInstance from "@/constants/baseurl";
 import { isValidProfileIdFormat, isForbiddenProfileId } from "@/utils/isValidProfileId";
 import TextField from "@/components/TextField/TextField";
 import { useMutation } from "react-query";
+import type { LoginResponse } from "@grimity/dto";
 
 export default function ProfileId() {
   const [profileId, setProfileId] = useState("");
@@ -22,7 +23,7 @@ export default function ProfileId() {
   const registerMutation = useMutation({
     mutationFn: async () => {
       try {
-        const response = await axiosInstance.post("/auth/register", {
+        const response = await axiosInstance.post<LoginResponse>("/auth/register", {
           provider: modal.data.provider,
           providerAccessToken: modal.data.accessToken,
           name: modal.data.nickname,
@@ -43,10 +44,11 @@ export default function ProfileId() {
     onSuccess: (data) => {
       setAccessToken(data.accessToken);
       setIsLoggedIn(true);
-      setUserId(data.userId);
+      setUserId(data.id);
 
       localStorage.setItem("access_token", data.accessToken);
       localStorage.setItem("refresh_token", data.refreshToken || "");
+      localStorage.setItem("user_id", data.id);
       openModal({ type: "JOIN", data: null });
     },
     onError: (error: any) => {

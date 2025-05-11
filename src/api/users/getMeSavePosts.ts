@@ -12,7 +12,7 @@ export async function getMySavePost({
   page,
 }: MySavePostRequest): Promise<MySavePostsResponse> {
   try {
-    const response = await axiosInstance.get("/users/me/save-posts", { params: { size, page } });
+    const response = await axiosInstance.get("/me/save-posts", { params: { size, page } });
 
     return response.data;
   } catch (error) {
