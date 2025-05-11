@@ -241,12 +241,14 @@ export default function Album() {
           <div className={styles.editAlbumContainer}>
             <div className={styles.editBar}>
               <p className={styles.titleText}>앨범 목록</p>
-              <p
-                className={`${styles.editOrderBtn} ${isEditingOrder ? styles.completeBtn : ""}`}
-                onClick={toggleEditingOrder}
-              >
-                {isEditingOrder ? "완료" : "순서 편집"}
-              </p>
+              {albums.length > 1 && (
+                <p
+                  className={`${styles.editOrderBtn} ${isEditingOrder ? styles.completeBtn : ""}`}
+                  onClick={toggleEditingOrder}
+                >
+                  {isEditingOrder ? "완료" : "순서 편집"}
+                </p>
+              )}
             </div>
 
             {isError && (
