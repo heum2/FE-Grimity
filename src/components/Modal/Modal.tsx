@@ -144,12 +144,14 @@ export default function Modal() {
           ) : (
             <div
               className={
-                type === "PROFILE-EDIT" || type == "ALBUM"
+                type === "PROFILE-EDIT"
                   ? styles.profileEditModal
                   : type === "PROFILE-LINK"
                   ? styles.profileLinkModal
                   : type === "FOLLOWER" || type === "FOLLOWING" || type === "LIKE"
                   ? styles.followModal
+                  : type == "ALBUM"
+                  ? styles.albumEditModal
                   : type == "ALBUM-SELECT" || type == "ALBUM-MOVE"
                   ? styles.albumSelectModal
                   : type == "ALBUM-DELETE"

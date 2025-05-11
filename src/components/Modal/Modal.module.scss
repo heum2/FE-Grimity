@@ -34,6 +34,15 @@
 .profileEditModal {
   @extend .modal;
   width: 500px;
+  max-height: 760px;
+  min-height: 760px;
+}
+
+.albumEditModal {
+  @extend .modal;
+  width: 500px;
+  max-height: 760px;
+  min-height: 364px;
 }
 
 .profileLinkModal {
@@ -48,7 +57,7 @@
 
 .albumSelectModal {
   @extend .modal;
-  width: 500px;
+  max-width: 500px;
   min-height: 256px;
 }
 
