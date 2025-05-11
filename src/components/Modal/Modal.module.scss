@@ -21,6 +21,7 @@
   min-height: 394px;
   max-height: 760px;
   position: relative;
+  @include SafeAreaBottom(56);
 
   @include Size("mobile") {
     width: 100%;

@@ -75,7 +75,7 @@
   }
 
   @include Size("mobile") {
-    height: 44px;
+    @include SafeAreaBottom(44);
   }
 }
 
