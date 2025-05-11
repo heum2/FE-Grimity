@@ -72,11 +72,10 @@
   .rightSection {
     display: flex;
     align-items: center;
-    gap: 12px;
   }
 
   @include Size("mobile") {
-    height: 56px;
+    height: 44px;
   }
 }
 

@@ -164,16 +164,16 @@ export default function FeedAlbumEditor({
                 onClick={handleDeleteSelected}
                 disabled={selectedCards.length === 0}
               >
-                선택 삭제
+                {isMobile ? "삭제" : "선택 삭제"}
               </Button>
               <Button
                 type="text-primary"
                 size="m"
-                leftIcon={<IconComponent name="x" size={16} />}
+                leftIcon={<IconComponent name="moveFeedAlbum" size={16} />}
                 onClick={handleMoveAlbum}
                 disabled={selectedCards.length === 0}
               >
-                앨범 이동
+                {isMobile ? "이동" : "앨범 이동"}
               </Button>
             </div>
           </div>
