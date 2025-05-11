@@ -56,6 +56,10 @@ export default function Modal() {
 
   const handleCloseModal = () => {
     closeModal();
+
+    if (type === "ALBUM") {
+      router.reload();
+    }
   };
 
   const renderModalContent = () => {

@@ -34,16 +34,6 @@ const PLATFORM_URLS: Record<string, string> = {
   "직접 입력": "",
 };
 
-// 플랫폼별 기본 URL
-const PLATFORM_URLS: Record<string, string> = {
-  X: "x.com/",
-  인스타그램: "instagram.com/",
-  유튜브: "youtube.com/",
-  픽시브: "pixiv.net/users/",
-  이메일: "",
-  "직접 입력": "",
-};
-
 export default function ProfileEdit() {
   const { data: myData, isLoading, refetch } = useMyData();
   const [name, setName] = useState("");
@@ -323,15 +313,15 @@ export default function ProfileEdit() {
             </div>
           </div>
         </div>
-        <Button
-          size="l"
-          type="filled-primary"
-          onClick={handleSave}
-          disabled={name.trim().length < 2 || mutation.isLoading || !!profileIdError}
-        >
-          변경 내용 저장
-        </Button>
       </div>
+      <Button
+        size="l"
+        type="filled-primary"
+        onClick={handleSave}
+        disabled={name.trim().length < 2 || mutation.isLoading || !!profileIdError}
+      >
+        변경 내용 저장
+      </Button>
     </div>
   );
 }

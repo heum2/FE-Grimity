@@ -30,7 +30,6 @@ export default function AlbumSelect() {
       {!isMobile && (
         <div className={styles.titleContainer}>
           <h2 className={styles.title}>앨범 선택</h2>
-          <p className={styles.subtitle}>그림을 업로드할 앨범을 선택해주세요</p>
         </div>
       )}
 

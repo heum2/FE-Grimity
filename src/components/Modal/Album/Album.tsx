@@ -19,16 +19,13 @@ export default function Album() {
   const closeModal = useModalStore((state) => state.closeModal);
   const isMobile = useDeviceStore((state) => state.isMobile);
   const { showToast } = useToast();
-  // 앨범 추가 관리
   const albumsRef = useRef<any[]>([]);
   const [albums, setAlbums] = useState<any[]>([]);
   const [name, setName] = useState("");
   const [error, setError] = useState("");
-  // 앨범 순서 편집 관리
   const [editingAlbums, setEditingAlbums] = useState<any[]>([]);
   const [isEditingOrder, setIsEditingOrder] = useState(false);
-  // 앨범명 편집 관리
-  const [isEditing, setIsEditing] = useState<{ [key: string]: boolean }>({});
+  const [isEditingAlbumName, setIsEditing] = useState<{ [key: string]: boolean }>({});
   const [inputValues, setInputValues] = useState<{ [key: string]: string }>({});
   const debounceTimers = useRef<{ [key: string]: NodeJS.Timeout }>({});
 
@@ -233,7 +230,7 @@ export default function Album() {
                   onClick={handleCreateAlbum}
                   type="filled-primary"
                   size={isMobile ? "m" : "l"}
-                  disabled={isError}
+                  disabled={!!error} // 에러 메시지가 존재하면 disabled
                 >
                   추가
                 </Button>
@@ -269,7 +266,9 @@ export default function Album() {
                           value={inputValues[album.id] ?? album.name ?? ""}
                           className={styles.albumItem}
                           onChange={(e) => handleInputChange(album.id, e.target.value)}
-                          disabled={isEditing[album.id]}
+                          // disabled={isEditingAlbumName[album.id]}
+                          disabled={false}
+                          style={isEditingAlbumName[album.id] ? { opacity: 0.5 } : undefined}
                           maxLength={15}
                         />
                         <div className={styles.removeAlbumButton}>
@@ -307,7 +306,7 @@ export default function Album() {
                                     className={styles.removeAlbumButton}
                                     {...provided.dragHandleProps}
                                   >
-                                    <IconComponent name="editAlbumOrder" />
+                                    <IconComponent name="editOrder" />
                                   </div>
                                 </div>
                               )}
