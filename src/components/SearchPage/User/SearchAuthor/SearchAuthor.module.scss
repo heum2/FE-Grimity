@@ -3,22 +3,14 @@
 .results {
   width: 100%;
 
-  .sortWrapper {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
-
-    @include Size("mobile") {
-      margin-bottom: 8px;
-    }
-  }
-
   .title {
     @include Sub2;
     color: $gray60;
     @include Drag;
+    display: flex;
+    align-items: center;
+    height: 54px;
+    margin-bottom: 12px;
 
     .searchCount {
       color: $gray70;
@@ -26,6 +18,8 @@
 
     @include Size("mobile") {
       @include Label2;
+      height: 52px;
+      margin-bottom: 8px;
     }
   }
 
