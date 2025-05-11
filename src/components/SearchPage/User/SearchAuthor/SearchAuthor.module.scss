@@ -9,9 +9,11 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: 12px;
+    height: 54px;
 
     @include Size("mobile") {
       margin-bottom: 8px;
+      height: 52px;
     }
   }
 
