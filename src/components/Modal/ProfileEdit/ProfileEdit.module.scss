@@ -243,7 +243,9 @@
     }
   }
 
-  @include Size("mobile") {
-    @include SafeAreaBottom(56);
+  .btns {
+    @include Size("mobile") {
+      @include SafeAreaBottom(56);
+    }
   }
 }
