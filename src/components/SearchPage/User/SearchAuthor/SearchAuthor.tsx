@@ -52,11 +52,10 @@ export default function SearchAuthor() {
 
   return (
     <section className={styles.results}>
-      <div className={styles.sortWrapper}>
-        <h2 className={styles.title}>
-          검색결과 <span className={styles.searchCount}>{data?.pages?.[0]?.totalCount || 0}</span>건
-        </h2>
-      </div>
+      <h2 className={styles.title}>
+        검색결과&nbsp;
+        <span className={styles.searchCount}>{data?.pages?.[0]?.totalCount || 0}</span>건
+      </h2>
       {data?.pages.length === 0 || !data?.pages.some((page) => page.users.length > 0) ? (
         <p className={styles.noResult}>검색 결과가 없어요</p>
       ) : (
