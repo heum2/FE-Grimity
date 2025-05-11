@@ -164,9 +164,11 @@
     cursor: pointer;
   }
 
+  & {
+    visibility: hidden;
+  }
+
   @include Size("mobile") {
     visibility: visible;
   }
-
-  visibility: hidden;
 }
