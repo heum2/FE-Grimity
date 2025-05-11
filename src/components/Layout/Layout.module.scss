@@ -8,15 +8,14 @@
   align-self: center;
   min-height: 100vh;
   height: 100%;
-  margin-left: 258px;
-  padding: 0 16px 0;
+  padding: 0 0 0 254px;
 
   @include Size("tablet") {
-    margin-left: 60px;
+    padding: 0 0 0 80px;
   }
 
   @include Size("mobile") {
-    margin-left: 0;
+    padding: 0 16px;
   }
 
   .children {
@@ -27,16 +26,14 @@
     align-items: flex-start;
     margin-top: 60px; // header
     margin-bottom: 80px;
-    padding: 0 16px;
+    padding: 0 0 16px;
 
     @media (min-width: 1024px) and (max-width: 1500px) {
-      max-width: 767px;
-      padding: 0 24px;
+      padding: 0 16px;
     }
 
     @include Size("tablet") {
-      max-width: 944px;
-      padding: 0 30px;
+      padding: 0 16px;
     }
 
     @include Size("mobile") {
