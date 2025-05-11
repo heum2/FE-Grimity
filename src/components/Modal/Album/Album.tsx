@@ -230,7 +230,7 @@ export default function Album() {
                   onClick={handleCreateAlbum}
                   type="filled-primary"
                   size={isMobile ? "m" : "l"}
-                  disabled={!!error} // 에러 메시지가 존재하면 disabled
+                  disabled={!!error}
                 >
                   추가
                 </Button>
@@ -254,7 +254,7 @@ export default function Album() {
             )}
 
             {albums.length === 0 && !isError && !isLoading ? (
-              <div>아직 앨범이 없어요.</div>
+              <p className={styles.emptyText}>생성된 앨범이 없어요.</p>
             ) : (
               <div>
                 {!isEditingOrder ? (
@@ -266,7 +266,6 @@ export default function Album() {
                           value={inputValues[album.id] ?? album.name ?? ""}
                           className={styles.albumItem}
                           onChange={(e) => handleInputChange(album.id, e.target.value)}
-                          // disabled={isEditingAlbumName[album.id]}
                           disabled={false}
                           style={isEditingAlbumName[album.id] ? { opacity: 0.5 } : undefined}
                           maxLength={15}

@@ -89,11 +89,6 @@ export default function AlbumMove() {
             ))}
           </div>
           <div className={styles.btns}>
-            <div className={styles.cancleBtn}>
-              <Button size="l" type="outlined-assistive" onClick={closeModal}>
-                취소
-              </Button>
-            </div>
             <div className={styles.submitBtn}>
               <Button
                 size="l"
@@ -101,7 +96,7 @@ export default function AlbumMove() {
                 onClick={handleSubmit}
                 disabled={!selectedId || mutation.isLoading}
               >
-                {mutation.isLoading ? "이동 중..." : "완료"}
+                {mutation.isLoading ? "이동 중..." : "저장"}
               </Button>
             </div>
           </div>

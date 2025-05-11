@@ -27,7 +27,7 @@ export default function AlbumSelect() {
 
   return (
     <div className={styles.container}>
-      {!isMobile && (
+      {!isMobile && !isEmpty && (
         <div className={styles.titleContainer}>
           <h2 className={styles.title}>앨범 선택</h2>
         </div>
