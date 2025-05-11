@@ -242,4 +242,8 @@
       margin: 12px 0;
     }
   }
+
+  @include Size("mobile") {
+    @include SafeAreaBottom(56);
+  }
 }

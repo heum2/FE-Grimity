@@ -21,13 +21,13 @@
   min-height: 394px;
   max-height: 760px;
   position: relative;
-  @include SafeAreaBottom(56);
 
   @include Size("mobile") {
     width: 100%;
     margin: 0 16px 64px;
     min-height: 290px;
     padding: 28px 20px 20px;
+    @include SafeAreaBottom(0);
   }
 }
 

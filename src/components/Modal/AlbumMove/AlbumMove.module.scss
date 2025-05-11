@@ -129,5 +129,9 @@
     .submitBtn {
       flex: 1;
     }
+
+    @include Size("mobile") {
+      @include SafeAreaBottom(56);
+    }
   }
 }
