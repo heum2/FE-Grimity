@@ -150,7 +150,7 @@ export default function FeedAlbumEditor({
               <Button
                 type="text-primary"
                 size="m"
-                leftIcon={<IconComponent name="backBtn" size={16} />}
+                leftIcon={<IconComponent name="backBtn" size={isMobile ? 14 : 16} />}
                 onClick={handleGoBack}
               >
                 돌아가기
@@ -160,7 +160,7 @@ export default function FeedAlbumEditor({
               <Button
                 type="text-primary"
                 size="m"
-                leftIcon={<IconComponent name="x" size={16} />}
+                leftIcon={<IconComponent name="x" size={isMobile ? 14 : 16} />}
                 onClick={handleDeleteSelected}
                 disabled={selectedCards.length === 0}
               >
@@ -169,7 +169,7 @@ export default function FeedAlbumEditor({
               <Button
                 type="text-primary"
                 size="m"
-                leftIcon={<IconComponent name="moveFeedAlbum" size={16} />}
+                leftIcon={<IconComponent name="moveFeedAlbum" size={isMobile ? 14 : 16} />}
                 onClick={handleMoveAlbum}
                 disabled={selectedCards.length === 0}
               >
