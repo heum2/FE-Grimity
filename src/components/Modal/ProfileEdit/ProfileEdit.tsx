@@ -313,16 +313,14 @@ export default function ProfileEdit() {
             </div>
           </div>
         </div>
-        <div className={styles.btns}>
-          <Button
-            size="l"
-            type="filled-primary"
-            onClick={handleSave}
-            disabled={name.trim().length < 2 || mutation.isLoading || !!profileIdError}
-          >
-            변경 내용 저장
-          </Button>
-        </div>
+        <Button
+          size="l"
+          type="filled-primary"
+          onClick={handleSave}
+          disabled={name.trim().length < 2 || mutation.isLoading || !!profileIdError}
+        >
+          변경 내용 저장
+        </Button>
       </div>
     </div>
   );
