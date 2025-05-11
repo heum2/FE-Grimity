@@ -244,8 +244,14 @@
   }
 
   .btns {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    padding: 16px 20px;
+    width: 100%;
+
     @include Size("mobile") {
-      @include SafeAreaBottom(56);
+      padding-bottom: calc(16px + env(safe-area-inset-bottom));
     }
   }
 }
