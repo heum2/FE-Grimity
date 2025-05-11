@@ -197,7 +197,6 @@ export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) 
   return (
     <div className={styles.container}>
       <div className={styles.center}>
-        <Profile isMyProfile={isMyProfile} id={id} url={url} />
         {/* 그림 정리 모드 */}
         {isEditMode ? (
           <FeedAlbumEditor
@@ -209,6 +208,7 @@ export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) 
         ) : (
           <>
             {/* 기본 모드 */}
+            <Profile isMyProfile={isMyProfile} id={id} url={url} />
             <div className={styles.bar}>
               <div
                 ref={feedsTabRef}

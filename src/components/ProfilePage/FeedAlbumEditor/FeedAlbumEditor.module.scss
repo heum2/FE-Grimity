@@ -1,12 +1,21 @@
 @use "@/styles/globals.scss" as *;
 @use "sass:color";
 
-// TODO: 모바일 디자인 + 프로필에서 커버 이미지 부분 분리 필요
+// TODO: 모바일에서는 모달로 열려야함.
 .container {
   width: 100%;
   min-height: 100vh;
+  padding-top: 60px;
   padding-bottom: 80px;
   position: relative;
+
+  @include Size("tablet") {
+    padding-top: 24px;
+  }
+
+  @include Size("mobile") {
+    padding-top: 0;
+  }
 
   .center {
     max-width: 1280px;
@@ -79,6 +88,10 @@
   .albumName {
     @include Title1;
     margin-bottom: 8px;
+
+    @include Size("mobile") {
+      @include Sub1;
+    }
   }
 
   .feedCountContainer {
