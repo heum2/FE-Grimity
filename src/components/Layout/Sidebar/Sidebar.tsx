@@ -6,19 +6,16 @@ import styles from "./Sidebar.module.scss";
 import { MENU_ITEMS } from "@/constants/menu";
 import { FOOTER_ITEMS } from "@/constants/footer";
 import { useAuthStore } from "@/states/authStore";
-import { useMyData } from "@/api/users/getMe";
 import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useToast } from "@/hooks/useToast";
 
 const Sidebar = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
   const [isAskDropdownOpen, setIsAskDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { showToast } = useToast();
   const email = "grimity.official@gmail.com";
   const { isLoggedIn } = useAuthStore((state) => state);
-  const { data: myData } = useMyData();
   const router = useRouter();
   const { isMobile } = useDeviceStore((state) => state);
   useIsMobile();
@@ -29,9 +26,8 @@ const Sidebar = () => {
 
   const footerItems = FOOTER_ITEMS;
 
-  const handleItemClick = (index: number, route: string) => {
-    setActiveIndex(index);
-    router.push(`${route}`);
+  const handleItemClick = (route: string) => {
+    router.push(`/${route}`);
   };
 
   const handleFooterClick = (itemIcon: FooterIconName, route?: string) => {
@@ -50,6 +46,17 @@ const Sidebar = () => {
       console.error("클립보드 복사 실패:", error);
       showToast("복사에 실패했습니다.", "success");
     }
+  };
+
+  const isItemActive = (route: string) => {
+    const currentPath = router.pathname;
+    
+    if (route === "/" && currentPath === "/") return true;
+    if (route === "popular" && currentPath === "/popular") return true;
+    if (route === "board" && (currentPath === "/board" || currentPath.startsWith("/posts/"))) return true;
+    if (route === "following" && currentPath === "/following") return true;
+    
+    return false;
   };
 
   useEffect(() => {
@@ -75,8 +82,8 @@ const Sidebar = () => {
                 key={index}
                 icon={item.icon as BaseIconName}
                 label={item.label}
-                onClick={() => handleItemClick(index, item.route)}
-                isActive={activeIndex === index}
+                onClick={() => handleItemClick(item.route)}
+                isActive={isItemActive(item.route)}
               />
             ))}
           </div>
