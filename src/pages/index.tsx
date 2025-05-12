@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Ranking from "@/components/Layout/Ranking/Ranking";
 import NewFeed from "@/components/Layout/NewFeed/NewFeed";
-import { useAuthStore } from "@/states/authStore";
 import MainBoard from "@/components/Layout/MainBoard/MainBoard";
 import { useScrollRestoration } from "@/hooks/useScrollRestoration";
 import { useIsMobile } from "@/hooks/useIsMobile";
@@ -19,10 +18,8 @@ export default function Home() {
   const router = useRouter();
   const [OGTitle] = useState("그리미티");
   const [OGUrl, setOGUrl] = useState(serviceUrl);
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const { restoreScrollPosition } = useScrollRestoration("home-scroll");
   const isMobile = useDeviceStore((state) => state.isMobile);
-  const isTablet = useDeviceStore((state) => state.isTablet);
   useIsMobile();
 
   useEffect(() => {
@@ -40,20 +37,7 @@ export default function Home() {
     <>
       <InitialPageMeta title={OGTitle} url={OGUrl} />
       <div className={styles.container}>
-        {!isMobile && (
-          <>
-            <section className={styles.FeedSection}>
-              <Banner />
-              <Ranking />
-              <section className={styles.BoardSection}>
-                <MainBoard type="ALL" />
-                <MainBoard type="NOTICE" />
-              </section>
-              <NewFeed />
-            </section>
-          </>
-        )}
-        {isMobile && (
+        {isMobile ? (
           <>
             <section className={styles.MobileSection}>
               <Banner />
@@ -69,6 +53,16 @@ export default function Home() {
               </div>
             </Link>
           </>
+        ) : (
+          <section className={styles.FeedSection}>
+            <Banner />
+            <Ranking />
+            <section className={styles.BoardSection}>
+              <MainBoard type="ALL" />
+              <MainBoard type="NOTICE" />
+            </section>
+            <NewFeed />
+          </section>
         )}
       </div>
     </>
