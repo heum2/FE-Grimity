@@ -52,7 +52,7 @@ export default function AlbumSelect() {
                   className={`${styles.albumItem} ${
                     selectedId === album.id ? styles.selected : ""
                   }`}
-                  onClick={() => setSelectedId(album.id)}
+                  onClick={() => setSelectedId((prevId) => (prevId === album.id ? null : album.id))}
                 >
                   {album.name}
                   <div className={styles.checkIcon}></div>
