@@ -9,13 +9,12 @@ import IconComponent from "@/components/Asset/Icon";
 export default function AlbumSelect() {
   const { data } = useMyAlbums();
   const albums = Array.isArray(data) ? data : [];
-  const [selectedId, setSelectedId] = useState<string | null>(null);
   const modalData = useModalStore((state) => state.data);
+  const [selectedId, setSelectedId] = useState<string | null>(modalData?.selectedAlbumId ?? null);
   const closeModal = useModalStore((state) => state.closeModal);
   const isMobile = useDeviceStore((state) => state.isMobile);
 
   const handleSubmit = () => {
-    if (!selectedId) return;
     if (modalData?.onSelect) {
       const selectedAlbum = albums.find((album) => album.id === selectedId);
       modalData.onSelect(selectedId, selectedAlbum?.name ?? "앨범 선택");
@@ -68,7 +67,7 @@ export default function AlbumSelect() {
               </Button>
             </div>
             <div className={styles.submitBtn}>
-              <Button size="l" type="filled-primary" onClick={handleSubmit} disabled={!selectedId}>
+              <Button size="l" type="filled-primary" onClick={handleSubmit}>
                 완료
               </Button>
             </div>

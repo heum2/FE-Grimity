@@ -47,21 +47,20 @@ export default function EditFeeds({ id }: EditFeedsProps) {
   const handleOpenAlbumSelect = () => {
     const data = {
       hideCloseButton: true,
-      albumId: selectedAlbumId,
+      selectedAlbumId: selectedAlbumId,
       onSelect: (id: string, name: string) => {
         setSelectedAlbumId(id);
         setSelectedAlbumName(name);
       },
     };
+
     openModal({
       type: "ALBUM-SELECT",
-      data,
-      ...(isMobile && {
-        isFill: true,
-        data: {
-          title: "앨범 선택",
-        },
-      }),
+      data: {
+        ...data,
+        ...(isMobile ? { title: "앨범 선택" } : {}),
+      },
+      ...(isMobile && { isFill: true }),
     });
   };
 
