@@ -2,7 +2,10 @@ import axiosInstance from "@/constants/baseurl";
 import { InsertFeedsRequest } from "@grimity/dto";
 export type { InsertFeedsRequest };
 
-export async function putFeedsInAlbums(id: string, params: InsertFeedsRequest): Promise<void> {
+export async function putFeedsInAlbums(
+  id: string | null,
+  params: InsertFeedsRequest,
+): Promise<void> {
   try {
     const response = await axiosInstance.put(`/albums/${id}`, params);
     return response.data;

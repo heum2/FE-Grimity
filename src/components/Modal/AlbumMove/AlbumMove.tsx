@@ -14,8 +14,8 @@ export default function AlbumMove() {
   const { data, refetch } = useMyAlbums();
   const { showToast } = useToast();
   const albums = Array.isArray(data) ? data : [];
-  const [selectedId, setSelectedId] = useState<string | null>(null);
   const modalData = useModalStore((state) => state.data);
+  const [selectedId, setSelectedId] = useState<string | null>(modalData?.currentAlbumId ?? null);
   const closeModal = useModalStore((state) => state.closeModal);
   const isMobile = useDeviceStore((state) => state.isMobile);
   const queryClient = useQueryClient();
@@ -23,7 +23,7 @@ export default function AlbumMove() {
   const selectedFeedIds = modalData?.selectedFeedIds || [];
 
   const mutation = useMutation(
-    (albumId: string) => putFeedsInAlbums(albumId, { ids: selectedFeedIds }),
+    (albumId: string | null) => putFeedsInAlbums(albumId, { ids: selectedFeedIds }),
     {
       onSuccess: () => {
         queryClient.invalidateQueries("feeds");
@@ -44,7 +44,11 @@ export default function AlbumMove() {
   );
 
   const handleSubmit = () => {
-    if (!selectedId) return;
+    if (!selectedId) {
+      showToast("이동할 앨범을 선택해주세요.", "warning");
+      return;
+    }
+
     mutation.mutate(selectedId);
   };
 
@@ -79,7 +83,7 @@ export default function AlbumMove() {
                   className={`${styles.albumItem} ${
                     selectedId === album.id ? styles.selected : ""
                   }`}
-                  onClick={() => setSelectedId(album.id)}
+                  onClick={() => setSelectedId((prevId) => (prevId === album.id ? null : album.id))}
                 >
                   {album.name}
                   <div className={styles.checkIcon}></div>
@@ -89,14 +93,19 @@ export default function AlbumMove() {
             ))}
           </div>
           <div className={styles.btns}>
+            <div className={styles.cancleBtn}>
+              <Button size="l" type="outlined-assistive" onClick={closeModal}>
+                취소
+              </Button>
+            </div>
             <div className={styles.submitBtn}>
               <Button
                 size="l"
                 type="filled-primary"
                 onClick={handleSubmit}
-                disabled={!selectedId || mutation.isLoading}
+                disabled={mutation.isLoading}
               >
-                {mutation.isLoading ? "이동 중..." : "저장"}
+                {mutation.isLoading ? "이동 중..." : "완료"}
               </Button>
             </div>
           </div>

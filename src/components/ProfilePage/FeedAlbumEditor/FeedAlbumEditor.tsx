@@ -66,6 +66,7 @@ export default function FeedAlbumEditor({
       data: {
         title: "앨범 이동",
         selectedFeedIds: selectedCards,
+        currentAlbumId: activeAlbum,
         onComplete: () => {
           setSelectedCards([]);
         },

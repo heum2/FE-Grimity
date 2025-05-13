@@ -110,22 +110,21 @@
       &:hover {
         background-color: $gray10;
       }
+    }
 
-      &.selected {
-        border-color: $secandary1;
-        background-color: $secandary2;
-      }
+    .selected {
+      border-color: $secandary1;
+      background-color: $secandary2;
     }
   }
 
   .btns {
     display: flex;
     flex-direction: row;
-    align-items: center;
-    justify-content: flex-end;
     gap: 8px;
     width: 100%;
 
+    .cancleBtn,
     .submitBtn {
       flex: 1;
     }
