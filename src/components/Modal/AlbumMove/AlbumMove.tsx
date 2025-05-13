@@ -8,6 +8,7 @@ import { useMyAlbums } from "@/api/me/getMyAlbums";
 import { useDeviceStore } from "@/states/deviceStore";
 import { useModalStore } from "@/states/modalStore";
 import { putFeedsInAlbums } from "@/api/albums/putFeedsInAlbums";
+import { putFeedsNull } from "@/api/albums/putFeedsNull";
 import { useRouter } from "next/router";
 
 export default function AlbumMove() {
@@ -43,7 +44,21 @@ export default function AlbumMove() {
     },
   );
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    if (selectedId === "null") {
+      try {
+        await putFeedsNull({ ids: selectedFeedIds });
+        queryClient.invalidateQueries("feeds");
+        queryClient.invalidateQueries("albums");
+        modalData?.onComplete?.();
+        closeModal();
+        router.reload();
+      } catch {
+        showToast("전체 앨범 이동에 실패했습니다.", "error");
+      }
+      return;
+    }
+
     if (!selectedId) {
       showToast("이동할 앨범을 선택해주세요.", "warning");
       return;
@@ -77,6 +92,14 @@ export default function AlbumMove() {
       ) : (
         <>
           <div className={styles.albumsContainer}>
+            <div
+              className={`${styles.albumItem} ${selectedId === "null" ? styles.selected : ""}`}
+              onClick={() => setSelectedId((prevId) => (prevId === "null" ? null : "null"))}
+            >
+              전체 앨범
+              <div className={styles.checkIcon}></div>
+              {selectedId === "null" && <IconComponent name="checkAlbum" size={14} />}
+            </div>
             {albums.map((album: any) => (
               <div key={album.id}>
                 <div

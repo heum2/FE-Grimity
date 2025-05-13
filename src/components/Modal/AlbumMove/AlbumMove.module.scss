@@ -107,14 +107,18 @@
       cursor: pointer;
       transition: all 0.3s;
 
+      &.selected {
+        border-color: $secandary1;
+        background-color: $secandary2;
+
+        &:hover {
+          background-color: $secandary2;
+        }
+      }
+
       &:hover {
         background-color: $gray10;
       }
-    }
-
-    .selected {
-      border-color: $secandary1;
-      background-color: $secandary2;
     }
   }
 
