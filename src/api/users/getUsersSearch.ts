@@ -3,14 +3,12 @@ import { useInfiniteQuery } from "react-query";
 import { SearchedUsersResponse } from "@grimity/dto";
 
 export interface UserSearchRequest {
-  sort?: "popular" | "accuracy";
   size?: number;
   cursor?: string;
   keyword: string;
 }
 
 export async function getUserSearch({
-  sort,
   size,
   cursor,
   keyword,
@@ -18,7 +16,6 @@ export async function getUserSearch({
   try {
     const response = await axiosInstance.get("/users/search", {
       params: {
-        sort,
         size,
         cursor,
         keyword,
@@ -34,7 +31,7 @@ export async function getUserSearch({
 
 export function useUserSearch(params: UserSearchRequest) {
   return useInfiniteQuery(
-    ["UserSearch", params.keyword, params.sort],
+    ["UserSearch", params.keyword],
     ({ pageParam = undefined }) => getUserSearch({ ...params, cursor: pageParam }),
     {
       getNextPageParam: (lastPage) => {
