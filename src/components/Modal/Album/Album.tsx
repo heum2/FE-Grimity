@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./Album.module.scss";
 import Button from "@/components/Button/Button";
 import Loader from "@/components/Layout/Loader/Loader";
@@ -25,9 +25,8 @@ export default function Album() {
   const [error, setError] = useState("");
   const [editingAlbums, setEditingAlbums] = useState<any[]>([]);
   const [isEditingOrder, setIsEditingOrder] = useState(false);
-  const [isEditingAlbumName, setIsEditing] = useState<{ [key: string]: boolean }>({});
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [inputValues, setInputValues] = useState<{ [key: string]: string }>({});
-  const debounceTimers = useRef<{ [key: string]: NodeJS.Timeout }>({});
 
   useEffect(() => {
     albumsRef.current = albums;
@@ -37,7 +36,6 @@ export default function Album() {
     if (data && Array.isArray(data)) {
       setAlbums(data);
       setEditingAlbums(data);
-
       const initialInputValues = data.reduce((acc, album) => {
         acc[album.id] = album.name;
         return acc;
@@ -50,10 +48,13 @@ export default function Album() {
     refetch();
   }, [refetch]);
 
-  // 앨범 추가
   const handleCreateAlbum = async () => {
-    if (name.trim() === "" || name.trim().length < 1) {
+    if (!name.trim()) {
       setError("앨범명은 비워둘 수 없습니다.");
+      return;
+    }
+    if (albums.some((a) => a.name === name.trim())) {
+      setError("중복된 이름은 사용하실 수 없어요");
       return;
     }
     if (albums.length >= 8) {
@@ -61,44 +62,52 @@ export default function Album() {
       return;
     }
     try {
-      await createAlbums({ name });
+      await createAlbums({ name: name.trim() });
+      setName("");
       refetch();
     } catch (err: any) {
-      if (err?.message === "앨범 이름 중복") {
-        setError("중복된 이름은 사용하실 수 없어요");
-      } else {
-        showToast("앨범 추가에 실패했습니다.", "error");
-      }
+      showToast("앨범 추가에 실패했습니다.", "error");
+    }
+  };
+
+  const handleRename = async (id: string) => {
+    const newName = inputValues[id]?.trim();
+    if (!newName) return;
+    if (albums.some((a) => a.name === newName && a.id !== id)) {
+      showToast("중복된 이름은 사용하실 수 없어요", "warning");
+      return;
+    }
+    try {
+      await patchAlbums(id, { name: newName });
+      setAlbums((prev) => prev.map((a) => (a.id === id ? { ...a, name: newName } : a)));
+      setEditingId(null);
+      refetch();
+    } catch {
+      showToast("앨범명 변경에 실패했습니다.", "error");
     }
   };
 
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) return;
-
     const reordered = Array.from(editingAlbums);
     const [moved] = reordered.splice(result.source.index, 1);
     reordered.splice(result.destination.index, 0, moved);
-
     setEditingAlbums(reordered);
   };
 
   const toggleEditingOrder = async () => {
     if (isEditingOrder) {
-      const originalIds = albums.map((a) => a.id).join();
-      const newIds = editingAlbums.map((a) => a.id).join();
-
-      if (originalIds !== newIds) {
+      const ids = editingAlbums.map((a) => a.id);
+      if (ids.join() !== albums.map((a) => a.id).join()) {
         try {
-          const ids = editingAlbums.map((album) => album.id);
           await putAlbumsOrder({ ids });
           showToast("앨범 순서가 변경되었습니다!", "success");
           setAlbums(editingAlbums);
           refetch();
           closeModal();
           router.reload();
-        } catch (err) {
+        } catch {
           showToast("앨범 순서 변경에 실패했습니다.", "error");
-          setEditingAlbums(albums);
         }
       }
     } else {
@@ -107,91 +116,17 @@ export default function Album() {
     setIsEditingOrder(!isEditingOrder);
   };
 
-  const updateAlbumName = useCallback(
-    async (id: string, newName: string) => {
-      setIsEditing((prev) => ({ ...prev, [id]: true }));
-
-      try {
-        await patchAlbums(id, { name: newName });
-        setAlbums((prevAlbums) =>
-          prevAlbums.map((album) => (album.id === id ? { ...album, name: newName } : album)),
-        );
-        refetch();
-      } catch (err: any) {
-        showToast(
-          err?.message === "앨범 이름 중복"
-            ? "중복된 이름은 사용하실 수 없어요"
-            : "앨범 이름 변경에 실패했습니다.",
-          "error",
-        );
-
-        const originalAlbum = albumsRef.current.find((a) => a.id === id);
-        if (originalAlbum) {
-          setInputValues((prev) => ({ ...prev, [id]: originalAlbum.name }));
-        }
-      } finally {
-        setIsEditing((prev) => ({ ...prev, [id]: false }));
-      }
-    },
-    [showToast, refetch],
-  );
-
-  const handleInputChange = useCallback(
-    (id: string, value: string) => {
-      if (debounceTimers.current[id]) {
-        clearTimeout(debounceTimers.current[id]);
-      }
-      setInputValues((prev) => ({ ...prev, [id]: value }));
-      debounceTimers.current[id] = setTimeout(() => {
-        const trimmedValue = value.trim();
-
-        if (!trimmedValue) {
-          showToast("앨범명은 비워둘 수 없습니다.", "error");
-          const originalAlbum = albumsRef.current.find((a) => a.id === id);
-          if (originalAlbum) {
-            setInputValues((prev) => ({ ...prev, [id]: originalAlbum.name }));
-          }
-          return;
-        }
-
-        const originalAlbum = albumsRef.current.find((a) => a.id === id);
-        if (originalAlbum && trimmedValue !== originalAlbum.name) {
-          updateAlbumName(id, trimmedValue);
-        }
-      }, 1000); // 디바운싱 딜레이
-    },
-    [showToast, updateAlbumName],
-  );
-
-  useEffect(() => {
-    return () => {
-      Object.values(debounceTimers.current).forEach((timer) => clearTimeout(timer));
-      closeModal();
-    };
-  }, [closeModal]);
-
   const handleDeleteAlbum = async (id: string) => {
     try {
       await deleteAlbums(id);
       showToast("앨범이 삭제되었습니다.", "success");
-      setAlbums((prev) => prev.filter((album) => album.id !== id));
-      setEditingAlbums((prev) => prev.filter((album) => album.id !== id));
-      setInputValues((prev) => {
-        const newState = { ...prev };
-        delete newState[id];
-        return newState;
-      });
       refetch();
-      closeModal();
-      router.reload();
-    } catch (err: any) {
-      showToast("앨범 삭제 실패", "error");
+    } catch {
+      showToast("앨범 삭제에 실패했습니다.", "error");
     }
   };
 
-  if (isLoading) {
-    return <Loader />;
-  }
+  if (isLoading) return <Loader />;
 
   return (
     <div className={styles.container}>
@@ -202,126 +137,158 @@ export default function Album() {
       )}
 
       <div className={styles.textBtnContainer}>
-        <div>
-          <div className={styles.addAlbumContainer}>
-            <p className={styles.titleText}>새 앨범 추가</p>
-            <div className={styles.inputArea}>
-              <div className={`${styles.inputWrapper} ${error ? styles.error : ""}`}>
-                <input
-                  id="name"
-                  className={styles.inputField}
-                  placeholder="예시 : '크로키' 또는 '일러스트'"
-                  value={name}
-                  onChange={(e) => {
-                    setError("");
-                    setName(e.target.value);
-                  }}
-                  maxLength={15}
-                />
-                {name && (
-                  <div className={styles.countTotal}>
-                    <p className={styles.count}>{name.length}</p>/15
-                  </div>
-                )}
-                {error && <p className={styles.errorMessage}>{error}</p>}
-              </div>
-              <div className={styles.btn}>
-                <Button
-                  onClick={handleCreateAlbum}
-                  type="filled-primary"
-                  size={isMobile ? "m" : "l"}
-                  disabled={!!error}
-                >
-                  추가
-                </Button>
-              </div>
+        <div className={styles.addAlbumContainer}>
+          <p className={styles.titleText}>새 앨범 추가</p>
+          <div className={styles.inputArea}>
+            <div className={`${styles.inputWrapper} ${error ? styles.error : ""}`}>
+              <input
+                id="name"
+                className={styles.inputField}
+                placeholder="예시 : '크로키' 또는 '일러스트'"
+                value={name}
+                onChange={(e) => {
+                  setError("");
+                  setName(e.target.value);
+                }}
+                maxLength={15}
+              />
+              {name && (
+                <div className={styles.countTotal}>
+                  <p className={styles.count}>{name.length}</p>/15
+                </div>
+              )}
+              {error && <p className={styles.errorMessage}>{error}</p>}
+            </div>
+            <div className={styles.btn}>
+              <Button
+                onClick={handleCreateAlbum}
+                type="filled-primary"
+                size={isMobile ? "m" : "l"}
+                disabled={!!error}
+              >
+                추가
+              </Button>
             </div>
           </div>
+        </div>
 
-          <div className={styles.editAlbumContainer}>
-            <div className={styles.editBar}>
-              <p className={styles.titleText}>앨범 목록</p>
-              {albums.length > 1 && (
-                <p
-                  className={`${styles.editOrderBtn} ${isEditingOrder ? styles.completeBtn : ""}`}
-                  onClick={toggleEditingOrder}
-                >
-                  {isEditingOrder ? "완료" : "순서 편집"}
-                </p>
-              )}
-            </div>
-
-            {isError && (
-              <div className={styles.errorMessage}>앨범 목록을 불러오는데 실패했습니다.</div>
+        <div className={styles.editAlbumContainer}>
+          <div className={styles.editBar}>
+            <p className={styles.titleText}>앨범 목록</p>
+            {albums.length > 1 && (
+              <p
+                className={`${styles.editOrderBtn} ${isEditingOrder ? styles.completeBtn : ""}`}
+                onClick={toggleEditingOrder}
+              >
+                {isEditingOrder ? "완료" : "순서 편집"}
+              </p>
             )}
+          </div>
 
-            {albums.length === 0 && !isError && !isLoading ? (
-              <p className={styles.emptyText}>생성된 앨범이 없어요.</p>
-            ) : (
-              <div>
-                {!isEditingOrder ? (
-                  <div className={styles.albumList}>
-                    {albums.map((album) => (
+          {isError && (
+            <div className={styles.errorMessage}>앨범 목록을 불러오는데 실패했습니다.</div>
+          )}
+
+          {albums.length === 0 && !isError && !isLoading ? (
+            <p className={styles.emptyText}>생성된 앨범이 없어요.</p>
+          ) : (
+            <div className={styles.albumListWrapper}>
+              {!isEditingOrder ? (
+                <div className={styles.albumList}>
+                  {albums.map((album) => {
+                    const isEditing = editingId === album.id;
+                    return (
                       <div key={album.id} className={styles.albumsContainer}>
-                        <input
-                          type="text"
-                          value={inputValues[album.id] ?? album.name ?? ""}
-                          className={styles.albumItem}
-                          onChange={(e) => handleInputChange(album.id, e.target.value)}
-                          disabled={false}
-                          style={isEditingAlbumName[album.id] ? { opacity: 0.5 } : undefined}
-                          maxLength={15}
-                        />
-                        <div className={styles.removeAlbumButton}>
-                          <div onClick={() => handleDeleteAlbum(album.id)}>
-                            <IconComponent name="deleteAlbum" />
-                          </div>
+                        <div className={styles.inputWrapper}>
+                          <input
+                            type="text"
+                            value={inputValues[album.id] ?? ""}
+                            className={styles.albumItem}
+                            disabled={editingId !== album.id}
+                            onChange={(e) =>
+                              setInputValues((prev) => ({
+                                ...prev,
+                                [album.id]: e.target.value,
+                              }))
+                            }
+                            maxLength={15}
+                          />
+
+                          {!isEditing ? (
+                            <div
+                              className={styles.iconInsideInput}
+                              onClick={() => setEditingId(album.id)}
+                            >
+                              수정
+                            </div>
+                          ) : (
+                            <div className={styles.actionGroup}>
+                              <div className={styles.cancleBtn} onClick={() => setEditingId(null)}>
+                                취소
+                              </div>
+                              <div
+                                className={styles.completeBtn}
+                                onClick={() => handleRename(album.id)}
+                              >
+                                완료
+                              </div>
+                            </div>
+                          )}
                         </div>
+
+                        {!isEditing && (
+                          <div
+                            className={styles.removeAlbumButton}
+                            onClick={() => handleDeleteAlbum(album.id)}
+                          >
+                            <IconComponent name="deleteAlbum" size={24} />
+                          </div>
+                        )}
                       </div>
-                    ))}
-                  </div>
-                ) : (
-                  <DragDropContext onDragEnd={handleDragEnd}>
-                    <Droppable droppableId="albumList" direction="vertical">
-                      {(provided) => (
-                        <div
-                          {...provided.droppableProps}
-                          ref={provided.innerRef}
-                          className={styles.albumList}
-                        >
-                          {editingAlbums.map((album, index) => (
-                            <Draggable key={album.id} draggableId={album.id} index={index}>
-                              {(provided) => (
-                                <div
-                                  className={styles.albumsContainer}
-                                  ref={provided.innerRef}
-                                  {...provided.draggableProps}
-                                >
+                    );
+                  })}
+                </div>
+              ) : (
+                <DragDropContext onDragEnd={handleDragEnd}>
+                  <Droppable droppableId="albumList" direction="vertical">
+                    {(provided) => (
+                      <div
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                        className={styles.albumList}
+                      >
+                        {editingAlbums.map((album, index) => (
+                          <Draggable key={album.id} draggableId={album.id} index={index}>
+                            {(provided) => (
+                              <div
+                                className={styles.albumsContainer}
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                              >
+                                <div className={styles.inputWrapper}>
                                   <input
                                     type="text"
                                     value={album.name || ""}
                                     disabled={true}
                                     className={styles.albumItem}
                                   />
-                                  <div
-                                    className={styles.removeAlbumButton}
-                                    {...provided.dragHandleProps}
-                                  >
-                                    <IconComponent name="editOrder" />
-                                  </div>
                                 </div>
-                              )}
-                            </Draggable>
-                          ))}
-                          {provided.placeholder}
-                        </div>
-                      )}
-                    </Droppable>
-                  </DragDropContext>
-                )}
-              </div>
-            )}
-          </div>
+                                <div className={styles.removeAlbumButton}>
+                                  <IconComponent name="editOrder" />
+                                </div>
+                              </div>
+                            )}
+                          </Draggable>
+                        ))}
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
+                </DragDropContext>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
