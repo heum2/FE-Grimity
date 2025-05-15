@@ -72,11 +72,24 @@ export default function Album() {
 
   const handleRename = async (id: string) => {
     const newName = inputValues[id]?.trim();
-    if (!newName) return;
-    if (albums.some((a) => a.name === newName && a.id !== id)) {
+
+    if (!newName) {
+      showToast("앨범명은 비워둘 수 없습니다.", "warning");
+      return;
+    }
+
+    const originName = albums.find((a) => a.id === id)?.name;
+    if (newName === originName) {
+      setEditingId(null);
+      return;
+    }
+
+    const isDuplicate = albums.some((a) => a.name === newName && a.id !== id);
+    if (isDuplicate) {
       showToast("중복된 이름은 사용하실 수 없어요", "warning");
       return;
     }
+
     try {
       await patchAlbums(id, { name: newName });
       setAlbums((prev) => prev.map((a) => (a.id === id ? { ...a, name: newName } : a)));
