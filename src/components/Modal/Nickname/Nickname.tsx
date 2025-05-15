@@ -5,7 +5,6 @@ import { useMutation } from "react-query";
 import TextField from "@/components/TextField/TextField";
 import IconComponent from "@/components/Asset/Icon";
 import Button from "@/components/Button/Button";
-import { useAuthStore } from "@/states/authStore";
 import { useToast } from "@/hooks/useToast";
 import axiosInstance from "@/constants/baseurl";
 
@@ -13,16 +12,13 @@ export default function Nickname() {
   const [nickname, setNickname] = useState("");
   const [agree, setAgree] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const setAccessToken = useAuthStore((state) => state.setAccessToken);
-  const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
-  const setUserId = useAuthStore((state) => state.setUserId);
   const modal = useModalStore();
   const openModal = useModalStore((state) => state.openModal);
   const { showToast } = useToast();
 
   const checkNicknameMutation = useMutation({
     mutationFn: async (nickname: string) => {
-      const response = await axiosInstance.post("/auth/register/name", { name: nickname });
+      const response = await axiosInstance.post("/users/name-check", { name: nickname });
       return response.data;
     },
     onError: () => {
