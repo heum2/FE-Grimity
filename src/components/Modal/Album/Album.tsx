@@ -223,7 +223,16 @@ export default function Album() {
                             </div>
                           ) : (
                             <div className={styles.actionGroup}>
-                              <div className={styles.cancleBtn} onClick={() => setEditingId(null)}>
+                              <div
+                                className={styles.cancleBtn}
+                                onClick={() => {
+                                  setInputValues((prev) => ({
+                                    ...prev,
+                                    [album.id]: album.name,
+                                  }));
+                                  setEditingId(null);
+                                }}
+                              >
                                 취소
                               </div>
                               <div
