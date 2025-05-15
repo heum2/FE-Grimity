@@ -31,7 +31,6 @@ const PAGE_SIZE = 12;
 export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) {
   const openModal = useModalStore((state) => state.openModal);
   const isMobile = useDeviceStore((state) => state.isMobile);
-  const isTablet = useDeviceStore((state) => state.isTablet);
   const [sortBy, setSortBy] = useState<SortOption>("latest");
   const [indicatorStyle, setIndicatorStyle] = useState({ width: 0, left: 0 });
   const feedsTabRef = useRef<HTMLDivElement>(null);

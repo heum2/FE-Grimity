@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import styles from "./AlbumMove.module.scss";
 import Button from "@/components/Button/Button";
@@ -13,15 +13,20 @@ import { useRouter } from "next/router";
 
 export default function AlbumMove() {
   const { data, refetch } = useMyAlbums();
-  const { showToast } = useToast();
   const albums = Array.isArray(data) ? data : [];
-  const modalData = useModalStore((state) => state.data);
-  const [selectedId, setSelectedId] = useState<string | null>(modalData?.currentAlbumId ?? null);
-  const closeModal = useModalStore((state) => state.closeModal);
+  const { showToast } = useToast();
   const isMobile = useDeviceStore((state) => state.isMobile);
-  const queryClient = useQueryClient();
+  const closeModal = useModalStore((state) => state.closeModal);
+  const modalData = useModalStore((state) => state.data);
   const router = useRouter();
+  const queryClient = useQueryClient();
   const selectedFeedIds = modalData?.selectedFeedIds || [];
+  const initialId: string | null = modalData?.currentAlbumId ?? null;
+  const [selectedId, setSelectedId] = useState<string | null>(initialId);
+
+  useEffect(() => {
+    setSelectedId(initialId);
+  }, [initialId]);
 
   const mutation = useMutation(
     (albumId: string | null) => putFeedsInAlbums(albumId, { ids: selectedFeedIds }),
@@ -29,11 +34,9 @@ export default function AlbumMove() {
       onSuccess: () => {
         queryClient.invalidateQueries("feeds");
         queryClient.invalidateQueries("albums");
-        if (modalData?.onComplete) {
-          modalData.onComplete();
-        }
+        modalData?.onComplete?.();
       },
-      onError: (error) => {
+      onError: () => {
         showToast("앨범 이동에 실패했습니다.", "error");
       },
       onSettled: () => {
@@ -45,7 +48,7 @@ export default function AlbumMove() {
   );
 
   const handleSubmit = async () => {
-    if (selectedId === "null") {
+    if (selectedId === null) {
       try {
         await putFeedsNull({ ids: selectedFeedIds });
         queryClient.invalidateQueries("feeds");
@@ -54,13 +57,8 @@ export default function AlbumMove() {
         closeModal();
         router.reload();
       } catch {
-        showToast("전체 앨범 이동에 실패했습니다.", "error");
+        showToast("앨범 이동에 실패했습니다.", "error");
       }
-      return;
-    }
-
-    if (!selectedId) {
-      showToast("이동할 앨범을 선택해주세요.", "warning");
       return;
     }
 
@@ -79,6 +77,7 @@ export default function AlbumMove() {
           </p>
         </div>
       )}
+
       {isEmpty ? (
         <div className={styles.emptyContainer}>
           <h2 className={styles.title}>아직 생성된 앨범이 없어요</h2>
@@ -92,21 +91,24 @@ export default function AlbumMove() {
       ) : (
         <>
           <div className={styles.albumsContainer}>
+            {/* 전체 앨범 */}
             <div
-              className={`${styles.albumItem} ${selectedId === "null" ? styles.selected : ""}`}
-              onClick={() => setSelectedId((prevId) => (prevId === "null" ? null : "null"))}
+              className={`${styles.albumItem} ${selectedId === null ? styles.selected : ""}`}
+              onClick={() => setSelectedId((prev) => (prev === null ? null : null))}
             >
               전체 앨범
               <div className={styles.checkIcon}></div>
-              {selectedId === "null" && <IconComponent name="checkAlbum" size={14} />}
+              {selectedId === null && <IconComponent name="checkAlbum" size={14} />}
             </div>
-            {albums.map((album: any) => (
+
+            {/* 사용자 앨범 목록 */}
+            {albums.map((album) => (
               <div key={album.id}>
                 <div
                   className={`${styles.albumItem} ${
                     selectedId === album.id ? styles.selected : ""
                   }`}
-                  onClick={() => setSelectedId((prevId) => (prevId === album.id ? null : album.id))}
+                  onClick={() => setSelectedId((prev) => (prev === album.id ? null : album.id))}
                 >
                   {album.name}
                   <div className={styles.checkIcon}></div>
@@ -115,6 +117,7 @@ export default function AlbumMove() {
               </div>
             ))}
           </div>
+
           <div className={styles.btns}>
             <div className={styles.cancleBtn}>
               <Button size="l" type="outlined-assistive" onClick={closeModal}>
