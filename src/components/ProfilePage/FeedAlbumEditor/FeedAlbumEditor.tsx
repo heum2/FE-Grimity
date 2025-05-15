@@ -70,12 +70,11 @@ export default function FeedAlbumEditor({
         onComplete: () => {
           setSelectedCards([]);
         },
+        ...(albums.length === 0 && { hideCloseButton: true }),
       },
     };
 
-    if (isMobile) {
-      modalData.isFill = true;
-    }
+    if (isMobile) modalData.isFill = albums.length > 0;
 
     openModal(modalData);
   };

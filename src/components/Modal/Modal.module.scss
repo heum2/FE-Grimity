@@ -56,6 +56,10 @@
   @extend .modal;
   max-width: 500px;
   min-height: 256px;
+
+  @include Size("mobile") {
+    min-height: 234px;
+  }
 }
 
 .albumDeleteModal {
