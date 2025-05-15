@@ -175,6 +175,8 @@
     }
 
     .albumList {
+      display: flex;
+      flex-direction: column;
       width: 100%;
       max-height: 364px;
       overflow-y: auto;
@@ -232,7 +234,8 @@
           background-color: $gray0;
           color: $gray80;
           @include Label2;
-          margin: 4px 0;
+          // margin: 4px 0;
+          gap: 8px;
 
           &:focus-within {
             border: 1px solid $gray80;

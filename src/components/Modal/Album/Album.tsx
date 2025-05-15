@@ -281,7 +281,7 @@ export default function Album() {
                       >
                         {editingAlbums.map((album, index) => (
                           <Draggable key={album.id} draggableId={album.id} index={index}>
-                            {(provided) => (
+                            {(provided, snapshot) => (
                               <div
                                 className={styles.albumsContainer}
                                 ref={provided.innerRef}
@@ -292,8 +292,10 @@ export default function Album() {
                                   <input
                                     type="text"
                                     value={album.name || ""}
-                                    disabled={true}
-                                    className={styles.albumItem}
+                                    disabled
+                                    className={`${styles.albumItem} ${
+                                      snapshot.isDragging ? styles.dragging : ""
+                                    }`}
                                   />
                                 </div>
                                 <div className={styles.removeAlbumButton}>
@@ -303,6 +305,7 @@ export default function Album() {
                             )}
                           </Draggable>
                         ))}
+
                         {provided.placeholder}
                       </div>
                     )}
