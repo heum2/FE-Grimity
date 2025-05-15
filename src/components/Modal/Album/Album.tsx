@@ -49,11 +49,14 @@ export default function Album() {
   }, [refetch]);
 
   const handleCreateAlbum = async () => {
-    if (!name.trim()) {
+    const trimmed = name.trim();
+    setName("");
+
+    if (!trimmed) {
       setError("앨범명은 비워둘 수 없습니다.");
       return;
     }
-    if (albums.some((a) => a.name === name.trim())) {
+    if (albums.some((a) => a.name === trimmed)) {
       setError("중복된 이름은 사용하실 수 없어요");
       return;
     }
@@ -61,12 +64,14 @@ export default function Album() {
       setError("최대 8개의 앨범을 만들 수 있어요.");
       return;
     }
+
     try {
-      await createAlbums({ name: name.trim() });
+      await createAlbums({ name: trimmed });
       setName("");
       refetch();
     } catch (err: any) {
       showToast("앨범 추가에 실패했습니다.", "error");
+      refetch();
     }
   };
 
@@ -92,7 +97,14 @@ export default function Album() {
 
     try {
       await patchAlbums(id, { name: newName });
-      setAlbums((prev) => prev.map((a) => (a.id === id ? { ...a, name: newName } : a)));
+      const updatedAlbums = albums.map((a) => (a.id === id ? { ...a, name: newName } : a));
+      setAlbums(updatedAlbums);
+      setInputValues(() =>
+        updatedAlbums.reduce((acc, album) => {
+          acc[album.id] = album.name;
+          return acc;
+        }, {} as { [key: string]: string }),
+      );
       setEditingId(null);
       refetch();
     } catch {
@@ -162,6 +174,12 @@ export default function Album() {
                 onChange={(e) => {
                   setError("");
                   setName(e.target.value);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleCreateAlbum();
+                  }
                 }}
                 maxLength={15}
               />
