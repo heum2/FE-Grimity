@@ -1,21 +1,10 @@
 @use "@/styles/globals.scss" as *;
 @use "sass:color";
 
-// TODO: 모바일에서는 모달로 열려야함.
 .container {
   width: 100%;
-  min-height: 100vh;
-  padding-top: 60px;
-  padding-bottom: 80px;
+  height: 100%;
   position: relative;
-
-  @include Size("tablet") {
-    padding-top: 24px;
-  }
-
-  @include Size("mobile") {
-    padding-top: 0;
-  }
 
   .center {
     max-width: 1280px;
