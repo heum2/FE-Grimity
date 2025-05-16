@@ -35,7 +35,9 @@
       justify-content: flex-start;
       @include Body1;
       align-items: center;
-      margin: 12px 0;
+      margin-top: 12px;
+      margin-bottom: 16px;
+
       flex-wrap: nowrap;
 
       @media (min-width: 1024px) and (max-width: 1500px) {
@@ -197,7 +199,6 @@
     grid-template-columns: repeat(4, 1fr);
     row-gap: 40px;
     column-gap: 16px;
-    margin-top: 12px;
 
     @include Size("mobile") {
       grid-template-columns: repeat(2, 1fr);
