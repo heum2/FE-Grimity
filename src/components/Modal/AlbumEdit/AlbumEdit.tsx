@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import styles from "./Album.module.scss";
+import styles from "./AlbumEdit.module.scss";
 import Button from "@/components/Button/Button";
 import Loader from "@/components/Layout/Loader/Loader";
 import IconComponent from "@/components/Asset/Icon";
@@ -14,7 +14,7 @@ import { useModalStore } from "@/states/modalStore";
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
 import router from "next/router";
 
-export default function Album() {
+export default function AlbumEdit() {
   const { data, isLoading, isError, refetch } = useMyAlbums();
   const closeModal = useModalStore((state) => state.closeModal);
   const isMobile = useDeviceStore((state) => state.isMobile);

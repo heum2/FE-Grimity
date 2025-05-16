@@ -16,7 +16,7 @@ export type ModalType =
   | "UPLOAD"
   | "LIKE"
   | "REPORT"
-  | "ALBUM"
+  | "ALBUM-EDIT"
   | "ALBUM-SELECT"
   | "ALBUM-MOVE"
   | "ALBUM-DELETE";

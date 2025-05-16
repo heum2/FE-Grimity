@@ -34,7 +34,6 @@
     width: 100%;
     gap: 40px;
     overflow-y: hidden;
-    max-height: 552px;
 
     @include Size("mobile") {
       height: 100%;
@@ -56,7 +55,6 @@
     .titleText {
       @include Sub3;
       width: 100%;
-      margin-bottom: 8px;
     }
 
     .inputArea {

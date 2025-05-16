@@ -17,7 +17,7 @@ import UploadModal from "./Upload/Upload";
 import SharePost from "./SharePost/SharePost";
 import Like from "./Like/Like";
 import Report from "./Report/Report";
-import Album from "./Album/Album";
+import AlbumEdit from "./AlbumEdit/AlbumEdit";
 import AlbumSelect from "./AlbumSelect/AlbumSelect";
 import AlbumMove from "./AlbumMove/AlbumMove";
 import AlbumDelete from "./AlbumDelete/AlbumDelete";
@@ -57,7 +57,7 @@ export default function Modal() {
   const handleCloseModal = () => {
     closeModal();
 
-    if (type === "ALBUM") {
+    if (type === "ALBUM-EDIT") {
       router.reload();
     }
   };
@@ -94,8 +94,8 @@ export default function Modal() {
         return <Like />;
       case "REPORT":
         return <Report {...data} />;
-      case "ALBUM":
-        return <Album {...data} />;
+      case "ALBUM-EDIT":
+        return <AlbumEdit {...data} />;
       case "ALBUM-SELECT":
         return <AlbumSelect {...data} />;
       case "ALBUM-MOVE":
@@ -150,7 +150,7 @@ export default function Modal() {
                   ? styles.profileLinkModal
                   : type === "FOLLOWER" || type === "FOLLOWING" || type === "LIKE"
                   ? styles.followModal
-                  : type == "ALBUM"
+                  : type == "ALBUM-EDIT"
                   ? styles.albumEditModal
                   : type == "ALBUM-SELECT" || type == "ALBUM-MOVE"
                   ? styles.albumSelectModal

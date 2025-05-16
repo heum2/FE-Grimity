@@ -63,13 +63,13 @@ export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) 
   const handleAddCategoryClick = () => {
     isMobile
       ? openModal({
-          type: "ALBUM",
+          type: "ALBUM-EDIT",
           data: {
             title: "앨범 편집",
           },
           isFill: true,
         })
-      : openModal({ type: "ALBUM" });
+      : openModal({ type: "ALBUM-EDIT" });
   };
 
   const { data: postsData } = useUserPosts({
