@@ -91,7 +91,6 @@ export default function AlbumMove() {
       ) : (
         <>
           <div className={styles.albumsContainer}>
-            {/* 전체 앨범 */}
             <div
               className={`${styles.albumItem} ${selectedId === null ? styles.selected : ""}`}
               onClick={() => setSelectedId((prev) => (prev === null ? null : null))}
@@ -100,8 +99,6 @@ export default function AlbumMove() {
               <div className={styles.checkIcon}></div>
               {selectedId === null && <IconComponent name="checkAlbum" size={14} />}
             </div>
-
-            {/* 사용자 앨범 목록 */}
             {albums.map((album) => (
               <div key={album.id}>
                 <div
@@ -117,7 +114,6 @@ export default function AlbumMove() {
               </div>
             ))}
           </div>
-
           <div className={styles.btns}>
             <div className={styles.cancleBtn}>
               <Button size="l" type="outlined-assistive" onClick={closeModal}>
