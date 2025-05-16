@@ -8,30 +8,36 @@
   align-self: center;
   min-height: 100vh;
   height: 100%;
-  margin-left: 258px;
-  padding: 0 16px 0;
+  padding: 0 0 0 254px;
 
   @include Size("tablet") {
-    margin-left: 60px;
+    padding: 0 0 0 80px;
   }
 
   @include Size("mobile") {
-    margin-left: 0;
+    padding: 0 16px;
   }
 
   .children {
-    width: 98%;
+    width: 100%;
+    max-width: 1280px;
     display: flex;
+    flex-direction: column;
     align-items: flex-start;
     margin-top: 60px; // header
     margin-bottom: 80px;
+    padding: 0 0 16px;
+
+    @media (min-width: 1024px) and (max-width: 1500px) {
+      padding: 0 16px;
+    }
 
     @include Size("tablet") {
-      width: 96%;
+      padding: 0 16px;
+    }
 
-      @media (max-width: 1462px) {
-        width: 92%;
-      }
+    @include Size("mobile") {
+      padding: 0;
     }
   }
 

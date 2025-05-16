@@ -258,6 +258,11 @@ $min-breakpoints: (
   user-select: none;
 }
 
+@mixin SafeAreaBottom($base-height) {
+  height: calc(#{$base-height}px + env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
 .body {
   display: flex;
   align-items: center;

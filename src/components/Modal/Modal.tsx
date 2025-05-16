@@ -17,6 +17,10 @@ import UploadModal from "./Upload/Upload";
 import SharePost from "./SharePost/SharePost";
 import Like from "./Like/Like";
 import Report from "./Report/Report";
+import AlbumEdit from "./AlbumEdit/AlbumEdit";
+import AlbumSelect from "./AlbumSelect/AlbumSelect";
+import AlbumMove from "./AlbumMove/AlbumMove";
+import AlbumDelete from "./AlbumDelete/AlbumDelete";
 import ProfileLink from "./ProfileLink/ProfileLink";
 import ShareProfile from "./ShareProfile/ShareProfile";
 
@@ -52,6 +56,10 @@ export default function Modal() {
 
   const handleCloseModal = () => {
     closeModal();
+
+    if (type === "ALBUM-EDIT") {
+      router.reload();
+    }
   };
 
   const renderModalContent = () => {
@@ -86,6 +94,14 @@ export default function Modal() {
         return <Like />;
       case "REPORT":
         return <Report {...data} />;
+      case "ALBUM-EDIT":
+        return <AlbumEdit {...data} />;
+      case "ALBUM-SELECT":
+        return <AlbumSelect {...data} />;
+      case "ALBUM-MOVE":
+        return <AlbumMove {...data} />;
+      case "ALBUM-DELETE":
+        return <AlbumDelete {...data} />;
       default:
         return null;
     }
@@ -95,7 +111,20 @@ export default function Modal() {
 
   return (
     <>
-      {!isFill ? (
+      {isOpen && isFill && (
+        <div className={styles.mobileHeader}>
+          <button onClick={handleCloseModal}>
+            <IconComponent name="x" size={24} isBtn />
+          </button>
+          <h2>{data?.title}</h2>
+        </div>
+      )}
+
+      {isFill ? (
+        <div className={styles.fill} onClick={(e) => e.stopPropagation()}>
+          {renderModalContent()}
+        </div>
+      ) : (
         <div className={styles.overlay} onClick={handleCloseModal}>
           {isComfirm ? (
             <div className={styles.comfirmModal}>
@@ -121,20 +150,24 @@ export default function Modal() {
                   ? styles.profileLinkModal
                   : type === "FOLLOWER" || type === "FOLLOWING" || type === "LIKE"
                   ? styles.followModal
+                  : type == "ALBUM-EDIT"
+                  ? styles.albumEditModal
+                  : type == "ALBUM-SELECT" || type == "ALBUM-MOVE"
+                  ? styles.albumSelectModal
+                  : type == "ALBUM-DELETE"
+                  ? styles.albumDeleteModal
                   : styles.modal
               }
               onClick={(e) => e.stopPropagation()}
             >
               {renderModalContent()}
-              <button className={styles.closeButton} onClick={handleCloseModal}>
-                <IconComponent name="x" size={24} isBtn />
-              </button>
+              {!data?.hideCloseButton && (
+                <button className={styles.closeButton} onClick={handleCloseModal}>
+                  <IconComponent name="x" size={24} isBtn />
+                </button>
+              )}
             </div>
           )}
-        </div>
-      ) : (
-        <div className={styles.fill} onClick={(e) => e.stopPropagation()}>
-          {renderModalContent()}
         </div>
       )}
     </>

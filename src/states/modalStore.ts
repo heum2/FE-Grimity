@@ -15,7 +15,11 @@ export type ModalType =
   | "SHAREPOST"
   | "UPLOAD"
   | "LIKE"
-  | "REPORT";
+  | "REPORT"
+  | "ALBUM-EDIT"
+  | "ALBUM-SELECT"
+  | "ALBUM-MOVE"
+  | "ALBUM-DELETE";
 
 export interface ModalState {
   isOpen: boolean;

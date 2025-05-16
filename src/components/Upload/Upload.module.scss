@@ -337,6 +337,11 @@
                 align-items: center;
                 gap: 16px;
 
+                .text {
+                  color: $gray70;
+                  @include Body1;
+                }
+
                 .input {
                   width: 100%;
                   @include Body1;

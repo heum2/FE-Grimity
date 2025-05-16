@@ -19,6 +19,7 @@
   border-radius: 12px;
   width: 404px;
   min-height: 394px;
+  max-height: 760px;
   position: relative;
 
   @include Size("mobile") {
@@ -32,6 +33,13 @@
 .profileEditModal {
   @extend .modal;
   width: 500px;
+  max-height: 760px;
+  min-height: 760px;
+}
+
+.albumEditModal {
+  @extend .modal;
+  width: 500px;
 }
 
 .profileLinkModal {
@@ -42,6 +50,22 @@
 .followModal {
   @extend .modal;
   width: 540px;
+}
+
+.albumSelectModal {
+  @extend .modal;
+  max-width: 500px;
+  min-height: 256px;
+
+  @include Size("mobile") {
+    min-height: 234px;
+  }
+}
+
+.albumDeleteModal {
+  @extend .modal;
+  min-height: 234px;
+  max-height: 234px;
 }
 
 .closeButton {
@@ -113,12 +137,48 @@
 .fill {
   @include Size("mobile") {
     width: 100%;
-    height: calc(100vh - 64px);
+    height: calc(100vh - 60px);
     background: $gray0;
     padding: 16px;
     position: fixed;
-    top: 64px;
+    top: 60px;
     left: 0;
-    z-index: 20;
+    z-index: 1000;
+  }
+}
+
+.mobileHeader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: $gray0;
+  display: flex;
+  align-items: center;
+  justify-content: row;
+  padding: 0 16px;
+  z-index: 1501;
+  border-bottom: 1px solid $gray20;
+  gap: 10px;
+
+  h2 {
+    @include Title5;
+    color: $gray80;
+  }
+
+  button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  & {
+    visibility: hidden;
+  }
+
+  @include Size("mobile") {
+    visibility: visible;
   }
 }

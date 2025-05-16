@@ -92,10 +92,10 @@
 .text-primary {
   color: $gray70;
   background-color: $gray0;
-}
 
-.text-primary .disabled {
-  color: $gray30;
+  &.disabled {
+    color: $gray30;
+  }
 }
 
 .text-assistive {
@@ -114,6 +114,22 @@
     font-size: 14px !important;
     line-height: 19.6px !important;
     font-weight: 600 !important;
+  }
+}
+
+.text-assistive-category.l {
+  color: $gray70;
+  background-color: $gray0;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  line-height: 22.4px !important;
+  padding: 10px 16px !important;
+
+  @include Size("mobile") {
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    line-height: 19.6px !important;
+    padding: 8px 6px !important;
   }
 }
 
@@ -148,5 +164,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  line-height: 0;
+  line-height: 1;
+  font-size: inherit;
 }

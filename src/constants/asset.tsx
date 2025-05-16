@@ -124,5 +124,10 @@ export const ICONS = {
   linkYoutube: "/icon/profile-link-youtube.svg",
   linkMail: "/icon/profile-link-mail.svg",
   linkCustom: "/icon/profile-link-custom.svg",
+  checkAlbum: "/icon/check-album.svg",
+  moveAlbum: "/icon/move-album.svg",
+  openAlbumSelect: "/icon/open-album-select.svg",
+  deleteAlbum: "/icon/delete-album.svg",
+  moveFeedAlbum: "/icon/move-feed-album.svg",
   editOrder: "/icon/edit-order.svg",
 };
