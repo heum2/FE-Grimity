@@ -44,10 +44,6 @@ export default function AlbumEdit() {
     }
   }, [data]);
 
-  useEffect(() => {
-    refetch();
-  }, [refetch]);
-
   const handleCreateAlbum = async () => {
     const trimmed = name.trim();
     setName("");
