@@ -38,7 +38,7 @@ export default function SharePost({ postId, title }: ShareBtnProps) {
       content: {
         title: "그림 커뮤니티 그리미티",
         description: title,
-        imageUrl: imageUrl ?? DEFAULT_THUMBNAIL_SNS,
+        imageUrl: DEFAULT_THUMBNAIL_SNS,
         link: { mobileWebUrl: url, webUrl: url },
       },
     });

@@ -4,6 +4,7 @@ import { serviceUrl } from "@/constants/serviceurl";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { DEFAULT_THUMBNAIL_GRIMITY } from "@/constants/imageUrl";
 
 type Props = {
   details: PostBaseResponse;
@@ -39,13 +40,13 @@ export default function FeedDetail({ details }: Props) {
         <meta name="description" content={details.content ?? ""} />
         <meta property="og:title" content={`${details.title} - 그리미티`} />
         <meta property="og:description" content={`${details.content} | grimity |`} />
-        <meta property="og:image" content={details.thumbnail ?? "/image/grimity_default.png"} />
+        <meta property="og:image" content={details.thumbnail ?? DEFAULT_THUMBNAIL_GRIMITY} />
         <meta property="og:url" content={`${serviceUrl}/posts/${details.id}`} />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${details.title} - 그리미티`} />
         <meta name="twitter:description" content={details.content ?? ""} />
-        <meta name="twitter:image" content={details.thumbnail ?? "/image/grimity_default.png"} />
+        <meta name="twitter:image" content={details.thumbnail ?? DEFAULT_THUMBNAIL_GRIMITY} />
       </Head>
       <PostDetail id={id as string} />
     </>
