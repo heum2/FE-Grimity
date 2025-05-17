@@ -3,7 +3,7 @@ import styles from "./SharePost.module.scss";
 import { useModalStore } from "@/states/modalStore";
 import Button from "@/components/Button/Button";
 import { serviceUrl } from "@/constants/serviceurl";
-import { DEFAULT_THUMBNAIL_SNS, imageUrl } from "@/constants/imageUrl";
+import { DEFAULT_THUMBNAIL } from "@/constants/imageUrl";
 import { ShareBtnProps } from "@/components/Board/Detail/ShareBtn/ShareBtn.types";
 import IconComponent from "@/components/Asset/Icon";
 
@@ -38,7 +38,7 @@ export default function SharePost({ postId, title }: ShareBtnProps) {
       content: {
         title: "그림 커뮤니티 그리미티",
         description: title,
-        imageUrl: DEFAULT_THUMBNAIL_SNS,
+        imageUrl: DEFAULT_THUMBNAIL,
         link: { mobileWebUrl: url, webUrl: url },
       },
     });

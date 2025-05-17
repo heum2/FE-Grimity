@@ -3,7 +3,7 @@ import styles from "./ShareProfile.module.scss";
 import { useModalStore } from "@/states/modalStore";
 import Button from "@/components/Button/Button";
 import { serviceUrl } from "@/constants/serviceurl";
-import { DEFAULT_THUMBNAIL_SNS } from "@/constants/imageUrl";
+import { DEFAULT_THUMBNAIL } from "@/constants/imageUrl";
 import IconComponent from "@/components/Asset/Icon";
 import { ShareProfileProps } from "./ShareProfile.types";
 
@@ -38,7 +38,7 @@ export default function ShareProfile({ id, name, image }: ShareProfileProps) {
       content: {
         title: "그림 커뮤니티 그리미티",
         description: name,
-        imageUrl: DEFAULT_THUMBNAIL_SNS,
+        imageUrl: DEFAULT_THUMBNAIL,
         link: { mobileWebUrl: url, webUrl: url },
       },
     });

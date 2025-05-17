@@ -7,7 +7,7 @@ import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { DEFAULT_THUMBNAIL_GRIMITY } from "@/constants/imageUrl";
+import { DEFAULT_THUMBNAIL } from "@/constants/imageUrl";
 
 type Props = {
   data: UserMetaResponse;
@@ -51,13 +51,13 @@ export default function Profile({ data }: Props) {
         <meta name="description" content={data.description ?? ""} />
         <meta property="og:title" content={`${data.name} - 그리미티`} />
         <meta property="og:description" content={`${data.description} | grimity |`} />
-        <meta property="og:image" content={data.image ?? DEFAULT_THUMBNAIL_GRIMITY} />
+        <meta property="og:image" content={data.image ?? DEFAULT_THUMBNAIL} />
         <meta property="og:url" content={`${serviceUrl}/${data.url}`} />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${data.name}의 프로필 - 그리미티`} />
         <meta name="twitter:description" content={data.description ?? ""} />
-        <meta name="twitter:image" content={data.image ?? DEFAULT_THUMBNAIL_GRIMITY} />
+        <meta name="twitter:image" content={data.image ?? DEFAULT_THUMBNAIL} />
       </Head>
       <ProfilePage isMyProfile={isMyProfile} id={data.id} url={data.url} />
     </>
