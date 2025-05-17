@@ -172,6 +172,7 @@ export default function AlbumEdit() {
                   setName(e.target.value);
                 }}
                 onKeyDown={(e) => {
+                  if (e.nativeEvent.isComposing) return;
                   if (e.key === "Enter") {
                     e.preventDefault();
                     handleCreateAlbum();
@@ -240,6 +241,13 @@ export default function AlbumEdit() {
                                 [album.id]: e.target.value,
                               }))
                             }
+                            onKeyDown={(e) => {
+                              if (e.nativeEvent.isComposing) return;
+                              if (e.key === "Enter") {
+                                e.preventDefault();
+                                handleRename(album.id);
+                              }
+                            }}
                             maxLength={15}
                           />
 
