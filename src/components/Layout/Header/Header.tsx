@@ -444,6 +444,15 @@ export default function Header() {
                             </button>
                           </div>
                         )}
+                        <Link href="/write">
+                          <Button
+                            size="l"
+                            type="filled-primary"
+                            leftIcon={<IconComponent name="menuUpload" size={16} />}
+                          >
+                            그림 업로드
+                          </Button>
+                        </Link>
                       </div>
                     )}
                   </div>
