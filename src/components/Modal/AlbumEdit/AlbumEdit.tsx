@@ -230,7 +230,9 @@ export default function AlbumEdit() {
                           <input
                             type="text"
                             value={inputValues[album.id] ?? ""}
-                            className={styles.albumItem}
+                            className={`${styles.albumItem} ${
+                              editingId === album.id ? styles.editing : ""
+                            }`}
                             disabled={editingId !== album.id}
                             onChange={(e) =>
                               setInputValues((prev) => ({
@@ -277,7 +279,7 @@ export default function AlbumEdit() {
                             className={styles.removeAlbumButton}
                             onClick={() => handleDeleteAlbum(album.id)}
                           >
-                            <IconComponent name="deleteAlbum" size={24} />
+                            <IconComponent name="deleteAlbum" size={24} isBtn />
                           </div>
                         )}
                       </div>
@@ -313,7 +315,7 @@ export default function AlbumEdit() {
                                   />
                                 </div>
                                 <div className={styles.removeAlbumButton}>
-                                  <IconComponent name="editOrder" />
+                                  <IconComponent name="editOrder" isBtn />
                                 </div>
                               </div>
                             )}

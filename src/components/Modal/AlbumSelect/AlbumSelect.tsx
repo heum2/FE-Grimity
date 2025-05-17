@@ -55,7 +55,7 @@ export default function AlbumSelect() {
                 >
                   {album.name}
                   <div className={styles.checkIcon}></div>
-                  {selectedId === album.id && <IconComponent name="checkAlbum" size={14} />}
+                  {selectedId === album.id && <IconComponent name="checkAlbum" size={14} isBtn />}
                 </div>
               </div>
             ))}

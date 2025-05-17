@@ -1,4 +1,5 @@
 @use "@/styles/globals.scss" as *;
+@use "sass:color";
 
 .container {
   display: flex;
@@ -238,8 +239,14 @@
           @include Label2;
           gap: 8px;
 
-          &:focus-within {
+          &:focus {
             border: 1px solid $gray80;
+            outline: none;
+          }
+
+          &.editing {
+            border: 1px solid $gray80;
+            background-color: $gray0;
           }
 
           @include Size("mobile") {
@@ -315,15 +322,20 @@
   background-color: $gray10;
   border: 1px solid $gray30;
   position: relative;
-  overflow-y: auto;
   width: 100%;
   height: 52px;
   padding: 16px 20px;
   @include Label2;
   color: $gray80;
 
-  &:focus-within {
+  outline: none;
+
+  &:focus {
     border: 1px solid $secandary1;
     background-color: $gray0;
+  }
+
+  &:active {
+    background-color: color.adjust($gray0, $lightness: 8%);
   }
 }
