@@ -22,6 +22,10 @@
     white-space: pre-wrap;
   }
 
+  @include Size("mobile") {
+    padding: 0;
+  }
+
   .wrapper {
     display: flex;
     align-items: center;
@@ -34,8 +38,6 @@
     }
 
     .icon {
-      // margin-bottom: 3px;
-
       @include Size("tablet") {
         margin-top: 0;
       }
@@ -52,6 +54,12 @@
     margin-left: 0;
     font-size: 12px;
     line-height: 1.4;
+  }
+
+  @include Size("mobile") {
+    font-size: 16px;
+    line-height: 22.4px;
+    font-weight: bold;
   }
 }
 
