@@ -97,7 +97,7 @@ export default function AlbumMove() {
             >
               전체 앨범
               <div className={styles.checkIcon}></div>
-              {selectedId === null && <IconComponent name="checkAlbum" size={14} />}
+              {selectedId === null && <IconComponent name="checkAlbum" size={14} isBtn />}
             </div>
             {albums.map((album) => (
               <div key={album.id}>
@@ -109,7 +109,7 @@ export default function AlbumMove() {
                 >
                   {album.name}
                   <div className={styles.checkIcon}></div>
-                  {selectedId === album.id && <IconComponent name="checkAlbum" size={14} />}
+                  {selectedId === album.id && <IconComponent name="checkAlbum" size={14} isBtn />}
                 </div>
               </div>
             ))}

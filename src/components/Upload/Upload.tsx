@@ -42,7 +42,7 @@ export default function Upload() {
       selectedAlbumId: selectedAlbumId,
       onSelect: (id: string, name: string) => {
         setSelectedAlbumId(id);
-        setSelectedAlbumName(name);
+        setSelectedAlbumName(id ? name : "");
       },
     };
 
@@ -642,9 +642,18 @@ export default function Upload() {
               <div className={styles.tagContainer}>
                 <div className={styles.tagInputContainer}>
                   <label className={styles.label}>앨범</label>
-                  <div className={styles.inputContainer} onClick={handleOpenAlbumSelect}>
-                    <div className={styles.text}>{selectedAlbumName || "앨범 선택"}</div>
-                    <IconComponent name="openAlbumSelect" size={14} isBtn />
+                  <div className={styles.inputContainer}>
+                    <div
+                      className={`${
+                        selectedAlbumName?.trim() ? styles.textSelected : styles.text
+                      } ${styles.albumClick}`}
+                      onClick={handleOpenAlbumSelect}
+                    >
+                      {selectedAlbumName?.trim() || "앨범 선택"}
+                    </div>
+                    <div className={styles.albumClick} onClick={handleOpenAlbumSelect}>
+                      <IconComponent name="openAlbumSelect" size={14} isBtn />
+                    </div>
                   </div>
                 </div>
               </div>

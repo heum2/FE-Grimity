@@ -50,7 +50,7 @@ export default function EditFeeds({ id }: EditFeedsProps) {
       selectedAlbumId: selectedAlbumId,
       onSelect: (id: string, name: string) => {
         setSelectedAlbumId(id);
-        setSelectedAlbumName(name);
+        setSelectedAlbumName(id ? name : "");
       },
     };
 
@@ -670,9 +670,25 @@ export default function EditFeeds({ id }: EditFeedsProps) {
               <div className={styles.tagContainer}>
                 <div className={styles.tagInputContainer}>
                   <label className={styles.label}>앨범</label>
-                  <div className={styles.inputContainer} onClick={handleOpenAlbumSelect}>
-                    <div className={styles.text}>{selectedAlbumName || "앨범 선택"}</div>
-                    <IconComponent name="openAlbumSelect" size={14} isBtn />
+                  <div className={styles.inputContainer}>
+                    <div
+                      className={`${selectedAlbumName ? styles.textSelected : styles.text} ${
+                        styles.albumClick
+                      }`}
+                      onClick={handleOpenAlbumSelect}
+                      role="button"
+                      tabIndex={0}
+                    >
+                      {selectedAlbumName || "앨범 선택"}
+                    </div>
+                    <div
+                      className={styles.albumClick}
+                      onClick={handleOpenAlbumSelect}
+                      role="button"
+                      tabIndex={0}
+                    >
+                      <IconComponent name="openAlbumSelect" size={14} isBtn />
+                    </div>
                   </div>
                 </div>
               </div>

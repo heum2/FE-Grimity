@@ -337,69 +337,79 @@
                 align-items: center;
                 gap: 16px;
 
-                .text {
-                  color: $gray70;
-                  @include Body1;
+                .albumClick {
+                  cursor: pointer;
+                  width: fit-content;
                 }
 
-                .input {
-                  width: 100%;
+                .text {
+                  color: $gray50;
                   @include Body1;
-                  color: $gray80;
-                  border: none;
-                  outline: none;
-                  padding: 0;
 
-                  &::placeholder {
-                    color: $gray50;
+                  &:selected {
+                    color: $gray70;
                   }
                 }
               }
-            }
 
-            .tagList {
-              width: 100%;
-              display: flex;
-              flex-wrap: wrap;
-              gap: 8px;
+              .input {
+                width: 100%;
+                @include Body1;
+                color: $gray80;
+                border: none;
+                outline: none;
+                padding: 0;
 
-              .deleteTag {
-                height: 100%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                cursor: pointer;
+                &::placeholder {
+                  color: $gray50;
+                }
               }
             }
           }
+
+          .tagList {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+
+            .deleteTag {
+              height: 100%;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+
+      .optionContainer {
+        display: flex;
+        align-items: center;
+        gap: 36px;
+        margin-top: 50px;
+        @include Drag;
+
+        @include Size("mobile") {
+          margin-top: 28px;
+          flex-direction: column;
+          gap: 12px;
+          align-items: flex-start;
         }
 
-        .optionContainer {
+        .options {
           display: flex;
           align-items: center;
-          gap: 36px;
-          margin-top: 50px;
-          @include Drag;
+          gap: 20px;
+          @include Body1;
+          color: $gray70;
 
-          @include Size("mobile") {
-            margin-top: 28px;
-            flex-direction: column;
-            gap: 12px;
-            align-items: flex-start;
-          }
-
-          .options {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            @include Body1;
-            color: $gray70;
-
-            .option {
-              cursor: pointer;
-              transition: opacity 0.3s ease-in-out;
-              line-height: 0;
-            }
+          .option {
+            cursor: pointer;
+            transition: opacity 0.3s ease-in-out;
+            line-height: 0;
           }
         }
       }
