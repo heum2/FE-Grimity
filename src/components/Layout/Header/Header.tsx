@@ -99,9 +99,6 @@ export default function Header() {
 
   const handleNavClick = (item: { name: string; path: string }) => {
     setActiveNav(item.name);
-    if (isMobile) {
-      setIsMenuOpen(false);
-    }
 
     if (router.pathname === item.path) {
       router.reload();
@@ -197,12 +194,17 @@ export default function Header() {
     setIsMenuOpen((prev) => !prev);
   };
 
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
   const toggleSubmenu = () => {
     setIsSubMenuOpen((prev) => !prev);
   };
 
   const handleFooterClick = (itemIcon: FooterIconName, route?: string) => {
     if (route) {
+      closeMenu();
       router.push(route);
     } else if (itemIcon === "ask") {
       setIsAskDropdownOpen(!isAskDropdownOpen);
@@ -376,7 +378,7 @@ export default function Header() {
                       <div
                         onClick={(e) => {
                           e.stopPropagation();
-                          toggleMenu();
+                          closeMenu();
                         }}
                         className={styles.closeBtn}
                       >
@@ -400,7 +402,7 @@ export default function Header() {
                               className={styles.navItem}
                               onClick={() => {
                                 handleNavClick(item);
-                                toggleMenu();
+                                closeMenu();
                               }}
                             >
                               <p
@@ -421,7 +423,11 @@ export default function Header() {
                             isSubMenuOpen ? styles.profileSubmenuOpen : ""
                           }`}
                         >
-                          <Link href={`/${myData?.url}`} className={styles.mobileMyInfo}>
+                          <Link
+                            href={`/${myData?.url}`}
+                            className={styles.mobileMyInfo}
+                            onClick={closeMenu}
+                          >
                             <Image
                               src={myData?.image || "/image/default.svg"}
                               width={32}
@@ -446,20 +452,26 @@ export default function Header() {
                         </div>
                         {isSubMenuOpen && (
                           <div className={styles.btns}>
-                            <Link href="/mypage?tab=liked-feeds">
+                            <Link href="/mypage?tab=liked-feeds" onClick={closeMenu}>
                               <button className={styles.itemBtn}>
                                 <IconComponent name="menuSave" size={18} isBtn />
                                 저장한 컨텐츠
                               </button>
                             </Link>
-                            <button className={styles.itemBtn} onClick={handleLogout}>
+                            <button
+                              className={styles.itemBtn}
+                              onClick={() => {
+                                handleLogout();
+                                closeMenu();
+                              }}
+                            >
                               <IconComponent name="menuLogout" size={18} isBtn />
                               로그아웃
                             </button>
                           </div>
                         )}
                         <div className={styles.uploadFeedBtn}>
-                          <Link href="/write">
+                          <Link href="/write" onClick={closeMenu}>
                             <Button
                               size="m"
                               width="200px"
@@ -478,7 +490,7 @@ export default function Header() {
                               className={styles.navItem}
                               onClick={() => {
                                 handleNavClick(item);
-                                toggleMenu();
+                                closeMenu();
                               }}
                             >
                               <p
@@ -515,10 +527,17 @@ export default function Header() {
                           target="_blank"
                           rel="noopener noreferrer"
                           className={styles.dropdownItem}
+                          onClick={closeMenu}
                         >
                           카카오톡으로 문의하기
                         </a>
-                        <div onClick={copyToClipboard} className={styles.dropdownItem}>
+                        <div
+                          onClick={() => {
+                            copyToClipboard();
+                            closeMenu();
+                          }}
+                          className={styles.dropdownItem}
+                        >
                           메일로 보내기
                         </div>
                       </div>
@@ -530,6 +549,7 @@ export default function Header() {
                             href="https://nostalgic-patch-498.notion.site/1930ac6bf29881b9aa19ff623c69b8e6?pvs=74"
                             target="_blank"
                             rel="noopener noreferrer"
+                            onClick={closeMenu}
                           >
                             이용약관
                           </a>
@@ -537,6 +557,7 @@ export default function Header() {
                             href="https://nostalgic-patch-498.notion.site/1930ac6bf29881e9a3e4c405e7f49f2b?pvs=73"
                             target="_blank"
                             rel="noopener noreferrer"
+                            onClick={closeMenu}
                           >
                             개인정보취급방침
                           </a>
