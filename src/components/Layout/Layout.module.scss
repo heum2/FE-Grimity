@@ -28,11 +28,11 @@
     padding: 0 30px;
 
     @include Size("tablet") {
-      margin: 60px auto 80px;
+      padding: 0 16px;
     }
 
     @include Size("mobile") {
-      margin: 60px auto 80px;
+      padding: 0;
     }
   }
 
