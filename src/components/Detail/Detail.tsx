@@ -145,16 +145,16 @@ export default function Detail({ id }: DetailProps) {
     }
 
     if (details?.author.id === user_id) {
-      if (isMobile) {
-        openModal({
-          type: "LIKE",
-          isFill: true,
-        });
-      } else {
-        openModal({
-          type: "LIKE",
-        });
-      }
+      // if (isMobile) {
+      //   openModal({
+      //     type: "LIKE",
+      //     isFill: true,
+      //   });
+      // } else {
+      //   openModal({
+      //     type: "LIKE",
+      //   });
+      // }
     } else {
       if (isLiked) {
         await deleteLike(id);
