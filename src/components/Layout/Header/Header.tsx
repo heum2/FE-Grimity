@@ -371,7 +371,7 @@ export default function Header() {
                   className={`${styles.sideMenu} ${isMenuOpen ? styles.open : ""}`}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div>
+                  <div className={styles.menuContentWrapper}>
                     <div className={styles.navUpload}>
                       <div
                         onClick={(e) => {
@@ -380,41 +380,42 @@ export default function Header() {
                         }}
                         className={styles.closeBtn}
                       >
-                        <IconComponent name="x" size={24} padding={8} isBtn />
+                        <IconComponent name="x" size={24} isBtn />
                       </div>
-                      <nav className={styles.nav}>
-                        {navItems.map((item, index) => (
-                          <div
-                            key={index}
-                            className={styles.navItem}
-                            onClick={() => {
-                              handleNavClick(item);
-                              toggleMenu();
-                            }}
-                          >
-                            <p
-                              className={`${styles.item} ${
-                                isNavPage && (activeNav === item.name ? styles.active : "")
-                              }`}
-                            >
-                              {item.name}
-                            </p>
-                          </div>
-                        ))}
-                      </nav>
                     </div>
                     {!isLoggedIn || !myData ? (
-                      <div
-                        className={isMobile ? styles.uploadBtnContainer : styles.uploadBtn}
-                        onClick={() => openModal({ type: "LOGIN" })}
-                      >
-                        <Button size="l" type="filled-primary">
-                          로그인
-                        </Button>
-                      </div>
+                      <>
+                        <div
+                          className={isMobile ? styles.uploadBtnContainer : styles.uploadBtn}
+                          onClick={() => openModal({ type: "LOGIN" })}
+                        >
+                          <Button size="l" type="filled-primary">
+                            로그인
+                          </Button>
+                        </div>
+                        <nav className={styles.nav}>
+                          {navItems.map((item, index) => (
+                            <div
+                              key={index}
+                              className={styles.navItem}
+                              onClick={() => {
+                                handleNavClick(item);
+                                toggleMenu();
+                              }}
+                            >
+                              <p
+                                className={`${styles.item} ${
+                                  isNavPage && (activeNav === item.name ? styles.active : "")
+                                }`}
+                              >
+                                {item.name}
+                              </p>
+                            </div>
+                          ))}
+                        </nav>
+                      </>
                     ) : (
                       <div className={styles.mobileProfile}>
-                        <div className={styles.bar} />
                         <div className={styles.profileSubmenu}>
                           <Link href={`/${myData?.url}`} className={styles.mobileMyInfo}>
                             <Image
@@ -443,75 +444,97 @@ export default function Header() {
                           <div className={styles.btns}>
                             <Link href="/mypage?tab=liked-feeds">
                               <button className={styles.itemBtn}>
-                                <IconComponent name="menuSave" size={24} isBtn />
+                                <IconComponent name="menuSave" size={18} isBtn />
                                 저장한 컨텐츠
                               </button>
                             </Link>
                             <button className={styles.itemBtn} onClick={handleLogout}>
-                              <IconComponent name="menuLogout" size={24} isBtn />
+                              <IconComponent name="menuLogout" size={18} isBtn />
                               로그아웃
                             </button>
                           </div>
                         )}
-                        <Link href="/write">
-                          <Button
-                            size="l"
-                            type="filled-primary"
-                            leftIcon={<IconComponent name="menuUpload" size={16} />}
-                          >
-                            그림 업로드
-                          </Button>
-                        </Link>
+                        <div className={styles.uploadBtn}>
+                          <Link href="/write">
+                            <Button
+                              size="l"
+                              type="filled-primary"
+                              leftIcon={<IconComponent name="menuUpload" size={16} />}
+                            >
+                              그림 업로드
+                            </Button>
+                          </Link>
+                        </div>
+                        <div className={styles.bar} />
+                        <nav className={styles.nav}>
+                          {navItems.map((item, index) => (
+                            <div
+                              key={index}
+                              className={styles.navItem}
+                              onClick={() => {
+                                handleNavClick(item);
+                                toggleMenu();
+                              }}
+                            >
+                              <p
+                                className={`${styles.item} ${
+                                  isNavPage && (activeNav === item.name ? styles.active : "")
+                                }`}
+                              >
+                                {item.name}
+                              </p>
+                            </div>
+                          ))}
+                        </nav>
                       </div>
                     )}
-                    <div className={styles.mobileFooterWrap}>
-                      <div className={styles.footerMenu}>
-                        {FOOTER_ITEMS.map((item, index) => (
-                          <SidebarFooterItem
-                            key={index}
-                            icon={item.icon as FooterIconName}
-                            label={item.label}
-                            onClickItem={() => handleFooterClick(item.icon, item.route)}
-                            isHaveDropdown={item.isHaveDropdown}
-                            isDropdownOpen={item.icon === "ask" ? isAskDropdownOpen : false}
-                          />
-                        ))}
-                      </div>
+                  </div>
 
-                      {isAskDropdownOpen && (
-                        <div className={styles.dropdown} ref={askDropdownRef}>
-                          <a
-                            href="https://open.kakao.com/o/sKYFewgh"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={styles.dropdownItem}
-                          >
-                            카카오톡으로 문의하기
-                          </a>
-                          <div onClick={copyToClipboard} className={styles.dropdownItem}>
-                            메일로 보내기
-                          </div>
-                        </div>
-                      )}
-
-                      <div className={styles.subLink}>
-                        <a
-                          href="https://nostalgic-patch-498.notion.site/1930ac6bf29881b9aa19ff623c69b8e6?pvs=74"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          이용약관
-                        </a>
-                        <a
-                          href="https://nostalgic-patch-498.notion.site/1930ac6bf29881e9a3e4c405e7f49f2b?pvs=73"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          개인정보취급방침
-                        </a>
-                      </div>
-                      <p className={styles.copy}>© Grimity. All rights reserved.</p>
+                  <div className={styles.mobileFooterWrap}>
+                    <div className={styles.footerMenu}>
+                      {FOOTER_ITEMS.map((item, index) => (
+                        <SidebarFooterItem
+                          key={index}
+                          icon={item.icon as FooterIconName}
+                          label={item.label}
+                          onClickItem={() => handleFooterClick(item.icon, item.route)}
+                          isHaveDropdown={item.isHaveDropdown}
+                          isDropdownOpen={item.icon === "ask" ? isAskDropdownOpen : false}
+                        />
+                      ))}
                     </div>
+                    {isAskDropdownOpen && (
+                      <div className={styles.dropdown} ref={askDropdownRef}>
+                        <a
+                          href="https://open.kakao.com/o/sKYFewgh"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.dropdownItem}
+                        >
+                          카카오톡으로 문의하기
+                        </a>
+                        <div onClick={copyToClipboard} className={styles.dropdownItem}>
+                          메일로 보내기
+                        </div>
+                      </div>
+                    )}
+                    <div className={styles.subLink}>
+                      <a
+                        href="https://nostalgic-patch-498.notion.site/1930ac6bf29881b9aa19ff623c69b8e6?pvs=74"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        이용약관
+                      </a>
+                      <a
+                        href="https://nostalgic-patch-498.notion.site/1930ac6bf29881e9a3e4c405e7f49f2b?pvs=73"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        개인정보취급방침
+                      </a>
+                    </div>
+                    <p className={styles.copy}>© Grimity. All rights reserved.</p>
                   </div>
                 </div>
               </div>
