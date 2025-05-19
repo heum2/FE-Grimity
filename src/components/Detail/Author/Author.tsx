@@ -129,7 +129,7 @@ export default function Author({ authorId, authorUrl, feedId }: AuthorProps) {
                 ) : (
                   <Button
                     size="m"
-                    type="outlined-assistive"
+                    type="filled-primary"
                     onClick={() => handleFollowClick(userData.id)}
                   >
                     팔로우
