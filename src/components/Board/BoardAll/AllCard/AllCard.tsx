@@ -94,44 +94,30 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
           </Chip>
         )}
       </div>
-      <div className={styles.spaceBetween}>
-        <Link href={`/posts/${post.id}`}>
-          <div className={styles.titleContent}>
-            <div className={styles.titleContainer}>
-              {post.thumbnail !== null && <IconComponent name="boardAllImage" size={16} />}
-              <span className={styles.title}>{highlight(post.title)}</span>
-              <span className={styles.comment}>{post.commentCount}</span>
-            </div>
-            <p className={styles.content}>{highlight(post.content)}</p>
-          </div>
-        </Link>
-        <div className={styles.rightContainer}>
-          {post.type !== "NOTICE" && cardCase !== "saved-posts" && post.author && !isMobile && (
-            <Link href={`/${post.author?.url}`}>
-              <p className={styles.author}>{post.author.name}</p>
-            </Link>
-          )}
-          {cardCase === "saved-posts" ? (
-            isMobile ? (
-              <div className={styles.savedPosts}>
-                <div className={styles.savedCreatedAtView}>
-                  <div className={styles.author}>{post.author?.name}</div>
-                  <IconComponent name="dot" size={3} />
-                  <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
-                  <IconComponent name="dot" size={3} />
-                  <div className={styles.viewCount}>
-                    <IconComponent name="boardAllView" size={16} />
-                    {post.viewCount}
-                  </div>
-                </div>
+      <div className={styles.spaceBetweenWrapper}>
+        <div className={styles.spaceBetween}>
+          <Link href={`/posts/${post.id}`}>
+            <div className={styles.titleContent}>
+              <div className={styles.titleContainer}>
+                {post.thumbnail !== null && <IconComponent name="boardAllImage" size={16} />}
+                <span className={styles.title}>{highlight(post.title)}</span>
+                <span className={styles.comment}>{post.commentCount}</span>
               </div>
-            ) : (
-              <div className={styles.savedPosts}>
-                <div className={styles.savedCreatedAtView}>
-                  <Link href={`${post.author?.url}`}>
-                    <p className={styles.author}>{post.author?.name}</p>
-                  </Link>
-                  <div className={styles.savedPc}>
+              <p className={styles.content}>{highlight(post.content)}</p>
+            </div>
+          </Link>
+          <div className={styles.rightContainer}>
+            {post.type !== "NOTICE" && cardCase !== "saved-posts" && post.author && !isMobile && (
+              <Link href={`/${post.author?.url}`}>
+                <p className={styles.author}>{post.author.name}</p>
+              </Link>
+            )}
+            {cardCase === "saved-posts" ? (
+              isMobile ? (
+                <div className={styles.savedPosts}>
+                  <div className={styles.savedCreatedAtView}>
+                    <div className={styles.author}>{post.author?.name}</div>
+                    <IconComponent name="dot" size={3} />
                     <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
                     <IconComponent name="dot" size={3} />
                     <div className={styles.viewCount}>
@@ -140,112 +126,128 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
                     </div>
                   </div>
                 </div>
-                <div onClick={handleSaveClick}>
-                  <IconComponent
-                    name={isSaved ? "saveOn" : "saveOff"}
-                    size={20}
-                    padding={8}
-                    isBtn
-                  />
-                </div>
-              </div>
-            )
-          ) : cardCase === "my-posts" ? (
-            isMobile ? (
-              <div className={styles.savedPosts}>
-                <div className={styles.savedCreatedAtView}>
-                  <div className={styles.myCount}>
-                    <IconComponent name="viewCount" size={16} />
-                    {post.viewCount}
+              ) : (
+                <div className={styles.savedPosts}>
+                  <div className={styles.savedCreatedAtView}>
+                    <Link href={`${post.author?.url}`}>
+                      <p className={styles.author}>{post.author?.name}</p>
+                    </Link>
+                    <div className={styles.savedPc}>
+                      <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
+                      <IconComponent name="dot" size={3} />
+                      <div className={styles.viewCount}>
+                        <IconComponent name="boardAllView" size={16} />
+                        {post.viewCount}
+                      </div>
+                    </div>
                   </div>
-                  <div className={styles.myCount}>
-                    <IconComponent name="commentCount" size={16} />
-                    {post.commentCount}
+                  <div onClick={handleSaveClick}>
+                    <IconComponent
+                      name={isSaved ? "saveOn" : "saveOff"}
+                      size={20}
+                      padding={8}
+                      isBtn
+                    />
                   </div>
-                  <IconComponent name="dot" size={3} />
-                  <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
                 </div>
+              )
+            ) : cardCase === "my-posts" ? (
+              isMobile ? (
+                <div className={styles.savedPosts}>
+                  <div className={styles.savedCreatedAtView}>
+                    <div className={styles.myCount}>
+                      <IconComponent name="viewCount" size={16} />
+                      {post.viewCount}
+                    </div>
+                    <div className={styles.myCount}>
+                      <IconComponent name="commentCount" size={16} />
+                      {post.commentCount}
+                    </div>
+                    <IconComponent name="dot" size={3} />
+                    <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
+                  </div>
+                </div>
+              ) : (
+                <div className={styles.savedPosts}>
+                  <div className={styles.savedCreatedAtView}>
+                    <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
+                    <div className={styles.myCount}>
+                      <IconComponent name="viewCount" size={16} />
+                      {post.viewCount}
+                    </div>
+                  </div>
+                  <div className={styles.dropdown}>
+                    <Dropdown
+                      trigger={<IconComponent name="meatball" padding={8} size={24} isBtn />}
+                      menuItems={[
+                        {
+                          label: "공유하기",
+                          onClick: handleOpenShareModal,
+                        },
+                        {
+                          label: "삭제하기",
+                          onClick: handleDelete,
+                          isDelete: true,
+                        },
+                      ]}
+                    />
+                  </div>
+                </div>
+              )
+            ) : isMobile ? (
+              <div className={styles.createdAtView}>
+                {post.type !== "NOTICE" && (
+                  <>
+                    <Link href={`${post.author?.url}`}>
+                      <p className={styles.author}>{post.author?.name}</p>
+                    </Link>
+                    <IconComponent name="dot" size={3} />
+                  </>
+                )}
+                <div className={styles.viewCount}>
+                  <IconComponent name="viewCount" size={16} />
+                  {post.viewCount}
+                </div>
+                <IconComponent name="dot" size={3} />
+                <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
               </div>
             ) : (
-              <div className={styles.savedPosts}>
-                <div className={styles.savedCreatedAtView}>
-                  <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
-                  <div className={styles.myCount}>
-                    <IconComponent name="viewCount" size={16} />
-                    {post.viewCount}
-                  </div>
+              <div className={styles.createdAtView}>
+                <div className={styles.viewCount}>
+                  <IconComponent name="viewCount" size={16} />
+                  {post.viewCount}
                 </div>
-                <div className={styles.dropdown}>
-                  <Dropdown
-                    trigger={<IconComponent name="meatball" padding={8} size={24} isBtn />}
-                    menuItems={[
-                      {
-                        label: "공유하기",
-                        onClick: handleOpenShareModal,
-                      },
-                      {
-                        label: "삭제하기",
-                        onClick: handleDelete,
-                        isDelete: true,
-                      },
-                    ]}
-                  />
-                </div>
+                <IconComponent name="dot" size={3} />
+                <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
               </div>
-            )
-          ) : isMobile ? (
-            <div className={styles.createdAtView}>
-              <div className={styles.viewCount}>
-                <IconComponent name="boardAllView" size={16} />
-                {post.viewCount}
-              </div>
-              <IconComponent name="dot" size={3} />
-              <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
-              {post.type !== "NOTICE" && (
-                <>
-                  <IconComponent name="dot" size={3} />
-                  <Link href={`${post.author?.url}`}>
-                    <p className={styles.author}>{post.author?.name}</p>
-                  </Link>
-                </>
-              )}
-            </div>
-          ) : (
-            <div className={styles.createdAtView}>
-              <div className={styles.viewCount}>
-                <IconComponent name="boardAllView" size={16} />
-                {post.viewCount}
-              </div>
-              <IconComponent name="dot" size={3} />
-              <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
-            </div>
-          )}
+            )}
+          </div>
         </div>
+        {isMobile && cardCase === "saved-posts" && (
+          <div onClick={handleSaveClick} className={styles.savedIcon}>
+            <IconComponent name={isSaved ? "saveOn" : "saveOff"} size={20} padding={8} isBtn />
+          </div>
+        )}
+        {isMobile && cardCase === "my-posts" && (
+          <div className={styles.dropdown}>
+            <Dropdown
+              isTopItem
+              trigger={<IconComponent name="meatball" padding={8} size={24} isBtn />}
+              menuItems={[
+                {
+                  label: "공유하기",
+                  onClick: handleOpenShareModal,
+                },
+                {
+                  label: "삭제하기",
+                  onClick: handleDelete,
+                  isDelete: true,
+                },
+              ]}
+            />
+          </div>
+        )}
       </div>
-      {isMobile && cardCase === "saved-posts" && (
-        <div onClick={handleSaveClick} className={styles.savedIcon}>
-          <IconComponent name={isSaved ? "saveOn" : "saveOff"} size={20} padding={8} isBtn />
-        </div>
-      )}
-      {isMobile && cardCase === "my-posts" && (
-        <div className={styles.dropdown}>
-          <Dropdown
-            isTopItem
-            trigger={<IconComponent name="meatball" padding={8} size={24} isBtn />}
-            menuItems={[
-              {
-                label: "공유하기",
-                onClick: handleOpenShareModal,
-              },
-              {
-                label: "삭제하기",
-                onClick: handleDelete,
-                isDelete: true,
-              },
-            ]}
-          />
-        </div>
-      )}
     </div>
   );
 }
