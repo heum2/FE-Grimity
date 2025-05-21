@@ -1,0 +1,27 @@
+@use "@/styles/globals.scss" as *;
+
+.container {
+  display: flex;
+}
+
+.iconList {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.iconItem {
+  display: flex;
+  align-items: center;
+  padding: 2px 0;
+  border-bottom: 1px solid $gray20;
+  gap: 8px;
+}
+
+.iconName {
+  @include Label2;
+}
+
+.green {
+  color: $secandary1;
+}
