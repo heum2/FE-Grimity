@@ -10,11 +10,11 @@
   color: $gray60;
   cursor: pointer;
   transition: background 0.3s, color 0.3s;
+  border-radius: 8px;
 
   &:hover {
     background-color: $gray20;
     color: $gray70;
-    border-radius: 8px;
   }
 
   &.active {

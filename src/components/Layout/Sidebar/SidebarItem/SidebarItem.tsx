@@ -1,11 +1,8 @@
-import { useState } from "react";
-import styles from "./SidebarItem.module.scss";
-import IconComponent from "@/components/Asset/Icon";
-import { ICONS } from "@/constants/asset";
+import Icon from "@/components/Asset/IconTemp";
 
-type BaseIconName = "home" | "popular" | "board";
+import styles from "@/components/Layout/Sidebar/SidebarItem/SidebarItem.module.scss";
 
-type IconName = `${BaseIconName}` | `${BaseIconName}Hover` | `${BaseIconName}Active`;
+type BaseIconName = "home" | "popular" | "board" | "following";
 
 interface SidebarItemProps {
   icon: BaseIconName;
@@ -15,30 +12,11 @@ interface SidebarItemProps {
 }
 
 const SidebarItem = ({ icon, label, onClick, isActive }: SidebarItemProps) => {
-  const [isHovered, setIsHovered] = useState(false);
-
-  const getIconName = (): IconName => {
-    if (isActive) return `${icon}Active`;
-    if (isHovered) return `${icon}Hover`;
-    return icon;
-  };
-
-  const currentIconName = getIconName();
-
-  if (!ICONS[currentIconName as keyof typeof ICONS]) {
-    return null;
-  }
-
   return (
-    <div
-      className={`${styles.sidebarItem} ${isActive ? styles.active : ""}`}
-      onClick={onClick}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+    <div className={`${styles.sidebarItem} ${isActive ? styles.active : ""}`} onClick={onClick}>
       <div className={styles.wrapper}>
         <span className={styles.icon}>
-          <IconComponent name={currentIconName as keyof typeof ICONS} size={20} isBtn />
+          <Icon icon={icon} size="lg" />
         </span>
         <span className={styles.label}>{label}</span>
       </div>
