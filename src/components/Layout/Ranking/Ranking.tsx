@@ -40,7 +40,7 @@ export default function Ranking() {
 
   return (
     <div className={styles.container}>
-      <Title link="/popular">오늘의 인기 랭킹</Title>
+      <Title link="/popular">주간 랭킹</Title>
       {isEmpty ? (
         <p className={styles.message}>아직 등록된 그림이 없어요</p>
       ) : isMobile || isTablet ? (
