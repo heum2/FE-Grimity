@@ -90,17 +90,18 @@ const Sidebar = () => {
           </div>
 
           <div className={styles.footer}>
-            {footerItems.map((item, index) => (
-              <SidebarFooterItem
-                key={index}
-                icon={item.icon as FooterIconName}
-                label={item.label}
-                onClickItem={() => handleFooterClick(item.icon, item.route)}
-                isHaveDropdown={item.isHaveDropdown}
-                isDropdownOpen={item.icon === "ask" ? isAskDropdownOpen : false}
-              />
-            ))}
-
+            <div className={styles.footerItems}>
+              {footerItems.map((item, index) => (
+                <SidebarFooterItem
+                  key={index}
+                  icon={item.icon as FooterIconName}
+                  label={item.label}
+                  onClickItem={() => handleFooterClick(item.icon, item.route)}
+                  isHaveDropdown={item.isHaveDropdown}
+                  isDropdownOpen={isAskDropdownOpen}
+                />
+              ))}
+            </div>
             {isAskDropdownOpen && (
               <div className={styles.dropdown} ref={dropdownRef}>
                 <a
