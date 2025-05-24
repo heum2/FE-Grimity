@@ -1,9 +1,8 @@
-import styles from "./SidebarFooterItem.module.scss";
-import IconComponent from "@/components/Asset/Icon";
-import { ICONS } from "@/constants/asset";
-import { useDeviceStore } from "@/states/deviceStore";
+import Icon from "@/components/Asset/IconTemp";
 
-type FooterIconName = "noti" | "ask" | "notiM" | "askM";
+import styles from "@/components/Layout/Sidebar/SidebarFooterItem/SidebarFooterItem.module.scss";
+
+type FooterIconName = "noti" | "ask";
 
 interface SidebarFooterItemProps {
   icon: FooterIconName;
@@ -20,35 +19,18 @@ const SidebarFooterItem = ({
   isHaveDropdown,
   isDropdownOpen,
 }: SidebarFooterItemProps) => {
-  const isMobile = useDeviceStore((state) => state.isMobile);
-
-  const resolvedIcon = isMobile
-    ? icon === "noti"
-      ? "notiM"
-      : icon === "ask"
-      ? "askM"
-      : icon
-    : icon;
-
-  if (!ICONS[resolvedIcon as keyof typeof ICONS]) {
-    return null;
-  }
-
   return (
     <div className={styles.sidebarItem} onClick={onClickItem}>
       <div className={styles.wrapper}>
-        <div className={styles.icon}>
-          <IconComponent name={resolvedIcon} size={15} />
-        </div>
+        <Icon icon={icon} className={styles.icon} />
         <span className={styles.label}>{label}</span>
+
         {isHaveDropdown && (
-          <div className={styles.dropdownIcon}>
-            <IconComponent
-              name={isDropdownOpen ? "footerDropdownActive" : "footerDropdown"}
-              size={10}
-              padding={6}
-            />
-          </div>
+          <Icon
+            icon="chevronDown"
+            size="sm"
+            className={`${styles.dropdownIcon} ${isDropdownOpen ? styles.active : ""}`}
+          />
         )}
       </div>
     </div>
