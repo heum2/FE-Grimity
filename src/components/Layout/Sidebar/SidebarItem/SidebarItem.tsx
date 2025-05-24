@@ -15,9 +15,7 @@ const SidebarItem = ({ icon, label, onClick, isActive }: SidebarItemProps) => {
   return (
     <div className={`${styles.sidebarItem} ${isActive ? styles.active : ""}`} onClick={onClick}>
       <div className={styles.wrapper}>
-        <span className={styles.icon}>
-          <Icon icon={icon} size="lg" />
-        </span>
+        <Icon icon={icon} size="lg" className={styles.icon} />
         <span className={styles.label}>{label}</span>
       </div>
     </div>
