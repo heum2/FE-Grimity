@@ -40,7 +40,7 @@ export default function MainBoard({ type }: MainBoardProps) {
       case "NOTICE":
         return "공지사항";
       case "ALL":
-        return "최신 글 보기";
+        return "자유게시판 최신 글";
       default:
         return "";
     }

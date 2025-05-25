@@ -21,7 +21,7 @@
     color: $gray80;
 
     @include Size("mobile") {
-      @include Sub2;
+      @include Sub1;
     }
 
     @include Size("tablet") {
