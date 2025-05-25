@@ -6,7 +6,7 @@ export interface MenuItem {
   route: string;
 }
 
-export const MENU_ITEMS = [
+export const MENU_ITEMS: MenuItem[] = [
   { icon: "home", label: "홈", route: "" },
   { icon: "popular", label: "인기\n그림", route: "popular" },
   { icon: "board", label: "자유\n게시판", route: "board" },
