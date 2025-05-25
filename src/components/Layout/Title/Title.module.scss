@@ -17,15 +17,15 @@
   }
 
   .title {
-    @include Title4;
+    @include Title3;
     color: $gray80;
 
     @include Size("mobile") {
-      @include Sub2;
+      @include Sub1;
     }
 
     @include Size("tablet") {
-      @include Sub1;
+      @include Title3;
     }
   }
 
