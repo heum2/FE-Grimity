@@ -1,28 +1,36 @@
-import { useRouter } from "next/router";
-import styles from "@/components/Board/Detail/Detail.module.scss";
-import { usePostsDetails } from "@/api/posts/getPostsId";
-import Loader from "@/components/Layout/Loader/Loader";
-import { timeAgo } from "@/utils/timeAgo";
-import DOMPurify from "dompurify";
-import Chip from "@/components/Chip/Chip";
-import { getTypeLabel } from "@/components/Board/BoardAll/AllCard/AllCard";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState, useCallback, useMemo } from "react";
+
+import DOMPurify from "dompurify";
+
+import Loader from "@/components/Layout/Loader/Loader";
+import Chip from "@/components/Chip/Chip";
 import Button from "@/components/Button/Button";
 import IconComponent from "@/components/Asset/Icon";
-import { useModalStore } from "@/states/modalStore";
-import { useToast } from "@/hooks/useToast";
-import { useAuthStore } from "@/states/authStore";
-import { useEffect, useState, useCallback, useMemo } from "react";
-import { deletePostsSave, putPostsSave } from "@/api/posts/putDeletePostsIdSave";
-import { deletePostsLike, putPostsLike } from "@/api/posts/putDeletePostsLike";
-import { PostDetailProps } from "@/components/Board/Detail/Detail.types";
 import Dropdown from "@/components/Dropdown/Dropdown";
-import { deletePostsFeeds } from "@/api/posts/deletePostsId";
 import BoardAll from "@/components/Board/BoardAll/BoardAll";
 import ShareBtn from "@/components/Board/Detail/ShareBtn/ShareBtn";
 import PostComment from "@/components/Board/Detail/Comment/Comment";
-import { useDeviceStore } from "@/states/deviceStore";
+
+import { useToast } from "@/hooks/useToast";
 import { useIsMobile } from "@/hooks/useIsMobile";
+
+import { useModalStore } from "@/states/modalStore";
+import { useAuthStore } from "@/states/authStore";
+import { useDeviceStore } from "@/states/deviceStore";
+
+import { usePostsDetails } from "@/api/posts/getPostsId";
+import { deletePostsSave, putPostsSave } from "@/api/posts/putDeletePostsIdSave";
+import { deletePostsLike, putPostsLike } from "@/api/posts/putDeletePostsLike";
+import { deletePostsFeeds } from "@/api/posts/deletePostsId";
+
+import { timeAgo } from "@/utils/timeAgo";
+import { getTypeLabel } from "@/components/Board/BoardAll/AllCard/AllCard";
+
+import { PostDetailProps } from "@/components/Board/Detail/Detail.types";
+
+import styles from "@/components/Board/Detail/Detail.module.scss";
 
 export default function PostDetail({ id }: PostDetailProps) {
   const router = useRouter();
