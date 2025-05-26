@@ -143,37 +143,22 @@ export default function PostDetail({ id }: PostDetailProps) {
           <section className={styles.header}>
             <div className={styles.headerLeft}>
               <div className={styles.chip}>
-                {posts.type === "NOTICE" ? (
-                  <Chip size="s" type="filled-secondary">
-                    {getTypeLabel(posts.type)}
-                  </Chip>
-                ) : (
-                  <Chip size="s" type="filled-assistive">
-                    {getTypeLabel(posts.type)}
-                  </Chip>
-                )}
+                <Chip
+                  size="s"
+                  type={posts.type === "NOTICE" ? "filled-secondary" : "filled-assistive"}
+                >
+                  {getTypeLabel(posts.type)}
+                </Chip>
               </div>
-              {isMobile ? (
-                <>
-                  <h1 className={styles.title}>{posts.title}</h1>
-                  <div className={styles.authorCreatedAt}>
-                    {posts.type !== "NOTICE" && (
-                      <p className={styles.author}>{posts.author.name}</p>
-                    )}
-                    <p className={styles.createdAt}>{timeAgo(posts.createdAt)}</p>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <h1 className={styles.title}>{posts.title}</h1>
-                  <div className={styles.authorCreatedAt}>
-                    {posts.type !== "NOTICE" && (
-                      <p className={styles.author}>{posts.author.name}</p>
-                    )}
-                    <p className={styles.createdAt}>{timeAgo(posts.createdAt)}</p>
-                  </div>
-                </>
-              )}
+              <h1 className={styles.title}>{posts.title}</h1>
+              <div className={styles.authorCreatedAt}>
+                {posts.type !== "NOTICE" && (
+                  <Link href={`/${posts.author.url}`} className={styles.author}>
+                    <p>{posts.author.name}</p>
+                  </Link>
+                )}
+                <p className={styles.createdAt}>{timeAgo(posts.createdAt)}</p>
+              </div>
             </div>
             {!isMobile && (
               <div className={styles.dropdownContainer}>
