@@ -12,6 +12,10 @@
   @include Drag;
 }
 
+.disabled {
+  cursor: default;
+}
+
 .filled-primary {
   background-color: $primary4;
   color: $gray0;
@@ -77,10 +81,16 @@
 
   &:hover {
     background-color: color.adjust($gray0, $lightness: 4%);
+    border-color: $gray50;
   }
 
   &:active {
     background-color: color.adjust($gray0, $lightness: 8%);
+  }
+
+  &.disabled {
+    border-color: $gray30;
+    color: $gray30;
   }
 }
 
