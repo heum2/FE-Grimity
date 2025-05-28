@@ -9,6 +9,7 @@ import FooterSection from "@/components/Layout/FooterSection/FooterSection";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
 import { MENU_ITEMS } from "@/constants/menu";
+import { PATH_ROUTES } from "@/constants/routes";
 
 import styles from "@/components/Layout/Sidebar/Sidebar.module.scss";
 
@@ -19,21 +20,18 @@ const Sidebar = () => {
   useIsMobile();
 
   const menuItems = isLoggedIn
-    ? [...MENU_ITEMS, { icon: "following", label: "팔로잉", route: "following" }]
+    ? [...MENU_ITEMS, { icon: "following", label: "팔로잉", route: PATH_ROUTES.FOLLOWING }]
     : MENU_ITEMS;
 
   const handleItemClick = (route: string) => {
-    router.push(`/${route}`);
+    router.push(route);
   };
 
   const isItemActive = (route: string) => {
     const currentPath = router.pathname;
 
-    if (route === "" && currentPath === "/") return true;
-    if (route === "popular" && currentPath === "/popular") return true;
-    if (route === "board" && (currentPath === "/board" || currentPath.startsWith("/posts/")))
-      return true;
-    if (route === "following" && currentPath === "/following") return true;
+    if (currentPath === route) return true;
+    if (route === PATH_ROUTES.BOARD && currentPath.startsWith("/posts/")) return true;
 
     return false;
   };

@@ -2,7 +2,7 @@ import Icon from "@/components/Asset/IconTemp";
 
 import styles from "@/components/Layout/Sidebar/SidebarItem/SidebarItem.module.scss";
 
-type BaseIconName = "home" | "popular" | "board" | "following";
+type BaseIconName = "home" | "ranking" | "board" | "following";
 
 interface SidebarItemProps {
   icon: BaseIconName;
