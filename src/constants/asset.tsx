@@ -133,7 +133,7 @@ const ICONS_TEMP = {
       />
     ),
   },
-  popular: {
+  ranking: {
     icon: (
       <path
         fillRule="evenodd"
