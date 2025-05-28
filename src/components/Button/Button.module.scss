@@ -10,10 +10,10 @@
   border: none;
   cursor: pointer;
   @include Drag;
-}
 
-.disabled {
-  cursor: default;
+  &:disabled {
+    cursor: default;
+  }
 }
 
 .filled-primary {
@@ -87,15 +87,10 @@
   &:active {
     background-color: color.adjust($gray0, $lightness: 8%);
   }
-
-  &.disabled {
-    border-color: $gray30;
-    color: $gray30;
-  }
 }
 
 .outlined-assistive.disabled {
-  border: 1px solid $gray30;
+  border-color: $gray30;
   color: $gray30;
 }
 
