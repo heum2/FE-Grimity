@@ -1,6 +1,8 @@
-import { TitleProps } from "./Title.types";
-import styles from "./Title.module.scss";
 import Link from "next/link";
+
+import { TitleProps } from "@/components/Layout/Title/Title.types";
+
+import styles from "@/components/Layout/Title/Title.module.scss";
 
 export default function Title({ children, link }: TitleProps) {
   return (

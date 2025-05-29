@@ -1,10 +1,13 @@
-import Title from "@/components/Layout/Title/Title";
-import styles from "./PopularFeed.module.scss";
-import FeedCard from "./FeedCard/FeedCard";
-import { usePopularFeed } from "@/api/feeds/getPopular";
 import { useRef, useEffect } from "react";
-import Loader from "@/components/Layout/Loader/Loader";
 import { useRouter } from "next/router";
+
+import Loader from "@/components/Layout/Loader/Loader";
+import Title from "@/components/Layout/Title/Title";
+import FeedCard from "@/components/RankingPage/PopularFeed";
+
+import { usePopularFeed } from "@/api/feeds/getPopular";
+
+import styles from "@/components/RankingPage/PopularFeed/PopularFeed.module.scss";
 
 export default function PopularFeed() {
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } =
@@ -43,7 +46,7 @@ export default function PopularFeed() {
   return (
     <div className={styles.container}>
       <div className={styles.titleContainer}>
-        <Title>인기 그림</Title>
+        <Title>인기 그림 순위</Title>
       </div>
       <section className={styles.feedContainer}>
         {data?.pages.map((page) => page.feeds.map((feed) => <FeedCard key={feed.id} {...feed} />))}
