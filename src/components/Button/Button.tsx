@@ -1,5 +1,5 @@
-import styles from "./Button.module.scss";
-import { ButtonProps } from "./Button.types";
+import styles from "@/components/Button/Button.module.scss";
+import type { ButtonProps } from "@/components/Button/Button.types";
 
 export default function Button({
   children,
@@ -10,15 +10,16 @@ export default function Button({
   leftIcon,
   rightIcon,
   width,
+  className,
 }: ButtonProps) {
-  let className = `${styles.button} ${styles[type]} ${styles[size]}`;
+  let classNames = `${styles.button} ${styles[type]} ${styles[size]} ${className}`;
 
   if (disabled) {
-    className += ` ${styles.disabled}`;
+    classNames += ` ${styles.disabled}`;
   }
 
   return (
-    <button className={className} disabled={disabled} onClick={onClick} style={{ width }}>
+    <button className={classNames} disabled={disabled} onClick={onClick} style={{ width }}>
       {leftIcon && <div className={styles.icon}>{leftIcon}</div>}
       {children}
       {rightIcon && <div className={styles.icon}>{rightIcon}</div>}

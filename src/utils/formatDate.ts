@@ -1,13 +1,11 @@
-export function formattedDate(date: string | Date): string {
+import { format, isValid } from "date-fns";
+
+export function formattedDate(date: string | Date, formatString: string = "yyyy.MM.dd"): string {
   const validDate = new Date(date);
 
-  if (isNaN(validDate.getTime())) {
+  if (!isValid(validDate)) {
     throw new Error("Invalid date");
   }
 
-  const year = validDate.getFullYear();
-  const month = String(validDate.getMonth() + 1).padStart(2, "0");
-  const day = String(validDate.getDate()).padStart(2, "0");
-
-  return `${year}.${month}.${day}`;
+  return format(validDate, formatString);
 }

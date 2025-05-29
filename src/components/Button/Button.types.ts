@@ -10,9 +10,10 @@ export type ButtonType =
 export type ButtonSize = "l" | "m" | "s";
 
 export interface ButtonProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
+  className?: string;
   type: ButtonType;
-  size: ButtonSize;
+  size?: ButtonSize;
   disabled?: boolean;
   onClick?: () => void;
   width?: string;
