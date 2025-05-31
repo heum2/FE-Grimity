@@ -14,9 +14,10 @@ interface WeekPickerProps {
 }
 
 function WeekPicker({ selectedDate, onDateChange }: WeekPickerProps) {
-  const { currentDate, onPrevWeek, onNextWeek } = useDateNavigation(selectedDate, onDateChange);
-
-  const isDisabled = !isBefore(startOfDay(currentDate), startOfDay(new Date()));
+  const { currentDate, onPrevWeek, onNextWeek, isPrevDisabled, isNextDisabled } = useDateNavigation(
+    selectedDate,
+    onDateChange,
+  );
 
   return (
     <>
@@ -24,6 +25,7 @@ function WeekPicker({ selectedDate, onDateChange }: WeekPickerProps) {
         type="outlined-assistive"
         leftIcon={<Icon icon="chevronLeft" />}
         className={`${styles.iconButton} ${styles.prevButton}`}
+        disabled={isPrevDisabled}
         onClick={onPrevWeek}
       />
 
@@ -39,7 +41,7 @@ function WeekPicker({ selectedDate, onDateChange }: WeekPickerProps) {
         type="outlined-assistive"
         leftIcon={<Icon icon="chevronRight" />}
         className={`${styles.iconButton} ${styles.nextButton}`}
-        disabled={isDisabled}
+        disabled={isNextDisabled}
         onClick={onNextWeek}
       />
     </>

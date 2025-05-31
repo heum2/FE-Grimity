@@ -23,12 +23,11 @@ interface MonthPickerProps {
 
 function MonthPicker({ selectedDate, onDateChange }: MonthPickerProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const { currentDate, onPrevMonth, onNextMonth } = useDateNavigation(selectedDate, onDateChange);
+  const { currentDate, onPrevMonth, onNextMonth, isPrevDisabled, isNextDisabled } =
+    useDateNavigation(selectedDate, onDateChange);
 
   const isMobile = useDeviceStore((state) => state.isMobile);
   useIsMobile();
-
-  const isDisabled = !isBefore(startOfMonth(currentDate), startOfMonth(new Date()));
 
   const handleToggleMonthList = () => {
     setIsOpen(!isOpen);
@@ -45,6 +44,7 @@ function MonthPicker({ selectedDate, onDateChange }: MonthPickerProps) {
           type="outlined-assistive"
           leftIcon={<Icon icon="chevronLeft" />}
           className={`${styles.iconButton} ${styles.prevButton}`}
+          disabled={isPrevDisabled}
           onClick={onPrevMonth}
         />
 
@@ -68,7 +68,7 @@ function MonthPicker({ selectedDate, onDateChange }: MonthPickerProps) {
           type="outlined-assistive"
           leftIcon={<Icon icon="chevronRight" />}
           className={`${styles.iconButton} ${styles.nextButton}`}
-          disabled={isDisabled}
+          disabled={isNextDisabled}
           onClick={onNextMonth}
         />
       </div>
