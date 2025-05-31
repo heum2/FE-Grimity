@@ -11,6 +11,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { useRouter } from "next/router";
+import { PATH_ROUTES } from "@/constants/routes";
 
 export default function Ranking() {
   const isMobile = useDeviceStore((state) => state.isMobile);
@@ -40,7 +41,7 @@ export default function Ranking() {
 
   return (
     <div className={styles.container}>
-      <Title link="/popular">주간 랭킹</Title>
+      <Title link={PATH_ROUTES.RANKING}>주간 랭킹</Title>
       {isEmpty ? (
         <p className={styles.message}>아직 등록된 그림이 없어요</p>
       ) : isMobile || isTablet ? (
