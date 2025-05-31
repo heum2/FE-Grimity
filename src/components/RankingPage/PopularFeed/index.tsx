@@ -1,60 +1,51 @@
-import { useRef, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+
+import { subWeeks } from "date-fns";
 
 import DatePicker from "@/components/DatePicker";
 import TabView from "@/components/TabView";
-import Loader from "@/components/Layout/Loader/Loader";
 import Title from "@/components/Layout/Title/Title";
-import FeedCard from "@/components/RankingPage/PopularFeed";
+import FeedCard from "@/components/RankingPage/PopularFeed/FeedCard/FeedCard";
 
-import { usePopularFeed } from "@/api/feeds/getPopular";
+import { useRankings } from "@/api/feeds/getRankings";
 
 import { DatePickerMode } from "@/components/DatePicker/DatePicker.types";
+
+import { formattedDate } from "@/utils/formatDate";
 
 import styles from "@/components/RankingPage/PopularFeed/PopularFeed.module.scss";
 
 export default function PopularFeed() {
-  const { pathname, query } = useRouter();
+  const router = useRouter();
+  const { query } = router;
 
   const mode = (query.mode as DatePickerMode) || DatePickerMode.WEEK;
   const date = (query.date as string) ? new Date(query.date as string) : new Date();
 
-  const [activeTab, setActiveTab] = useState<DatePickerMode>(mode);
-  const [selectedDate, setSelectedDate] = useState<Date>(date);
+  const { data } = useRankings({
+    ...(mode === DatePickerMode.MONTH && { month: formattedDate(date, "yyyy-MM") }),
+    startDate: formattedDate(subWeeks(date, 1), "yyyy-MM-dd"),
+    endDate: formattedDate(date, "yyyy-MM-dd"),
+  });
 
-  const loadMoreRef = useRef<HTMLDivElement | null>(null);
-
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } =
-    usePopularFeed();
-
-  useEffect(() => {
-    refetch();
-  }, [pathname]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
-        }
+  const handleTabChange = (newMode: DatePickerMode) => {
+    router.replace({
+      pathname: router.pathname,
+      query: {
+        mode: newMode,
       },
-      {
-        rootMargin: "100px",
+    });
+  };
+
+  const handleDateChange = (newDate: Date) => {
+    router.replace({
+      pathname: router.pathname,
+      query: {
+        ...query,
+        date: formattedDate(newDate, "yyyy-MM-dd"),
       },
-    );
-
-    if (loadMoreRef.current) {
-      observer.observe(loadMoreRef.current);
-    }
-
-    return () => {
-      if (loadMoreRef.current) {
-        observer.unobserve(loadMoreRef.current);
-      }
-    };
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage, data?.pages.length]);
-
-  if (isLoading) <Loader />;
+    });
+  };
 
   return (
     <div className={styles.container}>
@@ -67,18 +58,19 @@ export default function PopularFeed() {
           { label: "주간", key: DatePickerMode.WEEK },
           { label: "월간", key: DatePickerMode.MONTH },
         ]}
-        activeTab={activeTab}
-        onTabChange={setActiveTab}
+        activeTab={mode}
+        onTabChange={handleTabChange}
       />
 
       <div className={styles.datePickerContainer}>
-        <DatePicker mode={activeTab} selectedDate={selectedDate} onDateChange={setSelectedDate} />
+        <DatePicker mode={mode} selectedDate={date} onDateChange={handleDateChange} />
       </div>
 
       <section className={styles.feedContainer}>
-        {data?.pages.map((page) => page.feeds.map((feed) => <FeedCard key={feed.id} {...feed} />))}
+        {data?.feeds.map((feed) => (
+          <FeedCard key={feed.id} {...feed} />
+        ))}
       </section>
-      {hasNextPage && <div ref={loadMoreRef} />}
     </div>
   );
 }
