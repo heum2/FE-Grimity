@@ -1,8 +1,20 @@
 import { useState, useEffect } from "react";
-import { subDays, addDays, subMonths, addMonths, subYears, addYears } from "date-fns";
+import {
+  subDays,
+  addDays,
+  subMonths,
+  addMonths,
+  subYears,
+  addYears,
+  isBefore,
+  startOfDay,
+  isSameDay,
+} from "date-fns";
 
 interface UseDateNavigationReturn {
   currentDate: Date;
+  isPrevDisabled: boolean;
+  isNextDisabled: boolean;
   onPrevWeek: () => void;
   onNextWeek: () => void;
   onPrevMonth: () => void;
@@ -16,6 +28,12 @@ function useDateNavigation(
   onDateChange: (date: Date) => void,
 ): UseDateNavigationReturn {
   const [currentDate, setCurrentDate] = useState(initialDate);
+
+  const isPrevDisabled =
+    isBefore(startOfDay(currentDate), startOfDay(new Date(2025, 2, 1))) ||
+    isSameDay(startOfDay(currentDate), startOfDay(new Date(2025, 2, 1)));
+
+  const isNextDisabled = !isBefore(startOfDay(currentDate), startOfDay(new Date()));
 
   const handlePrevWeek = () => {
     const prevDate = subDays(currentDate, 7);
@@ -59,6 +77,8 @@ function useDateNavigation(
 
   return {
     currentDate,
+    isPrevDisabled,
+    isNextDisabled,
     onPrevWeek: handlePrevWeek,
     onNextWeek: handleNextWeek,
     onPrevMonth: handlePrevMonth,

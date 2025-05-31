@@ -14,29 +14,34 @@ interface WeekPickerProps {
 }
 
 function WeekPicker({ selectedDate, onDateChange }: WeekPickerProps) {
-  const { currentDate, onPrevWeek, onNextWeek } = useDateNavigation(selectedDate, onDateChange);
-
-  const isDisabled = !isBefore(startOfDay(currentDate), startOfDay(new Date()));
+  const { currentDate, onPrevWeek, onNextWeek, isPrevDisabled, isNextDisabled } = useDateNavigation(
+    selectedDate,
+    onDateChange,
+  );
 
   return (
     <>
       <Button
         type="outlined-assistive"
         leftIcon={<Icon icon="chevronLeft" />}
-        className={styles.iconButton}
+        className={`${styles.iconButton} ${styles.prevButton}`}
+        disabled={isPrevDisabled}
         onClick={onPrevWeek}
       />
 
-      <span className={styles.date}>
-        {formattedDate(subDays(currentDate, 7))} -{" "}
-        {isToday(currentDate) ? "오늘" : formattedDate(currentDate)}
-      </span>
+      <div className={styles.dateContainer}>
+        <Icon icon="calendar" className={styles.calendarIcon} />
+        <span className={styles.date}>
+          {formattedDate(subDays(currentDate, 7))} -{" "}
+          {isToday(currentDate) ? "오늘" : formattedDate(currentDate)}
+        </span>
+      </div>
 
       <Button
         type="outlined-assistive"
         leftIcon={<Icon icon="chevronRight" />}
-        className={styles.iconButton}
-        disabled={isDisabled}
+        className={`${styles.iconButton} ${styles.nextButton}`}
+        disabled={isNextDisabled}
         onClick={onNextWeek}
       />
     </>
