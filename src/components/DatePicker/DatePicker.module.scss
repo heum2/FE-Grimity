@@ -6,11 +6,44 @@
   align-items: center;
   gap: 24px;
   position: relative;
+
+  @include Size("mobile") {
+    gap: 12px;
+    width: 100%;
+  }
 }
 
 .iconButton {
   padding: 6px;
   color: $gray70;
+}
+
+.prevButton {
+  @include Size("mobile") {
+    order: 2;
+    margin-left: auto;
+  }
+}
+
+.nextButton {
+  @include Size("mobile") {
+    order: 3;
+  }
+}
+
+.dateContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.calendarIcon {
+  color: $gray50;
+  max-width: 0;
+
+  @include Size("mobile") {
+    max-width: fit-content;
+  }
 }
 
 .date {
@@ -24,6 +57,15 @@
     display: flex;
     align-items: center;
     gap: 6px;
+  }
+
+  @include Size("mobile") {
+    order: 1;
+    @include Label2;
+
+    & .calendarIcon {
+      margin-right: 4px;
+    }
   }
 }
 

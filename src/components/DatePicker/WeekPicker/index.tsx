@@ -23,19 +23,22 @@ function WeekPicker({ selectedDate, onDateChange }: WeekPickerProps) {
       <Button
         type="outlined-assistive"
         leftIcon={<Icon icon="chevronLeft" />}
-        className={styles.iconButton}
+        className={`${styles.iconButton} ${styles.prevButton}`}
         onClick={onPrevWeek}
       />
 
-      <span className={styles.date}>
-        {formattedDate(subDays(currentDate, 7))} -{" "}
-        {isToday(currentDate) ? "오늘" : formattedDate(currentDate)}
-      </span>
+      <div className={styles.dateContainer}>
+        <Icon icon="calendar" className={styles.calendarIcon} />
+        <span className={styles.date}>
+          {formattedDate(subDays(currentDate, 7))} -{" "}
+          {isToday(currentDate) ? "오늘" : formattedDate(currentDate)}
+        </span>
+      </div>
 
       <Button
         type="outlined-assistive"
         leftIcon={<Icon icon="chevronRight" />}
-        className={styles.iconButton}
+        className={`${styles.iconButton} ${styles.nextButton}`}
         disabled={isDisabled}
         onClick={onNextWeek}
       />

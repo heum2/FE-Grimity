@@ -50,13 +50,14 @@ function MonthPicker({ selectedDate, onDateChange }: MonthPickerProps) {
       <Button
         type="outlined-assistive"
         leftIcon={<Icon icon="chevronLeft" />}
-        className={styles.iconButton}
+        className={`${styles.iconButton} ${styles.prevButton}`}
         onClick={onPrevMonth}
       />
 
       <Button
         type="text-assistive"
         className={`${styles.date} ${styles.month}`}
+        leftIcon={<Icon icon="calendar" className={styles.calendarIcon} />}
         rightIcon={
           <Icon
             icon="chevronDown"
@@ -72,7 +73,7 @@ function MonthPicker({ selectedDate, onDateChange }: MonthPickerProps) {
       <Button
         type="outlined-assistive"
         leftIcon={<Icon icon="chevronRight" />}
-        className={styles.iconButton}
+        className={`${styles.iconButton} ${styles.nextButton}`}
         disabled={isDisabled}
         onClick={onNextMonth}
       />
