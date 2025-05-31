@@ -97,8 +97,8 @@
 
   &.active {
     @include Sub4;
-    border-color: $main;
-    background-color: rgba($main, 0.1);
+    border-color: $secandary1;
+    background-color: rgba($secandary1, 0.1);
   }
 }
 
