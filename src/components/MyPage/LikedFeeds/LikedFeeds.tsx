@@ -5,6 +5,7 @@ import ProfileCard from "@/components/Layout/ProfileCard/ProfileCard";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/router";
+import { PATH_ROUTES } from "@/constants/routes";
 
 export default function LikedFeeds() {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } = useMyLikeList({
@@ -44,7 +45,7 @@ export default function LikedFeeds() {
       {isEmpty ? (
         <div className={styles.noResult}>
           아직 좋아요한 그림이 없어요
-          <Link href="/popular">
+          <Link href={PATH_ROUTES.RANKING}>
             <Button size="m" type="filled-primary">
               인기그림 둘러보기
             </Button>

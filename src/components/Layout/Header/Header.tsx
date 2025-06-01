@@ -38,7 +38,7 @@ export default function Header() {
   const isPostPage = ["/board", "/board/write", "/posts/[id]", "/posts/[id]/edit"].includes(
     router.pathname,
   );
-  const isNavPage = ["/", "/popular", "/board", "/following", "/board/write"].includes(
+  const isNavPage = ["/", "/ranking", "/board", "/following", "/board/write"].includes(
     router.pathname,
   );
   const hideBtn = ["/write", "/feeds/[id]/edit", "/board/write", "/posts/[id]/edit"].includes(
@@ -49,7 +49,7 @@ export default function Header() {
   useIsMobile();
   const navItems = [
     { name: "홈", path: "/" },
-    { name: "인기그림", path: "/popular" },
+    { name: "랭킹", path: "/ranking" },
     { name: "자유게시판", path: "/board" },
   ];
 

@@ -1,34 +1,42 @@
-import { useEffect, useState } from "react";
-import SquareCard from "../SquareCard/SquareCard";
-import Title from "../Title/Title";
-import IconComponent from "@/components/Asset/Icon";
-import styles from "./Ranking.module.scss";
-import { useTodayFeedPopular } from "@/api/feeds/getTodayPopular";
-import Loader from "../Loader/Loader";
-import { useDeviceStore } from "@/states/deviceStore";
+import { useState } from "react";
+
+import { subWeeks } from "date-fns";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
-import { useRouter } from "next/router";
+
+import { useRankings } from "@/api/feeds/getRankings";
+
+import { useDeviceStore } from "@/states/deviceStore";
+
+import SquareCard from "@/components/Layout/SquareCard/SquareCard";
+import Title from "@/components/Layout/Title/Title";
+import IconComponent from "@/components/Asset/Icon";
+import Loader from "@/components/Layout/Loader/Loader";
+
+import { PATH_ROUTES } from "@/constants/routes";
+
+import { formattedDate } from "@/utils/formatDate";
+
+import styles from "./Ranking.module.scss";
 
 export default function Ranking() {
+  const today = new Date();
+
   const isMobile = useDeviceStore((state) => state.isMobile);
   const isTablet = useDeviceStore((state) => state.isTablet);
 
   const [pageIndex, setPageIndex] = useState(0);
-  const { data, isLoading, refetch } = useTodayFeedPopular();
-  const { pathname } = useRouter();
-  useEffect(() => {
-    refetch();
-  }, [pathname]);
+
+  const { data, isLoading } = useRankings({
+    startDate: formattedDate(subWeeks(today, 1), "yyyy-MM-dd"),
+    endDate: formattedDate(today, "yyyy-MM-dd"),
+  });
 
   if (isLoading) return <Loader />;
 
   const itemsPerPage = 4;
-  const totalSlides = Math.ceil((data?.length || 0) / itemsPerPage);
-  const paginatedFeeds = data || [];
-  const isEmpty = !data || data.length === 0;
+  const totalSlides = Math.ceil((data?.feeds.length || 0) / itemsPerPage);
+  const paginatedFeeds = data?.feeds || [];
+  const isEmpty = !data || data.feeds.length === 0;
 
   const handlePrevClick = () => {
     if (pageIndex > 0) setPageIndex((prev) => prev - 1);
@@ -40,7 +48,7 @@ export default function Ranking() {
 
   return (
     <div className={styles.container}>
-      <Title link="/popular">주간 랭킹</Title>
+      <Title link={PATH_ROUTES.RANKING}>주간 랭킹</Title>
       {isEmpty ? (
         <p className={styles.message}>아직 등록된 그림이 없어요</p>
       ) : isMobile || isTablet ? (

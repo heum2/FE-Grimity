@@ -1,11 +1,14 @@
-import { InitialPageMeta } from "@/components/MetaData/MetaData";
-import Popular from "@/components/PopularPage/PopularPage";
-import { serviceUrl } from "@/constants/serviceurl";
-import { useScrollRestoration } from "@/hooks/useScrollRestoration";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
-export default function PopularPage() {
+import { InitialPageMeta } from "@/components/MetaData/MetaData";
+import Ranking from "@/components/RankingPage";
+
+import { serviceUrl } from "@/constants/serviceurl";
+
+import { useScrollRestoration } from "@/hooks/useScrollRestoration";
+
+function RankingPage() {
   const router = useRouter();
   const [OGTitle] = useState("그리미티");
   const [OGUrl, setOGUrl] = useState(serviceUrl);
@@ -25,7 +28,9 @@ export default function PopularPage() {
   return (
     <>
       <InitialPageMeta title={OGTitle} url={OGUrl} />
-      <Popular />
+      <Ranking />
     </>
   );
 }
+
+export default RankingPage;
