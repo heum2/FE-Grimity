@@ -1,73 +1,40 @@
 import axiosInstance from "@/constants/baseurl";
 import { useQuery } from "react-query";
-import type { FeedCommentsResponse, FeedChildCommentResponse } from "@grimity/dto";
-export type { FeedCommentsResponse };
+import type { ParentFeedCommentResponse } from "@grimity/dto";
+export type { ParentFeedCommentResponse };
 
 /* 댓글 api */
 export interface FeedsCommentsRequest {
   feedId: string;
-  enabled?: boolean;
+}
+
+export interface FeedsCommentsResponse {
+  commentCount: number;
+  comments: ParentFeedCommentResponse[];
 }
 
 export async function getFeedsComments({
   feedId,
-}: FeedsCommentsRequest): Promise<FeedCommentsResponse> {
+}: FeedsCommentsRequest): Promise<FeedsCommentsResponse> {
   try {
-    const response = await axiosInstance.get<FeedCommentsResponse>("/feed-comments", {
+    const response = await axiosInstance.get<ParentFeedCommentResponse[]>("/feed-comments/v2", {
       params: { feedId },
     });
 
-    return response.data;
+    return {
+      commentCount: response.data.length,
+      comments: response.data,
+    };
   } catch (error) {
     console.error("Error fetching comments:", error);
     throw new Error("Failed to fetch comments");
   }
 }
 
-export function useGetFeedsComments({ feedId, enabled = true }: FeedsCommentsRequest) {
-  return useQuery<FeedCommentsResponse>(
+export function useGetFeedsComments({ feedId }: FeedsCommentsRequest) {
+  return useQuery<FeedsCommentsResponse>(
     ["getFeedsComments", feedId],
     () => getFeedsComments({ feedId }),
-    {
-      enabled: enabled,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-      staleTime: 5 * 60 * 1000,
-      cacheTime: 10 * 60 * 1000,
-    },
-  );
-}
-
-/* 답글 api */
-export interface FeedsChildCommentsRequest {
-  feedId: string;
-  parentId: string;
-}
-
-export async function getFeedsChildComments({
-  feedId,
-  parentId,
-}: FeedsChildCommentsRequest): Promise<FeedChildCommentResponse[]> {
-  try {
-    const response = await axiosInstance.get<FeedChildCommentResponse[]>(
-      "/feed-comments/child-comments",
-      {
-        params: { feedId, parentId },
-      },
-    );
-
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching child comments:", error);
-    throw new Error("Failed to fetch child comments");
-  }
-}
-
-export function useGetFeedsChildComments({ feedId, parentId }: FeedsChildCommentsRequest) {
-  return useQuery<FeedChildCommentResponse[]>(
-    ["getFeedsChildComments", feedId, parentId],
-    () => getFeedsChildComments({ feedId, parentId }),
     {
       refetchOnMount: false,
       refetchOnReconnect: false,

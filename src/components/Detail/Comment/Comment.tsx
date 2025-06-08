@@ -1,14 +1,13 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, memo } from "react";
 import styles from "./Comment.module.scss";
 import Image from "next/image";
 import { useAuthStore } from "@/states/authStore";
 import { usePostFeedsComments } from "@/api/feeds-comments/postFeedComments";
 import {
   useGetFeedsComments,
-  useGetFeedsChildComments,
-  FeedCommentsResponse,
+  ParentFeedCommentResponse,
 } from "@/api/feeds-comments/getFeedComments";
-import { CommentProps } from "./Comment.types";
+import { CommentProps, CommentWriter } from "./Comment.types";
 import { useToast } from "@/hooks/useToast";
 import { deleteComments } from "@/api/feeds-comments/deleteFeedComment";
 import { useMutation, useQueryClient } from "react-query";
@@ -26,36 +25,98 @@ import { useMyData } from "@/api/users/getMe";
 import { useDeviceStore } from "@/states/deviceStore";
 import { useRouter } from "next/router";
 
-export default function Comment({
-  feedId,
-  feedWriterId,
-  isFollowingPage,
-  isExpanded = true,
-}: CommentProps) {
+type ToastType = "success" | "error" | "warning" | "information";
+
+interface ReplyInputProps {
+  isChildReply?: boolean;
+  replyText: string;
+  onReplyTextChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onKeyDown: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+  isLoggedIn: boolean;
+  replyInputRef: React.RefObject<HTMLTextAreaElement | null>;
+  showToast: (message: string, type: ToastType) => void;
+  handleReplySubmit: () => void;
+}
+
+const ReplyInput = memo(
+  ({
+    isChildReply = false,
+    replyText,
+    onReplyTextChange,
+    onKeyDown,
+    isLoggedIn,
+    replyInputRef,
+    showToast,
+    handleReplySubmit,
+  }: ReplyInputProps) => {
+    const { data: userData } = useMyData();
+
+    return (
+      <div className={styles.input}>
+        {userData && userData.image !== null ? (
+          <Image
+            src={userData.image}
+            width={24}
+            height={24}
+            alt="내 프로필"
+            quality={50}
+            className={styles.writerImage}
+            unoptimized
+          />
+        ) : (
+          <Image
+            src="/image/default.svg"
+            width={24}
+            height={24}
+            alt="내 프로필"
+            quality={50}
+            className={styles.writerImage}
+            unoptimized
+          />
+        )}
+        <TextArea
+          ref={replyInputRef}
+          placeholder={isLoggedIn ? "답글 달기" : "회원만 답글 달 수 있어요!"}
+          value={replyText}
+          onChange={onReplyTextChange}
+          onKeyDown={onKeyDown}
+          onFocus={() => {
+            if (!isLoggedIn) {
+              showToast("회원만 답글 달 수 있어요!", "error");
+            }
+          }}
+          isReply
+        />
+        <div className={`${styles.submitBtn} ${isChildReply ? styles.childSubmitBtn : ""}`}>
+          <Button size="m" type="filled-primary" onClick={handleReplySubmit} disabled={!isLoggedIn}>
+            답글
+          </Button>
+        </div>
+      </div>
+    );
+  },
+);
+
+export default function Comment({ feedId, feedWriterId, isFollowingPage }: CommentProps) {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const user_id = useAuthStore((state) => state.user_id);
-  const { data: userData, isLoading, refetch: userDataRefetch } = useMyData();
+  const { data: userData, isLoading } = useMyData();
   const { showToast } = useToast();
   const openModal = useModalStore((state) => state.openModal);
   const queryClient = useQueryClient();
   const [replyText, setReplyText] = useState("");
-  const [mentionedUser, setMentionedUser] = useState<{
-    id: string;
-    name: string;
-    url: string;
-  } | null>(null);
-  const [expandedComments, setExpandedComments] = useState<Set<string>>(new Set());
+  const [mentionedUser, setMentionedUser] = useState<CommentWriter | null>(null);
   const [isReplyToChild, setIsReplyToChild] = useState(false);
   const replyInputRef = useRef<HTMLTextAreaElement>(null);
   const { data: commentsData, refetch: refetchComments } = useGetFeedsComments({
     feedId,
-    enabled: isExpanded,
   });
   const postCommentMutation = usePostFeedsComments();
   const [activeParentReplyId, setActiveParentReplyId] = useState<string | null>(null);
   const [activeChildReplyId, setActiveChildReplyId] = useState<string | null>(null);
   const isMobile = useDeviceStore((state) => state.isMobile);
   const { pathname } = useRouter();
+
   useEffect(() => {
     refetchComments();
   }, [pathname]);
@@ -69,10 +130,6 @@ export default function Comment({
       showToast("댓글 삭제에 실패했습니다.", "error");
     },
   });
-
-  if (!isExpanded) {
-    return null;
-  }
 
   const handleCommentSubmitSuccess = () => {
     refetchComments();
@@ -91,13 +148,7 @@ export default function Comment({
         await putCommentLike(commentId);
       }
 
-      refetchComments();
-
-      if (expandedComments.size > 0) {
-        expandedComments.forEach((commentId) => {
-          queryClient.invalidateQueries(["getFeedsChildComments", feedId, commentId]);
-        });
-      }
+      queryClient.invalidateQueries(["getFeedsComments", feedId]);
     } catch (error) {
       showToast("좋아요 처리 중 오류가 발생했습니다.", "error");
     }
@@ -109,8 +160,13 @@ export default function Comment({
 
   const handleParentReply = (
     commentId: string,
-    writer: { id: string; name: string; url: string },
+    writer: { id: string; name: string; url: string; image: string } | null,
   ) => {
+    if (!writer) {
+      showToast("삭제된 댓글에는 답글을 달 수 없습니다.", "error");
+      return;
+    }
+
     if (activeParentReplyId === commentId) {
       setActiveParentReplyId(null);
       setMentionedUser(null);
@@ -130,9 +186,14 @@ export default function Comment({
 
   const handleChildReply = (
     commentId: string,
-    parentId: string,
-    writer: { id: string; name: string; url: string },
+    parentCommentId: string,
+    writer: { id: string; name: string; url: string; image: string } | null,
   ) => {
+    if (!writer) {
+      showToast("삭제된 댓글에는 답글을 달 수 없습니다.", "error");
+      return;
+    }
+
     if (activeChildReplyId === commentId) {
       setActiveChildReplyId(null);
       setMentionedUser(null);
@@ -140,7 +201,7 @@ export default function Comment({
       setIsReplyToChild(false);
     } else {
       setActiveChildReplyId(commentId);
-      setActiveParentReplyId(parentId);
+      setActiveParentReplyId(null);
       setMentionedUser(writer);
       setReplyText("");
       setIsReplyToChild(true);
@@ -185,7 +246,7 @@ export default function Comment({
   };
 
   const handleReplySubmit = async () => {
-    if (!isLoggedIn || !replyText.trim() || !activeParentReplyId || !mentionedUser) return;
+    if (!isLoggedIn || !replyText.trim() || !mentionedUser) return;
 
     const actualReplyContent = replyText.trim();
 
@@ -194,11 +255,14 @@ export default function Comment({
       return;
     }
 
+    const parentCommentId = isReplyToChild ? activeChildReplyId : activeParentReplyId;
+    if (!parentCommentId) return;
+
     postCommentMutation.mutate(
       {
         feedId,
         content: replyText,
-        parentCommentId: activeParentReplyId,
+        parentCommentId,
         mentionedUserId: isReplyToChild ? mentionedUser.id : undefined,
       },
       {
@@ -209,22 +273,9 @@ export default function Comment({
           setMentionedUser(null);
           setIsReplyToChild(false);
           refetchComments();
-          queryClient.invalidateQueries(["getFeedsChildComments", feedId, activeParentReplyId]);
         },
       },
     );
-  };
-
-  const toggleChildComments = (commentId: string) => {
-    setExpandedComments((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(commentId)) {
-        newSet.delete(commentId);
-      } else {
-        newSet.add(commentId);
-      }
-      return newSet;
-    });
   };
 
   useEffect(() => {
@@ -255,28 +306,22 @@ export default function Comment({
     return <Loader />;
   }
 
-  // 답글 영역
-  const ChildComments = ({ parentId }: { parentId: string }) => {
-    const { data: childComments, isLoading } = useGetFeedsChildComments({
-      feedId,
-      parentId,
-    });
-
-    if (isLoading) return <Loader />;
-    if (!childComments) return null;
-
+  const renderChildComments = (
+    childComments: ParentFeedCommentResponse["childComments"],
+    parentCommentId: string,
+  ) => {
     return (
       <div className={styles.childComments}>
         {childComments.map((reply) => (
-          <div key={reply.id} className={`${styles.comment} ${styles.nestedComment}`}>
-            <div className={styles.commentBox}>
+          <div key={reply.id} className={styles.comment}>
+            <div className={styles.childCommentBox}>
               <Link href={`/${reply.writer.url}`}>
                 {reply.writer.image !== null ? (
                   <Image
                     src={reply.writer.image}
                     width={24}
                     height={24}
-                    alt="댓글 프로필"
+                    alt="답글 프로필"
                     quality={50}
                     className={styles.writerImage}
                     unoptimized
@@ -286,7 +331,7 @@ export default function Comment({
                     src="/image/default.svg"
                     width={24}
                     height={24}
-                    alt="댓글 프로필"
+                    alt="답글 프로필"
                     quality={50}
                     className={styles.writerImage}
                     unoptimized
@@ -297,17 +342,19 @@ export default function Comment({
                 <div className={styles.writerReply}>
                   <div className={styles.writerLeft}>
                     <div className={styles.writerCreatedAt}>
-                      <Link href={`/{reply.writer.url}`}>
-                        <div className={styles.writerName}>{reply.writer.name}</div>
+                      <Link href={`/${reply.writer.url}`}>
+                        <div className={styles.writerName}>
+                          {reply.writer.name}
+                          {reply.writer.id === feedWriterId && (
+                            <div className={styles.feedWriter}>작성자</div>
+                          )}
+                        </div>
                       </Link>
-                      {reply.writer.id === feedWriterId && (
-                        <div className={styles.feedWriter}>작성자</div>
-                      )}
                       <p className={styles.createdAt}>{timeAgo(reply.createdAt)}</p>
                     </div>
                     <div className={styles.commentText}>
                       {reply.mentionedUser && (
-                        <span className={styles.mentionedUser}>@{reply.mentionedUser?.name}</span>
+                        <span className={styles.mentionedUser}>@{reply.mentionedUser.name}</span>
                       )}
                       {reply.content}
                     </div>
@@ -328,10 +375,11 @@ export default function Comment({
                       </span>
                       <p
                         onClick={() =>
-                          handleChildReply(reply.id, parentId, {
+                          handleChildReply(reply.id, parentCommentId, {
                             id: reply.writer.id,
                             name: reply.writer.name,
                             url: reply.writer.url,
+                            image: reply.writer.image || "/image/default.svg",
                           })
                         }
                         className={styles.replyBtn}
@@ -368,6 +416,19 @@ export default function Comment({
                     </div>
                   )}
                 </div>
+                {activeChildReplyId === reply.id && (
+                  <ReplyInput
+                    isChildReply={true}
+                    replyText={replyText}
+                    onReplyTextChange={handleReplyTextChange}
+                    onKeyDown={handleEnterKeyDown}
+                    isLoggedIn={isLoggedIn}
+                    replyInputRef={replyInputRef}
+                    showToast={showToast}
+                    handleReplySubmit={handleReplySubmit}
+                  />
+                )}
+                <div className={styles.bar} />
               </div>
             </div>
           </div>
@@ -376,10 +437,7 @@ export default function Comment({
     );
   };
 
-  // 댓글 영역
-  const renderComment = (comment: FeedCommentsResponse["comments"][number]) => {
-    const isExpanded = expandedComments.has(comment.id);
-
+  const renderComment = (comment: ParentFeedCommentResponse) => {
     return (
       <div key={comment.id} className={styles.comment}>
         <div className={styles.commentBox}>
@@ -411,16 +469,14 @@ export default function Comment({
               <div className={styles.writerLeft}>
                 <div className={styles.writerCreatedAt}>
                   <Link href={`/${comment.writer.url}`}>
-                    <div className={styles.writerName}>
-                      {comment.writer.name}
-                      {comment.writer.id === feedWriterId && (
-                        <div className={styles.feedWriter}>작성자</div>
-                      )}
-                    </div>
+                    <div className={styles.writerName}>{comment.writer.name}</div>
                   </Link>
+                  {comment.writer.id === feedWriterId && (
+                    <div className={styles.feedWriter}>작성자</div>
+                  )}
                   <p className={styles.createdAt}>{timeAgo(comment.createdAt)}</p>
                 </div>
-                <p className={styles.commentText}>{comment.content}</p>
+                <div className={styles.commentText}>{comment.content}</div>
                 <div className={styles.likeReplyBtn}>
                   <span
                     className={comment.isLike ? styles.likeOnButton : styles.likeButton}
@@ -442,6 +498,7 @@ export default function Comment({
                         id: comment.writer.id,
                         name: comment.writer.name,
                         url: comment.writer.url,
+                        image: comment.writer.image || "/image/default.svg",
                       })
                     }
                     className={styles.replyBtn}
@@ -478,69 +535,22 @@ export default function Comment({
                 </div>
               )}
             </div>
-            {comment.childCommentCount > 0 && (
+            {comment.childComments.length > 0 && (
               <div className={styles.viewReplies}>
-                <button
-                  onClick={() => toggleChildComments(comment.id)}
-                  className={styles.viewRepliesBtn}
-                >
-                  {isExpanded ? "답글 숨기기" : `답글 ${comment.childCommentCount}개 보기`}
-                  {isExpanded ? (
-                    <IconComponent name="replyFold" size={16} isBtn />
-                  ) : (
-                    <IconComponent name="replySeeMore" size={16} isBtn />
-                  )}
-                </button>
-                {isExpanded && <ChildComments parentId={comment.id} />}
+                {renderChildComments(comment.childComments, comment.id)}
               </div>
             )}
-            {/* 답글 입력창 */}
-            {activeParentReplyId === comment.id && (
-              <div className={styles.input}>
-                {!isMobile &&
-                  (isLoggedIn && userData ? (
-                    <img
-                      src={userData.image !== null ? userData.image : "/image/default.svg"}
-                      width={24}
-                      height={24}
-                      alt="프로필 이미지"
-                      className={styles.writerImage}
-                      loading="lazy"
-                    />
-                  ) : (
-                    <img
-                      src="/image/default.svg"
-                      width={24}
-                      height={24}
-                      alt="프로필 이미지"
-                      className={styles.writerImage}
-                      loading="lazy"
-                    />
-                  ))}
-                <TextArea
-                  ref={replyInputRef}
-                  placeholder={isLoggedIn ? "답글 달기" : "회원만 답글 달 수 있어요!"}
-                  value={replyText}
-                  onChange={handleReplyTextChange}
-                  onKeyDown={handleEnterKeyDown}
-                  onFocus={() => {
-                    if (!isLoggedIn) {
-                      showToast("회원만 답글 달 수 있어요!", "error");
-                    }
-                  }}
-                  isReply
-                />
-                <div className={styles.submitBtn}>
-                  <Button
-                    size="m"
-                    type="filled-primary"
-                    onClick={handleReplySubmit}
-                    disabled={!isLoggedIn}
-                  >
-                    답글
-                  </Button>
-                </div>
-              </div>
+            {activeParentReplyId === comment.id && !isReplyToChild && (
+              <ReplyInput
+                isChildReply={false}
+                replyText={replyText}
+                onReplyTextChange={handleReplyTextChange}
+                onKeyDown={handleEnterKeyDown}
+                isLoggedIn={isLoggedIn}
+                replyInputRef={replyInputRef}
+                showToast={showToast}
+                handleReplySubmit={handleReplySubmit}
+              />
             )}
           </div>
         </div>
@@ -559,7 +569,7 @@ export default function Comment({
           onCommentSubmitSuccess={handleCommentSubmitSuccess}
         />
       )}
-      <section>{commentsData?.comments.map((comment) => renderComment(comment))}</section>
+      <section>{commentsData?.comments?.map((comment) => renderComment(comment))}</section>
     </div>
   );
 }
