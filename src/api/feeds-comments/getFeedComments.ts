@@ -9,7 +9,6 @@ export interface FeedsCommentsRequest {
 }
 
 export interface FeedsCommentsResponse {
-  commentCount: number;
   comments: ParentFeedCommentResponse[];
 }
 
@@ -22,7 +21,6 @@ export async function getFeedsComments({
     });
 
     return {
-      commentCount: response.data.length,
       comments: response.data,
     };
   } catch (error) {
