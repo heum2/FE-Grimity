@@ -12,7 +12,8 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    max-width: 1080px;
+    max-width: $max-width-content;
+    padding: 0 32px;
 
     @include Size("mobile") {
       padding: 0;
@@ -27,6 +28,14 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+
+    @include Size("tablet") {
+      padding: 0 16px;
+    }
+
+    @include Size("mobile") {
+      padding: 0 16px;
+    }
 
     .header {
       width: 100%;

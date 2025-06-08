@@ -159,10 +159,14 @@
 
     @include Size("mobile") {
       margin-top: 120px;
+      padding-left: 16px;
+      padding-right: 16px;
     }
 
     @include Size("tablet") {
       margin-top: 200px;
+      padding-left: 16px;
+      padding-right: 16px;
     }
   }
 

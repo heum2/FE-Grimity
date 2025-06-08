@@ -125,8 +125,27 @@ export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) 
     const activeTabRef = activeTab === "feeds" ? feedsTabRef : postsTabRef;
     if (!activeTabRef.current) return;
 
-    const { offsetWidth, offsetLeft } = activeTabRef.current;
-    setIndicatorStyle({ width: offsetWidth, left: offsetLeft });
+    const measureTab = () => {
+      if (!activeTabRef.current) return;
+
+      const { offsetWidth, offsetLeft } = activeTabRef.current;
+      setIndicatorStyle({ width: offsetWidth, left: offsetLeft });
+    };
+
+    const resizeObserver = new ResizeObserver(() => {
+      measureTab();
+    });
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        measureTab();
+        resizeObserver.observe(activeTabRef.current!);
+      });
+    });
+
+    return () => {
+      resizeObserver.disconnect();
+    };
   }, [activeTab]);
 
   useEffect(() => {
