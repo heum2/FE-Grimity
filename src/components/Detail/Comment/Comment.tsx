@@ -201,7 +201,7 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
       setIsReplyToChild(false);
     } else {
       setActiveChildReplyId(commentId);
-      setActiveParentReplyId(null);
+      setActiveParentReplyId(parentCommentId);
       setMentionedUser(writer);
       setReplyText("");
       setIsReplyToChild(true);
@@ -255,14 +255,13 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
       return;
     }
 
-    const parentCommentId = isReplyToChild ? activeChildReplyId : activeParentReplyId;
-    if (!parentCommentId) return;
+    if (!activeParentReplyId) return;
 
     postCommentMutation.mutate(
       {
         feedId,
         content: replyText,
-        parentCommentId,
+        parentCommentId: activeParentReplyId,
         mentionedUserId: isReplyToChild ? mentionedUser.id : undefined,
       },
       {
