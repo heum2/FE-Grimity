@@ -1,9 +1,9 @@
-import { FeedCommentsResponse } from "@/api/feeds-comments/getFeedComments";
+import { FeedsCommentsResponse } from "@/api/feeds-comments/getFeedComments";
 
 export interface CommentProps {
   feedId: string;
   feedWriterId: string;
-  commentsData?: FeedCommentsResponse;
+  commentsData?: FeedsCommentsResponse;
   isFollowingPage?: boolean;
   isExpanded?: boolean;
 }
@@ -18,7 +18,7 @@ export interface CommentWriter {
 export interface Comment {
   id: string;
   content: string;
-  writer: CommentWriter;
+  writer?: CommentWriter;
   parentId: string | null;
   childComments?: Comment[];
 }

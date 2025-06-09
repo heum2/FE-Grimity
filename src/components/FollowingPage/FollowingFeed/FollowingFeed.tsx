@@ -51,7 +51,6 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
   const openModal = useModalStore((state) => state.openModal);
   const { refetch: refetchComments } = useGetFeedsComments({
     feedId: id,
-    enabled: isCommentExpanded,
   });
   const [isContentTooLong, setIsContentTooLong] = useState(false);
   const contentRef = useRef<HTMLParagraphElement | null>(null);
