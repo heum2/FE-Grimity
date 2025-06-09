@@ -16,7 +16,7 @@ export async function getFeedsComments({
   feedId,
 }: FeedsCommentsRequest): Promise<FeedsCommentsResponse> {
   try {
-    const response = await axiosInstance.get<ParentFeedCommentResponse[]>("/feed-comments/v2", {
+    const response = await axiosInstance.get<ParentFeedCommentResponse[]>("/feed-comments", {
       params: { feedId },
     });
 
