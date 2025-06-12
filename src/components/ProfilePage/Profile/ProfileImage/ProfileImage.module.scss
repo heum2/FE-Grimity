@@ -1,0 +1,48 @@
+@use "@/styles/globals.scss" as *;
+
+.profileImageContainer {
+  width: 140px;
+  height: 140px;
+  position: relative;
+  @include Drag;
+
+  @include Size("mobile") {
+    width: 80px;
+    height: 80px;
+  }
+
+  .deleteImageBtn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: none;
+    cursor: pointer;
+  }
+
+  &:hover .deleteImageBtn {
+    display: block;
+  }
+
+  .profileImage {
+    object-fit: cover;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid $gray30;
+    background-color: $gray0;
+
+    @include Size("mobile") {
+      border: 4px solid $gray0;
+    }
+  }
+
+  .addProfileImage {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    cursor: pointer;
+  }
+}
+
+.hidden {
+  display: none;
+}

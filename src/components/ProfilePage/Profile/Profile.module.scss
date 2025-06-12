@@ -31,35 +31,15 @@
     }
   }
 
-  .background {
+  .backgroundDefaultImageContainer {
     background-color: $primary4;
-    width: 100vw;
+    width: 100%;
     height: 200px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     position: relative;
-  }
-
-  .backgroundDefaultImageContainer {
-    width: calc(100vw - 258px);
-    height: 200px;
-    position: absolute;
-    right: 0;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: center;
-    overflow-x: hidden;
-
-    @include Size("tablet") {
-      width: calc(100vw - 81px);
-    }
-
-    @include Size("mobile") {
-      width: 100%;
-    }
   }
 
   .backgroundDefaultImage {
@@ -126,20 +106,12 @@
   }
 
   .infoContainer {
-    margin-top: 440px;
     width: 100%;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
     z-index: 3;
-
-    @include Size("mobile") {
-      margin-top: 200px;
-    }
-
-    @include Size("tablet") {
-      margin-top: 340px;
-    }
+    max-width: $max-width-container;
   }
 
   .gradientOverlay {
@@ -153,18 +125,15 @@
   }
 
   .infoContainerDefault {
-    padding-top: 40px;
+    margin-top: 40px;
     @extend .infoContainer;
-    margin-top: 210px;
 
     @include Size("mobile") {
-      margin-top: 120px;
       padding-left: 16px;
       padding-right: 16px;
     }
 
     @include Size("tablet") {
-      margin-top: 200px;
       padding-left: 16px;
       padding-right: 16px;
     }

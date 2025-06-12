@@ -214,205 +214,203 @@ export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) 
 
   return (
     <div className={styles.container}>
-      <div className={styles.center}>
-        {/* 그림 정리 모드 */}
-        {isEditMode ? (
-          <FeedAlbumEditor
-            feeds={allFeeds}
-            albums={userData?.albums || []}
-            activeAlbum={activeCategory}
-            onExitEditMode={toggleEditMode}
-          />
-        ) : (
-          <>
-            {/* 기본 모드 */}
-            <Profile isMyProfile={isMyProfile} id={id} url={url} />
-            <div className={styles.bar}>
-              <div
-                ref={feedsTabRef}
-                className={`${styles.tab} ${activeTab === "feeds" ? styles.active : ""}`}
-                onClick={() => handleTabChange("feeds")}
-              >
-                그림<p className={styles.feedCount}>{userData?.feedCount}</p>
-              </div>
-              {isMyProfile && (
-                <div
-                  ref={postsTabRef}
-                  className={`${styles.tab} ${activeTab === "posts" ? styles.active : ""}`}
-                  onClick={() => handleTabChange("posts")}
-                >
-                  글<p className={styles.feedCount}>{userData?.postCount}</p>
-                </div>
-              )}
-              <div
-                className={styles.indicator}
-                style={{
-                  width: `${indicatorStyle.width}px`,
-                  left: `${indicatorStyle.left}px`,
-                }}
-              />
+      {/* 그림 정리 모드 */}
+      {isEditMode ? (
+        <FeedAlbumEditor
+          feeds={allFeeds}
+          albums={userData?.albums || []}
+          activeAlbum={activeCategory}
+          onExitEditMode={toggleEditMode}
+        />
+      ) : (
+        <>
+          {/* 기본 모드 */}
+          <Profile isMyProfile={isMyProfile} id={id} url={url} />
+          <div className={styles.bar}>
+            <div
+              ref={feedsTabRef}
+              className={`${styles.tab} ${activeTab === "feeds" ? styles.active : ""}`}
+              onClick={() => handleTabChange("feeds")}
+            >
+              그림<p className={styles.feedCount}>{userData?.feedCount}</p>
             </div>
-            <div className={styles.feedContainer}>
-              {activeTab === "feeds" && (
-                <section className={styles.header}>
-                  <div className={styles.categoryContainer}>
-                    <div className={`${styles.categoryBar}`} ref={categoryBarRef}>
+            {isMyProfile && (
+              <div
+                ref={postsTabRef}
+                className={`${styles.tab} ${activeTab === "posts" ? styles.active : ""}`}
+                onClick={() => handleTabChange("posts")}
+              >
+                글<p className={styles.feedCount}>{userData?.postCount}</p>
+              </div>
+            )}
+            <div
+              className={styles.indicator}
+              style={{
+                width: `${indicatorStyle.width}px`,
+                left: `${indicatorStyle.left}px`,
+              }}
+            />
+          </div>
+          <div className={styles.feedContainer}>
+            {activeTab === "feeds" && (
+              <section className={styles.header}>
+                <div className={styles.categoryContainer}>
+                  <div className={`${styles.categoryBar}`} ref={categoryBarRef}>
+                    <Category
+                      type={activeCategory === null ? "select" : "unselect"}
+                      onClick={() => handleCategoryClick(null)}
+                    >
+                      전체
+                    </Category>
+                    {userData?.albums?.map((album) => (
                       <Category
-                        type={activeCategory === null ? "select" : "unselect"}
-                        onClick={() => handleCategoryClick(null)}
+                        key={album.id}
+                        type={activeCategory === album.id ? "select" : "unselect"}
+                        onClick={() => handleCategoryClick(album.id)}
+                        quantity={album.feedCount}
                       >
-                        전체
+                        {album.name}
                       </Category>
-                      {userData?.albums?.map((album) => (
-                        <Category
-                          key={album.id}
-                          type={activeCategory === album.id ? "select" : "unselect"}
-                          onClick={() => handleCategoryClick(album.id)}
-                          quantity={album.feedCount}
-                        >
-                          {album.name}
-                        </Category>
-                      ))}
-                    </div>
+                    ))}
+                  </div>
+                  {isMyProfile && (
+                    <button className={styles.addCategoryBtn} onClick={handleAddCategoryClick}>
+                      <img
+                        src="/icon/edit-category.svg"
+                        width={40}
+                        height={40}
+                        alt="카테고리 추가"
+                        loading="lazy"
+                      />
+                    </button>
+                  )}
+                </div>
+
+                {allFeeds.length > 0 && (
+                  <div className={styles.rightBar}>
                     {isMyProfile && (
-                      <button className={styles.addCategoryBtn} onClick={handleAddCategoryClick}>
-                        <img
-                          src="/icon/edit-category.svg"
-                          width={40}
-                          height={40}
-                          alt="카테고리 추가"
-                          loading="lazy"
-                        />
+                      <button className={styles.editFeeds} onClick={toggleEditMode}>
+                        <IconComponent name="moveAlbum" size={20} isBtn />
+                        <span className={styles.label}>그림 정리</span>
                       </button>
                     )}
-                  </div>
-
-                  {allFeeds.length > 0 && (
-                    <div className={styles.rightBar}>
-                      {isMyProfile && (
-                        <button className={styles.editFeeds} onClick={toggleEditMode}>
-                          <IconComponent name="moveAlbum" size={20} isBtn />
-                          <span className={styles.label}>그림 정리</span>
-                        </button>
-                      )}
-                      <div className={styles.sortWrapper}>
-                        <Dropdown
-                          menuItems={sortOptions.map((option) => ({
-                            label: option.label,
-                            value: option.value,
-                            onClick: () => handleSortChange(option.value),
-                          }))}
-                          onOpenChange={handleDropdownToggle}
-                          trigger={
-                            <Button
-                              type="text-assistive-category"
-                              size="l"
-                              rightIcon={
-                                isDropdownOpen ? (
-                                  <IconComponent name="arrowUp" size={20} isBtn />
-                                ) : (
-                                  <IconComponent name="arrowDown" size={20} isBtn />
-                                )
-                              }
-                            >
-                              {sortOptions.find((option) => option.value === sortBy)?.label ||
-                                "최신순"}
-                            </Button>
-                          }
-                        />
-                      </div>
+                    <div className={styles.sortWrapper}>
+                      <Dropdown
+                        menuItems={sortOptions.map((option) => ({
+                          label: option.label,
+                          value: option.value,
+                          onClick: () => handleSortChange(option.value),
+                        }))}
+                        onOpenChange={handleDropdownToggle}
+                        trigger={
+                          <Button
+                            type="text-assistive-category"
+                            size="l"
+                            rightIcon={
+                              isDropdownOpen ? (
+                                <IconComponent name="arrowUp" size={20} isBtn />
+                              ) : (
+                                <IconComponent name="arrowDown" size={20} isBtn />
+                              )
+                            }
+                          >
+                            {sortOptions.find((option) => option.value === sortBy)?.label ||
+                              "최신순"}
+                          </Button>
+                        }
+                      />
                     </div>
-                  )}
+                  </div>
+                )}
+              </section>
+            )}
+            {activeTab === "feeds" ? (
+              allFeeds.length === 0 ? (
+                isMyProfile ? (
+                  <div className={styles.empty}>
+                    <p className={styles.message}>첫 그림을 업로드해보세요</p>
+                    <Link href="/write">
+                      <Button size="m" type="filled-primary">
+                        그림 업로드
+                      </Button>
+                    </Link>
+                  </div>
+                ) : (
+                  <div className={styles.empty}>
+                    <p className={styles.message}>아직 업로드한 그림이 없어요</p>
+                  </div>
+                )
+              ) : (
+                <section className={styles.cardContainer}>
+                  {allFeeds.map((feed, index) => (
+                    <div key={`${feed.id}-${index}`}>
+                      <ProfileCard
+                        title={feed.title}
+                        cards={feed.cards}
+                        thumbnail={feed.thumbnail}
+                        likeCount={feed.likeCount}
+                        commentCount={feed.commentCount}
+                        viewCount={feed.viewCount}
+                        createdAt={feed.createdAt}
+                        id={feed.id}
+                      />
+                    </div>
+                  ))}
+                  {hasNextPage && <div ref={loadMoreRef} />}
                 </section>
-              )}
-              {activeTab === "feeds" ? (
-                allFeeds.length === 0 ? (
-                  isMyProfile ? (
+              )
+            ) : (
+              isMyProfile && (
+                <section>
+                  {!postsData || postsData.length === 0 ? (
                     <div className={styles.empty}>
-                      <p className={styles.message}>첫 그림을 업로드해보세요</p>
-                      <Link href="/write">
+                      <p className={styles.message}>첫 글을 업로드해보세요</p>
+                      <Link href="/board">
                         <Button size="m" type="filled-primary">
-                          그림 업로드
+                          자유게시판 바로가기
                         </Button>
                       </Link>
                     </div>
                   ) : (
-                    <div className={styles.empty}>
-                      <p className={styles.message}>아직 업로드한 그림이 없어요</p>
-                    </div>
-                  )
-                ) : (
-                  <section className={styles.cardContainer}>
-                    {allFeeds.map((feed, index) => (
-                      <div key={`${feed.id}-${index}`}>
-                        <ProfileCard
-                          title={feed.title}
-                          cards={feed.cards}
-                          thumbnail={feed.thumbnail}
-                          likeCount={feed.likeCount}
-                          commentCount={feed.commentCount}
-                          viewCount={feed.viewCount}
-                          createdAt={feed.createdAt}
-                          id={feed.id}
-                        />
+                    <>
+                      <div className={styles.postContainer}>
+                        {postsData.map((post) => (
+                          <AllCard key={post.id} post={post} case="my-posts" />
+                        ))}
                       </div>
-                    ))}
-                    {hasNextPage && <div ref={loadMoreRef} />}
-                  </section>
-                )
-              ) : (
-                isMyProfile && (
-                  <section>
-                    {!postsData || postsData.length === 0 ? (
-                      <div className={styles.empty}>
-                        <p className={styles.message}>첫 글을 업로드해보세요</p>
-                        <Link href="/board">
-                          <Button size="m" type="filled-primary">
-                            자유게시판 바로가기
-                          </Button>
-                        </Link>
-                      </div>
-                    ) : (
-                      <>
-                        <div className={styles.postContainer}>
-                          {postsData.map((post) => (
-                            <AllCard key={post.id} post={post} case="my-posts" />
-                          ))}
-                        </div>
-                        <section className={styles.pagination}>
+                      <section className={styles.pagination}>
+                        <button
+                          className={styles.paginationArrow}
+                          onClick={() => handlePageChange(currentPage - 1)}
+                          disabled={currentPage === 1}
+                        >
+                          <IconComponent name="paginationLeft" size={24} />
+                        </button>
+                        {getPageRange(currentPage, totalPages).map((pageNum) => (
                           <button
-                            className={styles.paginationArrow}
-                            onClick={() => handlePageChange(currentPage - 1)}
-                            disabled={currentPage === 1}
+                            key={pageNum}
+                            className={currentPage === pageNum ? styles.active : ""}
+                            onClick={() => handlePageChange(pageNum)}
                           >
-                            <IconComponent name="paginationLeft" size={24} />
+                            {pageNum}
                           </button>
-                          {getPageRange(currentPage, totalPages).map((pageNum) => (
-                            <button
-                              key={pageNum}
-                              className={currentPage === pageNum ? styles.active : ""}
-                              onClick={() => handlePageChange(pageNum)}
-                            >
-                              {pageNum}
-                            </button>
-                          ))}
-                          <button
-                            className={styles.paginationArrow}
-                            onClick={() => handlePageChange(currentPage + 1)}
-                            disabled={currentPage === totalPages}
-                          >
-                            <IconComponent name="paginationRight" size={24} />
-                          </button>
-                        </section>
-                      </>
-                    )}
-                  </section>
-                )
-              )}
-            </div>
-          </>
-        )}
-      </div>
+                        ))}
+                        <button
+                          className={styles.paginationArrow}
+                          onClick={() => handlePageChange(currentPage + 1)}
+                          disabled={currentPage === totalPages}
+                        >
+                          <IconComponent name="paginationRight" size={24} />
+                        </button>
+                      </section>
+                    </>
+                  )}
+                </section>
+              )
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 }

@@ -1,0 +1,53 @@
+@use "@/styles/globals.scss" as *;
+@use "sass:color";
+
+.editBtn {
+  width: 125px;
+
+  @include Size("mobile") {
+    width: auto;
+  }
+}
+
+.followBtn {
+  width: 95px;
+
+  @include Size("mobile") {
+    width: auto;
+  }
+}
+
+.menuBtn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  @include Drag;
+  border: 1px solid $gray30;
+  color: $gray70;
+  background-color: $gray0;
+  width: 100%;
+  padding: 14px 14px;
+  border-radius: 12px;
+  @include Btn1;
+
+  &:hover {
+    background-color: color.adjust($gray0, $lightness: 4%);
+  }
+
+  &:active {
+    background-color: color.adjust($gray0, $lightness: 8%);
+  }
+
+  @include Size("mobile") {
+    padding: 10px;
+    border-radius: 10px;
+  }
+}
+
+.dropdown {
+  cursor: pointer;
+  position: relative;
+}
