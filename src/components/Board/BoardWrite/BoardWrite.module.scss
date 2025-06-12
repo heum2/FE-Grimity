@@ -26,19 +26,12 @@
     display: flex;
     flex-direction: column;
 
-    .header {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .title {
+      @include Title2;
+      @include Drag;
 
-      .title {
-        @include Title2;
-        @include Drag;
-
-        @include Size("mobile") {
-          @include Title3;
-        }
+      @include Size("mobile") {
+        @include Title3;
       }
     }
 
@@ -70,5 +63,17 @@
     input[type="file"] {
       margin-bottom: 10px;
     }
+  }
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  max-height: 200px;
+
+  .button {
+    width: 100%;
+    max-width: 200px;
   }
 }

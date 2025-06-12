@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Script from "next/script";
 import Button from "@/components/Button/Button";
-import styles from "./BoardWrite.module.scss";
 import { postPresignedUrl } from "@/api/aws/postPresigned";
 import TextField from "@/components/TextField/TextField";
 import { useMutation } from "react-query";
@@ -14,6 +13,7 @@ import Loader from "@/components/Layout/Loader/Loader";
 import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useAuthStore } from "@/states/authStore";
+import styles from "@/components/Board/BoardWrite/BoardWrite.module.scss";
 import { imageUrl } from "@/constants/imageUrl";
 
 const Editor = dynamic(() => import("@tinymce/tinymce-react").then((mod) => mod.Editor), {
@@ -131,17 +131,7 @@ export default function BoardWrite() {
         strategy="afterInteractive"
       />
       <div className={styles.center}>
-        <section className={styles.header}>
-          <h2 className={styles.title}>글쓰기</h2>
-          <Button
-            size="m"
-            type="filled-primary"
-            onClick={handleSubmit}
-            disabled={!title.trim() || !content.trim()}
-          >
-            작성 완료
-          </Button>
-        </section>
+        <h2 className={styles.title}>글쓰기</h2>
         <section className={styles.categorys}>
           {["일반", "질문", "피드백"].map((category) => (
             <Button
@@ -166,7 +156,7 @@ export default function BoardWrite() {
               licenseKey="gpl"
               onInit={(evt, editor) => (editorRef.current = editor)}
               init={{
-                height: isMobile ? 500 : isTablet ? 700 : 600,
+                height: 500,
                 resize: "both",
                 menubar: false,
                 plugins: ["image", "link", "autolink"],
@@ -246,6 +236,16 @@ export default function BoardWrite() {
           ) : (
             <Loader />
           )}
+          <div className={styles.buttonContainer}>
+            <Button
+              className={styles.button}
+              type="filled-primary"
+              onClick={handleSubmit}
+              disabled={!title.trim() || !content.trim()}
+            >
+              작성 완료
+            </Button>
+          </div>
         </section>
       </div>
     </div>
