@@ -47,6 +47,13 @@
   cursor: pointer;
   padding: 16px 24px;
   border-radius: 12px;
+
+  @include Sub4;
+  padding: 16px 24px;
+
+  &:hover {
+    background-color: color.adjust($gray0, $alpha: -0.6);
+  }
 }
 
 .coverBtns {
