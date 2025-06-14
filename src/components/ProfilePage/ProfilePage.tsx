@@ -17,6 +17,7 @@ import Category from "./Profile/CategoryBar/Category/Category";
 import { useDeviceStore } from "@/states/deviceStore";
 import FeedAlbumEditor from "./FeedAlbumEditor/FeedAlbumEditor";
 import { useDragScroll } from "@/hooks/useDragScroll";
+import Icon from "@/components/Asset/IconTemp";
 
 type SortOption = "latest" | "like" | "oldest";
 
@@ -280,13 +281,7 @@ export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) 
                     </div>
                     {isMyProfile && (
                       <button className={styles.addCategoryBtn} onClick={handleAddCategoryClick}>
-                        <img
-                          src="/icon/edit-category.svg"
-                          width={40}
-                          height={40}
-                          alt="카테고리 추가"
-                          loading="lazy"
-                        />
+                        <Icon icon="folder" />
                       </button>
                     )}
                   </div>
@@ -295,7 +290,7 @@ export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) 
                     <div className={styles.rightBar}>
                       {isMyProfile && (
                         <button className={styles.editFeeds} onClick={toggleEditMode}>
-                          <IconComponent name="moveAlbum" size={20} isBtn />
+                          <Icon icon="moveAlbum" size="xl" />
                           <span className={styles.label}>그림 정리</span>
                         </button>
                       )}
@@ -312,11 +307,13 @@ export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) 
                               type="text-assistive-category"
                               size="l"
                               rightIcon={
-                                isDropdownOpen ? (
-                                  <IconComponent name="arrowUp" size={20} isBtn />
-                                ) : (
-                                  <IconComponent name="arrowDown" size={20} isBtn />
-                                )
+                                <Icon
+                                  className={`${styles.dropdownIcon} ${
+                                    isDropdownOpen ? styles.active : ""
+                                  }`}
+                                  icon="chevronDown"
+                                  size="xl"
+                                />
                               }
                             >
                               {sortOptions.find((option) => option.value === sortBy)?.label ||
