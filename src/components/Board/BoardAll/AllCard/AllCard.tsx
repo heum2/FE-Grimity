@@ -14,6 +14,7 @@ import { useToast } from "@/hooks/useToast";
 import { useDeviceStore } from "@/states/deviceStore";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { SearchHighlightContext } from "@/pages/search";
+import Icon from "@/components/Asset/IconTemp";
 
 export function getTypeLabel(type: string): string {
   switch (type) {
@@ -32,7 +33,6 @@ export function getTypeLabel(type: string): string {
 export default function AllCard({ post, case: cardCase, hasChip = false }: AllCardProps) {
   const { highlight } = useContext(SearchHighlightContext);
   const isMobile = useDeviceStore((state) => state.isMobile);
-  const isTablet = useDeviceStore((state) => state.isTablet);
   useIsMobile();
   const openModal = useModalStore((state) => state.openModal);
   const { showToast } = useToast();
@@ -156,11 +156,11 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
                 <div className={styles.savedPosts}>
                   <div className={styles.savedCreatedAtView}>
                     <div className={styles.myCount}>
-                      <IconComponent name="viewCount" size={16} />
+                      <Icon icon="eye" />
                       {post.viewCount}
                     </div>
                     <div className={styles.myCount}>
-                      <IconComponent name="commentCount" size={16} />
+                      <Icon icon="speechBubble" />
                       {post.commentCount}
                     </div>
                     <IconComponent name="dot" size={3} />
@@ -172,13 +172,13 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
                   <div className={styles.savedCreatedAtView}>
                     <p className={styles.createdAt}>{timeAgo(post.createdAt)}</p>
                     <div className={styles.myCount}>
-                      <IconComponent name="viewCount" size={16} />
+                      <Icon icon="eye" />
                       {post.viewCount}
                     </div>
                   </div>
                   <div className={styles.dropdown}>
                     <Dropdown
-                      trigger={<IconComponent name="meatball" padding={8} size={24} isBtn />}
+                      trigger={<Icon icon="more" size="2xl" />}
                       menuItems={[
                         {
                           label: "공유하기",
@@ -205,7 +205,7 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
                   </>
                 )}
                 <div className={styles.viewCount}>
-                  <IconComponent name="viewCount" size={16} />
+                  <Icon icon="eye" />
                   {post.viewCount}
                 </div>
                 <IconComponent name="dot" size={3} />
@@ -214,7 +214,7 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
             ) : (
               <div className={styles.createdAtView}>
                 <div className={styles.viewCount}>
-                  <IconComponent name="viewCount" size={16} />
+                  <Icon icon="eye" />
                   {post.viewCount}
                 </div>
                 <IconComponent name="dot" size={3} />
@@ -231,8 +231,7 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
         {isMobile && cardCase === "my-posts" && (
           <div className={styles.dropdown}>
             <Dropdown
-              isTopItem
-              trigger={<IconComponent name="meatball" padding={8} size={24} isBtn />}
+              trigger={<Icon icon="more" size="2xl" />}
               menuItems={[
                 {
                   label: "공유하기",

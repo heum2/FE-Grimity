@@ -13,16 +13,9 @@
     flex-direction: column;
 
     max-width: $max-width-container;
-    margin-left: auto;
-    margin-right: auto;
     padding-bottom: 60px;
 
-    @include Size("tablet") {
-      padding: 0 16px;
-    }
-
     @include Size("mobile") {
-      padding: 0 16px;
       padding-bottom: 40px;
     }
 
