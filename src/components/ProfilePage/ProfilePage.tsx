@@ -227,7 +227,7 @@ export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) 
           {/* 기본 모드 */}
           <Profile isMyProfile={isMyProfile} id={id} url={url} />
 
-          <div className={styles.wrapper}>
+          <div className={styles.barWrapper}>
             <div className={styles.bar}>
               <div
                 ref={feedsTabRef}
@@ -255,7 +255,7 @@ export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) 
             </div>
           </div>
 
-          <div className={styles.wrapper}>
+          <div className={styles.feed}>
             <div className={styles.feedContainer}>
               {activeTab === "feeds" && (
                 <section className={styles.header}>
