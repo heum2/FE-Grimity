@@ -8,6 +8,7 @@ import { formatCurrency } from "@/utils/formatCurrency";
 import { useClipboard } from "@/utils/copyToClipboard";
 
 import styles from "@/components/ProfilePage/Profile/ProfileDetails/ProfileDetails.module.scss";
+import ProfileActions from "@/components/ProfilePage/Profile/ProfileActions/ProfileActions";
 
 type IconName = "linkInstagram" | "linkX" | "linkYoutube" | "linkPixiv" | "linkMail" | "linkCustom";
 
@@ -20,7 +21,7 @@ const ICON_MAP_KO: Record<string, IconName> = {
   "직접 입력": "linkCustom",
 };
 
-interface ProfileDetailsProps {
+interface ProfileDetailsProps extends React.PropsWithChildren {
   userData: UserData;
   isMyProfile: boolean;
   isMobile: boolean;
@@ -32,6 +33,7 @@ export default function ProfileDetails({
   userData,
   isMyProfile,
   isMobile,
+  children,
   handleOpenFollowerModal,
   handleOpenFollowingModal,
 }: ProfileDetailsProps) {
@@ -66,16 +68,17 @@ export default function ProfileDetails({
             </div>
           )}
         </div>
+
+        <div className={styles.followEdit}>{children}</div>
       </div>
+
       <div
         className={styles.descriptionContainer}
         style={{
           gap: userData.description && userData.links.length > 0 ? "12px" : "0",
         }}
       >
-        {userData.description !== "" && (
-          <p className={styles.description}>{userData.description}</p>
-        )}
+        {userData.description && <p className={styles.description}>{userData.description}</p>}
         <div className={styles.linkContainer}>
           {userData.links.slice(0, MAX_VISIBLE_LINKS).map(({ linkName, link }, index) => {
             const isEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(link);

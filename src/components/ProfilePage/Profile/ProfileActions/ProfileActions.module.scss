@@ -1,19 +1,34 @@
 @use "@/styles/globals.scss" as *;
 @use "sass:color";
 
-.editBtn {
-  width: 125px;
+.button {
+  padding: 0;
+  @include Sub4;
 
   @include Size("mobile") {
-    width: auto;
+    @include Btn2;
+  }
+}
+
+.editBtn {
+  width: 120px;
+  height: 54px;
+
+  @extend .button;
+
+  @include Size("mobile") {
+    width: 104px;
+    height: 40px;
   }
 }
 
 .followBtn {
   width: 95px;
 
+  @extend .button;
+
   @include Size("mobile") {
-    width: auto;
+    width: 77px;
   }
 }
 
@@ -29,7 +44,7 @@
   color: $gray70;
   background-color: $gray0;
   width: 100%;
-  padding: 14px 14px;
+  padding: 17px;
   border-radius: 12px;
   @include Btn1;
 
@@ -50,4 +65,11 @@
 .dropdown {
   cursor: pointer;
   position: relative;
+  width: 54px;
+  height: 54px;
+
+  @include Size("mobile") {
+    width: 40px;
+    height: 40px;
+  }
 }

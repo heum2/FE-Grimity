@@ -1,5 +1,17 @@
 @use "@/styles/globals.scss" as *;
 
+.button {
+  position: absolute;
+  cursor: pointer;
+  padding: 9px;
+  border: 1px solid $gray30;
+  background-color: $gray0;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .profileImageContainer {
   width: 140px;
   height: 140px;
@@ -9,18 +21,6 @@
   @include Size("mobile") {
     width: 80px;
     height: 80px;
-  }
-
-  .deleteImageBtn {
-    position: absolute;
-    top: 0;
-    right: 0;
-    display: none;
-    cursor: pointer;
-  }
-
-  &:hover .deleteImageBtn {
-    display: block;
   }
 
   .profileImage {
@@ -35,14 +35,29 @@
     }
   }
 
+  .deleteImageBtn {
+    @extend .button;
+    visibility: hidden;
+    top: 0;
+    right: 0;
+
+    @include Size("mobile") {
+      top: -16px;
+      right: -16px;
+    }
+  }
+
+  &:hover .deleteImageBtn {
+    visibility: visible;
+  }
+
   .addProfileImage {
-    position: absolute;
+    @extend .button;
     bottom: 0;
     right: 0;
-    cursor: pointer;
-  }
-}
 
-.hidden {
-  display: none;
+    @include Size("mobile") {
+      right: -16px;
+    }
+  }
 }

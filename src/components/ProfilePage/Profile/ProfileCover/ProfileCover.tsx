@@ -1,16 +1,15 @@
-import IconComponent from "@/components/Asset/Icon";
-
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 
 import type { UserProfileResponse as UserData } from "@grimity/dto";
 
 import styles from "@/components/ProfilePage/Profile/ProfileCover/ProfileCover.module.scss";
+import Icon from "@/components/Asset/IconTemp";
+import { useRef } from "react";
 
 interface ProfileCoverProps {
   userData: UserData;
   coverImage: string;
   userId: string;
-  isMobile: boolean;
   handleAddCover: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
   handleDeleteImage: () => void;
 }
@@ -19,11 +18,17 @@ export default function ProfileCover({
   userData,
   coverImage,
   userId,
-  isMobile,
   handleAddCover,
   handleDeleteImage,
 }: ProfileCoverProps) {
   const imgRef = usePreventRightClick<HTMLImageElement>();
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleUploadCover = () => {
+    if (inputRef.current) {
+      inputRef.current.click();
+    }
+  };
 
   if (!userData) return null;
 
@@ -44,35 +49,12 @@ export default function ProfileCover({
           />
           {userData.id === userId && (
             <div className={styles.coverBtns}>
-              <label htmlFor="edit-cover">
-                {isMobile ? (
-                  <div className={styles.coverEditBtn}>
-                    <IconComponent name="editCover" size={14} isBtn />
-                  </div>
-                ) : (
-                  <div className={styles.coverEditBtn}>
-                    <IconComponent name="editCover" size={20} isBtn />
-                  </div>
-                )}
-              </label>
-              <input
-                id="edit-cover"
-                type="file"
-                accept="image/*"
-                className={styles.hidden}
-                onChange={handleAddCover}
-              />
-              <div onClick={handleDeleteImage}>
-                {isMobile ? (
-                  <div className={styles.coverEditBtn}>
-                    <IconComponent name="deleteCover" size={14} isBtn />
-                  </div>
-                ) : (
-                  <div className={styles.coverEditBtn}>
-                    <IconComponent name="deleteCover" size={20} isBtn />
-                  </div>
-                )}
-              </div>
+              <button type="button" className={styles.coverEditBtn} onClick={handleUploadCover}>
+                <Icon icon="pencel" size="xl" />
+              </button>
+              <button type="button" className={styles.coverEditBtn} onClick={handleDeleteImage}>
+                <Icon icon="trash" size="xl" />
+              </button>
             </div>
           )}
           <div className={styles.gradientOverlay} />
@@ -81,21 +63,19 @@ export default function ProfileCover({
         <div className={styles.backgroundDefaultImageContainer}>
           {userData.id === userId && (
             <>
-              <label htmlFor="upload-cover" className={styles.backgroundAddMessage}>
-                <IconComponent name="addCover" size={20} />
+              <button
+                type="button"
+                className={styles.backgroundAddMessage}
+                onClick={handleUploadCover}
+              >
+                <Icon icon="plus" size="xl" />
                 커버 추가하기
-              </label>
-              <input
-                id="upload-cover"
-                type="file"
-                accept="image/*"
-                className={styles.hidden}
-                onChange={handleAddCover}
-              />
+              </button>
             </>
           )}
         </div>
       )}
+      <input ref={inputRef} type="file" accept="image/*" hidden onChange={handleAddCover} />
     </>
   );
 }

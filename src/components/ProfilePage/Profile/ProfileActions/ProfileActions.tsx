@@ -1,6 +1,6 @@
 import Button from "@/components/Button/Button";
 import Dropdown from "@/components/Dropdown/Dropdown";
-import IconComponent from "@/components/Asset/Icon";
+import Icon from "@/components/Asset/IconTemp";
 
 import styles from "@/components/ProfilePage/Profile/ProfileActions/ProfileActions.module.scss";
 
@@ -29,9 +29,9 @@ export default function ProfileActions({
 }: ProfileActionsProps) {
   const commonDropdownProps = {
     trigger: (
-      <div className={styles.menuBtn}>
-        <IconComponent name="meatball" size={isMobile ? 20 : 16} />
-      </div>
+      <Button size="m" type="outlined-assistive" className={styles.menuBtn}>
+        <Icon icon="menu" size="xl" />
+      </Button>
     ),
   };
 
@@ -55,21 +55,12 @@ export default function ProfileActions({
   if (isMyProfile) {
     return (
       <>
-        <div className={styles.editBtn}>
-          <Button
-            size={isMobile ? "m" : "l"}
-            type="outlined-assistive"
-            onClick={handleOpenEditModal}
-          >
-            프로필 편집
-          </Button>
-        </div>
+        <Button type="outlined-assistive" className={styles.editBtn} onClick={handleOpenEditModal}>
+          프로필 편집
+        </Button>
+
         <div className={styles.dropdown}>
-          <Dropdown
-            {...commonDropdownProps}
-            isSide
-            menuItems={[shareMenuItem, withdrawalMenuItem]}
-          />
+          <Dropdown {...commonDropdownProps} menuItems={[shareMenuItem, withdrawalMenuItem]} />
         </div>
       </>
     );
@@ -78,22 +69,16 @@ export default function ProfileActions({
   if (isFollowing) {
     return (
       <>
-        <div className={styles.followBtn}>
-          <Button
-            size={isMobile ? "m" : "l"}
-            type="outlined-assistive"
-            onClick={handleUnfollowClick}
-          >
-            팔로잉
-          </Button>
-        </div>
+        <Button
+          className={styles.followBtn}
+          type="outlined-assistive"
+          onClick={handleUnfollowClick}
+        >
+          팔로잉
+        </Button>
+
         <div className={styles.dropdown}>
-          <Dropdown
-            {...commonDropdownProps}
-            isTopItem={isMobile}
-            isSide={!isMobile}
-            menuItems={[shareMenuItem, reportMenuItem]}
-          />
+          <Dropdown {...commonDropdownProps} menuItems={[shareMenuItem, reportMenuItem]} />
         </div>
       </>
     );
@@ -101,18 +86,11 @@ export default function ProfileActions({
 
   return (
     <>
-      <div className={styles.followBtn}>
-        <Button size={isMobile ? "m" : "l"} type="filled-primary" onClick={handleFollowClick}>
-          팔로우
-        </Button>
-      </div>
+      <Button className={styles.followBtn} type="filled-primary" onClick={handleFollowClick}>
+        팔로우
+      </Button>
       <div className={styles.dropdown}>
-        <Dropdown
-          {...commonDropdownProps}
-          isTopItem={isMobile}
-          isSide={!isMobile}
-          menuItems={[shareMenuItem, reportMenuItem]}
-        />
+        <Dropdown {...commonDropdownProps} menuItems={[shareMenuItem, reportMenuItem]} />
       </div>
     </>
   );

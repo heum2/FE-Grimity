@@ -133,67 +133,46 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
             userData={userData}
             coverImage={coverImage}
             userId={user_id}
-            isMobile={isMobile}
             handleAddCover={handleAddCover}
             handleDeleteImage={handleDeleteImage}
           />
-          <section
-            className={
-              userData.backgroundImage !== null ? styles.infoContainer : styles.infoContainerDefault
-            }
-          >
-            <div className={styles.imageLeft}>
-              <ProfileImage
-                profileImage={profileImage}
-                isMobile={isMobile}
-                isMyProfile={isMyProfile}
-                handleFileChange={handleFileChange}
-                handleDeleteProfileImage={handleDeleteProfileImage}
-              />
-              <div style={{ display: "flex", width: "100%", justifyContent: "space-between" }}>
-                <ProfileDetails
-                  userData={userData}
-                  isMyProfile={isMyProfile}
+          <section className={styles.infoContainer}>
+            <div className={styles.infoWrapper}>
+              <div className={styles.imageLeft}>
+                <ProfileImage
+                  profileImage={profileImage}
                   isMobile={isMobile}
-                  handleOpenFollowerModal={handleOpenFollowerModal}
-                  handleOpenFollowingModal={handleOpenFollowingModal}
+                  isMyProfile={isMyProfile}
+                  handleFileChange={handleFileChange}
+                  handleDeleteProfileImage={handleDeleteProfileImage}
                 />
-                {isMobile && (
-                  <div className={styles.followEdit}>
-                    {isLoggedIn && (
-                      <ProfileActions
-                        isMobile
-                        isMyProfile={isMyProfile}
-                        isFollowing={userData.isFollowing}
-                        handleOpenEditModal={handleOpenEditModal}
-                        handleUnfollowClick={handleUnfollowClick}
-                        handleFollowClick={handleFollowClick}
-                        handleShareProfile={handleShareProfile}
-                        handleWithdrawal={handleWithdrawal}
-                        handleOpenReportModal={handleOpenReportModal}
-                      />
-                    )}
-                  </div>
-                )}
+                <div className={styles.detailsContainer}>
+                  <ProfileDetails
+                    userData={userData}
+                    isMyProfile={isMyProfile}
+                    isMobile={isMobile}
+                    handleOpenFollowerModal={handleOpenFollowerModal}
+                    handleOpenFollowingModal={handleOpenFollowingModal}
+                  >
+                    <div className={styles.followEdit}>
+                      {isLoggedIn && (
+                        <ProfileActions
+                          isMobile
+                          isMyProfile={isMyProfile}
+                          isFollowing={userData.isFollowing}
+                          handleOpenEditModal={handleOpenEditModal}
+                          handleUnfollowClick={handleUnfollowClick}
+                          handleFollowClick={handleFollowClick}
+                          handleShareProfile={handleShareProfile}
+                          handleWithdrawal={handleWithdrawal}
+                          handleOpenReportModal={handleOpenReportModal}
+                        />
+                      )}
+                    </div>
+                  </ProfileDetails>
+                </div>
               </div>
             </div>
-            {!isMobile && (
-              <div className={styles.followEdit}>
-                {isLoggedIn && (
-                  <ProfileActions
-                    isMobile={false}
-                    isMyProfile={isMyProfile}
-                    isFollowing={userData.isFollowing}
-                    handleOpenEditModal={handleOpenEditModal}
-                    handleUnfollowClick={handleUnfollowClick}
-                    handleFollowClick={handleFollowClick}
-                    handleShareProfile={handleShareProfile}
-                    handleWithdrawal={handleWithdrawal}
-                    handleOpenReportModal={handleOpenReportModal}
-                  />
-                )}
-              </div>
-            )}
           </section>
         </>
       )}
