@@ -7,26 +7,19 @@
   flex-direction: column;
   align-items: center;
 
-  .center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-width: 1080px;
-
-    @include Size("mobile") {
-      padding: 0;
-    }
-
-    @include Size("tablet") {
-      padding: 0;
-    }
-  }
-
   .feedContainer {
     width: 100%;
     display: flex;
     flex-direction: column;
+    max-width: $max-width-container;
+    margin-left: auto;
+    margin-right: auto;
+
+    padding-bottom: 60px;
+
+    @include Size("mobile") {
+      padding-bottom: 40px;
+    }
 
     .header {
       width: 100%;
@@ -73,6 +66,7 @@
         @include Size("mobile") {
           width: 100%;
           margin-right: 0;
+          justify-content: space-between;
         }
       }
 
@@ -109,12 +103,23 @@
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        min-width: 40px;
-        max-width: 40px;
-        width: 40px;
+        border-radius: 50px;
+        padding: 14px;
         background: none;
-        border: none;
-        padding: 0;
+        border: 1px solid $gray30;
+
+        svg {
+          width: 18px;
+          height: 18px;
+        }
+
+        @include Size("mobile") {
+          padding: 12px;
+          svg {
+            width: 16px;
+            height: 16px;
+          }
+        }
       }
     }
 
@@ -172,24 +177,6 @@
       .sortWrapper {
         position: relative;
         height: 40px;
-
-        .sortButton {
-          height: 40px;
-          display: flex;
-          align-items: center;
-          gap: 4px;
-          cursor: pointer;
-        }
-
-        .icon {
-          display: flex;
-          align-items: center;
-        }
-
-        .iconRotated {
-          transform: rotate(180deg);
-          transition: transform 0.2s ease;
-        }
       }
     }
   }
@@ -214,6 +201,27 @@
   }
 }
 
+.wrapper {
+  width: 100%;
+  padding: 0 32px;
+}
+
+.barWrapper {
+  @extend .wrapper;
+
+  @include Size("mobile") {
+    padding: 0;
+  }
+}
+
+.feed {
+  @extend .wrapper;
+
+  @include Size("mobile") {
+    padding: 0 16px;
+  }
+}
+
 .bar {
   position: relative;
   width: 100%;
@@ -222,6 +230,10 @@
   display: flex;
   margin-top: 80px;
   margin-bottom: 12px;
+  max-width: $max-width-container;
+  margin-left: auto;
+  margin-right: auto;
+
   @include Drag;
 
   .indicator {
@@ -235,7 +247,7 @@
   }
 
   @include Size("mobile") {
-    margin-top: 60px;
+    margin-top: 20px;
     margin-bottom: 0px;
   }
 }
@@ -385,5 +397,14 @@
   @include Size("mobile") {
     height: 56px;
     padding: 0 16px;
+  }
+}
+
+.dropdownIcon {
+  margin-left: 6px;
+  transition: transform 0.3s ease-in-out;
+
+  &.active {
+    transform: rotate(180deg);
   }
 }

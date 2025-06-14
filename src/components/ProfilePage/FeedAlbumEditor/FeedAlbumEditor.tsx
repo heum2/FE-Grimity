@@ -1,11 +1,12 @@
 import { useState } from "react";
-import styles from "./FeedAlbumEditor.module.scss";
 import ProfileCard from "@/components/Layout/ProfileCard/ProfileCard";
 import Button from "@/components/Button/Button";
-import IconComponent from "@/components/Asset/Icon";
 import { useModalStore } from "@/states/modalStore";
 import { useRouter } from "next/router";
 import { useDeviceStore } from "@/states/deviceStore";
+
+import styles from "@/components/ProfilePage/FeedAlbumEditor/FeedAlbumEditor.module.scss";
+import Icon from "@/components/Asset/IconTemp";
 
 interface Feed {
   id: string;
@@ -136,46 +137,49 @@ export default function FeedAlbumEditor({
                   viewCount={feed.viewCount}
                   createdAt={feed.createdAt}
                   id={feed.id}
-                  isEditMode={true}
+                  isEditMode
                   isSelected={selectedCards.includes(feed.id)}
                 />
               </div>
             ))}
           </div>
         )}
+      </div>
 
-        <div className={styles.footer}>
-          <div className={styles.inner}>
-            <div className={styles.leftSection}>
-              <Button
-                type="text-primary"
-                size="m"
-                leftIcon={<IconComponent name="backBtn" size={isMobile ? 14 : 16} />}
-                onClick={handleGoBack}
-              >
-                돌아가기
-              </Button>
-            </div>
-            <div className={styles.rightSection}>
-              <Button
-                type="text-primary"
-                size="m"
-                leftIcon={<IconComponent name="x" size={isMobile ? 14 : 16} />}
-                onClick={handleDeleteSelected}
-                disabled={selectedCards.length === 0}
-              >
-                {isMobile ? "삭제" : "선택 삭제"}
-              </Button>
-              <Button
-                type="text-primary"
-                size="m"
-                leftIcon={<IconComponent name="moveFeedAlbum" size={isMobile ? 14 : 16} />}
-                onClick={handleMoveAlbum}
-                disabled={selectedCards.length === 0}
-              >
-                {isMobile ? "이동" : "앨범 이동"}
-              </Button>
-            </div>
+      <div className={styles.footer}>
+        <div className={styles.inner}>
+          <div className={styles.leftSection}>
+            <Button
+              className={styles.button}
+              type="text-primary"
+              size="m"
+              leftIcon={<Icon icon="leftArrow" />}
+              onClick={handleGoBack}
+            >
+              돌아가기
+            </Button>
+          </div>
+          <div className={styles.rightSection}>
+            <Button
+              className={styles.button}
+              type="text-primary"
+              size="m"
+              leftIcon={<Icon icon="close" />}
+              onClick={handleDeleteSelected}
+              disabled={selectedCards.length === 0}
+            >
+              {isMobile ? "삭제" : "선택 삭제"}
+            </Button>
+            <Button
+              className={styles.button}
+              type="text-primary"
+              size="m"
+              leftIcon={<Icon icon="move" />}
+              onClick={handleMoveAlbum}
+              disabled={selectedCards.length === 0}
+            >
+              {isMobile ? "이동" : "앨범 이동"}
+            </Button>
           </div>
         </div>
       </div>

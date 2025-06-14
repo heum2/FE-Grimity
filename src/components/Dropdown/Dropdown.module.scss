@@ -11,7 +11,8 @@
 .menu {
   position: absolute;
   top: 100%;
-  left: 0px;
+  right: 0px;
+  margin-top: 5px;
   padding: 6px 0;
   background-color: $gray0;
   box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.15);

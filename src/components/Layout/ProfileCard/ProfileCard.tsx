@@ -5,6 +5,7 @@ import { ProfileCardProps } from "./ProfileCard.types";
 import Link from "next/link";
 import { formattedDate } from "@/utils/formatDate";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
+import Icon from "@/components/Asset/IconTemp";
 
 export default function ProfileCard({
   title,
@@ -31,14 +32,14 @@ export default function ProfileCard({
       <div className={styles.imageContainer}>
         {hasMultipleImages && (
           <div className={styles.overlapIcon}>
-            <IconComponent name="overlap" size={24} />
+            <Icon icon="gallery" size="2xl" />
           </div>
         )}
         <img src={thumbnail} alt={title} loading="lazy" className={styles.image} ref={imgRef} />
 
         {isEditMode && (
           <div className={styles.checkmark}>
-            <IconComponent name={isSelected ? "checkedbox" : "checkbox"} size={20} />
+            <Icon icon={isSelected ? "checkedbox" : "checkbox"} size="2xl" />
           </div>
         )}
       </div>
@@ -47,15 +48,15 @@ export default function ProfileCard({
         <div className={styles.profileContainer}>
           <div className={styles.countContainer}>
             <div className={styles.likeContainer}>
-              <IconComponent name="likeCount" size={16} />
+              <Icon icon="heart" />
               <p className={styles.count}>{formatCurrency(likeCount)}</p>
             </div>
             <div className={styles.likeContainer}>
-              <IconComponent name="commentCount" size={16} />
+              <Icon icon="speechBubble" />
               <p className={styles.count}>{formatCurrency(commentCount)}</p>
             </div>
             <div className={styles.likeContainer}>
-              <IconComponent name="viewCount" size={16} />
+              <Icon icon="eye" />
               <p className={styles.count}>{formatCurrency(viewCount)}</p>
             </div>
           </div>
