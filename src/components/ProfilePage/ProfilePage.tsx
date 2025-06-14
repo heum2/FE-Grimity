@@ -226,31 +226,35 @@ export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) 
         <>
           {/* 기본 모드 */}
           <Profile isMyProfile={isMyProfile} id={id} url={url} />
-          <div className={styles.bar}>
-            <div
-              ref={feedsTabRef}
-              className={`${styles.tab} ${activeTab === "feeds" ? styles.active : ""}`}
-              onClick={() => handleTabChange("feeds")}
-            >
-              그림<p className={styles.feedCount}>{userData?.feedCount}</p>
-            </div>
-            {isMyProfile && (
+
+          <div className={styles.wrapper}>
+            <div className={styles.bar}>
               <div
-                ref={postsTabRef}
-                className={`${styles.tab} ${activeTab === "posts" ? styles.active : ""}`}
-                onClick={() => handleTabChange("posts")}
+                ref={feedsTabRef}
+                className={`${styles.tab} ${activeTab === "feeds" ? styles.active : ""}`}
+                onClick={() => handleTabChange("feeds")}
               >
-                글<p className={styles.feedCount}>{userData?.postCount}</p>
+                그림<p className={styles.feedCount}>{userData?.feedCount}</p>
               </div>
-            )}
-            <div
-              className={styles.indicator}
-              style={{
-                width: `${indicatorStyle.width}px`,
-                left: `${indicatorStyle.left}px`,
-              }}
-            />
+              {isMyProfile && (
+                <div
+                  ref={postsTabRef}
+                  className={`${styles.tab} ${activeTab === "posts" ? styles.active : ""}`}
+                  onClick={() => handleTabChange("posts")}
+                >
+                  글<p className={styles.feedCount}>{userData?.postCount}</p>
+                </div>
+              )}
+              <div
+                className={styles.indicator}
+                style={{
+                  width: `${indicatorStyle.width}px`,
+                  left: `${indicatorStyle.left}px`,
+                }}
+              />
+            </div>
           </div>
+
           <div className={styles.feedContainer}>
             {activeTab === "feeds" && (
               <section className={styles.header}>

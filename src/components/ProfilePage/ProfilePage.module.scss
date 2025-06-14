@@ -206,6 +206,15 @@
   }
 }
 
+.wrapper {
+  width: 100%;
+  padding: 0 32px;
+
+  @include Size("mobile") {
+    padding: 0;
+  }
+}
+
 .bar {
   position: relative;
   width: 100%;
@@ -214,6 +223,10 @@
   display: flex;
   margin-top: 80px;
   margin-bottom: 12px;
+  max-width: $max-width-container;
+  margin-left: auto;
+  margin-right: auto;
+
   @include Drag;
 
   .indicator {
@@ -227,7 +240,7 @@
   }
 
   @include Size("mobile") {
-    margin-top: 60px;
+    margin-top: 20px;
     margin-bottom: 0px;
   }
 }
