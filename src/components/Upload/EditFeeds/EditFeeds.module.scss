@@ -68,7 +68,7 @@
 
         .imageContainer {
           min-width: 0;
-          max-width: 1020px;
+          max-width: $max-width-content;
           display: flex;
           gap: 20px;
           overflow-x: auto;
@@ -181,7 +181,7 @@
       }
 
       .writeSection {
-        max-width: 880px;
+        max-width: 780px;
         width: 100%;
         display: flex;
         flex-direction: column;
