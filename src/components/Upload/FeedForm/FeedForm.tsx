@@ -38,29 +38,19 @@ export default function FeedForm({
   const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [thumbnailName, setThumbnailName] = useState("");
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-  const openModal = useModalStore((state) => state.openModal);
-  const { showToast } = useToast();
-  const hasUnsavedChangesRef = useRef(hasUnsavedChanges);
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const isMobile = useDeviceStore((state) => state.isMobile);
-  const isTablet = useDeviceStore((state) => state.isTablet);
   const [selectedAlbumId, setSelectedAlbumId] = useState<string | null>(null);
   const [selectedAlbumName, setSelectedAlbumName] = useState("");
 
-  useIsMobile();
+  const openModal = useModalStore((state) => state.openModal);
+  const { showToast } = useToast();
 
-  useEffect(() => {
-    if (initialValues) {
-      setTitle(initialValues.title || "");
-      setContent(initialValues.content || "");
-      setTags(initialValues.tags || []);
-      setImages(initialValues.images || []);
-      setThumbnailUrl(initialValues.thumbnailUrl || "");
-      setThumbnailName(initialValues.thumbnailName || "");
-      setSelectedAlbumId(initialValues.albumId || null);
-      setSelectedAlbumName(initialValues.albumName || "");
-    }
-  }, [initialValues]);
+  const hasUnsavedChangesRef = useRef(hasUnsavedChanges);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  const isMobile = useDeviceStore((state) => state.isMobile);
+  const isTablet = useDeviceStore((state) => state.isTablet);
+
+  useIsMobile();
 
   const handleOpenAlbumSelect = () => {
     const data = {
@@ -81,6 +71,19 @@ export default function FeedForm({
       ...(isMobile && { isFill: true }),
     });
   };
+
+  useEffect(() => {
+    if (initialValues) {
+      setTitle(initialValues.title || "");
+      setContent(initialValues.content || "");
+      setTags(initialValues.tags || []);
+      setImages(initialValues.images || []);
+      setThumbnailUrl(initialValues.thumbnailUrl || "");
+      setThumbnailName(initialValues.thumbnailName || "");
+      setSelectedAlbumId(initialValues.albumId || null);
+      setSelectedAlbumName(initialValues.albumName || "");
+    }
+  }, [initialValues]);
 
   // 첫 번째 사진을 썸네일 기본값으로
   useEffect(() => {

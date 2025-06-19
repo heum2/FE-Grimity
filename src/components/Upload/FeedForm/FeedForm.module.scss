@@ -28,13 +28,16 @@
     align-items: center;
     gap: 16px;
     padding-top: 60px;
+    padding-bottom: 60px;
 
     @include Size("mobile") {
       padding-top: 16px;
+      padding-bottom: 16px;
     }
 
     @include Size("tablet") {
       padding-top: 32px;
+      padding-bottom: 32px;
     }
 
     .uploadBtnContainer {
