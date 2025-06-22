@@ -1,0 +1,55 @@
+@use "@/styles/globals.scss" as *;
+
+.navContainer {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border-bottom: 1px solid $gray30;
+  background-color: $gray0;
+  position: relative;
+
+  @include Size("mobile") {
+    gap: 16px;
+    padding: 0 16px;
+  }
+
+  .underline {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    height: 2px;
+    background-color: $gray70;
+    transition: all 0.3s ease;
+  }
+
+  .button {
+    padding: 0 12px 8px;
+    background: none;
+    border: none;
+    color: $gray60;
+    @include Sub2;
+    transition: all 0.3s;
+    cursor: pointer;
+
+    @include Size("mobile") {
+      @include Sub4;
+      padding: 0 0 8px;
+    }
+
+    &:hover {
+      color: $gray70;
+    }
+
+    &.selected {
+      color: $gray70;
+    }
+  }
+
+  .bar {
+    width: 1px;
+    height: 20px;
+    background-color: $gray30;
+    padding: 0;
+    margin-bottom: 8px;
+  }
+}

@@ -1,12 +1,27 @@
-import styles from "./MyPage.module.scss";
 import { useRouter } from "next/router";
 import LikedFeeds from "./LikedFeeds/LikedFeeds";
 import SavedFeeds from "./SavedFeeds/SavedFeeds";
 import SavedPosts from "./SavedPosts/SavedPosts";
 
+import UnderlineTabs from "@/components/UnderlineTabs/UnderlineTabs";
+
+import styles from "./MyPage.module.scss";
+
+type TabKey = "liked-feeds" | "saved-feeds" | "saved-posts";
+
+const TABS: { key: TabKey; label: string; hasSeparatorAfter?: boolean }[] = [
+  { key: "liked-feeds", label: "좋아요한 그림" },
+  { key: "saved-feeds", label: "저장한 그림", hasSeparatorAfter: true },
+  { key: "saved-posts", label: "저장한 글" },
+];
+
 export default function MyPage() {
   const router = useRouter();
   const { tab } = router.query;
+
+  const handleTabChange = (tabKey: TabKey) => {
+    router.push(`?tab=${tabKey}`);
+  };
 
   const getTabComponent = () => {
     switch (tab) {
@@ -21,35 +36,14 @@ export default function MyPage() {
     }
   };
 
-  const getTabClass = (tabName: string) => {
-    return tab === tabName ? styles.selected : "";
-  };
-
   return (
     <div className={styles.container}>
-      <div className={styles.center}>
-        <section className={styles.navContainer}>
-          <button
-            className={`${styles.button} ${getTabClass("liked-feeds")}`}
-            onClick={() => router.push("?tab=liked-feeds")}
-          >
-            좋아요한 그림
-          </button>
-          <button
-            className={`${styles.button} ${getTabClass("saved-feeds")}`}
-            onClick={() => router.push("?tab=saved-feeds")}
-          >
-            저장한 그림
-          </button>
-          <div className={styles.bar} />
-          <button
-            className={`${styles.button} ${getTabClass("saved-posts")}`}
-            onClick={() => router.push("?tab=saved-posts")}
-          >
-            저장한 글
-          </button>
-        </section>
-        {getTabComponent()}
+      <section className={styles.navContainer}>
+        <UnderlineTabs tabs={TABS} activeTab={tab as TabKey} onTabChange={handleTabChange} />
+      </section>
+
+      <div className={styles.wrapper}>
+        <div className={styles.center}>{getTabComponent()}</div>
       </div>
     </div>
   );
