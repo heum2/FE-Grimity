@@ -33,9 +33,6 @@ import { useAuthRefresh } from "@/hooks/useAuthRefresh";
 export default function Detail({ id }: DetailProps) {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const user_id = useAuthStore((state) => state.user_id);
-  const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
-  const setAccessToken = useAuthStore((state) => state.setAccessToken);
-  const setUserId = useAuthStore((state) => state.setUserId);
   const { data: details, isLoading, refetch } = useDetails(id);
   const [isExpanded, setIsExpanded] = useState(false);
   const { showToast } = useToast();
