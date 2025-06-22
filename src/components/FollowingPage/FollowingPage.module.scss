@@ -3,21 +3,29 @@
 .container {
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  padding-left: 32px;
+  padding-right: 32px;
+
+  @include Size("mobile") {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  @include Size("tablet") {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
 
   .center {
-    max-width: 780px;
+    max-width: $max-width-content;
     height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    margin: 0 auto;
   }
 
   .emptyContainer {
     width: 100%;
-    max-width: 1080px;
+    max-width: $max-width-container;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     gap: 30px;
@@ -45,6 +53,7 @@
       .submessage {
         @include Sub2;
         color: $gray50;
+        word-break: keep-all;
 
         @include Size("mobile") {
           width: 200px;

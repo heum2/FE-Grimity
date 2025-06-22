@@ -1,15 +1,19 @@
-import { use, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router";
+
 import { useFollowingFeeds } from "@/api/feeds/getFeedsFollowing";
-import styles from "./FollowingPage.module.scss";
-import FollowingFeed from "./FollowingFeed/FollowingFeed";
-import Loader from "../Layout/Loader/Loader";
+import { useUserData } from "@/api/users/getId";
+import { usePopular } from "@/api/users/getPopular";
+
+import Loader from "@/components/Layout/Loader/Loader";
+import Title from "@/components/Layout/Title/Title";
+import FollowingFeed from "@/components/FollowingPage/FollowingFeed/FollowingFeed";
+import RecommendCard from "@/components/FollowingPage/RecommendCard/RecommendCard";
+
 import { useAuthStore } from "@/states/authStore";
 import { useModalStore } from "@/states/modalStore";
-import Title from "../Layout/Title/Title";
-import { usePopular } from "@/api/users/getPopular";
-import RecommendCard from "./RecommendCard/RecommendCard";
-import { useUserData } from "@/api/users/getId";
-import { useRouter } from "next/router";
+
+import styles from "@/components/FollowingPage/FollowingPage.module.scss";
 
 export default function FollowingPage() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);

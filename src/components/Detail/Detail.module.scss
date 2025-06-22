@@ -8,17 +8,25 @@
   justify-content: center;
   position: relative;
   padding-top: 30px;
+  padding-bottom: 80px;
+  padding-left: 32px;
+  padding-right: 32px;
 
   @include Size("mobile") {
     padding-top: 16px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  @include Size("tablet") {
+    padding-left: 16px;
+    padding-right: 16px;
   }
 
   .center {
     width: 100%;
-    max-width: 880px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    max-width: $max-width-content;
+    margin: 0 auto;
 
     .header {
       width: 100%;

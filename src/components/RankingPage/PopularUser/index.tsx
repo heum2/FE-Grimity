@@ -1,14 +1,18 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+
 import { usePopular, type PopularUserResponse } from "@/api/users/getPopular";
-import styles from "./PopularUser.module.scss";
+import { usePreventRightClick } from "@/hooks/usePreventRightClick";
+import { useDeviceStore } from "@/states/deviceStore";
+
 import Title from "@/components/Layout/Title/Title";
 import Loader from "@/components/Layout/Loader/Loader";
-import User from "./User/User";
-import { useDeviceStore } from "@/states/deviceStore";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
+import User from "@/components/RankingPage/PopularUser/User/User";
+
+import styles from "@/components/RankingPage/PopularUser/PopularUser.module.scss";
+
 import { useAuthStore } from "@/states/authStore";
-import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 
 export default function PopularUser() {
   const user_id = useAuthStore((state) => state.user_id);
@@ -61,8 +65,8 @@ export default function PopularUser() {
       <Title>인기 유저</Title>
       {isMobile || isTablet ? (
         <Swiper
-          spaceBetween={isMobile ? 10 : 14}
-          slidesPerView={"auto"}
+          spaceBetween={8}
+          slidesPerView="auto"
           pagination={{ clickable: true }}
           className={styles.swiper}
         >
