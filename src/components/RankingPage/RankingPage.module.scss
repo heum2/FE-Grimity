@@ -20,6 +20,7 @@
     max-width: $max-width-container;
     width: calc(100vw - $sidebar-width - 64px);
     margin: 0 auto;
+    padding-top: 60px;
 
     @include Size("tablet") {
       width: calc(100vw - $sidebar-width-tablet - 32px);
