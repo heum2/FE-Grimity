@@ -245,6 +245,13 @@ $min-breakpoints: (
   "tablet": 768px,
 );
 
+$header-height: 60px;
+$sidebar-width: 258px;
+$sidebar-width-tablet: 80px;
+
+$max-width-container: 1280px;
+$max-width-content: 780px;
+
 @mixin Size($device) {
   @media (min-width: map.get($min-breakpoints, $device)) and (max-width: map.get($max-breakpoints, $device)) {
     @content;
@@ -263,12 +270,18 @@ $min-breakpoints: (
   padding-bottom: env(safe-area-inset-bottom);
 }
 
+@mixin ImageScaleHover {
+  &:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease-in-out;
+  }
+}
+
 .body {
   display: flex;
   align-items: center;
   min-height: 100vh;
   margin: 0;
-  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-smooth: always;

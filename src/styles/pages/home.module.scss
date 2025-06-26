@@ -2,6 +2,8 @@
 @use "@/styles/globals.scss" as *;
 
 .container {
+  min-width: 0;
+  flex-shrink: 1;
   width: 100%;
   max-width: 1462px;
   margin: 0 auto;
@@ -9,34 +11,25 @@
   flex-direction: column;
   justify-content: center;
   align-self: flex-start;
-  gap: 50px;
-  padding-top: 16px;
+  padding: 24px 32px 80px;
 
   @include Size("tablet") {
-    gap: 0;
+    max-width: 880px;
+    padding-top: 16px;
   }
 
   @include Size("mobile") {
-    justify-content: flex-start;
-    gap: 0;
-  }
-
-  .bar {
-    width: 100%;
-    height: 1px;
-    background: $gray30;
+    padding: 30px 16px 80px;
   }
 
   .FeedSection {
     flex: 2;
     display: flex;
     flex-direction: column;
-    gap: 48px;
+    gap: 72px;
 
-    .Banner {
-      width: 100%;
-      max-width: 100%;
-      height: auto;
+    @include Size("mobile") {
+      gap: 40px;
     }
   }
 
@@ -45,22 +38,6 @@
     display: flex;
     flex-direction: row;
     gap: 30px;
-  }
-
-  .MobileSection {
-    display: none;
-
-    @include Size("mobile") {
-      display: flex;
-      flex-direction: column;
-      gap: 32px;
-    }
-
-    @include Size("tablet") {
-      display: flex;
-      flex-direction: column;
-      gap: 32px;
-    }
   }
 
   .uploadButton {

@@ -1,0 +1,116 @@
+@use "@/styles/globals.scss" as *;
+
+.spaceBetween {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.topContainer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  .name {
+    @include Title2;
+    color: $gray80;
+    margin-bottom: 2px;
+
+    @include Size("mobile") {
+      @include Title4;
+    }
+  }
+}
+
+.leftContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .descriptionContainer {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .description {
+    @include Body1;
+    color: $gray70;
+    margin-top: 12px;
+    white-space: pre-line;
+  }
+}
+
+.follow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  @include Drag;
+}
+
+.follower {
+  display: flex;
+  gap: 8px;
+  @include Sub4;
+  color: $gray60;
+  @include Drag;
+
+  @include Size("mobile") {
+    @include Body1;
+  }
+}
+
+.myfollower {
+  display: flex;
+  gap: 8px;
+  @include Sub4;
+  color: $gray60;
+  cursor: pointer;
+
+  @include Size("mobile") {
+    @include Body1;
+  }
+}
+
+.followerColor {
+  @include Sub4;
+  color: $gray70;
+
+  @include Size("mobile") {
+    @include Body1;
+  }
+}
+
+.linkContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+
+  @include Size("mobile") {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .linkWrapper {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    @include Drag;
+  }
+
+  .link {
+    @include Label2;
+    color: $gray60;
+    cursor: pointer;
+  }
+
+  .moreLinksText {
+    @include Label2;
+    color: $secandary1;
+    cursor: pointer;
+  }
+}

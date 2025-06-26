@@ -16,6 +16,7 @@ export default function DraggableImage({
 }: DraggableImageProps) {
   const isMobile = useDeviceStore((state) => state.isMobile);
   useIsMobile();
+  const isTablet = useDeviceStore((state) => state.isTablet);
   const [isLoading, setIsLoading] = useState(true);
 
   const handleImageLoad = () => {
@@ -66,7 +67,7 @@ export default function DraggableImage({
             <div className={styles.removeImage} onClick={() => removeImage(index)}>
               <IconComponent name="uploadDeleteImage" size={40} />
             </div>
-            {!isMobile && <p className={styles.fileName}>{name}</p>}
+            {!isMobile && !isTablet && <p className={styles.fileName}>{name}</p>}
           </div>
         </div>
       )}

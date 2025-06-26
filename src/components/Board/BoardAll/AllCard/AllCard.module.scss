@@ -215,7 +215,9 @@
 }
 .dropdown {
   position: relative;
+  align-self: flex-start;
 }
+
 .savedIcon {
   display: flex;
   align-items: center;

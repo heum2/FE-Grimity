@@ -1,0 +1,89 @@
+import { useMutation } from "react-query";
+import { useToast } from "@/hooks/useToast";
+import { useModalStore } from "@/states/modalStore";
+import { useDeviceStore } from "@/states/deviceStore";
+import { convertToWebP } from "@/utils/imageConverter";
+import { postPresignedUrl } from "@/api/aws/postPresigned";
+import { putBackgroundImage } from "@/api/users/putMeImage";
+import { deleteMyBackgroundImage } from "@/api/users/deleteMeImage";
+import { AxiosError } from "axios";
+import router from "next/router";
+import type { UserProfileResponse as UserData } from "@grimity/dto";
+
+export const useCoverImage = (
+  refetchUserData: () => void,
+  setCoverImage: (url: string) => void,
+  userData: UserData | undefined,
+) => {
+  const { showToast } = useToast();
+  const openModal = useModalStore((state) => state.openModal);
+  const isMobile = useDeviceStore((state) => state.isMobile);
+  const isTablet = useDeviceStore((state) => state.isTablet);
+
+  const coverImageMutation = useMutation((imageName: string) => putBackgroundImage(imageName));
+
+  const handleAddCover = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!isMobile && !isTablet) {
+      const imageUrl = URL.createObjectURL(file);
+      openModal({
+        type: "BACKGROUND",
+        data: { imageSrc: imageUrl, file },
+      });
+      return;
+    }
+
+    try {
+      const webpFile = await convertToWebP(file);
+
+      const data = await postPresignedUrl({
+        type: "background",
+        ext: "webp",
+      });
+
+      coverImageMutation.mutate(data.imageName);
+
+      const uploadResponse = await fetch(data.url, {
+        method: "PUT",
+        body: webpFile,
+        headers: {
+          "Content-Type": "image/webp",
+        },
+      });
+
+      if (!uploadResponse.ok) {
+        throw new Error(`Upload failed: ${uploadResponse.status}`);
+      }
+
+      showToast("커버 이미지가 변경되었습니다!", "success");
+      setCoverImage(data.imageName);
+      refetchUserData();
+    } catch (error) {
+      console.error("File change error:", error);
+      showToast("커버 이미지 업로드에 실패했습니다.", "error");
+    }
+  };
+
+  const deleteImageMutation = useMutation(deleteMyBackgroundImage, {
+    onSuccess: () => {
+      showToast("커버 이미지가 삭제되었습니다.", "success");
+      if (userData) {
+        setCoverImage(userData.backgroundImage || "/image/default-cover.png");
+      }
+      refetchUserData();
+      router.reload();
+    },
+    onError: (error: AxiosError) => {
+      showToast("커버 이미지 삭제에 실패했습니다.", "error");
+      console.error("Image delete error:", error);
+    },
+  });
+
+  const handleDeleteImage = () => {
+    deleteImageMutation.mutate();
+  };
+
+  return { handleAddCover, handleDeleteImage };
+};

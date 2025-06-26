@@ -7,395 +7,63 @@
   flex-direction: column;
   align-items: center;
   background-color: $gray0;
+}
 
-  .backgroundImage {
-    width: calc(100vw - 254px - 1px);
-    height: 400px;
-    position: absolute;
-    right: 0;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: center;
-    overflow-x: hidden;
-    z-index: 2;
+.infoContainer {
+  width: 100%;
+  z-index: 3;
+  padding-left: 32px;
+  padding-right: 32px;
+  position: relative;
 
-    @include Size("tablet") {
-      width: calc(100vw - 80px - 1px);
-      height: 300px;
-    }
+  margin-top: 40px;
 
-    @include Size("mobile") {
-      height: 240px;
-      width: 100%;
-    }
+  @include Size("mobile") {
+    padding-left: 16px;
+    padding-right: 16px;
+    bottom: 40px;
+    margin-top: 0;
   }
 
-  .background {
-    background-color: $primary4;
-    width: 100vw;
-    height: 200px;
-    display: flex;
+  @include Size("tablet") {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+.infoWrapper {
+  max-width: $max-width-container;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.imageLeft {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  gap: 30px;
+
+  @include Size("mobile") {
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-  }
-
-  .backgroundDefaultImageContainer {
-    width: calc(100vw - 258px);
-    height: 200px;
-    position: absolute;
-    right: 0;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: center;
-    overflow-x: hidden;
-
-    @include Size("tablet") {
-      width: calc(100vw - 81px);
-    }
-
-    @include Size("mobile") {
-      width: 100%;
-    }
-  }
-
-  .backgroundDefaultImage {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .backgroundAddMessage {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: $gray0;
-    background-color: rgba(255, 255, 255, 0.1);
-    cursor: pointer;
-    z-index: 2;
-    padding: 16px 24px;
-    border-radius: 8px;
-  }
-
-  .coverBtns {
-    position: absolute;
-    right: 16px;
-    bottom: 16px;
-    z-index: 3;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    .coverEditBtn {
-      border: 1px solid $gray30;
-      color: $gray70;
-      background-color: $gray0;
-      padding: 11px;
-      border-radius: 50px;
-      @include Btn2;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 11px;
-      cursor: pointer;
-      width: 48px;
-      height: 48px;
-
-      @include Size("mobile") {
-        @include Btn3;
-        gap: 4px;
-        width: 40px;
-        height: 40px;
-      }
-
-      &:hover {
-        background-color: color.adjust($gray0, $lightness: 4%);
-      }
-
-      &:active {
-        background-color: color.adjust($gray0, $lightness: 8%);
-      }
-    }
-  }
-
-  .infoContainer {
-    margin-top: 440px;
-    width: 100%;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    z-index: 3;
-
-    @include Size("mobile") {
-      margin-top: 200px;
-    }
-
-    @include Size("tablet") {
-      margin-top: 340px;
-    }
-  }
-
-  .gradientOverlay {
-    position: absolute;
-    top: 60;
-    left: 258;
-    z-index: 1;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 40%, rgba(0, 0, 0, 0.4) 100%);
-  }
-
-  .infoContainerDefault {
-    padding-top: 40px;
-    @extend .infoContainer;
-    margin-top: 210px;
-
-    @include Size("mobile") {
-      margin-top: 120px;
-    }
-
-    @include Size("tablet") {
-      margin-top: 200px;
-    }
-  }
-
-  .imageLeft {
-    display: flex;
-    width: 100%;
-    align-items: flex-start;
-    gap: 30px;
-
-    @include Size("mobile") {
-      flex-direction: column;
-      gap: 12px;
-    }
-  }
-
-  .spaceBetween {
-    @include Size("mobile") {
-      width: 100%;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-    }
-  }
-
-  .topContainer {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-
-    .name {
-      @include Title2;
-      color: $gray80;
-      margin-bottom: 2px;
-
-      @include Size("mobile") {
-        @include Title4;
-      }
-    }
-  }
-
-  .leftContainer {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-
-    .descriptionContainer {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .description {
-      @include Body1;
-      color: $gray70;
-      margin-top: 12px;
-      white-space: pre-line;
-    }
-  }
-
-  .follow {
-    display: flex;
-    align-items: center;
     gap: 12px;
-    @include Drag;
   }
+}
 
-  .follower {
-    display: flex;
-    gap: 8px;
-    @include Sub4;
-    color: $gray60;
-    @include Drag;
-
-    @include Size("mobile") {
-      @include Body1;
-    }
-  }
-
-  .myfollower {
-    display: flex;
-    gap: 8px;
-    @include Sub4;
-    color: $gray60;
-    cursor: pointer;
-
-    @include Size("mobile") {
-      @include Body1;
-    }
-  }
-
-  .followerColor {
-    @include Sub4;
-    color: $gray70;
-
-    @include Size("mobile") {
-      @include Body1;
-    }
-  }
-
-  .linkContainer {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-
-    @include Size("mobile") {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 6px;
-    }
-
-    .linkWrapper {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      @include Drag;
-    }
-
-    .link {
-      @include Label2;
-      color: $gray60;
-      cursor: pointer;
-    }
-
-    .moreLinksText {
-      @include Label2;
-      color: $secandary1;
-      cursor: pointer;
-    }
-  }
+.detailsContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .followEdit {
   display: flex;
-  align-items: center;
+  height: fit-content;
   gap: 12px;
 
-  .editBtn {
-    width: 125px;
-
-    @include Size("mobile") {
-      width: auto;
-    }
-  }
-
-  .followBtn {
-    width: 95px;
-
-    @include Size("mobile") {
-      width: auto;
-    }
-  }
-
-  .menuBtn {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    outline: none;
-    border: none;
-    cursor: pointer;
-    @include Drag;
-    border: 1px solid $gray30;
-    color: $gray70;
-    background-color: $gray0;
-    width: 100%;
-    padding: 14px 14px;
-    border-radius: 12px;
-    @include Btn1;
-
-    &:hover {
-      background-color: color.adjust($gray0, $lightness: 4%);
-    }
-
-    &:active {
-      background-color: color.adjust($gray0, $lightness: 8%);
-    }
-
-    @include Size("mobile") {
-      padding: 10px;
-      border-radius: 10px;
-    }
-  }
-
-  .dropdown {
-    cursor: pointer;
-    position: relative;
-  }
-}
-
-.profileImageContainer {
-  width: 140px;
-  height: 140px;
-  position: relative;
-  @include Drag;
-
   @include Size("mobile") {
-    width: 80px;
-    height: 80px;
+    gap: 8px;
   }
-
-  .deleteImageBtn {
-    position: absolute;
-    top: 0;
-    right: 0;
-    display: none;
-    cursor: pointer;
-  }
-
-  &:hover .deleteImageBtn {
-    display: block;
-  }
-
-  .profileImage {
-    object-fit: cover;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 1px solid $gray30;
-    background-color: $gray0;
-
-    @include Size("mobile") {
-      border: 4px solid $gray0;
-    }
-  }
-
-  .addProfileImage {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    cursor: pointer;
-  }
-}
-
-.hidden {
-  display: none;
 }
