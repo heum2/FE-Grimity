@@ -1,20 +1,26 @@
 import React, { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Script from "next/script";
-import Button from "@/components/Button/Button";
-import { postPresignedUrl } from "@/api/aws/postPresigned";
-import TextField from "@/components/TextField/TextField";
-import { useMutation } from "react-query";
-import { CreatePostRequest, PostsResponse, postPosts } from "@/api/posts/postPosts";
-import { AxiosError } from "axios";
 import { useRouter } from "next/router";
-import { useToast } from "@/hooks/useToast";
-import Loader from "@/components/Layout/Loader/Loader";
+
+import { useMutation } from "react-query";
+import { AxiosError } from "axios";
+
+import { postPresignedUrl } from "@/api/aws/postPresigned";
+import { CreatePostRequest, PostsResponse, postPosts } from "@/api/posts/postPosts";
+
 import { useDeviceStore } from "@/states/deviceStore";
+
+import Button from "@/components/Button/Button";
+import TextField from "@/components/TextField/TextField";
+import Loader from "@/components/Layout/Loader/Loader";
+
+import { useToast } from "@/hooks/useToast";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { useAuthStore } from "@/states/authStore";
-import styles from "@/components/Board/BoardWrite/BoardWrite.module.scss";
+
 import { imageUrl } from "@/constants/imageUrl";
+
+import styles from "@/components/Board/BoardWrite/BoardWrite.module.scss";
 
 const Editor = dynamic(() => import("@tinymce/tinymce-react").then((mod) => mod.Editor), {
   ssr: false,
@@ -22,10 +28,9 @@ const Editor = dynamic(() => import("@tinymce/tinymce-react").then((mod) => mod.
 });
 
 export default function BoardWrite() {
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const isMobile = useDeviceStore((state) => state.isMobile);
-  const isTablet = useDeviceStore((state) => state.isTablet);
   useIsMobile();
+
   const [title, setTitle] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("일반");
   const [content, setContent] = useState("");
@@ -39,13 +44,6 @@ export default function BoardWrite() {
       setIsScriptLoaded(true);
     }
   }, []);
-
-  useEffect(() => {
-    if (!isLoggedIn) {
-      showToast("로그인 후 작성 가능합니다.", "warning");
-      router.push("/");
-    }
-  }, [isLoggedIn, router]);
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
