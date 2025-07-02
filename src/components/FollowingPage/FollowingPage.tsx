@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 import { useFollowingFeeds } from "@/api/feeds/getFeedsFollowing";
 import { useUserData } from "@/api/users/getId";
@@ -17,7 +17,6 @@ export default function FollowingPage() {
   const [randomUsers, setRandomUsers] = useState<PopularUserResponse[]>([]);
 
   const observer = useRef<IntersectionObserver | null>(null);
-  const lastFeedElement = useRef<HTMLDivElement | null>(null);
 
   const user_id = useAuthStore((state) => state.user_id);
 
@@ -32,29 +31,24 @@ export default function FollowingPage() {
     isFetchingNextPage,
   } = useFollowingFeeds({ size: 3 }, myData && myData.followingCount > 0);
 
-  useEffect(() => {
-    if (lastFeedElement.current && observer.current) {
-      observer.current.disconnect();
-    }
-    if (lastFeedElement.current) {
+  const lastFeedElement = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (isFetchingNextPage) return;
+      if (observer.current) observer.current.disconnect();
+
       observer.current = new IntersectionObserver(
         (entries) => {
-          if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          if (entries[0].isIntersecting && hasNextPage) {
             fetchNextPage();
           }
         },
-        { threshold: 1.0 },
+        { rootMargin: "0px 0px 400px 0px" },
       );
 
-      observer.current.observe(lastFeedElement.current);
-    }
-
-    return () => {
-      if (observer.current && lastFeedElement.current) {
-        observer.current.unobserve(lastFeedElement.current);
-      }
-    };
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage, feedData?.pages.length]);
+      if (node) observer.current.observe(node);
+    },
+    [isFetchingNextPage, fetchNextPage, hasNextPage],
+  );
 
   useEffect(() => {
     if (recommendData) {
