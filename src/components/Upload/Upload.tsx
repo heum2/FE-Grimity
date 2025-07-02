@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import router from "next/router";
 
 import { useMutation } from "react-query";
@@ -7,7 +7,6 @@ import { AxiosError } from "axios";
 import { CreateFeedRequest, IdResponse, postFeeds } from "@/api/feeds/postFeeds";
 
 import { useModalStore } from "@/states/modalStore";
-import { useAuthStore } from "@/states/authStore";
 
 import FeedForm from "@/components/Upload/FeedForm/FeedForm";
 
@@ -16,17 +15,9 @@ import { imageUrl as imageDomain } from "@/constants/imageUrl";
 import { useToast } from "@/hooks/useToast";
 
 export default function Upload() {
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const openModal = useModalStore((state) => state.openModal);
   const { showToast } = useToast();
   const hasUnsavedChangesRef = useRef(false);
-
-  useEffect(() => {
-    if (!isLoggedIn) {
-      showToast("로그인 후 작성 가능합니다.", "warning");
-      router.push("/");
-    }
-  }, [isLoggedIn, router, showToast]);
 
   const { mutate: uploadFeed, isLoading } = useMutation<IdResponse, AxiosError, CreateFeedRequest>(
     postFeeds,
