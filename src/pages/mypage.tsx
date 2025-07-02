@@ -1,10 +1,13 @@
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+
+import AuthLayout from "@/components/Layout/AuthLayout/AuthLayout";
 import { InitialPageMeta } from "@/components/MetaData/MetaData";
 import MyPage from "@/components/MyPage/MyPage";
+
 import { serviceUrl } from "@/constants/serviceurl";
+
 import { useScrollRestoration } from "@/hooks/useScrollRestoration";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { useAuthStore } from "@/states/authStore";
 
 export default function Mypage() {
   const router = useRouter();
@@ -28,7 +31,6 @@ export default function Mypage() {
   const [OGTitle, setOGTitle] = useState<string>(getTabData());
   const [OGUrl, setOGUrl] = useState(serviceUrl);
   const { restoreScrollPosition } = useScrollRestoration("mypage-scroll");
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   useEffect(() => {
     setOGUrl(`${serviceUrl}/${router.asPath}`);
@@ -45,16 +47,10 @@ export default function Mypage() {
     }
   }, []);
 
-  useEffect(() => {
-    if (!isLoggedIn) {
-      router.push("/");
-    }
-  }, [isLoggedIn, router]);
-
   return (
-    <>
+    <AuthLayout>
       <InitialPageMeta title={OGTitle} url={OGUrl} />
       <MyPage />
-    </>
+    </AuthLayout>
   );
 }
