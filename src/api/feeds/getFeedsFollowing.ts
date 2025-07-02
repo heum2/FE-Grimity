@@ -1,6 +1,5 @@
 import axiosInstance from "@/constants/baseurl";
-import { useAuthStore } from "@/states/authStore";
-import { useInfiniteQuery, useQuery } from "react-query";
+import { useInfiniteQuery } from "react-query";
 import type { FollowingFeedsResponse } from "@grimity/dto";
 export type { FollowingFeedsResponse };
 
@@ -23,29 +22,12 @@ export async function getFollowingFeeds({
   }
 }
 
-export function useFollowingNew(params: FollowingFeedsRequest) {
-  return useQuery<FollowingFeedsResponse>(
-    ["FollowingFeedsNew", params.cursor, params.size],
-    () => getFollowingFeeds(params),
-    {
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-      staleTime: 5 * 60 * 1000,
-      cacheTime: 10 * 60 * 1000,
-    },
-  );
-}
-
-export function useFollowingFeeds(params: FollowingFeedsRequest | null) {
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const accessToken = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
-
+export function useFollowingFeeds(params: FollowingFeedsRequest | null, enabled?: boolean) {
   return useInfiniteQuery<FollowingFeedsResponse>(
-    ["FollowingFeeds", params?.size],
+    ["FollowingFeeds", params],
     ({ pageParam = undefined }) => getFollowingFeeds({ ...params, cursor: pageParam }),
     {
-      enabled: !!params && isLoggedIn && Boolean(accessToken),
+      enabled,
       getNextPageParam: (lastPage) => lastPage.nextCursor || undefined,
       refetchOnMount: false,
       refetchOnReconnect: false,
