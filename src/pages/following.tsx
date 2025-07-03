@@ -1,4 +1,5 @@
 import FollowingPage from "@/components/FollowingPage/FollowingPage";
+import AuthLayout from "@/components/Layout/AuthLayout/AuthLayout";
 import { InitialPageMeta } from "@/components/MetaData/MetaData";
 import { serviceUrl } from "@/constants/serviceurl";
 import { useScrollRestoration } from "@/hooks/useScrollRestoration";
@@ -23,9 +24,9 @@ export default function Following() {
   }, []);
 
   return (
-    <>
+    <AuthLayout>
       <InitialPageMeta title={OGTitle} url={OGUrl} />
       <FollowingPage />
-    </>
+    </AuthLayout>
   );
 }

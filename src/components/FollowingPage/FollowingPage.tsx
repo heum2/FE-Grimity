@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/router";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 import { useFollowingFeeds } from "@/api/feeds/getFeedsFollowing";
 import { useUserData } from "@/api/users/getId";
-import { usePopular } from "@/api/users/getPopular";
+import { PopularUserResponse, usePopular } from "@/api/users/getPopular";
 
 import Loader from "@/components/Layout/Loader/Loader";
 import Title from "@/components/Layout/Title/Title";
@@ -11,75 +10,45 @@ import FollowingFeed from "@/components/FollowingPage/FollowingFeed/FollowingFee
 import RecommendCard from "@/components/FollowingPage/RecommendCard/RecommendCard";
 
 import { useAuthStore } from "@/states/authStore";
-import { useModalStore } from "@/states/modalStore";
 
 import styles from "@/components/FollowingPage/FollowingPage.module.scss";
 
 export default function FollowingPage() {
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const [randomUsers, setRandomUsers] = useState<PopularUserResponse[]>([]);
+
+  const observer = useRef<IntersectionObserver | null>(null);
+
   const user_id = useAuthStore((state) => state.user_id);
+
   const { data: myData, isLoading: isUserDataLoading } = useUserData(user_id);
-  const openModal = useModalStore((state) => state.openModal);
   const { data: recommendData, isLoading: recommendIsLoading } = usePopular();
-  const [randomUsers, setRandomUsers] = useState<any[]>([]);
-  const params = isLoggedIn && myData && myData.followingCount > 0 ? { size: 3 } : null;
-  const router = useRouter();
+
   const {
-    data,
-    isLoading,
+    data: feedData,
+    isLoading: isFeedLoading,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-    refetch: feedRefetch,
-  } = useFollowingFeeds(params);
-  const { pathname } = useRouter();
-  useEffect(() => {
-    if (isLoggedIn) {
-      feedRefetch();
-    }
-  }, [pathname]);
+  } = useFollowingFeeds({ size: 3 }, myData && myData.followingCount > 0);
 
-  useEffect(() => {
-    if (!isLoggedIn) {
-      openModal({ type: "LOGIN" });
-      router.push("/");
-    }
-  }, [isLoggedIn, router]);
+  const lastFeedElement = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (isFetchingNextPage) return;
+      if (observer.current) observer.current.disconnect();
 
-  const observer = useRef<IntersectionObserver | null>(null);
-  const lastFeedElement = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (isUserDataLoading && !isLoggedIn) {
-      openModal({ type: "LOGIN" });
-    } else if (!isLoggedIn) {
-      openModal({ type: "LOGIN" });
-    }
-  }, [isUserDataLoading, isLoggedIn, openModal]);
-
-  useEffect(() => {
-    if (lastFeedElement.current && observer.current) {
-      observer.current.disconnect();
-    }
-    if (lastFeedElement.current) {
       observer.current = new IntersectionObserver(
         (entries) => {
-          if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          if (entries[0].isIntersecting && hasNextPage) {
             fetchNextPage();
           }
         },
-        { threshold: 1.0 },
+        { rootMargin: "0px 0px 400px 0px" },
       );
 
-      observer.current.observe(lastFeedElement.current);
-    }
-
-    return () => {
-      if (observer.current && lastFeedElement.current) {
-        observer.current.unobserve(lastFeedElement.current);
-      }
-    };
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage, data?.pages.length]);
+      if (node) observer.current.observe(node);
+    },
+    [isFetchingNextPage, fetchNextPage, hasNextPage],
+  );
 
   useEffect(() => {
     if (recommendData) {
@@ -88,10 +57,17 @@ export default function FollowingPage() {
     }
   }, [recommendData]);
 
+  const isLoading = isUserDataLoading || recommendIsLoading || isFeedLoading;
+
   if (isUserDataLoading) return <Loader />;
+
   if (isLoading || recommendIsLoading) return <Loader />;
+
   const isFeedEmpty =
-    !data || data.pages.length === 0 || data.pages.every((page) => page.feeds?.length === 0);
+    !feedData ||
+    feedData.pages.length === 0 ||
+    feedData.pages.every((page) => page.feeds?.length === 0);
+
   const isFollowingEmpty = myData?.followingCount === 0;
 
   return (
@@ -162,7 +138,7 @@ export default function FollowingPage() {
         // 팔로잉 유저가 있고 피드도 있을 경우
         <div className={styles.center}>
           <div className={styles.feedsContainer}>
-            {data.pages.map((page, pageIndex) => (
+            {feedData.pages.map((page, pageIndex) => (
               <div key={pageIndex}>
                 {page.feeds.map((feed) => (
                   <FollowingFeed

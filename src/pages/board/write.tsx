@@ -1,8 +1,11 @@
-import { InitialPageMeta } from "@/components/MetaData/MetaData";
-import { serviceUrl } from "@/constants/serviceurl";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+
+import { InitialPageMeta } from "@/components/MetaData/MetaData";
 import BoardWrite from "@/components/Board/BoardWrite/BoardWrite";
+import AuthLayout from "@/components/Layout/AuthLayout/AuthLayout";
+
+import { serviceUrl } from "@/constants/serviceurl";
 
 export default function BoardWritePage() {
   const router = useRouter();
@@ -14,9 +17,9 @@ export default function BoardWritePage() {
   }, [router.asPath]);
 
   return (
-    <>
+    <AuthLayout>
       <InitialPageMeta title={OGTitle} url={OGUrl} />
       <BoardWrite />
-    </>
+    </AuthLayout>
   );
 }

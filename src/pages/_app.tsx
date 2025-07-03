@@ -20,6 +20,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
   const setUserId = useAuthStore((state) => state.setUserId);
+  const setIsAuthReady = useAuthStore((state) => state.setIsAuthReady);
   const access_token = useAuthStore((state) => state.access_token);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const user_id = useAuthStore((state) => state.user_id);
@@ -45,7 +46,8 @@ export default function App({ Component, pageProps }: AppProps) {
         }
       }
     }
-  }, [pageProps, setAccessToken, setIsLoggedIn, setUserId]);
+    setIsAuthReady(true);
+  }, [pageProps, setAccessToken, setIsLoggedIn, setUserId, setIsAuthReady]);
 
   useEffect(() => {
     if (isLoggedIn) {
