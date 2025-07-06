@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { create } from "zustand";
 
 export type ModalType =
@@ -58,4 +59,25 @@ export const useModalStore = create<ModalStore>((set) => ({
       onClick: undefined,
       isFill: false,
     })),
+}));
+
+export type ModalContent = ReactNode | ((close: () => void) => ReactNode);
+
+type NewModalType = {
+  id: string;
+  content: ModalContent;
+  props?: Record<string, any>;
+};
+
+interface NewModalState {
+  modals: NewModalType[];
+  openModal: (id: string, content: ModalContent, props?: Record<string, any>) => void;
+  closeModal: (id: string) => void;
+}
+
+export const useNewModalStore = create<NewModalState>((set) => ({
+  modals: [],
+  openModal: (id, content, props) =>
+    set((state) => ({ modals: [...state.modals, { id, content, props }] })),
+  closeModal: (id) => set((state) => ({ modals: state.modals.filter((m) => m.id !== id) })),
 }));
