@@ -24,12 +24,7 @@ import { removeUrlPrefix } from "@/utils/removeUrlPrefix";
 
 import styles from "@/components/Upload/FeedForm/FeedForm.module.scss";
 
-export default function FeedForm({
-  isEditMode,
-  initialValues,
-  onSubmit,
-  isLoading,
-}: FeedFormProps) {
+export default function FeedForm({ isEditMode, initialValues, onSubmit }: FeedFormProps) {
   const [images, setImages] = useState<{ name: string; originalName: string; url: string }[]>([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -132,7 +127,7 @@ export default function FeedForm({
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [hasUnsavedChanges]);
 
-  // 라우터 이벤트 핸들러
+  // // 라우터 이벤트 핸들러
   useEffect(() => {
     hasUnsavedChangesRef.current = hasUnsavedChanges;
   }, [hasUnsavedChanges]);
@@ -368,21 +363,7 @@ export default function FeedForm({
       return;
     }
 
-    openModal({
-      type: null,
-      data: {
-        title: `그림을 ${isEditMode ? "수정" : "업로드"}할까요?`,
-        confirmBtn: isEditMode ? "수정" : "업로드",
-        onClick: handleUpload,
-      },
-      isComfirm: true,
-    });
-  };
-
-  const handleUpload = async () => {
-    if (isLoading) return;
-
-    const feedData: CreateFeedRequest = {
+    const data: CreateFeedRequest = {
       title,
       cards: images.map((image) => removeUrlPrefix(image.name)),
       content,
@@ -391,7 +372,7 @@ export default function FeedForm({
       albumId: selectedAlbumId && selectedAlbumId.trim() !== "" ? selectedAlbumId : null,
     };
 
-    onSubmit(feedData);
+    onSubmit(data);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -453,9 +434,6 @@ export default function FeedForm({
   const isDisabled = title.trim() === "" || content.trim() === "" || images.length === 0;
 
   const buttonText = () => {
-    if (isLoading) {
-      return isEditMode ? "수정 중..." : "업로드 중...";
-    }
     return isEditMode ? "수정" : "업로드";
   };
 
@@ -675,12 +653,7 @@ export default function FeedForm({
           </section>
 
           {isMobile ? (
-            <Button
-              size="l"
-              type="filled-primary"
-              disabled={isDisabled || isLoading}
-              onClick={handleSubmit}
-            >
+            <Button size="l" type="filled-primary" disabled={isDisabled} onClick={handleSubmit}>
               {buttonText()}
             </Button>
           ) : (
@@ -688,7 +661,7 @@ export default function FeedForm({
               <Button
                 size="l"
                 type="filled-primary"
-                disabled={isDisabled || isLoading}
+                disabled={isDisabled}
                 onClick={handleSubmit}
                 width="200px"
               >

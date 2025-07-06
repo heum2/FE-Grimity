@@ -54,6 +54,7 @@ const FeedConfirm = ({ id, data, isEditMode, close }: FeedConfirmProps) => {
       showToast("업로드 중 오류가 발생했습니다. 다시 시도해주세요.", "error");
     },
   });
+
   const { mutate: editFeed, isLoading: isEditLoading } = useMutation(putEditFeeds, {
     onSuccess: () => {
       showToast("수정이 완료되었습니다!", "success");

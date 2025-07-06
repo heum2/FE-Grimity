@@ -2,7 +2,12 @@ import axiosInstance from "@/constants/baseurl";
 import type { CreateFeedRequest } from "@grimity/dto";
 export type { CreateFeedRequest };
 
-export async function putEditFeeds(id: string, data: CreateFeedRequest): Promise<Response> {
+export interface PutEditFeedsProps {
+  id: string;
+  data: CreateFeedRequest;
+}
+
+export async function putEditFeeds({ id, data }: PutEditFeedsProps): Promise<Response> {
   const requestData = {
     ...data,
     ...(data.albumId ? { albumId: data.albumId } : {}),
