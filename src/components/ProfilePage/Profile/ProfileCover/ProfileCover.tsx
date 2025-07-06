@@ -30,6 +30,10 @@ export default function ProfileCover({
     }
   };
 
+  const handleInputClick = (e: React.MouseEvent<HTMLInputElement>) => {
+    e.currentTarget.value = "";
+  };
+
   if (!userData) return null;
 
   return (
@@ -75,7 +79,14 @@ export default function ProfileCover({
           )}
         </div>
       )}
-      <input ref={inputRef} type="file" accept="image/*" hidden onChange={handleAddCover} />
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        hidden
+        onChange={handleAddCover}
+        onClick={handleInputClick}
+      />
     </>
   );
 }

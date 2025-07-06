@@ -16,9 +16,10 @@ import { useMyData } from "@/api/users/getMe";
 interface BackgroundProps {
   imageSrc: string;
   file: File;
+  onUploadSuccess?: () => void;
 }
 
-export default function Background({ imageSrc, file }: BackgroundProps) {
+export default function Background({ imageSrc, file, onUploadSuccess }: BackgroundProps) {
   const { refetch } = useMyData();
   useIsMobile();
   const closeModal = useModalStore((state) => state.closeModal);
@@ -124,7 +125,10 @@ export default function Background({ imageSrc, file }: BackgroundProps) {
       showToast("커버 이미지가 변경되었습니다!", "success");
       closeModal();
       refetch();
-      router.reload();
+
+      if (onUploadSuccess) {
+        onUploadSuccess();
+      }
     } catch (error) {
       console.error("Cover image upload error:", error);
       showToast("커버 이미지 업로드에 실패했습니다.", "error");

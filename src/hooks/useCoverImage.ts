@@ -7,7 +7,6 @@ import { postPresignedUrl } from "@/api/aws/postPresigned";
 import { putBackgroundImage } from "@/api/users/putMeImage";
 import { deleteMyBackgroundImage } from "@/api/users/deleteMeImage";
 import { AxiosError } from "axios";
-import router from "next/router";
 import type { UserProfileResponse as UserData } from "@grimity/dto";
 
 export const useCoverImage = (
@@ -30,7 +29,7 @@ export const useCoverImage = (
       const imageUrl = URL.createObjectURL(file);
       openModal({
         type: "BACKGROUND",
-        data: { imageSrc: imageUrl, file },
+        data: { imageSrc: imageUrl, file, onUploadSuccess: refetchUserData },
       });
       return;
     }
@@ -73,7 +72,6 @@ export const useCoverImage = (
         setCoverImage(userData.backgroundImage || "/image/default-cover.png");
       }
       refetchUserData();
-      router.reload();
     },
     onError: (error: AxiosError) => {
       showToast("커버 이미지 삭제에 실패했습니다.", "error");

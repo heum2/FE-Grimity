@@ -26,7 +26,7 @@ import ShareProfile from "./ShareProfile/ShareProfile";
 
 export default function Modal() {
   const router = useRouter();
-  const { isOpen, type, data, isFill, isComfirm, onClick, openModal, closeModal } = useModalStore();
+  const { isOpen, type, data, isFill, isComfirm, closeModal } = useModalStore();
   const modalRef = useRef<EventTarget | null>(null);
 
   usePreventScroll(isOpen);
@@ -93,7 +93,13 @@ export default function Modal() {
       case "SHARE-PROFILE":
         return <ShareProfile {...data} />;
       case "BACKGROUND":
-        return <Background imageSrc={data?.imageSrc} file={data?.file} />;
+        return (
+          <Background
+            imageSrc={data?.imageSrc}
+            file={data?.file}
+            onUploadSuccess={data?.onUploadSuccess}
+          />
+        );
       case "FOLLOWER":
         return <Follow initialTab="follower" />;
       case "FOLLOWING":
