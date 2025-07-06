@@ -30,11 +30,15 @@ export default function ProfileCover({
     }
   };
 
+  const handleInputClick = (e: React.MouseEvent<HTMLInputElement>) => {
+    e.currentTarget.value = "";
+  };
+
   if (!userData) return null;
 
   return (
     <>
-      {userData.backgroundImage !== null ? (
+      {userData.backgroundImage ? (
         <div className={styles.backgroundImage}>
           <img
             src={coverImage}
@@ -75,7 +79,14 @@ export default function ProfileCover({
           )}
         </div>
       )}
-      <input ref={inputRef} type="file" accept="image/*" hidden onChange={handleAddCover} />
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        hidden
+        onChange={handleAddCover}
+        onClick={handleInputClick}
+      />
     </>
   );
 }
