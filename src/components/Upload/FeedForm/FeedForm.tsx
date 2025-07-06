@@ -28,7 +28,7 @@ export default function FeedForm({
   isEditMode,
   initialValues,
   onSubmit,
-  isLoading,
+  onStateUpdate,
 }: FeedFormProps) {
   const [images, setImages] = useState<{ name: string; originalName: string; url: string }[]>([]);
   const [title, setTitle] = useState("");
@@ -46,11 +46,21 @@ export default function FeedForm({
 
   const hasUnsavedChangesRef = useRef(hasUnsavedChanges);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const isMobile = useDeviceStore((state) => state.isMobile);
   const isTablet = useDeviceStore((state) => state.isTablet);
 
   useIsMobile();
+
+  const resetUnsavedChanges = () => {
+    hasUnsavedChangesRef.current = false;
+    setHasUnsavedChanges(false);
+  };
+
+  useEffect(() => {
+    onStateUpdate?.({ resetUnsavedChanges });
+  }, [onStateUpdate]);
 
   const handleOpenAlbumSelect = () => {
     const data = {
@@ -132,7 +142,7 @@ export default function FeedForm({
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [hasUnsavedChanges]);
 
-  // 라우터 이벤트 핸들러
+  // // 라우터 이벤트 핸들러
   useEffect(() => {
     hasUnsavedChangesRef.current = hasUnsavedChanges;
   }, [hasUnsavedChanges]);
@@ -368,21 +378,7 @@ export default function FeedForm({
       return;
     }
 
-    openModal({
-      type: null,
-      data: {
-        title: `그림을 ${isEditMode ? "수정" : "업로드"}할까요?`,
-        confirmBtn: isEditMode ? "수정" : "업로드",
-        onClick: handleUpload,
-      },
-      isComfirm: true,
-    });
-  };
-
-  const handleUpload = async () => {
-    if (isLoading) return;
-
-    const feedData: CreateFeedRequest = {
+    const data: CreateFeedRequest = {
       title,
       cards: images.map((image) => removeUrlPrefix(image.name)),
       content,
@@ -391,7 +387,7 @@ export default function FeedForm({
       albumId: selectedAlbumId && selectedAlbumId.trim() !== "" ? selectedAlbumId : null,
     };
 
-    onSubmit(feedData);
+    onSubmit(data);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -453,14 +449,28 @@ export default function FeedForm({
   const isDisabled = title.trim() === "" || content.trim() === "" || images.length === 0;
 
   const buttonText = () => {
-    if (isLoading) {
-      return isEditMode ? "수정 중..." : "업로드 중...";
-    }
     return isEditMode ? "수정" : "업로드";
+  };
+
+  const handleImageUpload = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleClickFileInput = (e: React.MouseEvent<HTMLInputElement>) => {
+    e.currentTarget.value = "";
   };
 
   return (
     <div className={styles.background}>
+      <input
+        ref={fileInputRef}
+        type="file"
+        multiple
+        accept="image/png, image/jpeg, image/jpg, image/webp"
+        hidden
+        onClick={handleClickFileInput}
+        onChange={(e) => e.target.files && uploadImagesToServer(e.target.files)}
+      />
       <div className={styles.container}>
         <div className={styles.sectionContainer}>
           <section className={styles.imageSection} onDrop={handleDrop} onDragOver={handleDragOver}>
@@ -494,9 +504,8 @@ export default function FeedForm({
                 </Droppable>
               </DragDropContext>
 
-              {/* PC */}
-              {!isMobile && !isTablet && images.length < 10 && (
-                <label htmlFor="file-upload" className={styles.uploadBtn}>
+              {((!isMobile && !isTablet) || images.length === 0) && images.length < 10 && (
+                <div role="button" onClick={handleImageUpload} className={styles.uploadBtn}>
                   <div tabIndex={0}>
                     <img
                       src="/image/upload.svg"
@@ -505,65 +514,19 @@ export default function FeedForm({
                       alt="그림 추가"
                       loading="lazy"
                     />
-                    <input
-                      id="file-upload"
-                      type="file"
-                      multiple
-                      accept="image/png, image/jpeg, image/jpg, image/webp"
-                      hidden
-                      onChange={(e) => e.target.files && uploadImagesToServer(e.target.files)}
-                    />
                   </div>
-                </label>
-              )}
-              {/* 모바일, 태블릿: 이미지 없을 때 */}
-              {(isMobile || isTablet) && images.length === 0 && images.length < 10 && (
-                <label htmlFor="file-upload" className={styles.uploadBtn}>
-                  <div tabIndex={0}>
-                    <img
-                      src="/image/upload.svg"
-                      width={240}
-                      height={240}
-                      alt="그림 추가"
-                      loading="lazy"
-                    />
-                    <input
-                      id="file-upload"
-                      type="file"
-                      multiple
-                      accept="image/png, image/jpeg, image/jpg, image/webp"
-                      hidden
-                      onChange={(e) => e.target.files && uploadImagesToServer(e.target.files)}
-                    />
-                  </div>
-                </label>
+                </div>
               )}
             </div>
-            <input
-              id="file-upload"
-              type="file"
-              multiple
-              accept="image/png, image/jpeg, image/jpg, image/webp"
-              style={{ display: "none" }}
-              onChange={(e) => e.target.files && uploadImagesToServer(e.target.files)}
-            />
           </section>
-          {/* 모바일, 태블릿: 이미지가 하나 이상일 때 */}
+
           {(isMobile || isTablet) && images.length > 0 && images.length < 10 && (
-            <label htmlFor="file-upload" style={{ width: "100%" }}>
+            <div role="button" onClick={handleImageUpload} style={{ width: "100%" }}>
               <div className={styles.imageAddBtn}>
                 <IconComponent name="mobileAddImage" size={16} />
                 이미지 추가
               </div>
-              <input
-                id="file-upload"
-                type="file"
-                multiple
-                accept="image/png, image/jpeg, image/jpg, image/webp"
-                hidden
-                onChange={(e) => e.target.files && uploadImagesToServer(e.target.files)}
-              />
-            </label>
+            </div>
           )}
           <section className={styles.writeSection}>
             <div className={styles.textField}>
@@ -675,12 +638,7 @@ export default function FeedForm({
           </section>
 
           {isMobile ? (
-            <Button
-              size="l"
-              type="filled-primary"
-              disabled={isDisabled || isLoading}
-              onClick={handleSubmit}
-            >
+            <Button size="l" type="filled-primary" disabled={isDisabled} onClick={handleSubmit}>
               {buttonText()}
             </Button>
           ) : (
@@ -688,7 +646,7 @@ export default function FeedForm({
               <Button
                 size="l"
                 type="filled-primary"
-                disabled={isDisabled || isLoading}
+                disabled={isDisabled}
                 onClick={handleSubmit}
                 width="200px"
               >

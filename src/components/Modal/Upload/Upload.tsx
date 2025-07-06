@@ -1,16 +1,21 @@
-import { useToast } from "@/hooks/useToast";
-import styles from "./Upload.module.scss";
-import { useModalStore } from "@/states/modalStore";
-import Button from "@/components/Button/Button";
-import { UploadModalProps } from "./Upload.types";
+import { useRouter } from "next/router";
+
 import { useDeviceStore } from "@/states/deviceStore";
+
+import Button from "@/components/Button/Button";
 import { serviceUrl } from "@/constants/serviceurl";
 import IconComponent from "@/components/Asset/Icon";
 
-export default function UploadModal({ feedId, title, image }: UploadModalProps) {
+import { useToast } from "@/hooks/useToast";
+
+import type { UploadModalProps } from "@/components/Modal/Upload/Upload.types";
+
+import styles from "@/components/Modal/Upload/Upload.module.scss";
+
+export default function UploadModal({ feedId, title, image, close }: UploadModalProps) {
   const { showToast } = useToast();
-  const openModal = useModalStore((state) => state.openModal);
-  const closeModal = useModalStore((state) => state.closeModal);
+  const router = useRouter();
+
   const url = `${serviceUrl}feeds/${feedId}`;
   const isMobile = useDeviceStore((state) => state.isMobile);
 
@@ -18,7 +23,6 @@ export default function UploadModal({ feedId, title, image }: UploadModalProps) 
     try {
       await navigator.clipboard.writeText(url);
       showToast("클립보드에 복사되었습니다.", "success");
-      closeModal();
     } catch {
       showToast("클립보드 복사에 실패했습니다.", "error");
     }
@@ -45,7 +49,7 @@ export default function UploadModal({ feedId, title, image }: UploadModalProps) 
       },
     });
 
-    closeModal();
+    close();
   };
 
   const handleTwitterShare = () => {
@@ -54,7 +58,8 @@ export default function UploadModal({ feedId, title, image }: UploadModalProps) 
   };
 
   const handleClose = () => {
-    openModal({ type: null, data: null, isComfirm: false });
+    router.push(url);
+    close();
   };
 
   return (

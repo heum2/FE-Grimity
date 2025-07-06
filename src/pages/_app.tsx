@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Toast from "@/components/Toast/Toast";
 import Script from "next/script";
+import ModalProvider from "@/components/Modal/Provider";
 
 import "@/styles/globals.scss";
 import "@/styles/reset.css";
@@ -66,9 +67,11 @@ export default function App({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
           <div className="body">
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
+            <ModalProvider>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </ModalProvider>
           </div>
           <Modal />
           <Toast />

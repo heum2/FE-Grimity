@@ -1,4 +1,4 @@
-import { CreateFeedRequest } from "@/api/feeds/postFeeds";
+import { CreateFeedRequest } from "@grimity/dto";
 
 export interface FeedData {
   title: string;
@@ -14,5 +14,5 @@ export interface FeedFormProps {
   isEditMode: boolean;
   initialValues?: Partial<FeedData>;
   onSubmit: (data: CreateFeedRequest) => void;
-  isLoading: boolean;
+  onStateUpdate?: (handlers: { resetUnsavedChanges: () => void }) => void;
 }
