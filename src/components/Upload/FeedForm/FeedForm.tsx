@@ -24,7 +24,12 @@ import { removeUrlPrefix } from "@/utils/removeUrlPrefix";
 
 import styles from "@/components/Upload/FeedForm/FeedForm.module.scss";
 
-export default function FeedForm({ isEditMode, initialValues, onSubmit }: FeedFormProps) {
+export default function FeedForm({
+  isEditMode,
+  initialValues,
+  onSubmit,
+  onStateUpdate,
+}: FeedFormProps) {
   const [images, setImages] = useState<{ name: string; originalName: string; url: string }[]>([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -46,6 +51,15 @@ export default function FeedForm({ isEditMode, initialValues, onSubmit }: FeedFo
   const isTablet = useDeviceStore((state) => state.isTablet);
 
   useIsMobile();
+
+  const resetUnsavedChanges = () => {
+    hasUnsavedChangesRef.current = false;
+    setHasUnsavedChanges(false);
+  };
+
+  useEffect(() => {
+    onStateUpdate?.({ resetUnsavedChanges });
+  }, [onStateUpdate]);
 
   const handleOpenAlbumSelect = () => {
     const data = {

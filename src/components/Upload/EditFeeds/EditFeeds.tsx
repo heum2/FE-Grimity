@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import { useDetails } from "@/api/feeds/getFeedsId";
@@ -21,6 +21,10 @@ interface EditFeedsProps {
 
 export default function EditFeeds({ id }: EditFeedsProps) {
   const router = useRouter();
+
+  const [formHandlers, setFormHandlers] = useState<{ resetUnsavedChanges: () => void } | null>(
+    null,
+  );
 
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const user_id = useAuthStore((state) => state.user_id);
@@ -59,8 +63,23 @@ export default function EditFeeds({ id }: EditFeedsProps) {
   };
 
   const handleSubmit = (data: CreateFeedRequest) => {
-    openModal((close) => <FeedConfirm isEditMode id={id} data={data} close={close} />);
+    openModal((close) => (
+      <FeedConfirm
+        isEditMode
+        id={id}
+        data={data}
+        close={close}
+        onSuccessCallback={() => formHandlers?.resetUnsavedChanges()}
+      />
+    ));
   };
 
-  return <FeedForm isEditMode initialValues={initialValues} onSubmit={handleSubmit} />;
+  return (
+    <FeedForm
+      isEditMode
+      initialValues={initialValues}
+      onSubmit={handleSubmit}
+      onStateUpdate={setFormHandlers}
+    />
+  );
 }

@@ -15,10 +15,11 @@ interface FeedConfirmProps {
   id?: string;
   data: CreateFeedRequest;
   isEditMode: boolean;
+  onSuccessCallback?: () => void;
   close: () => void;
 }
 
-const FeedConfirm = ({ id, data, isEditMode, close }: FeedConfirmProps) => {
+const FeedConfirm = ({ id, data, isEditMode, onSuccessCallback, close }: FeedConfirmProps) => {
   const router = useRouter();
 
   const { showToast } = useToast();
@@ -31,7 +32,7 @@ const FeedConfirm = ({ id, data, isEditMode, close }: FeedConfirmProps) => {
         showToast("업로드 중 문제가 발생했습니다. 다시 시도해주세요.", "error");
         return;
       }
-
+      onSuccessCallback?.();
       const imageUrl = `${imageDomain}/${variables.thumbnail}`;
       close();
 
@@ -57,6 +58,7 @@ const FeedConfirm = ({ id, data, isEditMode, close }: FeedConfirmProps) => {
 
   const { mutate: editFeed, isLoading: isEditLoading } = useMutation(putEditFeeds, {
     onSuccess: () => {
+      onSuccessCallback?.();
       showToast("수정이 완료되었습니다!", "success");
       queryClient.invalidateQueries({ queryKey: ["feeds", id] });
       queryClient.invalidateQueries({ queryKey: ["feeds"] });

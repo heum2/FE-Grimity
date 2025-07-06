@@ -14,4 +14,5 @@ export interface FeedFormProps {
   isEditMode: boolean;
   initialValues?: Partial<FeedData>;
   onSubmit: (data: CreateFeedRequest) => void;
+  onStateUpdate?: (handlers: { resetUnsavedChanges: () => void }) => void;
 }
