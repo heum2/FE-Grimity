@@ -23,7 +23,7 @@ export default function Background({ imageSrc, file }: BackgroundProps) {
   useIsMobile();
   const closeModal = useModalStore((state) => state.closeModal);
   const { showToast } = useToast();
-  const [crop, setCrop] = useState<Crop>({
+  const [crop, setCrop] = useState<PercentCrop>({
     unit: "%",
     width: 100,
     height: 30,
@@ -136,7 +136,7 @@ export default function Background({ imageSrc, file }: BackgroundProps) {
     const aspectRatio = viewportWidth / 400;
     const cropHeight = width / aspectRatio;
 
-    const newCrop: Crop = {
+    const newCrop: PercentCrop = {
       unit: "%",
       width: 100,
       height: (cropHeight / height) * 100,
@@ -144,6 +144,7 @@ export default function Background({ imageSrc, file }: BackgroundProps) {
       y: 0,
     };
     setCrop(newCrop);
+    setCompletedCrop(newCrop);
   };
 
   if (!viewportWidth) return null;

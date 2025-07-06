@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import styles from "./Modal.module.scss";
 import { useModalStore } from "@/states/modalStore";
 import { usePreventScroll } from "@/hooks/usePreventScroll";
@@ -27,6 +27,7 @@ import ShareProfile from "./ShareProfile/ShareProfile";
 export default function Modal() {
   const router = useRouter();
   const { isOpen, type, data, isFill, isComfirm, onClick, openModal, closeModal } = useModalStore();
+  const modalRef = useRef<EventTarget | null>(null);
 
   usePreventScroll(isOpen);
 
@@ -60,6 +61,19 @@ export default function Modal() {
     if (type === "ALBUM-EDIT") {
       router.reload();
     }
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      modalRef.current = e.target;
+    }
+  };
+
+  const handleMouseUp = (e: React.MouseEvent) => {
+    if (modalRef.current && modalRef.current === e.target) {
+      handleCloseModal();
+    }
+    modalRef.current = null;
   };
 
   const renderModalContent = () => {
@@ -125,7 +139,7 @@ export default function Modal() {
           {renderModalContent()}
         </div>
       ) : (
-        <div className={styles.overlay} onClick={handleCloseModal}>
+        <div className={styles.overlay} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>
           {isComfirm ? (
             <div className={styles.comfirmModal}>
               <div className={styles.titleContainer}>

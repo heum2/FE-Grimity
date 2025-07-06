@@ -34,7 +34,7 @@ export default function ProfileCover({
 
   return (
     <>
-      {userData.backgroundImage !== null ? (
+      {userData.backgroundImage ? (
         <div className={styles.backgroundImage}>
           <img
             src={coverImage}
