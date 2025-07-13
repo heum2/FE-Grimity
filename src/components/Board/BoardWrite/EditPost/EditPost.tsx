@@ -1,23 +1,31 @@
 import React, { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Script from "next/script";
-import Button from "@/components/Button/Button";
-import styles from "./EditPost.module.scss";
-import { postPresignedUrl } from "@/api/aws/postPresigned";
-import TextField from "@/components/TextField/TextField";
+import { useRouter } from "next/router";
+
 import { useMutation } from "react-query";
 import { AxiosError } from "axios";
-import { useRouter } from "next/router";
-import { useToast } from "@/hooks/useToast";
-import Loader from "@/components/Layout/Loader/Loader";
-import { CreatePostRequest, putEditPosts } from "@/api/posts/putPostsId";
-import { EditPostProps } from "./EditPost.types";
+
+import { postPresignedUrl } from "@/api/aws/postPresigned";
 import { usePostsDetails } from "@/api/posts/getPostsId";
+import { CreatePostRequest, putEditPosts } from "@/api/posts/putPostsId";
+
+import { useAuthStore } from "@/states/authStore";
 import { useModalStore } from "@/states/modalStore";
 import { useDeviceStore } from "@/states/deviceStore";
+
+import Button from "@/components/Button/Button";
+import TextField from "@/components/TextField/TextField";
+import Loader from "@/components/Layout/Loader/Loader";
+
+import { useToast } from "@/hooks/useToast";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { useAuthStore } from "@/states/authStore";
+
 import { imageUrl } from "@/constants/imageUrl";
+
+import type { EditPostProps } from "./EditPost.types";
+
+import styles from "./EditPost.module.scss";
 
 const Editor = dynamic(() => import("@tinymce/tinymce-react").then((mod) => mod.Editor), {
   ssr: false,
@@ -140,21 +148,15 @@ export default function EditPost({ id }: EditPostProps) {
     setContent(value);
   };
 
-  const { mutate: editPost } = useMutation((data: CreatePostRequest) => putEditPosts(id, data), {
-    onSuccess: () => {
-      hasUnsavedChangesRef.current = false;
-      router.push(`/posts/${id}`);
-      showToast("수정이 완료되었습니다!", "success");
-    },
-    onError: (error: AxiosError) => {
-      showToast("수정 중 오류가 발생했습니다. 다시 시도해주세요.", "error");
-      if (error.response?.status === 400) {
-        showToast("잘못된 요청입니다. 입력값을 확인해주세요.", "error");
-      }
-    },
-  });
+  const { mutateAsync: editPost, isLoading: isEditPostLoading } = useMutation(
+    (data: CreatePostRequest) => putEditPosts(id, data),
+  );
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    if (isEditPostLoading) {
+      return;
+    }
+
     if (!title.trim()) {
       showToast("제목을 입력해주세요.", "error");
       return;
@@ -171,14 +173,27 @@ export default function EditPost({ id }: EditPostProps) {
       피드백: "FEEDBACK",
     } as const;
 
-    editPost({
-      title,
-      content,
-      type: typeMap[selectedCategory as keyof typeof typeMap],
-    });
-  };
+    try {
+      await editPost({
+        title,
+        content,
+        type: typeMap[selectedCategory as keyof typeof typeMap],
+      });
 
-  if (isLoading) return <Loader />;
+      hasUnsavedChangesRef.current = false;
+      showToast("수정이 완료되었습니다!", "success");
+
+      router.push(`/posts/${id}`);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 400) {
+          showToast("잘못된 요청입니다. 입력값을 확인해주세요.", "error");
+          return;
+        }
+      }
+      showToast("수정 중 오류가 발생했습니다. 다시 시도해주세요.", "error");
+    }
+  };
 
   const convertToWebP = async (file: File): Promise<File> => {
     return new Promise((resolve, reject) => {
@@ -207,6 +222,10 @@ export default function EditPost({ id }: EditPostProps) {
     });
   };
 
+  const disabled = !title.trim() || !content.trim() || isLoading;
+
+  if (isLoading) return <Loader />;
+
   return (
     <div className={styles.container}>
       <Script
@@ -217,14 +236,6 @@ export default function EditPost({ id }: EditPostProps) {
       <div className={styles.center}>
         <section className={styles.header}>
           <h2 className={styles.title}>글 수정하기</h2>
-          <Button
-            size="m"
-            type="filled-primary"
-            onClick={handleSubmit}
-            disabled={!title.trim() || !content.trim()}
-          >
-            수정 완료
-          </Button>
         </section>
         <section className={styles.categorys}>
           {["일반", "질문", "피드백"].map((category) => (
@@ -330,6 +341,16 @@ export default function EditPost({ id }: EditPostProps) {
           ) : (
             <Loader />
           )}
+          <div className={styles.buttonContainer}>
+            <Button
+              className={styles.button}
+              type="filled-primary"
+              onClick={handleSubmit}
+              disabled={disabled}
+            >
+              수정 완료
+            </Button>
+          </div>
         </section>
       </div>
     </div>

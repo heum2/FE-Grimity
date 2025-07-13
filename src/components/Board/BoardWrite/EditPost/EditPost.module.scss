@@ -69,3 +69,15 @@
     }
   }
 }
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  max-height: 200px;
+
+  .button {
+    width: 100%;
+    max-width: 200px;
+  }
+}
