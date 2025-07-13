@@ -18,7 +18,8 @@
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
-    @include Label2;
+    @include Body1;
+    line-height: 0;
     color: $gray70;
 
     &:hover {
