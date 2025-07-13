@@ -4,10 +4,9 @@ import Script from "next/script";
 import { useRouter } from "next/router";
 
 import { useMutation } from "react-query";
-import { AxiosError } from "axios";
 
 import { postPresignedUrl } from "@/api/aws/postPresigned";
-import { CreatePostRequest, PostsResponse, postPosts } from "@/api/posts/postPosts";
+import { postPosts } from "@/api/posts/postPosts";
 
 import { useDeviceStore } from "@/states/deviceStore";
 
@@ -39,12 +38,6 @@ export default function BoardWrite() {
   const router = useRouter();
   const editorRef = useRef<any>(null);
 
-  useEffect(() => {
-    if (window.tinymce) {
-      setIsScriptLoaded(true);
-    }
-  }, []);
-
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
@@ -57,20 +50,15 @@ export default function BoardWrite() {
     setContent(value);
   };
 
-  const { mutate: createPost } = useMutation<PostsResponse, AxiosError, CreatePostRequest>(
-    postPosts,
-    {
-      onSuccess: (response) => {
-        router.push(`/posts/${response.id}`);
-        showToast("글이 등록되었어요.", "success");
-      },
-      onError: () => {
-        showToast("글 작성에 실패했습니다.", "error");
-      },
-    },
-  );
+  const { mutateAsync: createPost, isLoading: isCreatePostLoading } = useMutation(postPosts);
 
-  const handleSubmit = () => {
+  const handleReset = () => {
+    setTitle("");
+    setContent("");
+    setSelectedCategory("일반");
+  };
+
+  const handleSubmit = async () => {
     if (!title.trim()) {
       showToast("제목을 입력해주세요.", "error");
       return;
@@ -87,11 +75,20 @@ export default function BoardWrite() {
       피드백: "FEEDBACK",
     } as const;
 
-    createPost({
-      title,
-      content,
-      type: typeMap[selectedCategory as keyof typeof typeMap],
-    });
+    try {
+      const response = await createPost({
+        title,
+        content,
+        type: typeMap[selectedCategory as keyof typeof typeMap],
+      });
+
+      showToast("글이 등록되었어요.", "success");
+      handleReset();
+
+      router.push(`/posts/${response.id}`);
+    } catch (error) {
+      showToast("글 작성에 실패했습니다.", "error");
+    }
   };
 
   const convertToWebP = async (file: File): Promise<File> => {
@@ -120,6 +117,14 @@ export default function BoardWrite() {
       img.onerror = () => reject(new Error("Image loading failed"));
     });
   };
+
+  useEffect(() => {
+    if (window.tinymce) {
+      setIsScriptLoaded(true);
+    }
+  }, []);
+
+  const disabled = !title.trim() || !content.trim() || isCreatePostLoading;
 
   return (
     <div className={styles.container}>
@@ -195,14 +200,13 @@ export default function BoardWrite() {
                     }
                   });
                 },
-                images_upload_handler: async (
-                  blobInfo: { filename: () => string; blob: () => Blob },
-                  progress: (progress: number) => void,
-                ): Promise<string> => {
+                images_upload_handler: async (blobInfo: {
+                  filename: () => string;
+                  blob: () => Blob;
+                }): Promise<string> => {
                   try {
                     const file = blobInfo.blob() as File;
 
-                    const ext = file.name.split(".").pop()?.toLowerCase() as "jpg" | "jpeg" | "png";
                     const webpFile = await convertToWebP(file);
 
                     const data = await postPresignedUrl({
@@ -239,7 +243,7 @@ export default function BoardWrite() {
               className={styles.button}
               type="filled-primary"
               onClick={handleSubmit}
-              disabled={!title.trim() || !content.trim()}
+              disabled={disabled}
             >
               작성 완료
             </Button>
