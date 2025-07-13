@@ -10,6 +10,8 @@
 
   @include Size("mobile") {
     padding-top: 16px;
+    padding-left: 16px;
+    padding-right: 16px;
   }
 
   @include Size("tablet") {
@@ -67,5 +69,17 @@
     input[type="file"] {
       margin-bottom: 10px;
     }
+  }
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  max-height: 200px;
+
+  .button {
+    width: 100%;
+    max-width: 200px;
   }
 }

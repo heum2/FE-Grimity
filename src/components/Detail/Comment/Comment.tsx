@@ -111,7 +111,7 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
   const { data: commentsData, refetch: refetchComments } = useGetFeedsComments({
     feedId,
   });
-  const postCommentMutation = usePostFeedsComments();
+  const { mutateAsync: postComment, isLoading: isPostCommentLoading } = usePostFeedsComments();
   const [activeParentReplyId, setActiveParentReplyId] = useState<string | null>(null);
   const [activeChildReplyId, setActiveChildReplyId] = useState<string | null>(null);
   const isMobile = useDeviceStore((state) => state.isMobile);
@@ -246,6 +246,7 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
   };
 
   const handleReplySubmit = async () => {
+    if (isPostCommentLoading) return;
     if (!isLoggedIn || !replyText.trim() || !mentionedUser) return;
 
     const actualReplyContent = replyText.trim();
@@ -257,24 +258,22 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
 
     if (!activeParentReplyId) return;
 
-    postCommentMutation.mutate(
-      {
+    try {
+      await postComment({
         feedId,
         content: replyText,
         parentCommentId: activeParentReplyId,
         mentionedUserId: isReplyToChild ? mentionedUser.id : undefined,
-      },
-      {
-        onSuccess: () => {
-          setReplyText("");
-          setActiveParentReplyId(null);
-          setActiveChildReplyId(null);
-          setMentionedUser(null);
-          setIsReplyToChild(false);
-          refetchComments();
-        },
-      },
-    );
+      });
+      setReplyText("");
+      setActiveParentReplyId(null);
+      setActiveChildReplyId(null);
+      setMentionedUser(null);
+      setIsReplyToChild(false);
+      refetchComments();
+    } catch (error) {
+      showToast("답글 작성에 실패했습니다.", "error");
+    }
   };
 
   useEffect(() => {
