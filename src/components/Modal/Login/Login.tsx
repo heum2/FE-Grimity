@@ -8,6 +8,10 @@ import IconComponent from "@/components/Asset/Icon";
 import { AxiosError } from "axios";
 import axiosInstance from "@/constants/baseurl";
 
+interface LoginProps {
+  close: () => void;
+}
+
 interface AuthObj {
   access_token: string;
   expires_in: number;
@@ -30,14 +34,13 @@ interface LoginResponse {
 
 type LoginType = "GOOGLE" | "KAKAO";
 
-export default function Login() {
+export default function Login({ close }: LoginProps) {
   const APP_KEY = process.env.NEXT_PUBLIC_KAKAO_APP_KEY;
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
   const setUserId = useAuthStore((state) => state.setUserId);
   const openModal = useModalStore((state) => state.openModal);
   const { showToast } = useToast();
-  const closeModal = useModalStore((state) => state.closeModal);
 
   const { mutateAsync, isLoading } = useMutation({
     mutationFn: async ({
@@ -57,7 +60,7 @@ export default function Login() {
       setAccessToken(data.accessToken);
       setIsLoggedIn(true);
       setUserId(data.id);
-      closeModal();
+      close();
       localStorage.setItem("access_token", data.accessToken);
       localStorage.setItem("refresh_token", data.refreshToken);
       localStorage.setItem("user_id", data.id);

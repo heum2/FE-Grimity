@@ -1,40 +1,61 @@
 import React, { useState, useRef, useEffect } from "react";
-import Image from "next/image";
-import styles from "./Header.module.scss";
-import Button from "@/components/Button/Button";
-import Link from "next/link";
-import IconComponent from "@/components/Asset/Icon";
-import { useModalStore } from "@/states/modalStore";
-import { useAuthStore } from "@/states/authStore";
-import { useMyData } from "@/api/users/getMe";
 import { useRouter } from "next/router";
-import Notifications from "@/components/Notifications/Notifications";
+import Image from "next/image";
+import Link from "next/link";
+
+import { useMyData } from "@/api/users/getMe";
+
+import { useAuthStore } from "@/states/authStore";
 import { useDeviceStore } from "@/states/deviceStore";
+
+import IconComponent from "@/components/Asset/Icon";
+import Button from "@/components/Button/Button";
+import Notifications from "@/components/Notifications/Notifications";
+import FooterSection from "@/components/Layout/FooterSection/FooterSection";
+import Login from "@/components/Modal/Login/Login";
+
 import { useIsMobile } from "@/hooks/useIsMobile";
 import useAuthCheck from "@/hooks/useAuthCheck";
 import { usePreventScroll } from "@/hooks/usePreventScroll";
+import { useOnClickOutside } from "@/hooks/useOnClickOutside";
+
 import axiosInstance from "@/constants/baseurl";
-import FooterSection from "@/components/Layout/FooterSection/FooterSection";
+
+import { useModal } from "@/hooks/useModal";
+
+import styles from "./Header.module.scss";
 
 export default function Header() {
-  const openModal = useModalStore((state) => state.openModal);
+  const router = useRouter();
+
+  const [activeNav, setActiveNav] = useState("홈");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
+  const [, setIsHome] = useState(false);
+
+  const activeItemRef = useRef<HTMLDivElement>(null);
+  const indicatorRef = useRef<HTMLDivElement>(null);
+  const notificationRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
   const setUserId = useAuthStore((state) => state.setUserId);
-  const { data: myData } = useMyData();
-  const [activeNav, setActiveNav] = useState("홈");
-  const activeItemRef = useRef<HTMLDivElement>(null);
-  const indicatorRef = useRef<HTMLDivElement>(null);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const notificationRef = useRef<HTMLDivElement>(null);
-  const [showNotifications, setShowNotifications] = useState(false);
-  const router = useRouter();
   const isMobile = useDeviceStore((state) => state.isMobile);
   const isTablet = useDeviceStore((state) => state.isTablet);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
+
+  const { openModal } = useModal();
+  useAuthCheck(setIsHome);
+  useIsMobile();
+  usePreventScroll(isMenuOpen || (isMobile && showNotifications));
+  useOnClickOutside(notificationRef, () => setShowNotifications(false));
+  useOnClickOutside(dropdownRef, () => setIsDropdownOpen(false));
+
+  const { data: myData } = useMyData();
+
   const isPostPage = ["/board", "/board/write", "/posts/[id]", "/posts/[id]/edit"].includes(
     router.pathname,
   );
@@ -44,9 +65,7 @@ export default function Header() {
   const hideBtn = ["/write", "/feeds/[id]/edit", "/board/write", "/posts/[id]/edit"].includes(
     router.pathname,
   );
-  const [isHome, setIsHome] = useState(false);
-  useAuthCheck(setIsHome);
-  useIsMobile();
+
   const navItems = [
     { name: "홈", path: "/" },
     { name: "랭킹", path: "/ranking" },
@@ -64,22 +83,6 @@ export default function Header() {
   } else {
     name = "bell";
   }
-
-  useEffect(() => {
-    if (showNotifications) {
-      window.history.pushState({ isNotificationOpen: true }, "", window.location.href);
-
-      function handlePopState(event: PopStateEvent) {
-        setShowNotifications(false);
-      }
-
-      window.addEventListener("popstate", handlePopState);
-
-      return () => {
-        window.removeEventListener("popstate", handlePopState);
-      };
-    }
-  }, [isMobile, showNotifications]);
 
   const handleNavClick = (item: { name: string; path: string }) => {
     setActiveNav(item.name);
@@ -122,6 +125,64 @@ export default function Header() {
     }
   };
 
+  const handleClickLogo = () => {
+    if (router.pathname === "/") {
+      router.reload();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      router.push("/");
+    }
+  };
+
+  const handleToggleNotifications = () => {
+    setShowNotifications((prev) => !prev);
+  };
+
+  const toggleMenu = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
+  const toggleSubmenu = () => {
+    setIsSubMenuOpen((prev) => !prev);
+  };
+
+  const handleOpenLoginModal = () => {
+    openModal((close) => <Login close={close} />);
+  };
+
+  const handleCloseNotifications = () => {
+    setShowNotifications(false);
+  };
+
+  const handleToggleDropdown = () => {
+    setIsDropdownOpen((prev) => !prev);
+  };
+
+  const handleCloseDropdown = () => {
+    setIsDropdownOpen(false);
+    window.scrollTo(0, 0);
+  };
+
+  useEffect(() => {
+    if (showNotifications) {
+      window.history.pushState({ isNotificationOpen: true }, "", window.location.href);
+
+      function handlePopState(event: PopStateEvent) {
+        setShowNotifications(false);
+      }
+
+      window.addEventListener("popstate", handlePopState);
+
+      return () => {
+        window.removeEventListener("popstate", handlePopState);
+      };
+    }
+  }, [isMobile, showNotifications]);
+
   useEffect(() => {
     setIsDropdownOpen(false);
   }, [isLoggedIn]);
@@ -148,33 +209,6 @@ export default function Header() {
     }
   }, [activeNav]);
 
-  const handleClickLogo = () => {
-    if (router.pathname === "/") {
-      router.reload();
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      router.push("/");
-    }
-  };
-
-  const toggleNotifications = () => {
-    setShowNotifications((prev) => !prev);
-  };
-
-  const toggleMenu = () => {
-    setIsMenuOpen((prev) => !prev);
-  };
-
-  const closeMenu = () => {
-    setIsMenuOpen(false);
-  };
-
-  const toggleSubmenu = () => {
-    setIsSubMenuOpen((prev) => !prev);
-  };
-
-  usePreventScroll(isMenuOpen || (isMobile && showNotifications));
-
   return (
     <header className={styles.header}>
       <div className={styles.container}>
@@ -185,7 +219,7 @@ export default function Header() {
         </div>
         <div className={styles.wrapper}>
           {isMobile && !isLoggedIn && (
-            <div className={styles.uploadBtn} onClick={() => openModal({ type: "LOGIN" })}>
+            <div className={styles.uploadBtn} onClick={handleOpenLoginModal}>
               <Button size="s" type="filled-primary">
                 로그인
               </Button>
@@ -211,23 +245,22 @@ export default function Header() {
             <Link href="/search">
               <IconComponent name="search" size={24} padding={8} isBtn />
             </Link>
+
             {(!isMobile || !isTablet) && isLoggedIn && myData && (
               <div className={styles.notificationWrapper} ref={notificationRef}>
-                <div className={styles.notification} onClick={toggleNotifications}>
+                <div className={styles.notification} onClick={handleToggleNotifications}>
                   <IconComponent name={name} size={40} isBtn />
                 </div>
-                {showNotifications && <Notifications onClose={() => setShowNotifications(false)} />}
+                {showNotifications && <Notifications onClose={handleCloseNotifications} />}
               </div>
             )}
           </div>
+
           {!isMobile ? (
             isLoggedIn && myData ? (
-              <div className={styles.profileContact}>
+              <div className={styles.profileContact} ref={dropdownRef}>
                 <div className={styles.profileSection}>
-                  <div
-                    className={styles.profileContainer}
-                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  >
+                  <div className={styles.profileContainer} onClick={handleToggleDropdown}>
                     <Image
                       src={myData.image || "/image/default.svg"}
                       width={28}
@@ -240,15 +273,9 @@ export default function Header() {
                     />
                   </div>
                   {isDropdownOpen && (
-                    <div className={styles.dropdown} ref={dropdownRef}>
+                    <div className={styles.dropdown}>
                       <Link href={`/${myData.url}`}>
-                        <div
-                          className={styles.dropdownItem}
-                          onClick={() => {
-                            setIsDropdownOpen(false);
-                            window.scrollTo(0, 0);
-                          }}
-                        >
+                        <div className={styles.dropdownItem} onClick={handleCloseDropdown}>
                           <Image
                             src={myData.image ?? "/image/default.svg"}
                             width={32}
@@ -264,36 +291,18 @@ export default function Header() {
                       </Link>
                       <div className={styles.divider} />
                       <Link href="/mypage?tab=liked-feeds">
-                        <div
-                          className={styles.dropdownItem}
-                          onClick={() => {
-                            setIsDropdownOpen(false);
-                            window.scrollTo(0, 0);
-                          }}
-                        >
+                        <div className={styles.dropdownItem} onClick={handleCloseDropdown}>
                           좋아요한 그림
                         </div>
                       </Link>
                       <Link href="/mypage?tab=saved-feeds">
-                        <div
-                          className={styles.dropdownItem}
-                          onClick={() => {
-                            setIsDropdownOpen(false);
-                            window.scrollTo(0, 0);
-                          }}
-                        >
+                        <div className={styles.dropdownItem} onClick={handleCloseDropdown}>
                           저장한 그림
                         </div>
                       </Link>
                       <div className={styles.divider} />
                       <Link href="/mypage?tab=saved-posts">
-                        <div
-                          className={styles.dropdownItem}
-                          onClick={() => {
-                            setIsDropdownOpen(false);
-                            window.scrollTo(0, 0);
-                          }}
-                        >
+                        <div className={styles.dropdownItem} onClick={handleCloseDropdown}>
                           저장한 글
                         </div>
                       </Link>
@@ -302,7 +311,7 @@ export default function Header() {
                         className={`${styles.dropdownItem} ${styles.logout}`}
                         onClick={() => {
                           handleLogout();
-                          setIsDropdownOpen(false);
+                          handleCloseDropdown();
                         }}
                       >
                         로그아웃
@@ -312,7 +321,7 @@ export default function Header() {
                 </div>
               </div>
             ) : (
-              <div className={styles.uploadBtn} onClick={() => openModal({ type: "LOGIN" })}>
+              <div className={styles.uploadBtn} onClick={handleOpenLoginModal}>
                 <Button size="m" type="filled-primary">
                   로그인
                 </Button>
@@ -351,7 +360,7 @@ export default function Header() {
                       <>
                         <div
                           className={isMobile ? styles.uploadBtnContainer : styles.uploadBtn}
-                          onClick={() => openModal({ type: "LOGIN" })}
+                          onClick={handleOpenLoginModal}
                         >
                           <Button size="m" type="filled-primary" width="200px">
                             로그인

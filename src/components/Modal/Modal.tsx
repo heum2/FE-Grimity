@@ -78,8 +78,6 @@ export default function Modal() {
 
   const renderModalContent = () => {
     switch (type) {
-      case "LOGIN":
-        return <Login />;
       case "NICKNAME":
         return <Nickname />;
       case "PROFILE-ID":
