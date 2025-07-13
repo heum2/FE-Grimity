@@ -40,4 +40,23 @@
   justify-content: center;
   @include Sub2;
   color: $gray50;
+  margin-top: 60px;
+  margin-bottom: 200px;
+}
+
+.paginationWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 60px;
+  position: relative;
+
+  @include Size("mobile") {
+    margin-top: 40px;
+  }
+}
+
+.uploadBtn {
+  position: absolute;
+  right: 0;
 }
