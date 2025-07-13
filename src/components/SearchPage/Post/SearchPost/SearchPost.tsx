@@ -1,12 +1,16 @@
+import { useState } from "react";
 import { useRouter } from "next/router";
-import styles from "./SearchPost.module.scss";
-import Loader from "@/components/Layout/Loader/Loader";
+
 import { usePostSearch } from "@/api/posts/getPostsSearch";
+
+import Loader from "@/components/Layout/Loader/Loader";
 import AllCard from "@/components/Board/BoardAll/AllCard/AllCard";
 import Dropdown from "@/components/Dropdown/Dropdown";
 import Button from "@/components/Button/Button";
 import IconComponent from "@/components/Asset/Icon";
-import { useState } from "react";
+import Pagination from "@/components/Pagination";
+
+import styles from "./SearchPost.module.scss";
 
 type SortOption = "accuracy";
 
@@ -36,17 +40,6 @@ export default function SearchPost() {
     if (page >= 1 && page <= totalPages) {
       router.push({ query: { ...query, page } });
     }
-  };
-
-  const getPageRange = (currentPage: number, totalPages: number) => {
-    let start = Math.max(1, currentPage - 4);
-    let end = Math.min(start + 9, totalPages);
-
-    if (end === totalPages) {
-      start = Math.max(1, end - 9);
-    }
-
-    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
   };
 
   const handleDropdownToggle = (isOpen: boolean) => {
@@ -106,33 +99,14 @@ export default function SearchPost() {
           </div>
         )}
       </section>
-      {totalPages > 1 && posts.length > 0 && (
-        <section className={styles.pagination}>
-          <button
-            className={styles.paginationArrow}
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-          >
-            <IconComponent name="paginationLeft" size={24} />
-          </button>
-          {getPageRange(currentPage, totalPages).map((pageNum) => (
-            <button
-              key={pageNum}
-              className={currentPage === pageNum ? styles.active : ""}
-              onClick={() => handlePageChange(pageNum)}
-            >
-              {pageNum}
-            </button>
-          ))}
-          <button
-            className={styles.paginationArrow}
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages || posts.length === 0}
-          >
-            <IconComponent name="paginationRight" size={24} />
-          </button>
-        </section>
-      )}
+      <section className={styles.pagination}>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          postsLength={posts.length}
+          onPageChange={handlePageChange}
+        />
+      </section>
     </>
   );
 }

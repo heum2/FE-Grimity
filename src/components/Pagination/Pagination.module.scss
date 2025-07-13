@@ -1,28 +1,12 @@
 @use "@/styles/globals.scss" as *;
 
-.paginationContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 60px;
-  position: relative;
-
-  @include Size("mobile") {
-    margin-top: 40px;
-  }
-}
-
 .pagination {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 
   @include Drag;
-
-  @include Size("mobile") {
-    gap: 4px;
-  }
 
   button {
     width: 36px;
@@ -34,7 +18,8 @@
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
-    @include Label2;
+    @include Body1;
+    line-height: 0;
     color: $gray70;
 
     &:hover {
@@ -58,9 +43,4 @@
   .active {
     background-color: $gray20;
   }
-}
-
-.uploadBtn {
-  position: absolute;
-  right: 0;
 }

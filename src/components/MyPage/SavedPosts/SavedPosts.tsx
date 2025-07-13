@@ -1,12 +1,15 @@
-import { useMySavePost } from "@/api/users/getMeSavePosts";
-import styles from "./SavedPosts.module.scss";
-import AllCard from "@/components/Board/BoardAll/AllCard/AllCard";
-import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
+
+import { useMySavePost } from "@/api/users/getMeSavePosts";
+
+import AllCard from "@/components/Board/BoardAll/AllCard/AllCard";
 import Loader from "@/components/Layout/Loader/Loader";
 import Button from "@/components/Button/Button";
-import Link from "next/link";
-import IconComponent from "@/components/Asset/Icon";
+import Pagination from "@/components/Pagination";
+
+import styles from "./SavedPosts.module.scss";
 
 export default function SavedPosts() {
   const router = useRouter();
@@ -21,7 +24,7 @@ export default function SavedPosts() {
     refetch();
   }, [pathname]);
   const posts = data?.posts || [];
-  const totalPages = Math.ceil((data?.totalCount || 1) / 10);
+  const totalPages = Math.ceil((data?.totalCount || 0) / 10);
 
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages) return;
@@ -29,17 +32,6 @@ export default function SavedPosts() {
       pathname: router.pathname,
       query: { ...router.query, page },
     });
-  };
-
-  const getPageRange = (currentPage: number, totalPages: number) => {
-    let start = Math.max(1, currentPage - 4);
-    let end = Math.min(start + 9, totalPages);
-
-    if (end === totalPages) {
-      start = Math.max(1, end - 9);
-    }
-
-    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
   };
 
   useEffect(() => {
@@ -69,35 +61,14 @@ export default function SavedPosts() {
           </div>
         )}
       </section>
-      {posts.length > 0 && (
-        <section
-          className={`${styles.pagination} ${posts.length === 0 ? styles.paginationDisabled : ""}`}
-        >
-          <button
-            className={styles.paginationArrow}
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-          >
-            <IconComponent name="paginationLeft" size={24} />
-          </button>
-          {getPageRange(currentPage, totalPages).map((pageNum) => (
-            <button
-              key={pageNum}
-              className={currentPage === pageNum ? styles.active : ""}
-              onClick={() => handlePageChange(pageNum)}
-            >
-              {pageNum}
-            </button>
-          ))}
-          <button
-            className={styles.paginationArrow}
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          >
-            <IconComponent name="paginationRight" size={24} />
-          </button>
-        </section>
-      )}
+      <section className={styles.pagination}>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          postsLength={posts.length}
+          onPageChange={handlePageChange}
+        />
+      </section>
     </>
   );
 }

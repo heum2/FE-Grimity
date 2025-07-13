@@ -18,6 +18,7 @@ import { useDeviceStore } from "@/states/deviceStore";
 import FeedAlbumEditor from "./FeedAlbumEditor/FeedAlbumEditor";
 import { useDragScroll } from "@/hooks/useDragScroll";
 import Icon from "@/components/Asset/IconTemp";
+import Pagination from "@/components/Pagination";
 
 type SortOption = "latest" | "like" | "oldest";
 
@@ -188,17 +189,6 @@ export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) 
     if (page >= 1 && page <= totalPages) {
       router.push({ query: { ...query, page } }, undefined, { shallow: true });
     }
-  };
-
-  const getPageRange = (currentPage: number, totalPages: number) => {
-    let start = Math.max(1, currentPage - 4);
-    let end = Math.min(start + 9, totalPages);
-
-    if (end === totalPages) {
-      start = Math.max(1, end - 9);
-    }
-
-    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
   };
 
   const handleSortChange = (option: SortOption) => {
@@ -381,29 +371,12 @@ export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) 
                           ))}
                         </div>
                         <section className={styles.pagination}>
-                          <button
-                            className={styles.paginationArrow}
-                            onClick={() => handlePageChange(currentPage - 1)}
-                            disabled={currentPage === 1}
-                          >
-                            <IconComponent name="paginationLeft" size={24} />
-                          </button>
-                          {getPageRange(currentPage, totalPages).map((pageNum) => (
-                            <button
-                              key={pageNum}
-                              className={currentPage === pageNum ? styles.active : ""}
-                              onClick={() => handlePageChange(pageNum)}
-                            >
-                              {pageNum}
-                            </button>
-                          ))}
-                          <button
-                            className={styles.paginationArrow}
-                            onClick={() => handlePageChange(currentPage + 1)}
-                            disabled={currentPage === totalPages}
-                          >
-                            <IconComponent name="paginationRight" size={24} />
-                          </button>
+                          <Pagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            postsLength={postsData.length}
+                            onPageChange={handlePageChange}
+                          />
                         </section>
                       </>
                     )}

@@ -1,17 +1,23 @@
+import Link from "next/link";
+
 import { useAuthStore } from "@/states/authStore";
 import { useDeviceStore } from "@/states/deviceStore";
 
+import Button from "@/components/Button/Button";
+import Icon from "@/components/Asset/IconTemp";
 import Title from "@/components/Layout/Title/Title";
 import AllCard from "@/components/Board/BoardAll/AllCard/AllCard";
 import Loader from "@/components/Layout/Loader/Loader";
 import SearchSection from "@/components/Board/BoardAll/SearchSection";
 import TabNavigation from "@/components/Board/BoardAll/TabNavigation";
-import Pagination from "@/components/Board/BoardAll/Pagination";
+import Pagination from "@/components/Pagination";
 
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useBoardAll } from "@/components/Board/BoardAll/hooks/useBoardAll";
 
-import { BoardAllProps } from "@/components/Board/BoardAll/BoardAll.types";
+import { PATH_ROUTES } from "@/constants/routes";
+
+import type { BoardAllProps } from "@/components/Board/BoardAll/BoardAll.types";
 
 import styles from "@/components/Board/BoardAll/BoardAll.module.scss";
 
@@ -77,15 +83,22 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
 
       {posts.length === 0 && <div className={styles.noResults}>검색 결과가 없어요</div>}
 
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        postsLength={posts.length}
-        isDetail={isDetail}
-        isMobile={isMobile}
-        isLoggedIn={isLoggedIn}
-        onPageChange={handlePageChange}
-      />
+      <div className={styles.paginationWrapper}>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          postsLength={posts.length}
+          onPageChange={handlePageChange}
+        />
+
+        {!isMobile && isLoggedIn && !isDetail && (
+          <Link href={PATH_ROUTES.BOARD_WRITE} className={styles.uploadBtn}>
+            <Button type="outlined-assistive" leftIcon={<Icon icon="detailWrite" />}>
+              글쓰기
+            </Button>
+          </Link>
+        )}
+      </div>
     </div>
   );
 }
