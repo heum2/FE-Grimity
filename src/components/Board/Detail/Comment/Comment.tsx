@@ -90,7 +90,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
     isLoading,
     refetch: refetchComments,
   } = useGetPostsComments({ postId });
-  const postCommentMutation = usePostPostsComments();
+  const { mutateAsync: postComment, isLoading: isPostCommentLoading } = usePostPostsComments();
   const [activeParentReplyId, setActiveParentReplyId] = useState<string | null>(null);
   const [activeChildReplyId, setActiveChildReplyId] = useState<string | null>(null);
   const isMobile = useDeviceStore((state) => state.isMobile);
@@ -223,22 +223,24 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
   };
 
   const handleCommentSubmit = async () => {
+    if (isPostCommentLoading) return;
     if (!isLoggedIn || !comment.trim()) return;
-    postCommentMutation.mutate(
-      {
+
+    try {
+      await postComment({
         postId,
         content: comment,
-      },
-      {
-        onSuccess: () => {
-          setComment("");
-          refetchComments();
-        },
-      },
-    );
+      });
+      setComment("");
+      refetchComments();
+    } catch (error) {
+      showToast("댓글 작성에 실패했습니다.", "error");
+    }
   };
 
   const handleReplySubmit = async () => {
+    if (isPostCommentLoading) return;
+
     if (!isLoggedIn || !replyText.trim() || !activeParentReplyId || !mentionedUser) return;
 
     const actualReplyContent = replyText.trim();
@@ -248,28 +250,26 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
       return;
     }
 
-    postCommentMutation.mutate(
-      {
+    try {
+      await postComment({
         postId,
         content: replyText,
         parentCommentId: activeParentReplyId,
         mentionedUserId: isReplyToChild ? mentionedUser.id : undefined,
-      },
-      {
-        onSuccess: () => {
-          setReplyText("");
-          if (isReplyToChild) {
-            setActiveChildReplyId(null);
-            setActiveParentReplyId(null);
-          } else {
-            setActiveParentReplyId(null);
-          }
-          setMentionedUser(null);
-          setIsReplyToChild(false);
-          refetchComments();
-        },
-      },
-    );
+      });
+      setReplyText("");
+      if (isReplyToChild) {
+        setActiveChildReplyId(null);
+        setActiveParentReplyId(null);
+      } else {
+        setActiveParentReplyId(null);
+      }
+      setMentionedUser(null);
+      setIsReplyToChild(false);
+      refetchComments();
+    } catch (error) {
+      showToast("답글 작성에 실패했습니다.", "error");
+    }
   };
 
   useEffect(() => {
