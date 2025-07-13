@@ -63,7 +63,7 @@ export const useBoardAll = ({ isDetail }: UseBoardAllProps) => {
         currentPage === 1 && !isDetail ? [...noticesData, ...latestData.posts] : latestData.posts;
 
       setPosts(mergedPosts);
-      setTotalCount(latestData.totalCount + (currentPage === 1 ? noticesData.length : 0));
+      setTotalCount(latestData.totalCount);
     }
   }, [
     currentType,
