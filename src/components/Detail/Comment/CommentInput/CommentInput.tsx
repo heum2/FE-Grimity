@@ -23,29 +23,30 @@ export default function CommentInput({
 }: CommentInputProps) {
   const isMobile = useDeviceStore((state) => state.isMobile);
   const [comment, setComment] = useState("");
-  const postCommentMutation = usePostFeedsComments();
+  const { mutateAsync: postComment, isLoading: isPostCommentLoading } = usePostFeedsComments();
 
   const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
   };
 
   const handleCommentSubmit = async () => {
+    if (isPostCommentLoading) return;
+
     if (!isLoggedIn || !comment.trim()) return;
 
-    postCommentMutation.mutate(
-      {
+    try {
+      await postComment({
         feedId,
         content: comment,
-      },
-      {
-        onSuccess: () => {
-          setComment("");
-          if (onCommentSubmitSuccess) {
-            onCommentSubmitSuccess();
-          }
-        },
-      },
-    );
+      });
+
+      setComment("");
+      if (onCommentSubmitSuccess) {
+        onCommentSubmitSuccess();
+      }
+    } catch (error) {
+      showToast("댓글 작성에 실패했습니다.", "error");
+    }
   };
 
   const handleEnterKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
