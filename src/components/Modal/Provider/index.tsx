@@ -1,6 +1,7 @@
 import React, { PropsWithChildren } from "react";
 
 import { useNewModalStore } from "@/states/modalStore";
+import { usePreventScroll } from "@/hooks/usePreventScroll";
 
 import ModalPortal from "@/components/Modal/Portal";
 
@@ -8,6 +9,8 @@ import styles from "@/components/Modal/Modal.module.scss";
 
 function ModalProvider({ children }: PropsWithChildren) {
   const { modals, closeModal } = useNewModalStore();
+
+  usePreventScroll(modals.length > 0);
 
   return (
     <>

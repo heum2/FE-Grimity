@@ -285,6 +285,13 @@ $max-width-content: 780px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-smooth: always;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+body.modalOpen {
+  overflow: hidden;
+  padding-right: var(--scrollbar-width);
 }
 
 @keyframes pulse {
