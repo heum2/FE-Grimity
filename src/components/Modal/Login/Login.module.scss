@@ -10,10 +10,6 @@
   padding: 40px 32px;
   background-color: $gray0;
 
-  @include Size("mobile") {
-    height: 242px;
-  }
-
   .messageContainer {
     display: flex;
     flex-direction: column;

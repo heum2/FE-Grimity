@@ -32,8 +32,16 @@
     opacity: 0;
     @include Drag;
 
+    :global(body.modalOpen) & {
+      right: calc(40px + var(--scrollbar-width));
+    }
+
     @include Size("mobile") {
       right: 16px;
+
+      :global(body.modalOpen) & {
+        right: calc(16px + var(--scrollbar-width));
+      }
     }
 
     &:hover {

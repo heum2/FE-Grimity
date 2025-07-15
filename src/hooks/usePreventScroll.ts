@@ -1,15 +1,26 @@
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 
 export const usePreventScroll = (isOpen: boolean) => {
+  const setBodyStyleOpenModal = useCallback(() => {
+    const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+    document.documentElement.style.setProperty("--scrollbar-width", `${scrollBarWidth}px`);
+    document.body.classList.add("modalOpen");
+  }, []);
+
+  const setBodyStyleCloseModal = useCallback(() => {
+    document.documentElement.style.removeProperty("--scrollbar-width");
+    document.body.classList.remove("modalOpen");
+  }, []);
+
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = "hidden";
+      setBodyStyleOpenModal();
     } else {
-      document.body.style.overflow = "";
+      setBodyStyleCloseModal();
     }
 
     return () => {
-      document.body.style.overflow = "";
+      setBodyStyleCloseModal();
     };
-  }, [isOpen]);
+  }, [isOpen, setBodyStyleOpenModal, setBodyStyleCloseModal]);
 };
