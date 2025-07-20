@@ -1,12 +1,12 @@
-import { useEffect } from "react";
 import type { AppProps } from "next/app";
-import Layout from "@/components/Layout/Layout";
-import Modal from "@/components/Modal/Modal";
-import { useAuthStore } from "@/states/authStore";
+import Script from "next/script";
+
 import { QueryClient, QueryClientProvider } from "react-query";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+
+import Layout from "@/components/Layout/Layout";
+import Modal from "@/components/Modal/Modal";
 import Toast from "@/components/Toast/Toast";
-import Script from "next/script";
 import ModalProvider from "@/components/Modal/Provider";
 
 import "@/styles/globals.scss";
@@ -18,50 +18,6 @@ import "swiper/css/navigation";
 const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
-  const setAccessToken = useAuthStore((state) => state.setAccessToken);
-  const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
-  const setUserId = useAuthStore((state) => state.setUserId);
-  const setIsAuthReady = useAuthStore((state) => state.setIsAuthReady);
-  const access_token = useAuthStore((state) => state.access_token);
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const user_id = useAuthStore((state) => state.user_id);
-
-  useEffect(() => {
-    if (pageProps.isLoggedIn) {
-      setIsLoggedIn(true);
-      if (pageProps.access_token) {
-        setAccessToken(pageProps.access_token);
-      }
-      if (pageProps.user_id) {
-        setUserId(pageProps.user_id);
-      }
-    } else {
-      const storedAccessToken = localStorage.getItem("access_token");
-      const storedUserId = localStorage.getItem("user_id");
-
-      if (storedAccessToken) {
-        setAccessToken(storedAccessToken);
-        setIsLoggedIn(true);
-        if (storedUserId) {
-          setUserId(storedUserId);
-        }
-      }
-    }
-    setIsAuthReady(true);
-  }, [pageProps, setAccessToken, setIsLoggedIn, setUserId, setIsAuthReady]);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      localStorage.setItem("access_token", access_token);
-      if (user_id) {
-        localStorage.setItem("user_id", user_id);
-      }
-    } else {
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("user_id");
-    }
-  }, [access_token, isLoggedIn, user_id]);
-
   return (
     <>
       <QueryClientProvider client={queryClient}>

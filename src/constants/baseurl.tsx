@@ -70,7 +70,11 @@ axiosInstance.interceptors.response.use(
           return axiosInstance(originalRequest);
         } catch (refreshError) {
           console.error("Failed to refresh token", refreshError);
+          localStorage.clear();
           useAuthStore.getState().clearAuth();
+          if (typeof window !== "undefined") {
+            window.location.href = "/login";
+          }
           return Promise.reject(refreshError);
         }
       }
