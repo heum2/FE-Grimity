@@ -1,27 +1,25 @@
 import { create } from "zustand";
 
 interface AuthState {
-  access_token: string;
   isLoggedIn: boolean;
+  access_token: string;
   user_id: string;
   isAuthReady: boolean;
-  setAccessToken: (token: string) => void;
-  setIsLoggedIn: (loggedIn: boolean) => void;
-  setUserId: (id: string) => void;
-  setIsAuthReady: (ready: boolean) => void;
+  setIsLoggedIn: (isLoggedIn: boolean) => void;
+  setAccessToken: (accessToken: string) => void;
+  setUserId: (userId: string) => void;
+  setIsAuthReady: (isAuthReady: boolean) => void;
   clearAuth: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
-  access_token: "",
   isLoggedIn: false,
+  access_token: "",
   user_id: "",
   isAuthReady: false,
-  setAccessToken: (token) => set({ access_token: token }),
-  setIsLoggedIn: (loggedIn) => set({ isLoggedIn: loggedIn }),
-  setUserId: (id) => set({ user_id: id }),
-  setIsAuthReady: (ready) => set({ isAuthReady: ready }),
-  clearAuth: () => {
-    set({ access_token: "", isLoggedIn: false, user_id: "", isAuthReady: true });
-  },
+  setIsLoggedIn: (isLoggedIn) => set({ isLoggedIn }),
+  setAccessToken: (access_token) => set({ access_token }),
+  setUserId: (user_id) => set({ user_id }),
+  setIsAuthReady: (isAuthReady) => set({ isAuthReady }),
+  clearAuth: () => set({ isLoggedIn: false, access_token: "", user_id: "", isAuthReady: true }),
 }));
