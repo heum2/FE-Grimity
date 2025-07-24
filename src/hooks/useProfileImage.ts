@@ -12,7 +12,9 @@ export const useProfileImage = (
 ) => {
   const { showToast } = useToast();
 
-  const imageMutation = useMutation((imageName: string) => putProfileImage(imageName));
+  const imageMutation = useMutation({
+    mutationFn: (imageName: string) => putProfileImage(imageName),
+  });
 
   const uploadImageToServer = async (file: File) => {
     try {

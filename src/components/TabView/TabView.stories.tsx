@@ -41,7 +41,7 @@ export const Default: Story = {
 };
 
 export const Interactive: Story = {
-  render: (args) => {
+  render: function InteractiveRender(args) {
     const [activeTab, setActiveTab] = useState(args.activeTab);
 
     return (
@@ -66,7 +66,7 @@ export const Interactive: Story = {
 };
 
 export const MultipleTabs: Story = {
-  render: (args) => {
+  render: function MultipleTabsRender(args) {
     const [activeTab, setActiveTab] = useState(args.activeTab);
 
     return (
@@ -93,7 +93,7 @@ export const MultipleTabs: Story = {
 };
 
 export const LongLabels: Story = {
-  render: (args) => {
+  render: function LongLabelsRender(args) {
     const [activeTab, setActiveTab] = useState(args.activeTab);
 
     return (

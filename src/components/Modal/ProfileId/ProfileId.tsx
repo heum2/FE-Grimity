@@ -7,7 +7,7 @@ import { useToast } from "@/hooks/useToast";
 import axiosInstance from "@/constants/baseurl";
 import { isValidProfileIdFormat, isForbiddenProfileId } from "@/utils/isValidProfileId";
 import TextField from "@/components/TextField/TextField";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import type { LoginResponse } from "@grimity/dto";
 
 export default function ProfileId() {

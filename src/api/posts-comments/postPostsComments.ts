@@ -22,5 +22,7 @@ export async function postPostsComments({
 }
 
 export function usePostPostsComments() {
-  return useMutation((data: CreatePostCommentRequest) => postPostsComments(data));
+  return useMutation({
+    mutationFn: (data: CreatePostCommentRequest) => postPostsComments(data),
+  });
 }

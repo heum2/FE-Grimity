@@ -48,7 +48,7 @@ export const useBoardAll = ({ isDetail }: UseBoardAllProps) => {
 
   useEffect(() => {
     refetch();
-  }, [pathname]);
+  }, [pathname, refetch]);
 
   useEffect(() => {
     if (!router.isReady) return;

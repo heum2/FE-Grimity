@@ -1,7 +1,7 @@
 import styles from "./ProfileEdit.module.scss";
 import { useEffect, useState } from "react";
 import { useModalStore } from "@/states/modalStore";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import TextField from "@/components/TextField/TextField";
 import IconComponent from "@/components/Asset/Icon";
 import Button from "@/components/Button/Button";
@@ -75,7 +75,8 @@ export default function ProfileEdit() {
     }
   }, [myData]);
 
-  const mutation = useMutation((data: UpdateUserRequest) => putMyInfo(data), {
+  const mutation = useMutation({
+    mutationFn: (data: UpdateUserRequest) => putMyInfo(data),
     onSuccess: () => {
       showToast("프로필 정보가 변경되었습니다!", "success");
       closeModal();
@@ -317,7 +318,7 @@ export default function ProfileEdit() {
           size="l"
           type="filled-primary"
           onClick={handleSave}
-          disabled={name.trim().length < 2 || mutation.isLoading || !!profileIdError}
+          disabled={name.trim().length < 2 || mutation.isPending || !!profileIdError}
         >
           변경 내용 저장
         </Button>

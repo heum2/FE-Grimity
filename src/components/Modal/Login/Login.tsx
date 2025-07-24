@@ -1,5 +1,5 @@
 import styles from "./Login.module.scss";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useAuthStore } from "@/states/authStore";
 import { useModalStore } from "@/states/modalStore";
 import { useGoogleLogin } from "@react-oauth/google";
@@ -42,7 +42,7 @@ export default function Login({ close }: LoginProps) {
   const openModal = useModalStore((state) => state.openModal);
   const { showToast } = useToast();
 
-  const { mutateAsync, isLoading } = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationFn: async ({
       provider,
       providerAccessToken,
@@ -130,13 +130,13 @@ export default function Login({ close }: LoginProps) {
         <p className={styles.text}>그리미티에 가입 후 나의 그림을 뽐내보세요</p>
       </div>
       <div className={styles.buttonContainer}>
-        <button className={styles.kakaoButton} onClick={handleKaKaoLogin} disabled={isLoading}>
+        <button className={styles.kakaoButton} onClick={handleKaKaoLogin} disabled={isPending}>
           <IconComponent name="kakao" size={24} />
-          {isLoading ? "로그인 중..." : "카카오로 계속하기"}
+          {isPending ? "로그인 중..." : "카카오로 계속하기"}
         </button>
-        <button className={styles.googleButton} onClick={() => googleLogin()} disabled={isLoading}>
+        <button className={styles.googleButton} onClick={() => googleLogin()} disabled={isPending}>
           <IconComponent name="google" size={20} />
-          {isLoading ? "로그인 중..." : "구글로 계속하기"}
+          {isPending ? "로그인 중..." : "구글로 계속하기"}
         </button>
       </div>
     </div>

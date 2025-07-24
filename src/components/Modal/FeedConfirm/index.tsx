@@ -3,7 +3,7 @@ import Button from "@/components/Button/Button";
 import styles from "@/components/Modal/Modal.module.scss";
 import { useToast } from "@/hooks/useToast";
 import { CreateFeedRequest } from "@grimity/dto";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { imageUrl as imageDomain } from "@/constants/imageUrl";
 import { AxiosError } from "axios";
 import { putEditFeeds } from "@/api/feeds/putFeedsId";
@@ -26,7 +26,8 @@ const FeedConfirm = ({ id, data, isEditMode, onSuccessCallback, close }: FeedCon
   const { openModal } = useModal();
   const queryClient = useQueryClient();
 
-  const { mutate: uploadFeed, isLoading: isUploadLoading } = useMutation(postFeeds, {
+  const { mutate: uploadFeed, isPending: isUploadLoading } = useMutation({
+    mutationFn: postFeeds,
     onSuccess: (response, variables) => {
       if (!response.id) {
         showToast("업로드 중 문제가 발생했습니다. 다시 시도해주세요.", "error");
@@ -56,7 +57,8 @@ const FeedConfirm = ({ id, data, isEditMode, onSuccessCallback, close }: FeedCon
     },
   });
 
-  const { mutate: editFeed, isLoading: isEditLoading } = useMutation(putEditFeeds, {
+  const { mutate: editFeed, isPending: isEditLoading } = useMutation({
+    mutationFn: putEditFeeds,
     onSuccess: () => {
       onSuccessCallback?.();
       showToast("수정이 완료되었습니다!", "success");

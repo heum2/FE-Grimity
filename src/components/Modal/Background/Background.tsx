@@ -9,7 +9,7 @@ import { postPresignedUrl } from "@/api/aws/postPresigned";
 import { putBackgroundImage } from "@/api/users/putMeImage";
 import router from "next/router";
 import IconComponent from "@/components/Asset/Icon";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useMyData } from "@/api/users/getMe";
 
@@ -47,7 +47,9 @@ export default function Background({ imageSrc, file, onUploadSuccess }: Backgrou
     return () => window.removeEventListener("resize", updateViewportWidth);
   }, []);
 
-  const CoverImageMutation = useMutation((imageName: string) => putBackgroundImage(imageName));
+  const CoverImageMutation = useMutation({
+    mutationFn: (imageName: string) => putBackgroundImage(imageName),
+  });
 
   function getCroppedImage(image: HTMLImageElement, crop: PercentCrop): Promise<Blob> {
     const canvas = document.createElement("canvas");

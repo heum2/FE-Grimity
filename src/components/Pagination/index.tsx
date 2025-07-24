@@ -17,7 +17,7 @@ export default function Pagination({
 }: PaginationProps) {
   const getPageRange = (currentPage: number, totalPages: number) => {
     let start = Math.max(1, currentPage - 4);
-    let end = Math.min(start + 9, totalPages);
+    const end = Math.min(start + 9, totalPages);
 
     if (end === totalPages) {
       start = Math.max(1, end - 9);

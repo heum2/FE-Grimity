@@ -19,7 +19,9 @@ export const useCoverImage = (
   const isMobile = useDeviceStore((state) => state.isMobile);
   const isTablet = useDeviceStore((state) => state.isTablet);
 
-  const coverImageMutation = useMutation((imageName: string) => putBackgroundImage(imageName));
+  const coverImageMutation = useMutation({
+    mutationFn: (imageName: string) => putBackgroundImage(imageName),
+  });
 
   const handleAddCover = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -65,7 +67,8 @@ export const useCoverImage = (
     }
   };
 
-  const deleteImageMutation = useMutation(deleteMyBackgroundImage, {
+  const deleteImageMutation = useMutation({
+    mutationFn: deleteMyBackgroundImage,
     onSuccess: () => {
       showToast("커버 이미지가 삭제되었습니다.", "success");
       if (userData) {

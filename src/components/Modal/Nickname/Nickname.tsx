@@ -1,7 +1,7 @@
 import styles from "./Nickname.module.scss";
 import { useState } from "react";
 import { useModalStore } from "@/states/modalStore";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import TextField from "@/components/TextField/TextField";
 import IconComponent from "@/components/Asset/Icon";
 import Button from "@/components/Button/Button";

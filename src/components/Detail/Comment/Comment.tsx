@@ -10,7 +10,7 @@ import {
 import { CommentProps, CommentWriter } from "./Comment.types";
 import { useToast } from "@/hooks/useToast";
 import { deleteComments } from "@/api/feeds-comments/deleteFeedComment";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import Loader from "@/components/Layout/Loader/Loader";
 import Dropdown from "@/components/Dropdown/Dropdown";
@@ -111,7 +111,7 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
   const { data: commentsData, refetch: refetchComments } = useGetFeedsComments({
     feedId,
   });
-  const { mutateAsync: postComment, isLoading: isPostCommentLoading } = usePostFeedsComments();
+  const { mutateAsync: postComment, isPending: isPostCommentLoading } = usePostFeedsComments();
   const [activeParentReplyId, setActiveParentReplyId] = useState<string | null>(null);
   const [activeChildReplyId, setActiveChildReplyId] = useState<string | null>(null);
   const isMobile = useDeviceStore((state) => state.isMobile);
@@ -119,9 +119,10 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
 
   useEffect(() => {
     refetchComments();
-  }, [pathname]);
+  }, [pathname, refetchComments]);
 
-  const deleteCommentMutation = useMutation(deleteComments, {
+  const deleteCommentMutation = useMutation({
+    mutationFn: deleteComments,
     onSuccess: () => {
       showToast("댓글이 삭제되었습니다.", "success");
       refetchComments();
@@ -148,7 +149,7 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
         await putCommentLike(commentId);
       }
 
-      queryClient.invalidateQueries(["getFeedsComments", feedId]);
+      queryClient.invalidateQueries({ queryKey: ["getFeedsComments", feedId] });
     } catch (error) {
       showToast("좋아요 처리 중 오류가 발생했습니다.", "error");
     }
