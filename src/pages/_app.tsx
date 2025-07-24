@@ -1,7 +1,7 @@
 import type { AppProps } from "next/app";
 import Script from "next/script";
 
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
 import Layout from "@/components/Layout/Layout";

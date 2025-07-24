@@ -1,4 +1,4 @@
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/useToast";
 import { convertToWebP } from "@/utils/imageConverter";
 import { postPresignedUrl } from "@/api/aws/postPresigned";

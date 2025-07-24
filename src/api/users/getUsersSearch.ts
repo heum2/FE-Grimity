@@ -1,5 +1,5 @@
 import axiosInstance from "@/constants/baseurl";
-import { useInfiniteQuery } from "react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { SearchedUsersResponse } from "@grimity/dto";
 
 export interface UserSearchRequest {
@@ -30,19 +30,19 @@ export async function getUserSearch({
 }
 
 export function useUserSearch(params: UserSearchRequest) {
-  return useInfiniteQuery(
-    ["UserSearch", params.keyword],
-    ({ pageParam = undefined }) => getUserSearch({ ...params, cursor: pageParam }),
-    {
-      getNextPageParam: (lastPage) => {
-        return lastPage.nextCursor ? lastPage.nextCursor : undefined;
-      },
-      enabled: !!params.keyword,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-      staleTime: 5 * 60 * 1000,
-      cacheTime: 10 * 60 * 1000,
+  return useInfiniteQuery<SearchedUsersResponse>({
+    queryKey: ["UserSearch", params.keyword],
+    queryFn: ({ pageParam }) =>
+      getUserSearch({ ...params, cursor: pageParam as string | undefined }),
+    initialPageParam: undefined,
+    getNextPageParam: (lastPage) => {
+      return lastPage.nextCursor ? lastPage.nextCursor : undefined;
     },
-  );
+    enabled: !!params.keyword,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+  });
 }

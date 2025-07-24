@@ -1,5 +1,5 @@
 import axiosInstance from "@/constants/baseurl";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import type { PopularTagResponse } from "@grimity/dto";
 export type { PopularTagResponse };
 
@@ -15,11 +15,13 @@ export async function getTagsPopular(): Promise<PopularTagResponse[]> {
 }
 
 export function useTagsPopular() {
-  return useQuery<PopularTagResponse[]>(["TagsPopular"], getTagsPopular, {
+  return useQuery<PopularTagResponse[]>({
+    queryKey: ["TagsPopular"],
+    queryFn: getTagsPopular,
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     staleTime: 5 * 60 * 1000,
-    cacheTime: 10 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
   });
 }

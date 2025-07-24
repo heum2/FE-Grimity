@@ -1,5 +1,5 @@
 import axiosInstance from "@/constants/baseurl";
-import { useInfiniteQuery } from "react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { LatestFeedsResponse } from "@grimity/dto";
 
 export interface FeedsLatestRequest {
@@ -24,18 +24,17 @@ export async function getFeedsLatest({
 }
 
 export function useFeedsLatest({ size }: FeedsLatestRequest) {
-  return useInfiniteQuery<LatestFeedsResponse>(
-    "feedsLatest",
-    ({ pageParam = undefined }) => getFeedsLatest({ size, cursor: pageParam }),
-    {
-      getNextPageParam: (lastPage) => {
-        return lastPage.nextCursor ? lastPage.nextCursor : undefined;
-      },
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-      staleTime: 5 * 60 * 1000,
-      cacheTime: 10 * 60 * 1000,
+  return useInfiniteQuery<LatestFeedsResponse>({
+    queryKey: ["feedsLatest"],
+    queryFn: ({ pageParam }) => getFeedsLatest({ size, cursor: pageParam as string | undefined }),
+    initialPageParam: undefined,
+    getNextPageParam: (lastPage) => {
+      return lastPage.nextCursor ? lastPage.nextCursor : undefined;
     },
-  );
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+  });
 }

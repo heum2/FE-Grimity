@@ -1,6 +1,6 @@
 import axiosInstance from "@/constants/baseurl";
 import axios from "axios";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import type { PostDetailResponse, PostBaseResponse } from "@grimity/dto";
 export type { PostBaseResponse };
 import { baseUrl } from "@/constants/baseurl";
@@ -38,11 +38,13 @@ export async function getSSRPostsDetails(id: string): Promise<PostBaseResponse> 
 }
 
 export function usePostsDetails(id: string) {
-  return useQuery<PostDetailResponse>(["Postsdetails", id], () => getPostsDetails(id), {
+  return useQuery<PostDetailResponse>({
+    queryKey: ["Postsdetails", id],
+    queryFn: () => getPostsDetails(id),
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     staleTime: 5 * 60 * 1000,
-    cacheTime: 10 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
   });
 }

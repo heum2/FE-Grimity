@@ -1,5 +1,5 @@
 import axiosInstance from "@/constants/baseurl";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import type { ParentPostCommentResponse } from "@grimity/dto";
 export type { ParentPostCommentResponse };
 
@@ -31,15 +31,13 @@ export async function getPostsComments({
 }
 
 export function useGetPostsComments({ postId }: PostsCommentsRequest) {
-  return useQuery<PostsCommentsResponse>(
-    ["getPostsComments", postId],
-    () => getPostsComments({ postId }),
-    {
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-      staleTime: 5 * 60 * 1000,
-      cacheTime: 10 * 60 * 1000,
-    },
-  );
+  return useQuery<PostsCommentsResponse>({
+    queryKey: ["getPostsComments", postId],
+    queryFn: () => getPostsComments({ postId }),
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+  });
 }

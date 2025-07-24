@@ -1,5 +1,5 @@
 import axiosInstance from "@/constants/baseurl";
-import { useInfiniteQuery } from "react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { MyLikeFeedsResponse } from "@grimity/dto";
 
 export interface MySaveListRequest {
@@ -24,17 +24,16 @@ export async function getMySaveList({
 export function useMySaveList({ size }: MySaveListRequest) {
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
 
-  return useInfiniteQuery<MyLikeFeedsResponse>(
-    "MySaveList",
-    ({ pageParam = null }) => getMySaveList({ cursor: pageParam }),
-    {
-      enabled: Boolean(accessToken),
-      getNextPageParam: (lastPage) => lastPage.nextCursor || null,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-      staleTime: 5 * 60 * 1000,
-      cacheTime: 10 * 60 * 1000,
-    },
-  );
+  return useInfiniteQuery<MyLikeFeedsResponse>({
+    queryKey: ["MySaveList"],
+    queryFn: ({ pageParam }) => getMySaveList({ cursor: pageParam as string | undefined }),
+    initialPageParam: undefined,
+    enabled: Boolean(accessToken),
+    getNextPageParam: (lastPage) => lastPage.nextCursor || undefined,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+  });
 }

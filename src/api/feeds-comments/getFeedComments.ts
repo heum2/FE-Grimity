@@ -1,5 +1,5 @@
 import axiosInstance from "@/constants/baseurl";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import type { ParentFeedCommentResponse } from "@grimity/dto";
 export type { ParentFeedCommentResponse };
 
@@ -30,15 +30,13 @@ export async function getFeedsComments({
 }
 
 export function useGetFeedsComments({ feedId }: FeedsCommentsRequest) {
-  return useQuery<FeedsCommentsResponse>(
-    ["getFeedsComments", feedId],
-    () => getFeedsComments({ feedId }),
-    {
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-      staleTime: 5 * 60 * 1000,
-      cacheTime: 10 * 60 * 1000,
-    },
-  );
+  return useQuery<FeedsCommentsResponse>({
+    queryKey: ["getFeedsComments", feedId],
+    queryFn: () => getFeedsComments({ feedId }),
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+  });
 }

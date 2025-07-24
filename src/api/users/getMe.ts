@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useAuthStore } from "@/states/authStore";
 import axiosInstance from "@/constants/baseurl";
 import { MyProfileResponse } from "@grimity/dto";
@@ -18,7 +18,9 @@ export function useMyData() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
 
-  return useQuery<MyProfileResponse>("myInfo", getMyInfo, {
+  return useQuery<MyProfileResponse>({
+    queryKey: ["myInfo"],
+    queryFn: getMyInfo,
     enabled: isLoggedIn && Boolean(accessToken),
     refetchOnMount: true,
     refetchOnReconnect: true,

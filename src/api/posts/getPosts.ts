@@ -1,6 +1,6 @@
 import axiosInstance from "@/constants/baseurl";
 import axios from "axios";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import type { PostsResponse, PostResponse } from "@grimity/dto";
 export type { PostResponse };
 
@@ -33,12 +33,14 @@ export async function getPostsLatest({
 }
 
 export const usePostsLatest = (params: PostsLatestRequest) => {
-  return useQuery<PostsResponse>(["postsLatest", params], () => getPostsLatest(params), {
+  return useQuery<PostsResponse>({
+    queryKey: ["postsLatest", params],
+    queryFn: () => getPostsLatest(params),
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     staleTime: 5 * 60 * 1000,
-    cacheTime: 10 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
   });
 };
 
@@ -54,11 +56,13 @@ export async function getPostsNotices(): Promise<PostResponse[]> {
 }
 
 export const usePostsNotices = () => {
-  return useQuery<PostResponse[]>(["postsNotices"], () => getPostsNotices(), {
+  return useQuery<PostResponse[]>({
+    queryKey: ["postsNotices"],
+    queryFn: () => getPostsNotices(),
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     staleTime: 5 * 60 * 1000,
-    cacheTime: 10 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
   });
 };

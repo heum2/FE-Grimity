@@ -1,5 +1,5 @@
 import axiosInstance from "@/constants/baseurl";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { PostsResponse } from "@grimity/dto";
 
 export interface PostSearchRequest {
@@ -33,16 +33,17 @@ export async function getPostSearch({
 }
 
 export function usePostSearch(params: PostSearchRequest | null) {
-  return useQuery<PostsResponse>(
-    params ? ["PostSearch", params.searchBy, params.size, params.page, params.keyword] : [],
-    () => (params ? getPostSearch(params) : Promise.reject(undefined)),
-    {
-      enabled: !!params,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-      staleTime: 5 * 60 * 1000,
-      cacheTime: 10 * 60 * 1000,
-    },
-  );
+  return useQuery<PostsResponse>({
+    queryKey: params
+      ? ["PostSearch", params.searchBy, params.size, params.page, params.keyword]
+      : [],
+    queryFn: () => (params ? getPostSearch(params) : Promise.reject(undefined)),
+
+    enabled: !!params,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+  });
 }

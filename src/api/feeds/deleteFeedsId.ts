@@ -1,6 +1,7 @@
 import axiosInstance from "@/constants/baseurl";
-import { useQuery, useMutation, useQueryClient } from "react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { DeleteFeedsRequest } from "@grimity/dto";
+import axios from "axios";
 
 // 피드 하나 삭제
 export async function deleteFeeds(id: string): Promise<Response> {
@@ -15,27 +16,33 @@ export async function deleteBatchFeeds(params: DeleteFeedsRequest): Promise<Resp
       ids: params.ids,
     });
     return response.data;
-  } catch (error: any) {
-    if (error.response?.status === 400) throw new Error("유효성 검사 실패");
-    if (error.response?.status === 401) throw new Error("Unauthorized");
-    console.error("Error response:", error.response?.data);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.response?.status === 400) throw new Error("유효성 검사 실패");
+      if (error.response?.status === 401) throw new Error("Unauthorized");
+      console.error("Error response:", error.response?.data);
+    }
     throw new Error("Failed to delete feeds");
   }
 }
 
 export function useDeleteFeeds(id: string) {
-  return useQuery<Response>(["deleteFeeds", id], () => deleteFeeds(id), {});
+  return useQuery<Response>({
+    queryKey: ["deleteFeeds", id],
+    queryFn: () => deleteFeeds(id),
+  });
 }
 
 export function useDeleteBatchFeeds() {
   const queryClient = useQueryClient();
 
-  return useMutation((params: DeleteFeedsRequest) => deleteBatchFeeds(params), {
+  return useMutation({
+    mutationFn: (params: DeleteFeedsRequest) => deleteBatchFeeds(params),
     onSuccess: () => {
-      queryClient.invalidateQueries("feeds");
-      queryClient.invalidateQueries("albums");
+      queryClient.invalidateQueries({ queryKey: ["feeds"] });
+      queryClient.invalidateQueries({ queryKey: ["albums"] });
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       console.error("Failed to delete feeds:", error);
     },
   });

@@ -1,6 +1,6 @@
 import axiosInstance from "@/constants/baseurl";
 import axios from "axios";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import type { UserProfileResponse, UserMetaResponse } from "@grimity/dto";
 export type { UserMetaResponse };
 import { baseUrl } from "@/constants/baseurl";
@@ -69,22 +69,26 @@ export async function getSSRUserInfoByUrl(url: string): Promise<UserMetaResponse
 }
 
 export const useUserData = (userId: string | null) => {
-  return useQuery(["userData", userId], () => getUserInfo({ id: userId! }), {
+  return useQuery({
+    queryKey: ["userData", userId],
+    queryFn: () => getUserInfo({ id: userId! }),
     enabled: Boolean(userId),
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     staleTime: 5 * 60 * 1000,
-    cacheTime: 10 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
   });
 };
 export const useUserDataByUrl = (url: string | null) => {
-  return useQuery(["userData", url], () => getUserInfoByUrl({ url: url! }), {
+  return useQuery({
+    queryKey: ["userData", url],
+    queryFn: () => getUserInfoByUrl({ url: url! }),
     enabled: Boolean(url),
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     staleTime: 5 * 60 * 1000,
-    cacheTime: 10 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
   });
 };
