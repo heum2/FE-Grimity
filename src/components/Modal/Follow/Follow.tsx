@@ -194,7 +194,7 @@ export default function Follow({ initialTab }: FollowProps) {
                     <p className={styles.description}>{follow.description}</p>
                   </div>
                 ) : (
-                  <div className={styles.nameContainer} onClick={() => handleClickUser(follow.id)}>
+                  <div className={styles.nameContainer} onClick={() => handleClickUser(follow.url)}>
                     <p className={styles.name}>{follow.name}</p>
                   </div>
                 )}
