@@ -1,5 +1,5 @@
 import axiosInstance from "@/constants/baseurl";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { DeleteFeedsRequest } from "@grimity/dto";
 import axios from "axios";
 
@@ -24,13 +24,6 @@ export async function deleteBatchFeeds(params: DeleteFeedsRequest): Promise<Resp
     }
     throw new Error("Failed to delete feeds");
   }
-}
-
-export function useDeleteFeeds(id: string) {
-  return useQuery<Response>({
-    queryKey: ["deleteFeeds", id],
-    queryFn: () => deleteFeeds(id),
-  });
 }
 
 export function useDeleteBatchFeeds() {
