@@ -5,9 +5,9 @@ import { AlbumBaseResponse } from "@grimity/dto";
 import axios from "axios";
 export type { AlbumBaseResponse };
 
-export async function getMyAlbums(): Promise<AlbumBaseResponse> {
+export async function getMyAlbums(): Promise<AlbumBaseResponse[]> {
   try {
-    const response = await axiosInstance.get("/me/albums");
+    const response = await axiosInstance.get<AlbumBaseResponse[]>("/me/albums");
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -23,7 +23,7 @@ export function useMyAlbums() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
 
-  return useQuery<AlbumBaseResponse>({
+  return useQuery<AlbumBaseResponse[]>({
     queryKey: ["myAlbums"],
     queryFn: getMyAlbums,
     enabled: isLoggedIn && Boolean(accessToken),
