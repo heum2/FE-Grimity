@@ -128,12 +128,12 @@ export default function EditPost({ id }: EditPostProps) {
     setContent(value);
   };
 
-  const { mutateAsync: editPost, isPending: isEditPostLoading } = useMutation({
+  const { mutateAsync: editPost, isPending: isEditPostPending } = useMutation({
     mutationFn: (data: CreatePostRequest) => putEditPosts(id, data),
   });
 
   const handleSubmit = async () => {
-    if (isEditPostLoading) {
+    if (isEditPostPending) {
       return;
     }
 
@@ -185,7 +185,7 @@ export default function EditPost({ id }: EditPostProps) {
       selectedCategory={selectedCategory}
       onCategoryClick={handleCategoryClick}
       onSubmit={handleSubmit}
-      isSubmitting={isEditPostLoading}
+      isSubmitting={isEditPostPending}
       submitButtonText="수정 완료"
     />
   );

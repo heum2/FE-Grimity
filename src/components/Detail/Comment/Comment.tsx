@@ -121,7 +121,7 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
     refetchComments();
   }, [pathname, refetchComments]);
 
-  const deleteCommentMutation = useMutation({
+  const { mutate: deleteComment } = useMutation({
     mutationFn: deleteComments,
     onSuccess: () => {
       showToast("댓글이 삭제되었습니다.", "success");
@@ -239,7 +239,7 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
         title: "댓글을 삭제하시겠어요?",
         confirmBtn: "삭제",
         onClick: () => {
-          deleteCommentMutation.mutate(id);
+          deleteComment(id);
         },
       },
       isComfirm: true,

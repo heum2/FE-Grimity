@@ -26,7 +26,7 @@ const FeedConfirm = ({ id, data, isEditMode, onSuccessCallback, close }: FeedCon
   const { openModal } = useModal();
   const queryClient = useQueryClient();
 
-  const { mutate: uploadFeed, isPending: isUploadLoading } = useMutation({
+  const { mutate: uploadFeed, isPending: isUploadPending } = useMutation({
     mutationFn: postFeeds,
     onSuccess: (response, variables) => {
       if (!response.id) {
@@ -57,7 +57,7 @@ const FeedConfirm = ({ id, data, isEditMode, onSuccessCallback, close }: FeedCon
     },
   });
 
-  const { mutate: editFeed, isPending: isEditLoading } = useMutation({
+  const { mutate: editFeed, isPending: isEditPending } = useMutation({
     mutationFn: putEditFeeds,
     onSuccess: () => {
       onSuccessCallback?.();
@@ -96,7 +96,7 @@ const FeedConfirm = ({ id, data, isEditMode, onSuccessCallback, close }: FeedCon
           size="l"
           type="filled-primary"
           onClick={handleSubmit}
-          disabled={isUploadLoading || isEditLoading}
+          disabled={isUploadPending || isEditPending}
         >
           {isEditMode ? "수정" : "업로드"}
         </Button>

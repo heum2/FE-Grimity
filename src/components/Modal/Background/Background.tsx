@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import ReactCrop, { Crop, PercentCrop } from "react-image-crop";
+import ReactCrop, { PercentCrop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import { useModalStore } from "@/states/modalStore";
 import Button from "@/components/Button/Button";
@@ -7,7 +7,6 @@ import styles from "./Background.module.scss";
 import { useToast } from "@/hooks/useToast";
 import { postPresignedUrl } from "@/api/aws/postPresigned";
 import { putBackgroundImage } from "@/api/users/putMeImage";
-import router from "next/router";
 import IconComponent from "@/components/Asset/Icon";
 import { useMutation } from "@tanstack/react-query";
 import { useIsMobile } from "@/hooks/useIsMobile";
@@ -47,7 +46,7 @@ export default function Background({ imageSrc, file, onUploadSuccess }: Backgrou
     return () => window.removeEventListener("resize", updateViewportWidth);
   }, []);
 
-  const CoverImageMutation = useMutation({
+  const { mutate: updateBackgroundImage } = useMutation({
     mutationFn: (imageName: string) => putBackgroundImage(imageName),
   });
 
@@ -110,7 +109,7 @@ export default function Background({ imageSrc, file, onUploadSuccess }: Backgrou
         ext: "webp",
       });
 
-      CoverImageMutation.mutate(data.imageName);
+      updateBackgroundImage(data.imageName);
 
       const uploadResponse = await fetch(data.url, {
         method: "PUT",

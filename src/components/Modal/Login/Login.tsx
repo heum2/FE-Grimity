@@ -1,12 +1,17 @@
-import styles from "./Login.module.scss";
+import { AxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
+import { useGoogleLogin } from "@react-oauth/google";
+
+import postLogin, { AuthProvider } from "@/api/auth/postLogin";
+
 import { useAuthStore } from "@/states/authStore";
 import { useModalStore } from "@/states/modalStore";
-import { useGoogleLogin } from "@react-oauth/google";
-import { useToast } from "@/hooks/useToast";
+
 import IconComponent from "@/components/Asset/Icon";
-import { AxiosError } from "axios";
-import axiosInstance from "@/constants/baseurl";
+
+import { useToast } from "@/hooks/useToast";
+
+import styles from "./Login.module.scss";
 
 interface LoginProps {
   close: () => void;
@@ -32,8 +37,6 @@ interface LoginResponse {
   id: string;
 }
 
-type LoginType = "GOOGLE" | "KAKAO";
-
 export default function Login({ close }: LoginProps) {
   const APP_KEY = process.env.NEXT_PUBLIC_KAKAO_APP_KEY;
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
@@ -42,20 +45,8 @@ export default function Login({ close }: LoginProps) {
   const openModal = useModalStore((state) => state.openModal);
   const { showToast } = useToast();
 
-  const { mutateAsync, isPending } = useMutation({
-    mutationFn: async ({
-      provider,
-      providerAccessToken,
-    }: {
-      provider: LoginType;
-      providerAccessToken: string;
-    }) => {
-      const response = await axiosInstance.post<LoginResponse>("/auth/login", {
-        provider,
-        providerAccessToken,
-      });
-      return response.data;
-    },
+  const { mutateAsync: login, isPending } = useMutation({
+    mutationFn: postLogin,
     onSuccess: (data: LoginResponse) => {
       setAccessToken(data.accessToken);
       setIsLoggedIn(true);
@@ -75,8 +66,8 @@ export default function Login({ close }: LoginProps) {
     window.Kakao.Auth.login({
       success: async (authObj: AuthObj) => {
         try {
-          await mutateAsync({
-            provider: "KAKAO",
+          await login({
+            provider: AuthProvider.KAKAO,
             providerAccessToken: authObj.access_token,
           });
         } catch (error: any) {
@@ -101,8 +92,8 @@ export default function Login({ close }: LoginProps) {
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
-        await mutateAsync({
-          provider: "GOOGLE",
+        await login({
+          provider: AuthProvider.GOOGLE,
           providerAccessToken: tokenResponse.access_token,
         });
       } catch (error) {

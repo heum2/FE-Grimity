@@ -1,22 +1,29 @@
-import styles from "./ProfileEdit.module.scss";
 import { useEffect, useState } from "react";
-import { useModalStore } from "@/states/modalStore";
+import router from "next/router";
+
+import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
 import { useMutation } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+
+import { useMyData } from "@/api/users/getMe";
+import { UpdateProfileConflictResponse, putMyInfo } from "@/api/users/putMe";
+
+import { useModalStore } from "@/states/modalStore";
+import { useDeviceStore } from "@/states/deviceStore";
+
 import TextField from "@/components/TextField/TextField";
 import IconComponent from "@/components/Asset/Icon";
 import Button from "@/components/Button/Button";
-import { useToast } from "@/hooks/useToast";
-import { useMyData } from "@/api/users/getMe";
-import { UpdateUserRequest, UpdateProfileConflictResponse, putMyInfo } from "@/api/users/putMe";
-import { AxiosError } from "axios";
 import Loader from "@/components/Layout/Loader/Loader";
-import router from "next/router";
-import { useDeviceStore } from "@/states/deviceStore";
-import { useIsMobile } from "@/hooks/useIsMobile";
-import { isValidProfileIdFormat, isForbiddenProfileId } from "@/utils/isValidProfileId";
-import { useScrollRestoration } from "@/hooks/useScrollRestoration";
 import { SelectBox } from "@/components/SelectBox/SelectBox";
-import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
+
+import { useToast } from "@/hooks/useToast";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { useScrollRestoration } from "@/hooks/useScrollRestoration";
+
+import { isValidProfileIdFormat, isForbiddenProfileId } from "@/utils/isValidProfileId";
+
+import styles from "./ProfileEdit.module.scss";
 
 interface LinkItem {
   linkName: string;
@@ -42,7 +49,6 @@ export default function ProfileEdit() {
   const [links, setLinks] = useState<LinkItem[]>([]);
   const [nameError, setNameError] = useState("");
   const [profileIdError, setProfileIdError] = useState("");
-  const [isError, setIsError] = useState(false);
   const [isEditingOrder, setIsEditingOrder] = useState(false);
 
   const closeModal = useModalStore((s) => s.closeModal);
@@ -75,8 +81,8 @@ export default function ProfileEdit() {
     }
   }, [myData]);
 
-  const mutation = useMutation({
-    mutationFn: (data: UpdateUserRequest) => putMyInfo(data),
+  const { mutateAsync: updateMyInfo, isPending } = useMutation({
+    mutationFn: putMyInfo,
     onSuccess: () => {
       showToast("프로필 정보가 변경되었습니다!", "success");
       closeModal();
@@ -85,7 +91,6 @@ export default function ProfileEdit() {
     },
     onError: (error: AxiosError<UpdateProfileConflictResponse>) => {
       if (error.response?.status === 409) {
-        setIsError(true);
         const msg = error.response?.data?.message;
         if (msg === "NAME") setNameError("이미 사용 중인 닉네임입니다.");
         else if (msg === "URL") setProfileIdError("이미 사용 중인 프로필 URL입니다.");
@@ -133,7 +138,7 @@ export default function ProfileEdit() {
       }
     }
 
-    mutation.mutate({
+    updateMyInfo({
       name: trimmedName,
       description,
       url: trimmedProfileId,
@@ -318,7 +323,7 @@ export default function ProfileEdit() {
           size="l"
           type="filled-primary"
           onClick={handleSave}
-          disabled={name.trim().length < 2 || mutation.isPending || !!profileIdError}
+          disabled={name.trim().length < 2 || isPending || !!profileIdError}
         >
           변경 내용 저장
         </Button>

@@ -1,9 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
-import { useToast } from "@/hooks/useToast";
-import { convertToWebP } from "@/utils/imageConverter";
+
 import { postPresignedUrl } from "@/api/aws/postPresigned";
 import { putProfileImage } from "@/api/users/putMeImage";
 import { deleteMyProfileImage } from "@/api/users/deleteMeImage";
+
+import { useToast } from "@/hooks/useToast";
+
+import { convertToWebP } from "@/utils/imageConverter";
 
 export const useProfileImage = (
   refetchUserData: () => void,
@@ -12,7 +15,7 @@ export const useProfileImage = (
 ) => {
   const { showToast } = useToast();
 
-  const imageMutation = useMutation({
+  const { mutate: updateProfileImage } = useMutation({
     mutationFn: (imageName: string) => putProfileImage(imageName),
   });
 
@@ -34,7 +37,7 @@ export const useProfileImage = (
         ext: "webp",
       });
 
-      imageMutation.mutate(data.imageName);
+      updateProfileImage(data.imageName);
 
       const uploadResponse = await fetch(data.url, {
         method: "PUT",

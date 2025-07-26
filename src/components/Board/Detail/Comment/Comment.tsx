@@ -90,16 +90,17 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
     isLoading,
     refetch: refetchComments,
   } = useGetPostsComments({ postId });
-  const { mutateAsync: postComment, isPending: isPostCommentLoading } = usePostPostsComments();
+  const { mutateAsync: postComment, isPending: isPostCommentPending } = usePostPostsComments();
   const [activeParentReplyId, setActiveParentReplyId] = useState<string | null>(null);
   const [activeChildReplyId, setActiveChildReplyId] = useState<string | null>(null);
   const isMobile = useDeviceStore((state) => state.isMobile);
   const { pathname } = useRouter();
+
   useEffect(() => {
     refetchComments();
   }, [pathname, refetchComments]);
 
-  const deleteCommentMutation = useMutation({
+  const { mutate: deleteComment } = useMutation({
     mutationFn: deletePostsComments,
     onSuccess: () => {
       showToast("댓글이 삭제되었습니다.", "success");
@@ -216,7 +217,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
         title: "댓글을 삭제하시겠어요?",
         confirmBtn: "삭제",
         onClick: () => {
-          deleteCommentMutation.mutate(id);
+          deleteComment(id);
         },
       },
       isComfirm: true,
@@ -224,7 +225,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
   };
 
   const handleCommentSubmit = async () => {
-    if (isPostCommentLoading) return;
+    if (isPostCommentPending) return;
     if (!isLoggedIn || !comment.trim()) return;
 
     try {
@@ -240,7 +241,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
   };
 
   const handleReplySubmit = async () => {
-    if (isPostCommentLoading) return;
+    if (isPostCommentPending) return;
 
     if (!isLoggedIn || !replyText.trim() || !activeParentReplyId || !mentionedUser) return;
 

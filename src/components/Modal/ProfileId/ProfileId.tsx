@@ -1,46 +1,35 @@
-import styles from "./ProfileId.module.scss";
 import { useState } from "react";
+
+import { useMutation } from "@tanstack/react-query";
+
+import postRegister from "@/api/auth/postRegister";
+
 import { useModalStore } from "@/states/modalStore";
 import { useAuthStore } from "@/states/authStore";
+
 import Button from "@/components/Button/Button";
-import { useToast } from "@/hooks/useToast";
-import axiosInstance from "@/constants/baseurl";
-import { isValidProfileIdFormat, isForbiddenProfileId } from "@/utils/isValidProfileId";
 import TextField from "@/components/TextField/TextField";
-import { useMutation } from "@tanstack/react-query";
-import type { LoginResponse } from "@grimity/dto";
+
+import { useToast } from "@/hooks/useToast";
+
+import { isValidProfileIdFormat, isForbiddenProfileId } from "@/utils/isValidProfileId";
+
+import styles from "./ProfileId.module.scss";
 
 export default function ProfileId() {
   const [profileId, setProfileId] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
   const setUserId = useAuthStore((state) => state.setUserId);
+
   const modal = useModalStore();
   const openModal = useModalStore((state) => state.openModal);
   const { showToast } = useToast();
-  const [errorMessage, setErrorMessage] = useState("");
 
-  const registerMutation = useMutation({
-    mutationFn: async () => {
-      try {
-        const response = await axiosInstance.post<LoginResponse>("/auth/register", {
-          provider: modal.data.provider,
-          providerAccessToken: modal.data.accessToken,
-          name: modal.data.nickname,
-          url: profileId.trim(),
-        });
-        return response.data;
-      } catch (error: any) {
-        if (error.response?.status === 409) {
-          setErrorMessage("이미 사용 중인 프로필 url입니다.");
-        } else if (error.response?.status === 400) {
-          setErrorMessage("숫자, 영문(소문자), 언더바(_)만 입력 가능합니다.");
-        } else {
-          showToast("오류가 발생했습니다. 다시 시도해주세요.", "error");
-        }
-        throw new Error("ErrorHandled");
-      }
-    },
+  const { mutateAsync: register } = useMutation({
+    mutationFn: postRegister,
     onSuccess: (data) => {
       setAccessToken(data.accessToken);
       setIsLoggedIn(true);
@@ -51,10 +40,8 @@ export default function ProfileId() {
       localStorage.setItem("user_id", data.id);
       openModal({ type: "JOIN", data: null });
     },
-    onError: (error: any) => {
-      if (error.message !== "ErrorHandled") {
-        showToast("오류가 발생했습니다. 다시 시도해주세요.", "error");
-      }
+    onError: (error) => {
+      showToast(error.message, "error");
     },
   });
 
@@ -82,7 +69,12 @@ export default function ProfileId() {
       return;
     }
 
-    registerMutation.mutate();
+    await register({
+      provider: modal.data.provider,
+      providerAccessToken: modal.data.accessToken,
+      name: modal.data.nickname,
+      url: profileId.trim(),
+    });
   };
 
   const handleEnterKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {

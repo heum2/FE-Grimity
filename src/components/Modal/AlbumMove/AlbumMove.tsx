@@ -28,7 +28,7 @@ export default function AlbumMove() {
     setSelectedId(initialId);
   }, [initialId]);
 
-  const mutation = useMutation({
+  const { mutate: updateFeedsAlbum, isPending: isUpdateFeedsAlbumPending } = useMutation({
     mutationFn: (albumId: string | null) => putFeedsInAlbums(albumId, { ids: selectedFeedIds }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["feeds"] });
@@ -60,7 +60,7 @@ export default function AlbumMove() {
       return;
     }
 
-    mutation.mutate(selectedId);
+    updateFeedsAlbum(selectedId);
   };
 
   const isEmpty = albums.length === 0;
@@ -123,9 +123,9 @@ export default function AlbumMove() {
                 size="l"
                 type="filled-primary"
                 onClick={handleSubmit}
-                disabled={mutation.isPending}
+                disabled={isUpdateFeedsAlbumPending}
               >
-                {mutation.isPending ? "이동 중..." : "완료"}
+                {isUpdateFeedsAlbumPending ? "이동 중..." : "완료"}
               </Button>
             </div>
           </div>

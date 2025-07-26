@@ -1,12 +1,18 @@
-import styles from "./Nickname.module.scss";
 import { useState } from "react";
-import { useModalStore } from "@/states/modalStore";
+
 import { useMutation } from "@tanstack/react-query";
+
+import postNameCheck from "@/api/users/postNameCheck";
+
+import { useModalStore } from "@/states/modalStore";
+
 import TextField from "@/components/TextField/TextField";
 import IconComponent from "@/components/Asset/Icon";
 import Button from "@/components/Button/Button";
+
 import { useToast } from "@/hooks/useToast";
-import axiosInstance from "@/constants/baseurl";
+
+import styles from "./Nickname.module.scss";
 
 export default function Nickname() {
   const [nickname, setNickname] = useState("");
@@ -16,11 +22,8 @@ export default function Nickname() {
   const openModal = useModalStore((state) => state.openModal);
   const { showToast } = useToast();
 
-  const checkNicknameMutation = useMutation({
-    mutationFn: async (nickname: string) => {
-      const response = await axiosInstance.post("/users/name-check", { name: nickname });
-      return response.data;
-    },
+  const { mutateAsync: checkNickname, isError } = useMutation({
+    mutationFn: postNameCheck,
     onError: () => {
       setErrorMessage("이미 사용 중인 활동명입니다.");
     },
@@ -45,7 +48,7 @@ export default function Nickname() {
     }
 
     try {
-      await checkNicknameMutation.mutateAsync(nickname.trim());
+      await checkNickname(nickname.trim());
 
       openModal({
         type: "PROFILE-ID",
@@ -84,7 +87,7 @@ export default function Nickname() {
               setErrorMessage("");
             }}
             onKeyDown={handleEnterKeyDown}
-            isError={!!errorMessage || checkNicknameMutation.isError}
+            isError={!!errorMessage || isError}
             errorMessage={errorMessage}
           />
           <label className={styles.label}>
