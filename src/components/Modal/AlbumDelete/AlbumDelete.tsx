@@ -11,7 +11,7 @@ export default function AlbumDelete() {
   const { showToast } = useToast();
   const router = useRouter();
 
-  const selectedFeedIds = modalData?.selectedFeedIds || [];
+  const selectedFeedIds = modalData?.selectedFeedIds ?? [];
   const selectedCount = selectedFeedIds.length;
 
   const { mutate: deleteBatchFeeds, isPending } = useDeleteBatchFeeds();
