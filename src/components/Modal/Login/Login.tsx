@@ -70,8 +70,8 @@ export default function Login({ close }: LoginProps) {
             provider: AuthProvider.KAKAO,
             providerAccessToken: authObj.access_token,
           });
-        } catch (error: any) {
-          if (error?.response?.status === 404) {
+        } catch (error) {
+          if (error instanceof AxiosError && error.response?.status === 404) {
             openModal({
               type: "NICKNAME",
               data: { accessToken: authObj.access_token, provider: "KAKAO" },
