@@ -1,101 +1,36 @@
-import { useState, useEffect, useRef, memo } from "react";
-import styles from "./Comment.module.scss";
+import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import Image from "next/image";
-import { useAuthStore } from "@/states/authStore";
+
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
 import { usePostFeedsComments } from "@/api/feeds-comments/postFeedComments";
 import {
   useGetFeedsComments,
   ParentFeedCommentResponse,
 } from "@/api/feeds-comments/getFeedComments";
-import { CommentProps, CommentWriter } from "./Comment.types";
-import { useToast } from "@/hooks/useToast";
+import { useMyData } from "@/api/users/getMe";
 import { deleteComments } from "@/api/feeds-comments/deleteFeedComment";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import Link from "next/link";
+import { deleteCommentLike, putCommentLike } from "@/api/feeds-comments/putDeleteCommentsLike";
+
+import { useAuthStore } from "@/states/authStore";
+import { useDeviceStore } from "@/states/deviceStore";
+import { useModalStore } from "@/states/modalStore";
+
+import { useToast } from "@/hooks/useToast";
+
 import Loader from "@/components/Layout/Loader/Loader";
 import Dropdown from "@/components/Dropdown/Dropdown";
-import { timeAgo } from "@/utils/timeAgo";
 import IconComponent from "@/components/Asset/Icon";
-import Button from "@/components/Button/Button";
-import { deleteCommentLike, putCommentLike } from "@/api/feeds-comments/putDeleteCommentsLike";
-import { useModalStore } from "@/states/modalStore";
-import CommentInput from "./CommentInput/CommentInput";
-import TextArea from "@/components/TextArea/TextArea";
-import { useMyData } from "@/api/users/getMe";
-import { useDeviceStore } from "@/states/deviceStore";
-import { useRouter } from "next/router";
+import ReplyInput from "@/components/Detail/Comment/ReplyInput/ReplyInput";
+import CommentInput from "@/components/Detail/Comment/CommentInput/CommentInput";
 
-type ToastType = "success" | "error" | "warning" | "information";
+import { timeAgo } from "@/utils/timeAgo";
 
-interface ReplyInputProps {
-  isChildReply?: boolean;
-  replyText: string;
-  onReplyTextChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  onKeyDown: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
-  isLoggedIn: boolean;
-  replyInputRef: React.RefObject<HTMLTextAreaElement | null>;
-  showToast: (message: string, type: ToastType) => void;
-  handleReplySubmit: () => void;
-}
+import type { CommentProps, CommentWriter } from "@/components/Detail/Comment/Comment.types";
 
-const ReplyInput = memo(
-  ({
-    isChildReply = false,
-    replyText,
-    onReplyTextChange,
-    onKeyDown,
-    isLoggedIn,
-    replyInputRef,
-    showToast,
-    handleReplySubmit,
-  }: ReplyInputProps) => {
-    const { data: userData } = useMyData();
-
-    return (
-      <div className={styles.input}>
-        {userData && userData.image !== null ? (
-          <Image
-            src={userData.image}
-            width={24}
-            height={24}
-            alt="내 프로필"
-            quality={50}
-            className={styles.writerImage}
-            unoptimized
-          />
-        ) : (
-          <Image
-            src="/image/default.svg"
-            width={24}
-            height={24}
-            alt="내 프로필"
-            quality={50}
-            className={styles.writerImage}
-            unoptimized
-          />
-        )}
-        <TextArea
-          ref={replyInputRef}
-          placeholder={isLoggedIn ? "답글 달기" : "회원만 답글 달 수 있어요!"}
-          value={replyText}
-          onChange={onReplyTextChange}
-          onKeyDown={onKeyDown}
-          onFocus={() => {
-            if (!isLoggedIn) {
-              showToast("회원만 답글 달 수 있어요!", "error");
-            }
-          }}
-          isReply
-        />
-        <div className={`${styles.submitBtn} ${isChildReply ? styles.childSubmitBtn : ""}`}>
-          <Button size="m" type="filled-primary" onClick={handleReplySubmit} disabled={!isLoggedIn}>
-            답글
-          </Button>
-        </div>
-      </div>
-    );
-  },
-);
+import styles from "@/components/Detail/Comment/Comment.module.scss";
 
 export default function Comment({ feedId, feedWriterId, isFollowingPage }: CommentProps) {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -422,7 +357,7 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
                     onReplyTextChange={handleReplyTextChange}
                     onKeyDown={handleEnterKeyDown}
                     isLoggedIn={isLoggedIn}
-                    replyInputRef={replyInputRef}
+                    ref={replyInputRef}
                     showToast={showToast}
                     handleReplySubmit={handleReplySubmit}
                   />
@@ -546,7 +481,7 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
                 onReplyTextChange={handleReplyTextChange}
                 onKeyDown={handleEnterKeyDown}
                 isLoggedIn={isLoggedIn}
-                replyInputRef={replyInputRef}
+                ref={replyInputRef}
                 showToast={showToast}
                 handleReplySubmit={handleReplySubmit}
               />
