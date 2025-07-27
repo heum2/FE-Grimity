@@ -1,5 +1,5 @@
 import axiosInstance from "@/constants/baseurl";
-import { useInfiniteQuery, useQuery } from "react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { UserFeedsResponse } from "@grimity/dto";
 
 export interface UserFeedsRequest {
@@ -35,38 +35,35 @@ export async function getUserFeeds({
 }
 
 export function useUserForDetail({ id, sort, cursor, size }: UserFeedsRequest) {
-  return useQuery<UserFeedsResponse>(
-    ["userFeeds", id, sort, cursor, size],
-    () => getUserFeeds({ id, sort, cursor, size }),
-    {
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-      staleTime: 5 * 60 * 1000,
-      cacheTime: 10 * 60 * 1000,
-    },
-  );
+  return useQuery<UserFeedsResponse>({
+    queryKey: ["userFeeds", id, sort, cursor, size],
+    queryFn: () => getUserFeeds({ id, sort, cursor, size }),
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+  });
 }
 
 export function useUserFeeds(params: UserFeedsRequest) {
   const queryKey = ["userFeeds", params.id, params.sort, params.size, params.albumId || "null"];
 
-  return useInfiniteQuery<UserFeedsResponse>(
+  return useInfiniteQuery<UserFeedsResponse>({
     queryKey,
-    ({ pageParam = undefined }) =>
+    queryFn: ({ pageParam }) =>
       getUserFeeds({
         ...params,
-        cursor: pageParam,
+        cursor: pageParam as string | undefined,
       }),
-    {
-      getNextPageParam: (lastPage) => {
-        return lastPage.nextCursor ? lastPage.nextCursor : undefined;
-      },
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-      staleTime: 5 * 60 * 1000,
-      cacheTime: 10 * 60 * 1000,
+    initialPageParam: undefined,
+    getNextPageParam: (lastPage) => {
+      return lastPage.nextCursor ? lastPage.nextCursor : undefined;
     },
-  );
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+  });
 }

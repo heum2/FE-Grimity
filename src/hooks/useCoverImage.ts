@@ -1,13 +1,18 @@
-import { useMutation } from "react-query";
-import { useToast } from "@/hooks/useToast";
-import { useModalStore } from "@/states/modalStore";
-import { useDeviceStore } from "@/states/deviceStore";
-import { convertToWebP } from "@/utils/imageConverter";
+import { AxiosError } from "axios";
+import { useMutation } from "@tanstack/react-query";
+
 import { postPresignedUrl } from "@/api/aws/postPresigned";
 import { putBackgroundImage } from "@/api/users/putMeImage";
 import { deleteMyBackgroundImage } from "@/api/users/deleteMeImage";
-import { AxiosError } from "axios";
+
+import { useModalStore } from "@/states/modalStore";
+import { useDeviceStore } from "@/states/deviceStore";
+
 import type { UserProfileResponse as UserData } from "@grimity/dto";
+
+import { useToast } from "@/hooks/useToast";
+
+import { convertToWebP } from "@/utils/imageConverter";
 
 export const useCoverImage = (
   refetchUserData: () => void,
@@ -19,7 +24,9 @@ export const useCoverImage = (
   const isMobile = useDeviceStore((state) => state.isMobile);
   const isTablet = useDeviceStore((state) => state.isTablet);
 
-  const coverImageMutation = useMutation((imageName: string) => putBackgroundImage(imageName));
+  const { mutate: updateBackgroundImage } = useMutation({
+    mutationFn: (imageName: string) => putBackgroundImage(imageName),
+  });
 
   const handleAddCover = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -42,7 +49,7 @@ export const useCoverImage = (
         ext: "webp",
       });
 
-      coverImageMutation.mutate(data.imageName);
+      updateBackgroundImage(data.imageName);
 
       const uploadResponse = await fetch(data.url, {
         method: "PUT",
@@ -65,7 +72,8 @@ export const useCoverImage = (
     }
   };
 
-  const deleteImageMutation = useMutation(deleteMyBackgroundImage, {
+  const { mutate: deleteBackgroundImage } = useMutation({
+    mutationFn: deleteMyBackgroundImage,
     onSuccess: () => {
       showToast("커버 이미지가 삭제되었습니다.", "success");
       if (userData) {
@@ -80,7 +88,7 @@ export const useCoverImage = (
   });
 
   const handleDeleteImage = () => {
-    deleteImageMutation.mutate();
+    deleteBackgroundImage();
   };
 
   return { handleAddCover, handleDeleteImage };

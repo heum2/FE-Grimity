@@ -13,17 +13,19 @@ import { useDeviceStore } from "@/states/deviceStore";
 import { useModalStore } from "@/states/modalStore";
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
 import router from "next/router";
+import axios from "axios";
+import { AlbumBaseResponse } from "@/api/me/getMyAlbums";
 
 export default function AlbumEdit() {
   const { data, isLoading, isError, refetch } = useMyAlbums();
   const closeModal = useModalStore((state) => state.closeModal);
   const isMobile = useDeviceStore((state) => state.isMobile);
   const { showToast } = useToast();
-  const albumsRef = useRef<any[]>([]);
-  const [albums, setAlbums] = useState<any[]>([]);
+  const albumsRef = useRef<AlbumBaseResponse[]>([]);
+  const [albums, setAlbums] = useState<AlbumBaseResponse[]>([]);
   const [name, setName] = useState("");
   const [error, setError] = useState("");
-  const [editingAlbums, setEditingAlbums] = useState<any[]>([]);
+  const [editingAlbums, setEditingAlbums] = useState<AlbumBaseResponse[]>([]);
   const [isEditingOrder, setIsEditingOrder] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [inputValues, setInputValues] = useState<{ [key: string]: string }>({});
@@ -65,8 +67,12 @@ export default function AlbumEdit() {
       await createAlbums({ name: trimmed });
       setName("");
       refetch();
-    } catch (err: any) {
-      showToast("앨범 추가에 실패했습니다.", "error");
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        showToast(err.response?.data.message || "앨범 추가에 실패했습니다.", "error");
+      } else {
+        showToast("앨범 추가에 실패했습니다.", "error");
+      }
       refetch();
     }
   };

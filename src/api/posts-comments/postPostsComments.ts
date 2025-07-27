@@ -1,5 +1,5 @@
 import axiosInstance from "@/constants/baseurl";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { CreatePostCommentRequest } from "@grimity/dto";
 
 export async function postPostsComments({
@@ -22,5 +22,7 @@ export async function postPostsComments({
 }
 
 export function usePostPostsComments() {
-  return useMutation((data: CreatePostCommentRequest) => postPostsComments(data));
+  return useMutation({
+    mutationFn: (data: CreatePostCommentRequest) => postPostsComments(data),
+  });
 }

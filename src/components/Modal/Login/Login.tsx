@@ -1,12 +1,17 @@
-import styles from "./Login.module.scss";
-import { useMutation } from "react-query";
+import { AxiosError } from "axios";
+import { useMutation } from "@tanstack/react-query";
+import { useGoogleLogin } from "@react-oauth/google";
+
+import postLogin, { AuthProvider } from "@/api/auth/postLogin";
+
 import { useAuthStore } from "@/states/authStore";
 import { useModalStore } from "@/states/modalStore";
-import { useGoogleLogin } from "@react-oauth/google";
-import { useToast } from "@/hooks/useToast";
+
 import IconComponent from "@/components/Asset/Icon";
-import { AxiosError } from "axios";
-import axiosInstance from "@/constants/baseurl";
+
+import { useToast } from "@/hooks/useToast";
+
+import styles from "./Login.module.scss";
 
 interface LoginProps {
   close: () => void;
@@ -32,8 +37,6 @@ interface LoginResponse {
   id: string;
 }
 
-type LoginType = "GOOGLE" | "KAKAO";
-
 export default function Login({ close }: LoginProps) {
   const APP_KEY = process.env.NEXT_PUBLIC_KAKAO_APP_KEY;
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
@@ -42,20 +45,8 @@ export default function Login({ close }: LoginProps) {
   const openModal = useModalStore((state) => state.openModal);
   const { showToast } = useToast();
 
-  const { mutateAsync, isLoading } = useMutation({
-    mutationFn: async ({
-      provider,
-      providerAccessToken,
-    }: {
-      provider: LoginType;
-      providerAccessToken: string;
-    }) => {
-      const response = await axiosInstance.post<LoginResponse>("/auth/login", {
-        provider,
-        providerAccessToken,
-      });
-      return response.data;
-    },
+  const { mutateAsync: login, isPending } = useMutation({
+    mutationFn: postLogin,
     onSuccess: (data: LoginResponse) => {
       setAccessToken(data.accessToken);
       setIsLoggedIn(true);
@@ -75,12 +66,12 @@ export default function Login({ close }: LoginProps) {
     window.Kakao.Auth.login({
       success: async (authObj: AuthObj) => {
         try {
-          await mutateAsync({
-            provider: "KAKAO",
+          await login({
+            provider: AuthProvider.KAKAO,
             providerAccessToken: authObj.access_token,
           });
-        } catch (error: any) {
-          if (error?.response?.status === 404) {
+        } catch (error) {
+          if (error instanceof AxiosError && error.response?.status === 404) {
             openModal({
               type: "NICKNAME",
               data: { accessToken: authObj.access_token, provider: "KAKAO" },
@@ -101,8 +92,8 @@ export default function Login({ close }: LoginProps) {
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
-        await mutateAsync({
-          provider: "GOOGLE",
+        await login({
+          provider: AuthProvider.GOOGLE,
           providerAccessToken: tokenResponse.access_token,
         });
       } catch (error) {
@@ -130,13 +121,13 @@ export default function Login({ close }: LoginProps) {
         <p className={styles.text}>그리미티에 가입 후 나의 그림을 뽐내보세요</p>
       </div>
       <div className={styles.buttonContainer}>
-        <button className={styles.kakaoButton} onClick={handleKaKaoLogin} disabled={isLoading}>
+        <button className={styles.kakaoButton} onClick={handleKaKaoLogin} disabled={isPending}>
           <IconComponent name="kakao" size={24} />
-          {isLoading ? "로그인 중..." : "카카오로 계속하기"}
+          {isPending ? "로그인 중..." : "카카오로 계속하기"}
         </button>
-        <button className={styles.googleButton} onClick={() => googleLogin()} disabled={isLoading}>
+        <button className={styles.googleButton} onClick={() => googleLogin()} disabled={isPending}>
           <IconComponent name="google" size={20} />
-          {isLoading ? "로그인 중..." : "구글로 계속하기"}
+          {isPending ? "로그인 중..." : "구글로 계속하기"}
         </button>
       </div>
     </div>

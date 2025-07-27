@@ -1,5 +1,5 @@
 import axiosInstance from "@/constants/baseurl";
-import { useInfiniteQuery } from "react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import type { FollowingFeedsResponse } from "@grimity/dto";
 export type { FollowingFeedsResponse };
 
@@ -23,17 +23,17 @@ export async function getFollowingFeeds({
 }
 
 export function useFollowingFeeds(params: FollowingFeedsRequest | null, enabled?: boolean) {
-  return useInfiniteQuery<FollowingFeedsResponse>(
-    ["FollowingFeeds", params],
-    ({ pageParam = undefined }) => getFollowingFeeds({ ...params, cursor: pageParam }),
-    {
-      enabled,
-      getNextPageParam: (lastPage) => lastPage.nextCursor || undefined,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-      staleTime: 5 * 60 * 1000,
-      cacheTime: 10 * 60 * 1000,
-    },
-  );
+  return useInfiniteQuery<FollowingFeedsResponse>({
+    queryKey: ["FollowingFeeds", params],
+    queryFn: ({ pageParam }) =>
+      getFollowingFeeds({ ...params, cursor: pageParam as string | undefined }),
+    initialPageParam: undefined,
+    enabled,
+    getNextPageParam: (lastPage) => lastPage.nextCursor || undefined,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+  });
 }

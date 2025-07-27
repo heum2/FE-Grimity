@@ -24,6 +24,7 @@ export type ModalType =
 export interface ModalState {
   isOpen: boolean;
   type: ModalType | null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data?: any;
   isComfirm?: boolean;
   onClick?: () => void | Promise<void>;
@@ -62,15 +63,15 @@ export const useModalStore = create<ModalStore>((set) => ({
 
 export type ModalContent = ReactNode | ((close: () => void) => ReactNode);
 
-type NewModalType = {
+type NewModalType<T = Record<string, unknown>> = {
   id: string;
   content: ModalContent;
-  props?: Record<string, any>;
+  props?: T;
 };
 
-interface NewModalState {
-  modals: NewModalType[];
-  openModal: (id: string, content: ModalContent, props?: Record<string, any>) => void;
+interface NewModalState<T = Record<string, unknown>> {
+  modals: NewModalType<T>[];
+  openModal: (id: string, content: ModalContent, props?: T) => void;
   closeModal: (id: string) => void;
 }
 

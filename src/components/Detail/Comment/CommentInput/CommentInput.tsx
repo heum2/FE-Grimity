@@ -23,14 +23,14 @@ export default function CommentInput({
 }: CommentInputProps) {
   const isMobile = useDeviceStore((state) => state.isMobile);
   const [comment, setComment] = useState("");
-  const { mutateAsync: postComment, isLoading: isPostCommentLoading } = usePostFeedsComments();
+  const { mutateAsync: postComment, isPending: isPostCommentPending } = usePostFeedsComments();
 
   const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
   };
 
   const handleCommentSubmit = async () => {
-    if (isPostCommentLoading) return;
+    if (isPostCommentPending) return;
 
     if (!isLoggedIn || !comment.trim()) return;
 

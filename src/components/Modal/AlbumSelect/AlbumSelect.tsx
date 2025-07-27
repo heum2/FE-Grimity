@@ -7,8 +7,7 @@ import Button from "@/components/Button/Button";
 import IconComponent from "@/components/Asset/Icon";
 
 export default function AlbumSelect() {
-  const { data } = useMyAlbums();
-  const albums = Array.isArray(data) ? data : [];
+  const { data: albums = [] } = useMyAlbums();
   const modalData = useModalStore((state) => state.data);
   const [selectedId, setSelectedId] = useState<string | null>(modalData?.selectedAlbumId ?? null);
   const closeModal = useModalStore((state) => state.closeModal);
@@ -45,7 +44,7 @@ export default function AlbumSelect() {
       ) : (
         <>
           <div className={styles.albumsContainer}>
-            {albums.map((album: any) => (
+            {albums.map((album) => (
               <div key={album.id}>
                 <div
                   className={`${styles.albumItem} ${

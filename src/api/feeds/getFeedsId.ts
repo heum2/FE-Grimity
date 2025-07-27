@@ -1,6 +1,6 @@
 import axiosInstance from "@/constants/baseurl";
 import axios from "axios";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { baseUrl } from "@/constants/baseurl";
 import type { FeedDetailResponse, FeedMetaResponse } from "@grimity/dto";
 export type { FeedMetaResponse };
@@ -43,12 +43,14 @@ export async function getSSRDetails(id: string): Promise<FeedMetaResponse> {
 }
 
 export function useDetails(id?: string) {
-  return useQuery<FeedDetailResponse>(["details", id], () => getDetails(id!), {
+  return useQuery<FeedDetailResponse>({
+    queryKey: ["details", id],
+    queryFn: () => getDetails(id!),
     enabled: !!id,
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     staleTime: 5 * 60 * 1000,
-    cacheTime: 10 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
   });
 }

@@ -1,5 +1,5 @@
 import axiosInstance from "@/constants/baseurl";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { FeedRankingsResponse, GetRankingsRequest } from "@grimity/dto";
 
 export async function getRankings(params: GetRankingsRequest): Promise<FeedRankingsResponse> {
@@ -16,9 +16,11 @@ export async function getRankings(params: GetRankingsRequest): Promise<FeedRanki
 }
 
 export function useRankings(params: GetRankingsRequest) {
-  return useQuery<FeedRankingsResponse>(["Rankings", params], () => getRankings(params), {
+  return useQuery<FeedRankingsResponse>({
+    queryKey: ["Rankings", params],
+    queryFn: () => getRankings(params),
     staleTime: 5 * 60 * 1000,
-    cacheTime: 10 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,

@@ -1,5 +1,5 @@
 import axiosInstance from "@/constants/baseurl";
-import { useInfiniteQuery } from "react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { MyFollowersResponse, MyFollowingsResponse } from "@grimity/dto";
 
 /* 팔로워 목록 */
@@ -27,21 +27,20 @@ export async function getMyFollower({
 export function useMyFollower({ size }: MyFollowerRequest) {
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
 
-  return useInfiniteQuery<MyFollowersResponse>(
-    "myFollowers",
-    ({ pageParam = undefined }) => getMyFollower({ size, cursor: pageParam }),
-    {
-      enabled: Boolean(accessToken),
-      getNextPageParam: (lastPage) => {
-        return lastPage.nextCursor ? lastPage.nextCursor : undefined;
-      },
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-      staleTime: 5 * 60 * 1000,
-      cacheTime: 10 * 60 * 1000,
+  return useInfiniteQuery<MyFollowersResponse>({
+    queryKey: ["myFollowers"],
+    queryFn: ({ pageParam }) => getMyFollower({ size, cursor: pageParam as string | undefined }),
+    initialPageParam: undefined,
+    enabled: Boolean(accessToken),
+    getNextPageParam: (lastPage) => {
+      return lastPage.nextCursor ? lastPage.nextCursor : undefined;
     },
-  );
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+  });
 }
 
 /* 팔로잉 목록 */
@@ -65,19 +64,18 @@ export async function getMyFollowing({
 export function useMyFollowing({ size }: MyFollowerRequest) {
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
 
-  return useInfiniteQuery<MyFollowingsResponse>(
-    "myFollowings",
-    ({ pageParam = undefined }) => getMyFollowing({ size, cursor: pageParam }),
-    {
-      enabled: Boolean(accessToken),
-      getNextPageParam: (lastPage) => {
-        return lastPage.nextCursor ? lastPage.nextCursor : undefined;
-      },
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-      staleTime: 5 * 60 * 1000,
-      cacheTime: 10 * 60 * 1000,
+  return useInfiniteQuery<MyFollowingsResponse>({
+    queryKey: ["myFollowings"],
+    queryFn: ({ pageParam }) => getMyFollowing({ size, cursor: pageParam as string | undefined }),
+    initialPageParam: undefined,
+    enabled: Boolean(accessToken),
+    getNextPageParam: (lastPage) => {
+      return lastPage.nextCursor ? lastPage.nextCursor : undefined;
     },
-  );
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+  });
 }

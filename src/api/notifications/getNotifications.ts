@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { NotificationResponse } from "@grimity/dto";
 import axiosInstance from "@/constants/baseurl";
 
@@ -10,7 +10,9 @@ export async function getNotifications(): Promise<NotificationResponse[]> {
 export function useGetNotifications() {
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
 
-  return useQuery<NotificationResponse[]>("getNotifications", getNotifications, {
+  return useQuery<NotificationResponse[]>({
+    queryKey: ["getNotifications"],
+    queryFn: getNotifications,
     enabled: Boolean(accessToken),
   });
 }

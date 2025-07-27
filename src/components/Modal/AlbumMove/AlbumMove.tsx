@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import styles from "./AlbumMove.module.scss";
 import Button from "@/components/Button/Button";
 import IconComponent from "@/components/Asset/Icon";
@@ -28,31 +28,29 @@ export default function AlbumMove() {
     setSelectedId(initialId);
   }, [initialId]);
 
-  const mutation = useMutation(
-    (albumId: string | null) => putFeedsInAlbums(albumId, { ids: selectedFeedIds }),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("feeds");
-        queryClient.invalidateQueries("albums");
-        modalData?.onComplete?.();
-      },
-      onError: () => {
-        showToast("앨범 이동에 실패했습니다.", "error");
-      },
-      onSettled: () => {
-        refetch();
-        closeModal();
-        router.reload();
-      },
+  const { mutate: updateFeedsAlbum, isPending: isUpdateFeedsAlbumPending } = useMutation({
+    mutationFn: (albumId: string | null) => putFeedsInAlbums(albumId, { ids: selectedFeedIds }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["feeds"] });
+      queryClient.invalidateQueries({ queryKey: ["albums"] });
+      modalData?.onComplete?.();
     },
-  );
+    onError: () => {
+      showToast("앨범 이동에 실패했습니다.", "error");
+    },
+    onSettled: () => {
+      refetch();
+      closeModal();
+      router.reload();
+    },
+  });
 
   const handleSubmit = async () => {
     if (selectedId === null) {
       try {
         await putFeedsNull({ ids: selectedFeedIds });
-        queryClient.invalidateQueries("feeds");
-        queryClient.invalidateQueries("albums");
+        queryClient.invalidateQueries({ queryKey: ["feeds"] });
+        queryClient.invalidateQueries({ queryKey: ["albums"] });
         modalData?.onComplete?.();
         closeModal();
         router.reload();
@@ -62,7 +60,7 @@ export default function AlbumMove() {
       return;
     }
 
-    mutation.mutate(selectedId);
+    updateFeedsAlbum(selectedId);
   };
 
   const isEmpty = albums.length === 0;
@@ -125,9 +123,9 @@ export default function AlbumMove() {
                 size="l"
                 type="filled-primary"
                 onClick={handleSubmit}
-                disabled={mutation.isLoading}
+                disabled={isUpdateFeedsAlbumPending}
               >
-                {mutation.isLoading ? "이동 중..." : "완료"}
+                {isUpdateFeedsAlbumPending ? "이동 중..." : "완료"}
               </Button>
             </div>
           </div>

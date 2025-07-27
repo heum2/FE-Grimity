@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ProfileCard from "@/components/Layout/ProfileCard/ProfileCard";
 import Button from "@/components/Button/Button";
-import { useModalStore } from "@/states/modalStore";
+import { ModalState, ModalType, useModalStore } from "@/states/modalStore";
 import { useRouter } from "next/router";
 import { useDeviceStore } from "@/states/deviceStore";
 
@@ -11,7 +11,7 @@ import Icon from "@/components/Asset/IconTemp";
 interface Feed {
   id: string;
   title: string;
-  cards: any[];
+  cards: string[];
   thumbnail: string;
   likeCount: number;
   commentCount: number;
@@ -62,8 +62,8 @@ export default function FeedAlbumEditor({
   const handleMoveAlbum = () => {
     if (selectedCards.length === 0) return;
 
-    const modalData: any = {
-      type: "ALBUM-MOVE",
+    const modalData: Omit<ModalState, "isOpen"> = {
+      type: "ALBUM-MOVE" as ModalType,
       data: {
         title: "앨범 이동",
         selectedFeedIds: selectedCards,

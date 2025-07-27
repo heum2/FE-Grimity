@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
 
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
 import { usePostsDetails } from "@/api/posts/getPostsId";
@@ -19,6 +19,12 @@ interface EditPostProps {
   id: string;
 }
 
+const typeMapToKo = {
+  NORMAL: "일반",
+  QUESTION: "질문",
+  FEEDBACK: "피드백",
+} as const;
+
 export default function EditPost({ id }: EditPostProps) {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const user_id = useAuthStore((state) => state.user_id);
@@ -32,12 +38,6 @@ export default function EditPost({ id }: EditPostProps) {
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const hasUnsavedChangesRef = useRef(hasUnsavedChanges);
   const { data: posts, isLoading } = usePostsDetails(id as string);
-
-  const typeMapToKo = {
-    NORMAL: "일반",
-    QUESTION: "질문",
-    FEEDBACK: "피드백",
-  } as const;
 
   useEffect(() => {
     if (!isLoading) {
@@ -128,12 +128,12 @@ export default function EditPost({ id }: EditPostProps) {
     setContent(value);
   };
 
-  const { mutateAsync: editPost, isLoading: isEditPostLoading } = useMutation(
-    (data: CreatePostRequest) => putEditPosts(id, data),
-  );
+  const { mutateAsync: editPost, isPending: isEditPostPending } = useMutation({
+    mutationFn: (data: CreatePostRequest) => putEditPosts(id, data),
+  });
 
   const handleSubmit = async () => {
-    if (isEditPostLoading) {
+    if (isEditPostPending) {
       return;
     }
 
@@ -185,7 +185,7 @@ export default function EditPost({ id }: EditPostProps) {
       selectedCategory={selectedCategory}
       onCategoryClick={handleCategoryClick}
       onSubmit={handleSubmit}
-      isSubmitting={isEditPostLoading}
+      isSubmitting={isEditPostPending}
       submitButtonText="수정 완료"
     />
   );

@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Script from "next/script";
+import { Editor as TinyMCEEditor } from "tinymce";
 
 import { useDeviceStore } from "@/states/deviceStore";
 
@@ -36,7 +37,7 @@ export default function PostForm({
   useIsMobile();
 
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
-  const editorRef = useRef<any>(null);
+  const editorRef = useRef<TinyMCEEditor | null>(null);
   const { uploadImage } = useEditorImageUploader();
 
   useEffect(() => {

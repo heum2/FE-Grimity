@@ -1,4 +1,4 @@
-import { useEffect, RefObject } from "react";
+import { useEffect, RefObject, CSSProperties } from "react";
 
 interface DragScrollOptions {
   preventScrollbar?: boolean;
@@ -14,7 +14,7 @@ export function useDragScroll(ref: RefObject<HTMLElement>, options: DragScrollOp
 
     // 스크롤바 스타일 조정
     if (preventScrollbar) {
-      (element.style as any).msOverflowStyle = "none"; // IE/Edge
+      (element.style as CSSProperties).msOverflowStyle = "none"; // IE/Edge
       element.style.scrollbarWidth = "none"; // Firefox
     }
 

@@ -1,5 +1,5 @@
 import axiosInstance from "@/constants/baseurl";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { MyPostResponse } from "@grimity/dto";
 
 export interface UserPostsRequest {
@@ -34,12 +34,14 @@ export const useUserPosts = ({
   page,
   enabled = true,
 }: UserPostsRequest & { enabled?: boolean }) => {
-  return useQuery(["userPosts", id, size, page], () => getUserPosts({ id, size, page }), {
+  return useQuery({
+    queryKey: ["userPosts", id, size, page],
+    queryFn: () => getUserPosts({ id, size, page }),
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     staleTime: 5 * 60 * 1000,
-    cacheTime: 10 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
     enabled,
   });
 };

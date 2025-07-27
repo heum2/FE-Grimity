@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, memo } from "react";
 import styles from "./Comment.module.scss";
 import { useAuthStore } from "@/states/authStore";
 import { useToast } from "@/hooks/useToast";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import Loader from "@/components/Layout/Loader/Loader";
 import Dropdown from "@/components/Dropdown/Dropdown";
@@ -90,16 +90,18 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
     isLoading,
     refetch: refetchComments,
   } = useGetPostsComments({ postId });
-  const { mutateAsync: postComment, isLoading: isPostCommentLoading } = usePostPostsComments();
+  const { mutateAsync: postComment, isPending: isPostCommentPending } = usePostPostsComments();
   const [activeParentReplyId, setActiveParentReplyId] = useState<string | null>(null);
   const [activeChildReplyId, setActiveChildReplyId] = useState<string | null>(null);
   const isMobile = useDeviceStore((state) => state.isMobile);
   const { pathname } = useRouter();
+
   useEffect(() => {
     refetchComments();
-  }, [pathname]);
+  }, [pathname, refetchComments]);
 
-  const deleteCommentMutation = useMutation(deletePostsComments, {
+  const { mutate: deleteComment } = useMutation({
+    mutationFn: deletePostsComments,
     onSuccess: () => {
       showToast("댓글이 삭제되었습니다.", "success");
       refetchComments();
@@ -121,7 +123,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
       } else {
         await putPostsCommentLike(commentId);
       }
-      queryClient.invalidateQueries(["getPostsComments", postId]);
+      queryClient.invalidateQueries({ queryKey: ["getPostsComments", postId] });
     } catch (error) {
       showToast("좋아요 처리 중 오류가 발생했습니다.", "error");
     }
@@ -215,7 +217,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
         title: "댓글을 삭제하시겠어요?",
         confirmBtn: "삭제",
         onClick: () => {
-          deleteCommentMutation.mutate(id);
+          deleteComment(id);
         },
       },
       isComfirm: true,
@@ -223,7 +225,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
   };
 
   const handleCommentSubmit = async () => {
-    if (isPostCommentLoading) return;
+    if (isPostCommentPending) return;
     if (!isLoggedIn || !comment.trim()) return;
 
     try {
@@ -239,7 +241,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
   };
 
   const handleReplySubmit = async () => {
-    if (isPostCommentLoading) return;
+    if (isPostCommentPending) return;
 
     if (!isLoggedIn || !replyText.trim() || !activeParentReplyId || !mentionedUser) return;
 

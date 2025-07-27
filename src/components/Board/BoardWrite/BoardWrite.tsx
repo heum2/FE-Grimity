@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 
 import { postPosts } from "@/api/posts/postPosts";
 
@@ -28,7 +28,9 @@ export default function BoardWrite() {
     setContent(value);
   };
 
-  const { mutateAsync: createPost, isLoading: isCreatePostLoading } = useMutation(postPosts);
+  const { mutateAsync: createPost, isPending: isCreatePostLoading } = useMutation({
+    mutationFn: postPosts,
+  });
 
   const handleReset = () => {
     setTitle("");
