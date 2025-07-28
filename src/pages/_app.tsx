@@ -9,6 +9,8 @@ import Modal from "@/components/Modal/Modal";
 import Toast from "@/components/Toast/Toast";
 import ModalProvider from "@/components/Modal/Provider";
 
+import { useInitializeDevice } from "@/hooks/useInitializeDevice";
+
 import "@/styles/globals.scss";
 import "@/styles/reset.css";
 import "swiper/css";
@@ -18,6 +20,8 @@ import "swiper/css/navigation";
 const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
+  useInitializeDevice();
+
   return (
     <>
       <QueryClientProvider client={queryClient}>

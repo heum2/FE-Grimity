@@ -1,13 +1,11 @@
 import { useRouter } from "next/router";
 
-import { useDeviceStore } from "@/states/deviceStore";
-
 import Button from "@/components/Button/Button";
 import { serviceUrl } from "@/constants/serviceurl";
 import IconComponent from "@/components/Asset/Icon";
 
 import { useToast } from "@/hooks/useToast";
-
+import { useDeviceStore } from "@/states/deviceStore";
 import type { UploadModalProps } from "@/components/Modal/Upload/Upload.types";
 
 import styles from "@/components/Modal/Upload/Upload.module.scss";
@@ -17,7 +15,7 @@ export default function UploadModal({ feedId, title, image, close }: UploadModal
   const router = useRouter();
 
   const url = `${serviceUrl}feeds/${feedId}`;
-  const isMobile = useDeviceStore((state) => state.isMobile);
+  const { isMobile } = useDeviceStore();
 
   const copyToClipboard = async () => {
     try {

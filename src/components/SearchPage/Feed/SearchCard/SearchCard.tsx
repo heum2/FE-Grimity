@@ -8,8 +8,8 @@ import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
 import { SearchCardProps } from "./SearchCard.types";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 import { SearchHighlightContext } from "@/pages/search";
-import "swiper/css";
 import { useDeviceStore } from "@/states/deviceStore";
+import "swiper/css";
 
 export default function SearchCard({
   id,
@@ -25,7 +25,7 @@ export default function SearchCard({
   const [isLiked, setIsLiked] = useState(isLike);
   const [currentLikeCount, setCurrentLikeCount] = useState(likeCount);
   const imgRef = usePreventRightClick<HTMLImageElement>();
-  const isMobile = useDeviceStore((state) => state.isMobile);
+  const { isMobile } = useDeviceStore();
   const { highlight } = useContext(SearchHighlightContext);
 
   const handleLikeClick = async (e: React.MouseEvent) => {

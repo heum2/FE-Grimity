@@ -20,8 +20,7 @@ export default function PopularUser() {
   const [randomUsers, setRandomUsers] = useState<PopularUserResponse[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const divRef = usePreventRightClick<HTMLDivElement>();
-  const isMobile = useDeviceStore((state) => state.isMobile);
-  const isTablet = useDeviceStore((state) => state.isTablet);
+  const { isMobile, isTablet } = useDeviceStore();
 
   // 가로 스크롤 시 세로 스크롤 막기
   const handleWheel = useCallback((e: WheelEvent) => {

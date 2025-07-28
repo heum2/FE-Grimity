@@ -28,7 +28,7 @@ export default function Author({ authorId, authorUrl, feedId }: AuthorProps) {
   const [isFollowing, setIsFollowing] = useState(false);
   const [followerCount, setFollowerCount] = useState(0);
   const { showToast } = useToast();
-  const isMobile = useDeviceStore((state) => state.isMobile);
+  const { isMobile } = useDeviceStore();
   const { pathname } = useRouter();
 
   useEffect(() => {

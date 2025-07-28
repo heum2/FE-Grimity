@@ -1,7 +1,6 @@
 import Link from "next/link";
 
 import { useAuthStore } from "@/states/authStore";
-import { useDeviceStore } from "@/states/deviceStore";
 
 import Button from "@/components/Button/Button";
 import Icon from "@/components/Asset/IconTemp";
@@ -12,7 +11,7 @@ import SearchSection from "@/components/Board/BoardAll/SearchSection";
 import TabNavigation from "@/components/Board/BoardAll/TabNavigation";
 import Pagination from "@/components/Pagination";
 
-import { useIsMobile } from "@/hooks/useIsMobile";
+import { useDeviceStore } from "@/states/deviceStore";
 import { useBoardAll } from "@/components/Board/BoardAll/hooks/useBoardAll";
 
 import { PATH_ROUTES } from "@/constants/routes";
@@ -23,8 +22,7 @@ import styles from "@/components/Board/BoardAll/BoardAll.module.scss";
 
 export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const isMobile = useDeviceStore((state) => state.isMobile);
-  useIsMobile();
+  const { isMobile } = useDeviceStore();
 
   const {
     searchBy,

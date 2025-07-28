@@ -7,7 +7,6 @@ import Ranking from "@/components/Layout/Ranking/Ranking";
 import NewFeed from "@/components/Layout/NewFeed/NewFeed";
 import MainBoard from "@/components/Layout/MainBoard/MainBoard";
 import { useScrollRestoration } from "@/hooks/useScrollRestoration";
-import { useIsMobile } from "@/hooks/useIsMobile";
 import { useDeviceStore } from "@/states/deviceStore";
 
 import IconComponent from "@/components/Asset/Icon";
@@ -19,8 +18,7 @@ export default function Home() {
   const [OGTitle] = useState("그리미티");
   const [OGUrl, setOGUrl] = useState(serviceUrl);
   const { restoreScrollPosition } = useScrollRestoration("home-scroll");
-  const isMobile = useDeviceStore((state) => state.isMobile);
-  useIsMobile();
+  const { isMobile } = useDeviceStore();
 
   useEffect(() => {
     setOGUrl(`${serviceUrl}/${router.asPath}`);

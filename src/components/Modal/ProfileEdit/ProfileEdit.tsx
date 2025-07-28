@@ -9,7 +9,6 @@ import { useMyData } from "@/api/users/getMe";
 import { UpdateProfileConflictResponse, putMyInfo } from "@/api/users/putMe";
 
 import { useModalStore } from "@/states/modalStore";
-import { useDeviceStore } from "@/states/deviceStore";
 
 import TextField from "@/components/TextField/TextField";
 import IconComponent from "@/components/Asset/Icon";
@@ -18,7 +17,7 @@ import Loader from "@/components/Layout/Loader/Loader";
 import { SelectBox } from "@/components/SelectBox/SelectBox";
 
 import { useToast } from "@/hooks/useToast";
-import { useIsMobile } from "@/hooks/useIsMobile";
+import { useDeviceStore } from "@/states/deviceStore";
 import { useScrollRestoration } from "@/hooks/useScrollRestoration";
 
 import { isValidProfileIdFormat, isForbiddenProfileId } from "@/utils/isValidProfileId";
@@ -54,8 +53,7 @@ export default function ProfileEdit() {
   const closeModal = useModalStore((s) => s.closeModal);
   const { restoreScrollPosition } = useScrollRestoration("profileEdit-scroll");
   const { showToast } = useToast();
-  const isMobile = useDeviceStore((s) => s.isMobile);
-  useIsMobile();
+  const { isMobile } = useDeviceStore();
 
   useEffect(() => {
     if (myData) {

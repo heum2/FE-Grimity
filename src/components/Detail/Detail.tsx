@@ -26,7 +26,6 @@ import { deleteSave, putSave } from "@/api/feeds/putDeleteFeedsIdSave";
 import Comment from "./Comment/Comment";
 import NewFeed from "../Layout/NewFeed/NewFeed";
 import { useDeviceStore } from "@/states/deviceStore";
-import { useIsMobile } from "@/hooks/useIsMobile";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 import { useAuthRefresh } from "@/hooks/useAuthRefresh";
 
@@ -46,8 +45,7 @@ export default function Detail({ id }: DetailProps) {
   const sectionRef = usePreventRightClick<HTMLElement>();
   const router = useRouter();
   const openModal = useModalStore((state) => state.openModal);
-  const isMobile = useDeviceStore((state) => state.isMobile);
-  useIsMobile();
+  const { isMobile } = useDeviceStore();
   usePreventScroll(!!overlayImage);
 
   const { pathname } = useRouter();

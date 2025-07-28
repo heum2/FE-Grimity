@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useMyData } from "@/api/users/getMe";
 
 import { useAuthStore } from "@/states/authStore";
-import { useDeviceStore } from "@/states/deviceStore";
 
 import IconComponent from "@/components/Asset/Icon";
 import Button from "@/components/Button/Button";
@@ -14,7 +13,7 @@ import Notifications from "@/components/Notifications/Notifications";
 import Login from "@/components/Modal/Login/Login";
 import SideMenu from "@/components/Layout/SideMenu/SideMenu";
 
-import { useIsMobile } from "@/hooks/useIsMobile";
+import { useDeviceStore } from "@/states/deviceStore";
 import { usePreventScroll } from "@/hooks/usePreventScroll";
 import { useOnClickOutside } from "@/hooks/useOnClickOutside";
 import { useModal } from "@/hooks/useModal";
@@ -34,10 +33,9 @@ export default function DefaultHeader() {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const { isLoggedIn, setAccessToken, setIsLoggedIn, setUserId, isAuthReady } = useAuthStore();
-  const isMobile = useDeviceStore((state) => state.isMobile);
 
   const { openModal } = useModal();
-  useIsMobile();
+  const { isMobile } = useDeviceStore();
   usePreventScroll(isMenuOpen || (isMobile && showNotifications));
   useOnClickOutside(notificationRef, () => setShowNotifications(false));
   useOnClickOutside(dropdownRef, () => setIsDropdownOpen(false));

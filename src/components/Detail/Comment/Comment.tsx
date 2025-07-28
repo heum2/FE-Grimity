@@ -15,10 +15,10 @@ import { deleteComments } from "@/api/feeds-comments/deleteFeedComment";
 import { deleteCommentLike, putCommentLike } from "@/api/feeds-comments/putDeleteCommentsLike";
 
 import { useAuthStore } from "@/states/authStore";
-import { useDeviceStore } from "@/states/deviceStore";
 import { useModalStore } from "@/states/modalStore";
 
 import { useToast } from "@/hooks/useToast";
+import { useDeviceStore } from "@/states/deviceStore";
 
 import Loader from "@/components/Layout/Loader/Loader";
 import Dropdown from "@/components/Dropdown/Dropdown";
@@ -49,7 +49,7 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
   const { mutateAsync: postComment, isPending: isPostCommentLoading } = usePostFeedsComments();
   const [activeParentReplyId, setActiveParentReplyId] = useState<string | null>(null);
   const [activeChildReplyId, setActiveChildReplyId] = useState<string | null>(null);
-  const isMobile = useDeviceStore((state) => state.isMobile);
+  const { isMobile } = useDeviceStore();
   const { pathname } = useRouter();
 
   useEffect(() => {

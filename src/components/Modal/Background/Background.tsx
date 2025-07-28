@@ -9,7 +9,6 @@ import { postPresignedUrl } from "@/api/aws/postPresigned";
 import { putBackgroundImage } from "@/api/users/putMeImage";
 import IconComponent from "@/components/Asset/Icon";
 import { useMutation } from "@tanstack/react-query";
-import { useIsMobile } from "@/hooks/useIsMobile";
 import { useMyData } from "@/api/users/getMe";
 
 interface BackgroundProps {
@@ -20,7 +19,6 @@ interface BackgroundProps {
 
 export default function Background({ imageSrc, file, onUploadSuccess }: BackgroundProps) {
   const { refetch } = useMyData();
-  useIsMobile();
   const closeModal = useModalStore((state) => state.closeModal);
   const { showToast } = useToast();
   const [crop, setCrop] = useState<PercentCrop>({

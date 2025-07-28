@@ -6,7 +6,6 @@ import Image from "next/image";
 import { useMyData } from "@/api/users/getMe";
 
 import { useAuthStore } from "@/states/authStore";
-import { useDeviceStore } from "@/states/deviceStore";
 
 import IconComponent from "@/components/Asset/Icon";
 import Button from "@/components/Button/Button";
@@ -14,6 +13,7 @@ import FooterSection from "@/components/Layout/FooterSection/FooterSection";
 import Login from "@/components/Modal/Login/Login";
 
 import { useModal } from "@/hooks/useModal";
+import { useDeviceStore } from "@/states/deviceStore";
 
 import axiosInstance from "@/constants/baseurl";
 
@@ -36,7 +36,7 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
   const setUserId = useAuthStore((state) => state.setUserId);
-  const isMobile = useDeviceStore((state) => state.isMobile);
+  const { isMobile } = useDeviceStore();
 
   const isNavPage = ["/", "/ranking", "/board", "/following"].includes(router.pathname);
 

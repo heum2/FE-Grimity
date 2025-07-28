@@ -10,7 +10,6 @@ import { putFollow } from "@/api/users/putIdFollow";
 import { useToast } from "@/hooks/useToast";
 import Button from "@/components/Button/Button";
 import { useDeviceStore } from "@/states/deviceStore";
-import { useIsMobile } from "@/hooks/useIsMobile";
 import { SearchHighlightContext } from "@/pages/search";
 
 export default function SearchProfile({
@@ -28,9 +27,7 @@ export default function SearchProfile({
   const { showToast } = useToast();
   const [isFollowing, setIsFollowing] = useState(initialIsFollowing);
   const [followerCount, setFollowerCount] = useState(initialFollowerCount);
-  const isMobile = useDeviceStore((state) => state.isMobile);
-  const isTablet = useDeviceStore((state) => state.isTablet);
-  useIsMobile();
+  const { isMobile } = useDeviceStore();
   const { highlight } = useContext(SearchHighlightContext);
 
   const handleFollowClick = async () => {

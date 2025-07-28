@@ -9,16 +9,15 @@ import { ProfilePageProps } from "./ProfilePage.types";
 import ProfileCard from "../Layout/ProfileCard/ProfileCard";
 import Dropdown from "../Dropdown/Dropdown";
 import Button from "../Button/Button";
-import IconComponent from "../Asset/Icon";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import AllCard from "../Board/BoardAll/AllCard/AllCard";
 import Category from "./Profile/CategoryBar/Category/Category";
-import { useDeviceStore } from "@/states/deviceStore";
 import FeedAlbumEditor from "./FeedAlbumEditor/FeedAlbumEditor";
 import { useDragScroll } from "@/hooks/useDragScroll";
 import Icon from "@/components/Asset/IconTemp";
 import Pagination from "@/components/Pagination";
+import { useDeviceStore } from "@/states/deviceStore";
 
 type SortOption = "latest" | "like" | "oldest";
 
@@ -32,7 +31,7 @@ const PAGE_SIZE = 12;
 
 export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) {
   const openModal = useModalStore((state) => state.openModal);
-  const isMobile = useDeviceStore((state) => state.isMobile);
+  const { isMobile } = useDeviceStore();
   const [sortBy, setSortBy] = useState<SortOption>("latest");
   const [indicatorStyle, setIndicatorStyle] = useState({ width: 0, left: 0 });
   const feedsTabRef = useRef<HTMLDivElement>(null);

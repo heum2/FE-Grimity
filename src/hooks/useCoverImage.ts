@@ -6,12 +6,11 @@ import { putBackgroundImage } from "@/api/users/putMeImage";
 import { deleteMyBackgroundImage } from "@/api/users/deleteMeImage";
 
 import { useModalStore } from "@/states/modalStore";
-import { useDeviceStore } from "@/states/deviceStore";
 
 import type { UserProfileResponse as UserData } from "@grimity/dto";
 
 import { useToast } from "@/hooks/useToast";
-
+import { useDeviceStore } from "@/states/deviceStore";
 import { convertToWebP } from "@/utils/imageConverter";
 
 export const useCoverImage = (
@@ -21,8 +20,7 @@ export const useCoverImage = (
 ) => {
   const { showToast } = useToast();
   const openModal = useModalStore((state) => state.openModal);
-  const isMobile = useDeviceStore((state) => state.isMobile);
-  const isTablet = useDeviceStore((state) => state.isTablet);
+  const { isMobile, isTablet } = useDeviceStore();
 
   const { mutate: updateBackgroundImage } = useMutation({
     mutationFn: (imageName: string) => putBackgroundImage(imageName),

@@ -3,13 +3,11 @@ import dynamic from "next/dynamic";
 import Script from "next/script";
 import { Editor as TinyMCEEditor } from "tinymce";
 
-import { useDeviceStore } from "@/states/deviceStore";
-
 import Button from "@/components/Button/Button";
 import TextField from "@/components/TextField/TextField";
 import Loader from "@/components/Layout/Loader/Loader";
 
-import { useIsMobile } from "@/hooks/useIsMobile";
+import { useDeviceStore } from "@/states/deviceStore";
 import { useEditorImageUploader } from "@/hooks/useEditorImageUploader";
 
 import type { PostFormProps } from "./PostForm.types";
@@ -32,9 +30,7 @@ export default function PostForm({
   isSubmitting,
   submitButtonText,
 }: PostFormProps) {
-  const isMobile = useDeviceStore((state) => state.isMobile);
-  const isTablet = useDeviceStore((state) => state.isTablet);
-  useIsMobile();
+  const { isMobile, isTablet } = useDeviceStore();
 
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
   const editorRef = useRef<TinyMCEEditor | null>(null);

@@ -14,7 +14,7 @@ import { imageUrl as imagePrefix } from "@/constants/imageUrl";
 export default function Noti({ notification, onClose, onRefetch }: NotiProps) {
   const { showToast } = useToast();
   const router = useRouter();
-  const isTablet = useDeviceStore((state) => state.isTablet);
+  const { isTablet } = useDeviceStore();
 
   const renderMessage = () => {
     return notification?.message || "";

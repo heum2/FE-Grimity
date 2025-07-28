@@ -5,17 +5,17 @@ import Button from "@/components/Button/Button";
 import IconComponent from "@/components/Asset/Icon";
 import { useToast } from "@/hooks/useToast";
 import { useMyAlbums } from "@/api/me/getMyAlbums";
-import { useDeviceStore } from "@/states/deviceStore";
 import { useModalStore } from "@/states/modalStore";
 import { putFeedsInAlbums } from "@/api/albums/putFeedsInAlbums";
 import { putFeedsNull } from "@/api/albums/putFeedsNull";
 import { useRouter } from "next/router";
+import { useDeviceStore } from "@/states/deviceStore";
 
 export default function AlbumMove() {
   const { data, refetch } = useMyAlbums();
   const albums = Array.isArray(data) ? data : [];
   const { showToast } = useToast();
-  const isMobile = useDeviceStore((state) => state.isMobile);
+  const { isMobile } = useDeviceStore();
   const closeModal = useModalStore((state) => state.closeModal);
   const modalData = useModalStore((state) => state.data);
   const router = useRouter();

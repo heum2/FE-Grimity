@@ -1,12 +1,15 @@
 import { useState } from "react";
+import { useRouter } from "next/router";
+
+import { ModalState, ModalType, useModalStore } from "@/states/modalStore";
+
 import ProfileCard from "@/components/Layout/ProfileCard/ProfileCard";
 import Button from "@/components/Button/Button";
-import { ModalState, ModalType, useModalStore } from "@/states/modalStore";
-import { useRouter } from "next/router";
+import Icon from "@/components/Asset/IconTemp";
+
 import { useDeviceStore } from "@/states/deviceStore";
 
 import styles from "@/components/ProfilePage/FeedAlbumEditor/FeedAlbumEditor.module.scss";
-import Icon from "@/components/Asset/IconTemp";
 
 interface Feed {
   id: string;
@@ -41,7 +44,7 @@ export default function FeedAlbumEditor({
 }: FeedAlbumEditorProps) {
   const [selectedCards, setSelectedCards] = useState<string[]>([]);
   const openModal = useModalStore((state) => state.openModal);
-  const isMobile = useDeviceStore((state) => state.isMobile);
+  const { isMobile } = useDeviceStore();
   const router = useRouter();
   const currentAlbum = activeAlbum ? albums.find((album) => album.id === activeAlbum) : null;
   const displayName = currentAlbum ? currentAlbum.name : "전체";
