@@ -1,15 +1,11 @@
 import { useState } from "react";
 
-import { isBefore, startOfMonth } from "date-fns";
-
 import Icon from "@/components/Asset/IconTemp";
 import Button from "@/components/Button/Button";
 import BottomSheet from "@/components/BottomSheet/BottomSheet";
 import MonthListContent from "@/components/DatePicker/MonthPicker/MonthListContent";
 
 import useDateNavigation from "@/hooks/useDateNavigation";
-import { useIsMobile } from "@/hooks/useIsMobile";
-
 import { useDeviceStore } from "@/states/deviceStore";
 
 import { formattedDate } from "@/utils/formatDate";
@@ -26,8 +22,7 @@ function MonthPicker({ selectedDate, onDateChange }: MonthPickerProps) {
   const { currentDate, onPrevMonth, onNextMonth, isPrevDisabled, isNextDisabled } =
     useDateNavigation(selectedDate, onDateChange);
 
-  const isMobile = useDeviceStore((state) => state.isMobile);
-  useIsMobile();
+  const { isMobile } = useDeviceStore();
 
   const handleToggleMonthList = () => {
     setIsOpen(!isOpen);

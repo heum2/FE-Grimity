@@ -8,7 +8,6 @@ import SearchFeed from "./Feed/SearchFeed/SearchFeed";
 import SearchAuthor from "./User/SearchAuthor/SearchAuthor";
 import SearchPost from "./Post/SearchPost/SearchPost";
 import { useDeviceStore } from "@/states/deviceStore";
-import { useIsMobile } from "@/hooks/useIsMobile";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode } from "swiper/modules";
 import "swiper/css";
@@ -20,8 +19,7 @@ export default function SearchPage() {
   const { data: popularData } = useTagsPopular();
   const router = useRouter();
   const { tab } = router.query;
-  const isMobile = useDeviceStore((state) => state.isMobile);
-  useIsMobile();
+  const { isMobile } = useDeviceStore();
 
   useEffect(() => {
     const keyword = router.query.keyword as string | undefined;

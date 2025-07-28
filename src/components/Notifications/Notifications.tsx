@@ -8,7 +8,6 @@ import { deleteNotifications } from "@/api/notifications/deleteNotifications";
 import { putNotifications } from "@/api/notifications/putNotifications";
 import { getSubscribe, putSubscribe, SubscriptionType } from "@/api/users/subscribe";
 import { useDeviceStore } from "@/states/deviceStore";
-import { useIsMobile } from "@/hooks/useIsMobile";
 
 const ALL_SUBSCRIPTION_TYPES: SubscriptionType[] = [
   "FOLLOW",
@@ -160,8 +159,7 @@ export default function Notifications({ onClose }: NotificationsProps) {
   const { data = [], refetch } = useGetNotifications();
   const [isOpen, setIsOpen] = useState(false);
   const [subscriptions, setSubscriptions] = useState<SubscriptionType[]>([]);
-  const isMobile = useDeviceStore((state) => state.isMobile);
-  useIsMobile();
+  const { isMobile } = useDeviceStore();
 
   useEffect(() => {
     const fetchSubscriptions = async () => {

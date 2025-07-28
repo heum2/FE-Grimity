@@ -9,17 +9,17 @@ import { deleteAlbums } from "@/api/albums/deleteAlbums";
 import { putAlbumsOrder } from "@/api/albums/putAlbumsOrder";
 import { useMyAlbums } from "@/api/me/getMyAlbums";
 import { useToast } from "@/hooks/useToast";
-import { useDeviceStore } from "@/states/deviceStore";
 import { useModalStore } from "@/states/modalStore";
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
 import router from "next/router";
 import axios from "axios";
 import { AlbumBaseResponse } from "@/api/me/getMyAlbums";
+import { useDeviceStore } from "@/states/deviceStore";
 
 export default function AlbumEdit() {
   const { data, isLoading, isError, refetch } = useMyAlbums();
   const closeModal = useModalStore((state) => state.closeModal);
-  const isMobile = useDeviceStore((state) => state.isMobile);
+  const { isMobile } = useDeviceStore();
   const { showToast } = useToast();
   const albumsRef = useRef<AlbumBaseResponse[]>([]);
   const [albums, setAlbums] = useState<AlbumBaseResponse[]>([]);

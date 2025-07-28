@@ -21,7 +21,7 @@ export default function CommentInput({
   showToast,
   onCommentSubmitSuccess,
 }: CommentInputProps) {
-  const isMobile = useDeviceStore((state) => state.isMobile);
+  const { isMobile } = useDeviceStore();
   const [comment, setComment] = useState("");
   const { mutateAsync: postComment, isPending: isPostCommentPending } = usePostFeedsComments();
 

@@ -3,14 +3,13 @@ import { useRouter } from "next/router";
 
 import { useMyData } from "@/api/users/getMe";
 
-import { useDeviceStore } from "@/states/deviceStore";
 import { useAuthStore } from "@/states/authStore";
 
 import IconComponent from "@/components/Asset/Icon";
 import Header from "@/components/Layout/Header/Header";
 import Sidebar from "@/components/Layout/Sidebar/Sidebar";
 
-import { useIsMobile } from "@/hooks/useIsMobile";
+import { useDeviceStore } from "@/states/deviceStore";
 
 import type { HeaderProps } from "@/components/Layout/Header/types/Header.types";
 import type { LayoutProps } from "@/components/Layout/Layout.types";
@@ -22,9 +21,7 @@ export default function Layout({ children }: LayoutProps) {
 
   const [isScrollAbove, setIsScrollAbove] = useState(false);
 
-  const isMobile = useDeviceStore((state) => state.isMobile);
-  const isTablet = useDeviceStore((state) => state.isTablet);
-  useIsMobile();
+  const { isMobile, isTablet } = useDeviceStore();
 
   const { setIsLoggedIn, setAccessToken, setUserId, setIsAuthReady } = useAuthStore();
   const { refetch: fetchMyData } = useMyData();

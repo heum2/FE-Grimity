@@ -12,7 +12,6 @@ import { deletePostsFeeds } from "@/api/posts/deletePostsId";
 import { useRouter } from "next/router";
 import { useToast } from "@/hooks/useToast";
 import { useDeviceStore } from "@/states/deviceStore";
-import { useIsMobile } from "@/hooks/useIsMobile";
 import { SearchHighlightContext } from "@/pages/search";
 import Icon from "@/components/Asset/IconTemp";
 
@@ -32,8 +31,7 @@ export function getTypeLabel(type: string): string {
 
 export default function AllCard({ post, case: cardCase, hasChip = false }: AllCardProps) {
   const { highlight } = useContext(SearchHighlightContext);
-  const isMobile = useDeviceStore((state) => state.isMobile);
-  useIsMobile();
+  const { isMobile } = useDeviceStore();
   const openModal = useModalStore((state) => state.openModal);
   const { showToast } = useToast();
 

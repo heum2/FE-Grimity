@@ -10,7 +10,6 @@ import { deleteFollow } from "@/api/users/deleteIdFollow";
 import { useToast } from "@/hooks/useToast";
 import { FollowProps } from "./Follow.types";
 import { useDeviceStore } from "@/states/deviceStore";
-import { useIsMobile } from "@/hooks/useIsMobile";
 
 export default function Follow({ initialTab }: FollowProps) {
   const [activeTab, setActiveTab] = useState<"follower" | "following">(initialTab);
@@ -21,8 +20,7 @@ export default function Follow({ initialTab }: FollowProps) {
   const [isFetchingData, setIsFetchingData] = useState(false);
   const route = useRouter();
   const { showToast } = useToast();
-  const isMobile = useDeviceStore((state) => state.isMobile);
-  useIsMobile();
+  const { isMobile } = useDeviceStore();
 
   const {
     data: followerData,

@@ -3,7 +3,6 @@ import router, { useRouter } from "next/router";
 
 import { useAuthStore } from "@/states/authStore";
 import { useModalStore } from "@/states/modalStore";
-import { useDeviceStore } from "@/states/deviceStore";
 
 import { useMyData } from "@/api/users/getMe";
 import { useUserDataByUrl } from "@/api/users/getId";
@@ -15,7 +14,7 @@ import ProfileImage from "@/components/ProfilePage/Profile/ProfileImage/ProfileI
 import ProfileDetails from "@/components/ProfilePage/Profile/ProfileDetails/ProfileDetails";
 
 import { useToast } from "@/hooks/useToast";
-import { useIsMobile } from "@/hooks/useIsMobile";
+import { useDeviceStore } from "@/states/deviceStore";
 import { useFollow } from "@/hooks/useFollow";
 import { useCoverImage } from "@/hooks/useCoverImage";
 import { useProfileImage } from "@/hooks/useProfileImage";
@@ -36,8 +35,7 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
   const [profileImage, setProfileImage] = useState<string>("");
   const [coverImage, setCoverImage] = useState<string>("");
   const { showToast } = useToast();
-  const isMobile = useDeviceStore((state) => state.isMobile);
-  useIsMobile();
+  const { isMobile } = useDeviceStore();
   const { handleFollowClick, handleUnfollowClick } = useFollow(id, refetchUserData);
   const { handleAddCover, handleDeleteImage } = useCoverImage(
     refetchUserData,

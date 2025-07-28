@@ -24,7 +24,6 @@ import Comment from "@/components/Detail/Comment/Comment";
 import { useGetFeedsComments } from "@/api/feeds-comments/getFeedComments";
 import { useMyData } from "@/api/users/getMe";
 import { useDeviceStore } from "@/states/deviceStore";
-import { useIsMobile } from "@/hooks/useIsMobile";
 import { FollowingFeedsResponse } from "@/api/feeds/getFeedsFollowing";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 
@@ -54,12 +53,11 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
   });
   const [isContentTooLong, setIsContentTooLong] = useState(false);
   const contentRef = useRef<HTMLParagraphElement | null>(null);
-  const isMobile = useDeviceStore((state) => state.isMobile);
+  const { isMobile } = useDeviceStore();
   const imgRef = usePreventRightClick<HTMLImageElement>();
   const divRef = usePreventRightClick<HTMLDivElement>();
   const sectionRef = usePreventRightClick<HTMLElement>();
 
-  useIsMobile();
   usePreventScroll(!!overlayImage);
 
   useEffect(() => {

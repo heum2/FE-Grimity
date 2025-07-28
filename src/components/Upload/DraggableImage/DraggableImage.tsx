@@ -3,7 +3,6 @@ import { DraggableImageProps } from "./DraggableImage.types";
 import styles from "./DraggableImage.module.scss";
 import { useState } from "react";
 import { useDeviceStore } from "@/states/deviceStore";
-import { useIsMobile } from "@/hooks/useIsMobile";
 import IconComponent from "@/components/Asset/Icon";
 
 export default function DraggableImage({
@@ -14,9 +13,7 @@ export default function DraggableImage({
   isThumbnail,
   onThumbnailSelect,
 }: DraggableImageProps) {
-  const isMobile = useDeviceStore((state) => state.isMobile);
-  useIsMobile();
-  const isTablet = useDeviceStore((state) => state.isTablet);
+  const { isMobile, isTablet } = useDeviceStore();
   const [isLoading, setIsLoading] = useState(true);
 
   const handleImageLoad = () => {

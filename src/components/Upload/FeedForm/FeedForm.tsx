@@ -11,14 +11,13 @@ import DraggableImage from "@/components/Upload/DraggableImage/DraggableImage";
 import Chip from "@/components/Chip/Chip";
 
 import { useModalStore } from "@/states/modalStore";
-import { useDeviceStore } from "@/states/deviceStore";
 
 import { CreateFeedRequest } from "@/api/feeds/postFeeds";
 
 import { FeedFormProps } from "@/components/Upload/FeedForm/FeedForm.types";
 
 import { useToast } from "@/hooks/useToast";
-import { useIsMobile } from "@/hooks/useIsMobile";
+import { useDeviceStore } from "@/states/deviceStore";
 
 import { removeUrlPrefix } from "@/utils/removeUrlPrefix";
 
@@ -48,10 +47,7 @@ export default function FeedForm({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const isMobile = useDeviceStore((state) => state.isMobile);
-  const isTablet = useDeviceStore((state) => state.isTablet);
-
-  useIsMobile();
+  const { isMobile, isTablet } = useDeviceStore();
 
   const resetUnsavedChanges = () => {
     hasUnsavedChangesRef.current = false;

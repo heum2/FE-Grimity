@@ -14,11 +14,10 @@ import ShareBtn from "@/components/Board/Detail/ShareBtn/ShareBtn";
 import PostComment from "@/components/Board/Detail/Comment/Comment";
 
 import { useToast } from "@/hooks/useToast";
-import { useIsMobile } from "@/hooks/useIsMobile";
+import { useDeviceStore } from "@/states/deviceStore";
 
 import { useModalStore } from "@/states/modalStore";
 import { useAuthStore } from "@/states/authStore";
-import { useDeviceStore } from "@/states/deviceStore";
 
 import { usePostsDetails } from "@/api/posts/getPostsId";
 import { deletePostsSave, putPostsSave } from "@/api/posts/putDeletePostsIdSave";
@@ -40,10 +39,9 @@ export default function PostDetail({ id }: PostDetailProps) {
 
   const { isLoggedIn, user_id } = useAuthStore();
   const { openModal } = useModalStore();
-  const { isMobile } = useDeviceStore();
 
   const { showToast } = useToast();
-  useIsMobile();
+  const { isMobile } = useDeviceStore();
 
   const [currentLikeCount, setCurrentLikeCount] = useState(0);
   const [isLiked, setIsLiked] = useState(false);

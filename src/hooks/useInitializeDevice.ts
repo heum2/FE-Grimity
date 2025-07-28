@@ -1,23 +1,22 @@
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import { useDeviceStore } from "@/states/deviceStore";
 
-export const useIsMobile = () => {
-  useEffect(() => {
-    const setIsMobile = useDeviceStore.getState().setIsMobile;
-    const setIsTablet = useDeviceStore.getState().setIsTablet;
+export const useInitializeDevice = () => {
+  const { setDevice } = useDeviceStore();
 
+  useLayoutEffect(() => {
     const mobileQuery = window.matchMedia("(max-width: 767px)");
     const tabletQuery = window.matchMedia("(min-width: 768px) and (max-width: 1024px)");
 
     const handleResize = () => {
-      setIsMobile(mobileQuery.matches);
-      setIsTablet(tabletQuery.matches);
+      setDevice({
+        isMobile: mobileQuery.matches,
+        isTablet: tabletQuery.matches,
+      });
     };
 
-    // 초기 설정
-    handleResize();
+    handleResize(); // 초기 렌더링 시 실행
 
-    // 이벤트 리스너 등록
     mobileQuery.addEventListener("change", handleResize);
     tabletQuery.addEventListener("change", handleResize);
 
@@ -25,5 +24,5 @@ export const useIsMobile = () => {
       mobileQuery.removeEventListener("change", handleResize);
       tabletQuery.removeEventListener("change", handleResize);
     };
-  }, []);
+  }, [setDevice]);
 };

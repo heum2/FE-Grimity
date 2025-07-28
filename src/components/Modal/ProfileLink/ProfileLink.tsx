@@ -1,6 +1,5 @@
-import { useDeviceStore } from "@/states/deviceStore";
 import styles from "./ProfileLink.module.scss";
-import { useIsMobile } from "@/hooks/useIsMobile";
+import { useDeviceStore } from "@/states/deviceStore";
 import IconComponent from "@/components/Asset/Icon";
 import { useUserDataByUrl } from "@/api/users/getId";
 import { useRouter } from "next/router";
@@ -8,10 +7,9 @@ import { useClipboard } from "@/utils/copyToClipboard";
 
 export default function ProfileLink() {
   const { copyToClipboard } = useClipboard();
-  const isMobile = useDeviceStore((state) => state.isMobile);
+  const { isMobile } = useDeviceStore();
   const { query } = useRouter();
   const { data: userData } = useUserDataByUrl(query.url as string);
-  useIsMobile();
 
   const getIconName = (linkName: string) => {
     if (linkName === "인스타그램") return "linkInstagram";

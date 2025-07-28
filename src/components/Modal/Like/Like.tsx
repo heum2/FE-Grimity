@@ -5,14 +5,12 @@ import { useModalStore } from "@/states/modalStore";
 import { useFeedsLike } from "@/api/feeds/getFeedsIdLike";
 import Loader from "@/components/Layout/Loader/Loader";
 import { useDeviceStore } from "@/states/deviceStore";
-import { useIsMobile } from "@/hooks/useIsMobile";
 
 export default function Like() {
   const closeModal = useModalStore((state) => state.closeModal);
   const route = useRouter();
   const { data, isLoading } = useFeedsLike({ id: String(route.query.id) });
-  const isMobile = useDeviceStore((state) => state.isMobile);
-  useIsMobile();
+  const { isMobile } = useDeviceStore();
 
   const handleClickUser = (url: string) => {
     route.push(`${url}`);

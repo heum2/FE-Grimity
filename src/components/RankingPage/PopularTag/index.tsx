@@ -5,18 +5,15 @@ import Loader from "@/components/Layout/Loader/Loader";
 import Tag from "./Tag/Tag";
 import Link from "next/link";
 import { useCallback, useEffect, useRef } from "react";
+
 import { useDeviceStore } from "@/states/deviceStore";
-import { useIsMobile } from "@/hooks/useIsMobile";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
 export default function PopularTag() {
   const { data, isLoading } = useTagsPopular();
   const containerRef = useRef<HTMLDivElement>(null);
-  const isMobile = useDeviceStore((state) => state.isMobile);
-  const isTablet = useDeviceStore((state) => state.isTablet);
-
-  useIsMobile();
+  const { isMobile, isTablet } = useDeviceStore();
 
   // 가로 스크롤 시 세로 스크롤 막기
   const handleWheel = useCallback((e: WheelEvent) => {

@@ -22,8 +22,8 @@ import {
   ParentPostCommentResponse,
 } from "@/api/posts-comments/getPostsComments";
 import { PostCommentProps, PostCommentWriter } from "./Comment.types";
-import { useDeviceStore } from "@/states/deviceStore";
 import { useRouter } from "next/router";
+import { useDeviceStore } from "@/states/deviceStore";
 
 type ToastType = "success" | "error" | "warning" | "information";
 
@@ -93,7 +93,7 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
   const { mutateAsync: postComment, isPending: isPostCommentPending } = usePostPostsComments();
   const [activeParentReplyId, setActiveParentReplyId] = useState<string | null>(null);
   const [activeChildReplyId, setActiveChildReplyId] = useState<string | null>(null);
-  const isMobile = useDeviceStore((state) => state.isMobile);
+  const { isMobile } = useDeviceStore();
   const { pathname } = useRouter();
 
   useEffect(() => {
