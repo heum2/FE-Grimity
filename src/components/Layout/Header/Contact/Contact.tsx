@@ -63,7 +63,7 @@ export default function Contact({ onClose }: ContactProps) {
         <div className={styles.bar} />
         <section className={styles.footer}>
           <a
-            href="https://nostalgic-patch-498.notion.site/1930ac6bf29881b9aa19ff623c69b8e6?pvs=74"
+            href="https://term.grimity.com/privacy"
             target="_blank"
             rel="noopener noreferrer"
             className={styles.subLink}
@@ -71,7 +71,7 @@ export default function Contact({ onClose }: ContactProps) {
             개인정보취급방침
           </a>
           <a
-            href="https://nostalgic-patch-498.notion.site/1930ac6bf29881e9a3e4c405e7f49f2b?pvs=73"
+            href="https://term.grimity.com/term"
             target="_blank"
             rel="noopener noreferrer"
             className={styles.subLink}
