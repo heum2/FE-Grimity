@@ -111,6 +111,11 @@ section {
 body {
   line-height: 1;
 }
+
+em {
+  font-style: italic;
+}
+
 ol,
 ul {
   list-style: none;
