@@ -112,6 +112,8 @@ export default function PostForm({
                 indent: false,
                 indent_use_margin: true,
                 indent_size: 4,
+                relative_urls: false,
+                remove_script_host: false,
                 setup: (editor) => {
                   editor.on("keydown", (event) => {
                     if (event.key === "Tab") {
