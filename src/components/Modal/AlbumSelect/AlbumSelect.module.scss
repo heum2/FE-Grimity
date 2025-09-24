@@ -12,6 +12,7 @@
 
   @include Size("mobile") {
     overflow-y: auto;
+    padding-bottom: calc(30px + env(safe-area-inset-bottom));
   }
 
   .titleContainer {
@@ -135,10 +136,6 @@
     .cancleBtn,
     .submitBtn {
       flex: 1;
-    }
-
-    @include Size("mobile") {
-      padding-bottom: calc(16px + env(safe-area-inset-bottom));
     }
   }
 }
