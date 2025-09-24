@@ -7,6 +7,7 @@ interface PaginationProps {
   totalPages: number;
   postsLength: number;
   onPageChange: (page: number) => void;
+  pageRange?: number[];
 }
 
 export default function Pagination({
@@ -14,6 +15,7 @@ export default function Pagination({
   totalPages,
   postsLength,
   onPageChange,
+  pageRange,
 }: PaginationProps) {
   const getPageRange = (currentPage: number, totalPages: number) => {
     let start = Math.max(1, currentPage - 4);
@@ -25,6 +27,8 @@ export default function Pagination({
 
     return Array.from({ length: end - start + 1 }, (_, i) => start + i);
   };
+
+  const displayPages = pageRange || getPageRange(currentPage, totalPages);
 
   if (totalPages <= 1) {
     return null;
@@ -39,7 +43,7 @@ export default function Pagination({
       >
         <IconComponent name="paginationLeft" size={24} />
       </button>
-      {getPageRange(currentPage, totalPages).map((pageNum) => (
+      {displayPages.map((pageNum) => (
         <button
           key={pageNum}
           className={currentPage === pageNum ? styles.active : ""}

@@ -40,6 +40,22 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
     handleSortChange,
   } = useBoardAll({ isDetail });
 
+  const getPageRange = (currentPage: number, totalPages: number) => {
+    // 모바일: 5개, PC: 10개
+    const maxPages = isMobile ? 4 : 9;
+
+    let start = Math.max(1, currentPage - Math.floor(maxPages / 2));
+    const end = Math.min(start + maxPages, totalPages);
+
+    if (end === totalPages) {
+      start = Math.max(1, end - maxPages);
+    }
+
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  };
+
+  const pageRange = getPageRange(currentPage, totalPages);
+
   if (isLoading) return <Loader />;
 
   return (
@@ -87,6 +103,7 @@ export default function BoardAll({ isDetail, hasChip }: BoardAllProps) {
           totalPages={totalPages}
           postsLength={posts.length}
           onPageChange={handlePageChange}
+          pageRange={pageRange}
         />
 
         {!isMobile && isLoggedIn && !isDetail && (
