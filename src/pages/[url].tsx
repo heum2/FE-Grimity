@@ -5,7 +5,6 @@ import { serviceUrl } from "@/constants/serviceurl";
 import { useScrollRestoration } from "@/hooks/useScrollRestoration";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { DEFAULT_THUMBNAIL } from "@/constants/imageUrl";
 
@@ -28,7 +27,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 export default function Profile({ data }: Props) {
-  const router = useRouter();
   const { data: myData } = useMyData();
   const { restoreScrollPosition } = useScrollRestoration("profile-scroll");
 
