@@ -107,6 +107,7 @@
         padding: 14px;
         background: none;
         border: 1px solid $gray30;
+        color: $gray70;
 
         svg {
           width: 18px;
@@ -159,6 +160,7 @@
         border: none;
         padding: 0;
         height: 40px;
+        color: $gray70;
 
         .label {
           @include Body1;

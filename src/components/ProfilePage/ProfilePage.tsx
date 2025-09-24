@@ -48,12 +48,10 @@ export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) 
   const categoryBarRef = useRef<HTMLDivElement>(null);
   useDragScroll(categoryBarRef as React.RefObject<HTMLElement>, { scrollSpeed: 2 });
   const [isEditMode, setIsEditMode] = useState(false);
-  const [selectedCards, setSelectedCards] = useState<string[]>([]);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
   const toggleEditMode = () => {
     setIsEditMode(!isEditMode);
-    setSelectedCards([]);
     refetch();
   };
 
