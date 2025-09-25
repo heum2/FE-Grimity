@@ -137,7 +137,7 @@
 .fill {
   @include Size("mobile") {
     width: 100%;
-    height: calc(100vh - 60px);
+    height: calc($full-height - 60px);
     background: $gray0;
     padding: 16px;
     position: fixed;

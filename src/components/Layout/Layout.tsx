@@ -14,6 +14,8 @@ import { useDeviceStore } from "@/states/deviceStore";
 import type { HeaderProps } from "@/components/Layout/Header/types/Header.types";
 import type { LayoutProps } from "@/components/Layout/Layout.types";
 
+import { setDocumentViewportHeight } from "@/utils/viewport";
+
 import styles from "@/components/Layout/Layout.module.scss";
 
 export default function Layout({ children }: LayoutProps) {
@@ -38,6 +40,14 @@ export default function Layout({ children }: LayoutProps) {
   } else {
     headerVariant = "default";
   }
+
+  // 모바일 높이 설정
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setDocumentViewportHeight();
+      window.addEventListener("resize", setDocumentViewportHeight);
+    }
+  }, []);
 
   useEffect(() => {
     const initializeAuth = async () => {

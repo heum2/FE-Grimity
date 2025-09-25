@@ -252,6 +252,8 @@ $sidebar-width-tablet: 80px;
 $max-width-container: 1280px;
 $max-width-content: 780px;
 
+$full-height: calc(var(--vh, 1vh) * 100);
+
 @mixin Size($device) {
   @media (min-width: map.get($min-breakpoints, $device)) and (max-width: map.get($max-breakpoints, $device)) {
     @content;
