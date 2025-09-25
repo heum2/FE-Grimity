@@ -2,6 +2,10 @@
    License: none (public domain)
 */
 
+:root {
+  --vh: 100%;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -108,6 +112,13 @@ nav,
 section {
   display: block;
 }
+
+html,
+body {
+  height: 100vh;
+  height: var(--vh);
+}
+
 body {
   line-height: 1;
 }
