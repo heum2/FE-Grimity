@@ -57,10 +57,6 @@ export default function Modal() {
 
   const handleCloseModal = () => {
     closeModal();
-
-    if (type === "ALBUM-EDIT") {
-      router.reload();
-    }
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {

@@ -1,7 +1,12 @@
 import axiosInstance from "@/constants/baseurl";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
-export async function deleteAlbums(id: string): Promise<void> {
+interface DeleteAlbumsParams {
+  id: string;
+}
+
+export async function deleteAlbums({ id }: DeleteAlbumsParams): Promise<void> {
   try {
     const response = await axiosInstance.delete(`/albums/${id}`);
     return response.data;
@@ -14,3 +19,15 @@ export async function deleteAlbums(id: string): Promise<void> {
     throw new Error("Failed to delete album");
   }
 }
+
+export const useDeleteAlbums = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: deleteAlbums,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["myAlbums"] });
+      queryClient.invalidateQueries({ queryKey: ["userData"] });
+    },
+  });
+};

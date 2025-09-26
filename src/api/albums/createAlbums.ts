@@ -1,7 +1,8 @@
 import axiosInstance from "@/constants/baseurl";
 import { CreateAlbumRequest } from "@grimity/dto";
 import { AlbumBaseResponse } from "@grimity/dto";
-import axios, { AxiosError } from "axios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 
 export type { CreateAlbumRequest, AlbumBaseResponse };
 
@@ -21,3 +22,15 @@ export async function createAlbums({ name }: CreateAlbumRequest): Promise<AlbumB
     throw new Error("Failed to create albums");
   }
 }
+
+export const useCreateAlbums = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: createAlbums,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["myAlbums"] });
+      queryClient.invalidateQueries({ queryKey: ["userData"] });
+    },
+  });
+};

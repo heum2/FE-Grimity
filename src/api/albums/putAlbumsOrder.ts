@@ -1,5 +1,6 @@
 import axiosInstance from "@/constants/baseurl";
 import { UpdateAlbumOrderRequest } from "@grimity/dto";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 export type { UpdateAlbumOrderRequest };
 
@@ -16,3 +17,15 @@ export async function putAlbumsOrder(params: UpdateAlbumOrderRequest): Promise<v
     throw new Error("Failed to put albums");
   }
 }
+
+export const usePutAlbumsOrder = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: putAlbumsOrder,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["myAlbums"] });
+      queryClient.invalidateQueries({ queryKey: ["userData"] });
+    },
+  });
+};
