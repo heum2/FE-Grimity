@@ -17,9 +17,9 @@
     pointer-events: auto;
   }
 
-  .uploadBtnContainer {
-    margin-top: 16px;
-    padding-bottom: 30px;
+  .loginBtn {
+    margin: 16px 0 30px;
+    padding: 0 20px;
   }
 
   .sideMenu {
@@ -112,6 +112,7 @@
         flex-direction: column;
         gap: 2px;
         margin-bottom: 20px;
+        padding: 0 20px;
       }
 
       .itemBtn {
