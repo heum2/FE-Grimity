@@ -240,12 +240,17 @@ $footer-height: 84px;
       visibility: visible;
     }
   }
+
+  @include Size("mobile") {
+    padding: 12px 4px 12px 8px;
+  }
 }
 
 .inputWrapper {
   display: flex;
   align-items: center;
   gap: 12px;
+  position: relative;
 }
 
 .cameraButton {
@@ -259,7 +264,7 @@ $footer-height: 84px;
 }
 
 .input {
-  flex-grow: 1;
+  width: 60%;
   padding: 3px 0;
   @include Body1;
   color: $gray70;
@@ -273,6 +278,8 @@ $footer-height: 84px;
 }
 
 .sendButton {
+  position: absolute;
+  right: 0;
   visibility: hidden;
 }
 
