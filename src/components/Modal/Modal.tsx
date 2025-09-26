@@ -64,16 +64,7 @@ export default function Modal() {
   }, [router, closeModal]);
 
   const handleCloseModal = () => {
-    if (historyPushedRef.current && !closedByPopStateRef.current) {
-      historyPushedRef.current = false;
-      window.history.back();
-    } else {
-      closeModal();
-
-      if (type === "ALBUM-EDIT") {
-        router.reload();
-      }
-    }
+    closeModal();
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {

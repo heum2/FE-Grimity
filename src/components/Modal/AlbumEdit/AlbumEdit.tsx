@@ -3,10 +3,12 @@ import styles from "./AlbumEdit.module.scss";
 import Button from "@/components/Button/Button";
 import Loader from "@/components/Layout/Loader/Loader";
 import IconComponent from "@/components/Asset/Icon";
-import { createAlbums } from "@/api/albums/createAlbums";
-import { patchAlbums } from "@/api/albums/patchAlbums";
-import { deleteAlbums } from "@/api/albums/deleteAlbums";
-import { putAlbumsOrder } from "@/api/albums/putAlbumsOrder";
+
+import { useCreateAlbums } from "@/api/albums/createAlbums";
+import { usePatchAlbums } from "@/api/albums/patchAlbums";
+import { useDeleteAlbums } from "@/api/albums/deleteAlbums";
+import { putAlbumsOrder, usePutAlbumsOrder } from "@/api/albums/putAlbumsOrder";
+
 import { useMyAlbums } from "@/api/me/getMyAlbums";
 import { useToast } from "@/hooks/useToast";
 import { useModalStore } from "@/states/modalStore";
@@ -29,6 +31,11 @@ export default function AlbumEdit() {
   const [isEditingOrder, setIsEditingOrder] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [inputValues, setInputValues] = useState<{ [key: string]: string }>({});
+
+  const { mutate: createAlbums } = useCreateAlbums();
+  const { mutate: patchAlbums } = usePatchAlbums();
+  const { mutate: deleteAlbums } = useDeleteAlbums();
+  const { mutate: putAlbumsOrder } = usePutAlbumsOrder();
 
   useEffect(() => {
     albumsRef.current = albums;
@@ -63,18 +70,21 @@ export default function AlbumEdit() {
       return;
     }
 
-    try {
-      await createAlbums({ name: trimmed });
-      setName("");
-      refetch();
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        showToast(err.response?.data.message || "앨범 추가에 실패했습니다.", "error");
-      } else {
-        showToast("앨범 추가에 실패했습니다.", "error");
-      }
-      refetch();
-    }
+    createAlbums(
+      { name: trimmed },
+      {
+        onSuccess: () => {
+          setName("");
+        },
+        onError: (error) => {
+          if (axios.isAxiosError(error)) {
+            showToast(error.response?.data.message || "앨범 추가에 실패했습니다.", "error");
+          } else {
+            showToast("앨범 추가에 실패했습니다.", "error");
+          }
+        },
+      },
+    );
   };
 
   const handleRename = async (id: string) => {
@@ -97,21 +107,25 @@ export default function AlbumEdit() {
       return;
     }
 
-    try {
-      await patchAlbums(id, { name: newName });
-      const updatedAlbums = albums.map((a) => (a.id === id ? { ...a, name: newName } : a));
-      setAlbums(updatedAlbums);
-      setInputValues(() =>
-        updatedAlbums.reduce((acc, album) => {
-          acc[album.id] = album.name;
-          return acc;
-        }, {} as { [key: string]: string }),
-      );
-      setEditingId(null);
-      refetch();
-    } catch {
-      showToast("앨범명 변경에 실패했습니다.", "error");
-    }
+    patchAlbums(
+      { id, params: { name: newName } },
+      {
+        onSuccess: () => {
+          const updatedAlbums = albums.map((a) => (a.id === id ? { ...a, name: newName } : a));
+          setAlbums(updatedAlbums);
+          setInputValues(() =>
+            updatedAlbums.reduce((acc, album) => {
+              acc[album.id] = album.name;
+              return acc;
+            }, {} as { [key: string]: string }),
+          );
+          setEditingId(null);
+        },
+        onError: () => {
+          showToast("앨범명 변경에 실패했습니다.", "error");
+        },
+      },
+    );
   };
 
   const handleDragEnd = (result: DropResult) => {
@@ -126,16 +140,20 @@ export default function AlbumEdit() {
     if (isEditingOrder) {
       const ids = editingAlbums.map((a) => a.id);
       if (ids.join() !== albums.map((a) => a.id).join()) {
-        try {
-          await putAlbumsOrder({ ids });
-          showToast("앨범 순서가 변경되었습니다!", "success");
-          setAlbums(editingAlbums);
-          refetch();
-          closeModal();
-          router.reload();
-        } catch {
-          showToast("앨범 순서 변경에 실패했습니다.", "error");
-        }
+        putAlbumsOrder(
+          {
+            ids,
+          },
+          {
+            onSuccess: () => {
+              showToast("앨범 순서가 변경되었습니다!", "success");
+              closeModal();
+            },
+            onError: () => {
+              showToast("앨범 순서 변경에 실패했습니다.", "error");
+            },
+          },
+        );
       }
     } else {
       setEditingAlbums([...albums]);
@@ -144,13 +162,17 @@ export default function AlbumEdit() {
   };
 
   const handleDeleteAlbum = async (id: string) => {
-    try {
-      await deleteAlbums(id);
-      showToast("앨범이 삭제되었습니다.", "success");
-      refetch();
-    } catch {
-      showToast("앨범 삭제에 실패했습니다.", "error");
-    }
+    deleteAlbums(
+      { id },
+      {
+        onSuccess: () => {
+          showToast("앨범이 삭제되었습니다.", "success");
+        },
+        onError: () => {
+          showToast("앨범 삭제에 실패했습니다.", "error");
+        },
+      },
+    );
   };
 
   if (isLoading) return <Loader />;

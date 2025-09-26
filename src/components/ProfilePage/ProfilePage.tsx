@@ -1,25 +1,31 @@
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
+
 import { useUserDataByUrl } from "@/api/users/getId";
 import { useUserFeeds } from "@/api/users/getIdFeeds";
 import { useUserPosts } from "@/api/users/getIdPosts";
-import Profile from "./Profile/Profile";
-import styles from "./ProfilePage.module.scss";
+
 import { useModalStore } from "@/states/modalStore";
-import { ProfilePageProps } from "./ProfilePage.types";
-import ProfileCard from "../Layout/ProfileCard/ProfileCard";
-import Dropdown from "../Dropdown/Dropdown";
-import Button from "../Button/Button";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import AllCard from "../Board/BoardAll/AllCard/AllCard";
-import Category from "./Profile/CategoryBar/Category/Category";
-import FeedAlbumEditor from "./FeedAlbumEditor/FeedAlbumEditor";
-import { useDragScroll } from "@/hooks/useDragScroll";
-import Icon from "@/components/Asset/IconTemp";
-import Pagination from "@/components/Pagination";
 import { useDeviceStore } from "@/states/deviceStore";
-import useUserBlock from "@/hooks/useUserBlock";
+
+import Profile from "@/components/ProfilePage/Profile/Profile";
+import ProfileCard from "@/components/Layout/ProfileCard/ProfileCard";
+import Dropdown from "@/components/Dropdown/Dropdown";
+import Pagination from "@/components/Pagination";
+import Icon from "@/components/Asset/IconTemp";
 import Toast from "@/components/Toast/Toast";
+import Button from "@/components/Button/Button";
+import FeedAlbumEditor from "@/components/ProfilePage/FeedAlbumEditor/FeedAlbumEditor";
+import Category from "@/components/ProfilePage/Profile/CategoryBar/Category/Category";
+import AllCard from "@/components/Board/BoardAll/AllCard/AllCard";
+
+import type { ProfilePageProps } from "./ProfilePage.types";
+
+import useUserBlock from "@/hooks/useUserBlock";
+import { useDragScroll } from "@/hooks/useDragScroll";
+
+import styles from "./ProfilePage.module.scss";
 
 type SortOption = "latest" | "like" | "oldest";
 

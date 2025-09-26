@@ -1,12 +1,16 @@
-import { getSSRUserInfoByUrl, UserMetaResponse } from "@/api/users/getId";
-import { useMyData } from "@/api/users/getMe";
-import ProfilePage from "@/components/ProfilePage/ProfilePage";
-import { serviceUrl } from "@/constants/serviceurl";
-import { useScrollRestoration } from "@/hooks/useScrollRestoration";
+import { useEffect } from "react";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import { useEffect } from "react";
+
+import { getSSRUserInfoByUrl, UserMetaResponse } from "@/api/users/getId";
+import { useMyData } from "@/api/users/getMe";
+
+import ProfilePage from "@/components/ProfilePage/ProfilePage";
+
+import { serviceUrl } from "@/constants/serviceurl";
 import { DEFAULT_THUMBNAIL } from "@/constants/imageUrl";
+
+import { useScrollRestoration } from "@/hooks/useScrollRestoration";
 
 type Props = {
   data: UserMetaResponse;
@@ -21,7 +25,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       props: { data, url },
     };
   } catch (error) {
-    console.error("Error fetching user data:", error); // Log the error for debugging
+    console.error("Error fetching user data:", error);
     return { notFound: true };
   }
 };
@@ -37,10 +41,8 @@ export default function Profile({ data }: Props) {
     }
   }, []);
 
-  const loggedInUserUrl = myData?.url; // Be sure this is the correct field
-  const isMyProfile = data.url === loggedInUserUrl;
+  const isMyProfile = data.url === myData?.url;
 
-  // url is guaranteed to be a string here due to getServerSideProps
   return (
     <>
       <Head>
