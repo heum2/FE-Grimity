@@ -23,19 +23,13 @@ export const useGetChats = (request: GetChatsRequest) => {
   });
 };
 
-export const useGetChatsInfinite = (request: Omit<GetChatsRequest, 'cursor'>) => {
+export const useGetChatsInfinite = (request: Omit<GetChatsRequest, "cursor">) => {
   return useInfiniteQuery<ChatsResponse>({
     queryKey: ["chats", request],
-    queryFn: ({ pageParam }) =>
-      getChats({ ...request, cursor: pageParam as string | undefined }),
+    queryFn: ({ pageParam }) => getChats({ ...request, cursor: pageParam as string | undefined }),
     initialPageParam: undefined,
     getNextPageParam: (lastPage) => {
       return lastPage.nextCursor ? lastPage.nextCursor : undefined;
     },
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
-    staleTime: 5 * 60 * 1000,
-    gcTime: 10 * 60 * 1000,
   });
 };
