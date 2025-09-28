@@ -228,21 +228,25 @@ $footer-height: 84px;
   display: flex;
   flex-direction: column;
 
-  padding: 7px 8px 7px 16px;
+  padding: 13px 8px 13px 16px;
   background-color: $gray10;
   border: 1px solid $gray30;
   border-radius: 12px;
 
   &:focus-within {
     background-color: $gray0;
-
-    .sendButton {
-      visibility: visible;
-    }
   }
 
   @include Size("mobile") {
     padding: 12px 4px 12px 8px;
+  }
+}
+
+.imageListContainer {
+  margin-bottom: 10px;
+
+  @include Size("mobile") {
+    margin-bottom: 14px;
   }
 }
 
@@ -280,7 +284,6 @@ $footer-height: 84px;
 .sendButton {
   position: absolute;
   right: 0;
-  visibility: hidden;
 }
 
 .imageWrapper {

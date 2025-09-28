@@ -10,7 +10,7 @@ import { usePutChatJoin } from "@/api/chats/putChatJoin";
 import { usePutChatLeave } from "@/api/chats/putChatLeave";
 import { usePostChatMessage } from "@/api/chat-messages/postChatMessage";
 import { usePutChatMessageLike } from "@/api/chat-messages/putChatMessageLike";
-import { deleteChatMessageLike } from "@/api/chat-messages/deleteChatMessageLike";
+import { useDeleteChatMessageLike } from "@/api/chat-messages/deleteChatMessageLike";
 import { useGetChatsUser } from "@/api/chats/getChatsUser";
 
 import { useSocket } from "@/hooks/useSocket";
@@ -64,7 +64,8 @@ const ChatRoom = ({ chatId }: ChatRoomProps) => {
   );
   const { data: userData } = useGetChatsUser({ chatId });
   const { mutate: postChatMessage } = usePostChatMessage();
-  const { mutate: likeChatMessage } = usePutChatMessageLike();
+  const { mutateAsync: likeChatMessage } = usePutChatMessageLike();
+  const { mutateAsync: deleteChatMessageLike } = useDeleteChatMessageLike();
 
   const { getSocketId, getSocket } = useSocket({ autoConnect: false });
   const { user_id } = useAuthStore();
@@ -128,30 +129,35 @@ const ChatRoom = ({ chatId }: ChatRoomProps) => {
     [scrollToBottom, isScrolledToBottom],
   );
 
-  const handleSendMessage = useCallback(async () => {
+  const handleSendMessage = useCallback(() => {
     if ((!message.trim() && images.length === 0) || !chatId || isSending) return;
 
     setIsSending(true);
     isUserSendingRef.current = true;
 
-    try {
-      postChatMessage({
+    postChatMessage(
+      {
         chatId,
         content: message.trim(),
         images: images.map((img) => img.fileName),
         replyToId: replyingTo?.messageId,
-      });
-
-      setMessage("");
-      setImages([]);
-      setReplyingTo(null);
-    } catch (error) {
-      console.error("Failed to send message:", error);
-    } finally {
-      setIsSending(false);
-      isUserSendingRef.current = false;
-    }
-  }, [message, chatId, isSending, postChatMessage, replyingTo]);
+      },
+      {
+        onSuccess: () => {
+          setMessage("");
+          setImages([]);
+          setReplyingTo(null);
+          setIsSending(false);
+          isUserSendingRef.current = false;
+        },
+        onError: (error) => {
+          console.error("Failed to send message:", error);
+          setIsSending(false);
+          isUserSendingRef.current = false;
+        },
+      },
+    );
+  }, [images, message, chatId, isSending, postChatMessage, replyingTo]);
 
   const handleTyping = useCallback((value: string) => {
     setMessage(value);
@@ -276,7 +282,7 @@ const ChatRoom = ({ chatId }: ChatRoomProps) => {
         if (isCurrentlyLiked) {
           await deleteChatMessageLike({ id: messageId });
         } else {
-          likeChatMessage({ id: messageId });
+          await likeChatMessage({ id: messageId });
         }
       } catch (error) {
         updateMessageLike(chatId, messageId, isCurrentlyLiked);
@@ -658,15 +664,17 @@ const ChatRoom = ({ chatId }: ChatRoomProps) => {
               onChange={(e) => handleTyping(e.target.value)}
               onKeyDown={handleKeyPress}
             />
-            <Button
-              type="filled-primary"
-              size="m"
-              className={styles.sendButton}
-              onClick={handleSendMessage}
-              disabled={(!message.trim() && images.length === 0) || isSending}
-            >
-              전송
-            </Button>
+            {(message.trim() || images.length > 0) && (
+              <Button
+                type="filled-primary"
+                size="m"
+                className={styles.sendButton}
+                onClick={handleSendMessage}
+                disabled={isSending}
+              >
+                전송
+              </Button>
+            )}
           </div>
         </div>
       </footer>
