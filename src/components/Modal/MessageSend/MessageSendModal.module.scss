@@ -117,6 +117,12 @@
   text-overflow: ellipsis;
 }
 
+.highlighted {
+  background-color: transparent !important;
+  color: #2bc466 !important;
+  font-weight: 600;
+}
+
 .url {
   @include Label2;
   color: $gray60;

@@ -1,5 +1,6 @@
 import { useState, useCallback, useMemo, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
+import Highlighter from "react-highlight-words";
 
 import { useMyFollowing } from "@/api/users/getMeFollow";
 import { usePostChat } from "@/api/chats/postChat";
@@ -153,7 +154,18 @@ const MessageSendModal = ({ onClose }: MessageSendModalProps) => {
                 />
               </div>
               <div className={styles.userInfo}>
-                <span className={styles.nickname}>{user.name}</span>
+                <div className={styles.nickname}>
+                  <Highlighter
+                    highlightClassName={styles.highlighted}
+                    searchWords={[debouncedKeyword || ""]}
+                    autoEscape
+                    textToHighlight={user.name}
+                    highlightStyle={{
+                      backgroundColor: "transparent",
+                      color: "#2bc466",
+                    }}
+                  />
+                </div>
                 <span className={styles.url}>@{user.url}</span>
               </div>
               <div className={styles.deliveryIcon}>
