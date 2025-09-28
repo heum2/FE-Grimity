@@ -54,6 +54,7 @@ const ChatRoom = ({ chatId }: ChatRoomProps) => {
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const messageInputRef = useRef<HTMLInputElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const lastMessageCountRef = useRef<number>(0);
   const isUserSendingRef = useRef<boolean>(false);
@@ -149,6 +150,11 @@ const ChatRoom = ({ chatId }: ChatRoomProps) => {
           setReplyingTo(null);
           setIsSending(false);
           isUserSendingRef.current = false;
+
+          // 포커스를 input으로 다시 설정
+          setTimeout(() => {
+            messageInputRef.current?.focus();
+          }, 0);
         },
         onError: (error) => {
           console.error("Failed to send message:", error);
@@ -657,6 +663,7 @@ const ChatRoom = ({ chatId }: ChatRoomProps) => {
               />
             </button>
             <input
+              ref={messageInputRef}
               type="text"
               className={styles.input}
               placeholder="메시지 보내기"
@@ -670,6 +677,7 @@ const ChatRoom = ({ chatId }: ChatRoomProps) => {
                 size="m"
                 className={styles.sendButton}
                 onClick={handleSendMessage}
+                onMouseDown={(e) => e.preventDefault()}
                 disabled={isSending}
               >
                 전송
