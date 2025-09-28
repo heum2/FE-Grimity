@@ -5,12 +5,12 @@ $footer-height: 84px;
 
 .container {
   width: 100%;
-  height: calc(100vh - $header-height);
+  height: calc($full-height - $header-height);
   display: flex;
   flex-direction: column;
 
   @include Size("mobile") {
-    height: 100vh;
+    height: $full-height;
   }
 }
 
@@ -68,7 +68,7 @@ $footer-height: 84px;
 .messagesContainer {
   flex: 1;
   min-height: 0;
-  max-height: calc(100vh - $header-height - $chat-room-height - $footer-height);
+  max-height: calc($full-height - $header-height - $chat-room-height - $footer-height);
   padding: 20px 40px;
   overflow-y: auto;
   display: flex;
@@ -78,7 +78,7 @@ $footer-height: 84px;
 
   @include Size("mobile") {
     padding: 10px 16px;
-    max-height: calc(100vh - $chat-room-height - $footer-height);
+    max-height: calc($full-height - $chat-room-height - $footer-height);
   }
 
   .loadingContainer {
