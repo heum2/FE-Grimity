@@ -72,7 +72,7 @@ export function useMyFollowing({ size, keyword }: MyFollowerRequest) {
   const accessToken = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
 
   return useInfiniteQuery<MyFollowingsResponse>({
-    queryKey: ["myFollowings"],
+    queryKey: ["myFollowings", keyword],
     queryFn: ({ pageParam }) =>
       getMyFollowing({ size, cursor: pageParam as string | undefined, keyword }),
     initialPageParam: undefined,
@@ -80,10 +80,5 @@ export function useMyFollowing({ size, keyword }: MyFollowerRequest) {
     getNextPageParam: (lastPage) => {
       return lastPage.nextCursor ? lastPage.nextCursor : undefined;
     },
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
-    staleTime: 5 * 60 * 1000,
-    gcTime: 10 * 60 * 1000,
   });
 }
