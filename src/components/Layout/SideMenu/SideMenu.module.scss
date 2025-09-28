@@ -6,7 +6,7 @@
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: $full-height;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease-in-out;
@@ -17,9 +17,9 @@
     pointer-events: auto;
   }
 
-  .uploadBtnContainer {
-    margin-top: 16px;
-    padding-bottom: 30px;
+  .loginBtn {
+    margin: 16px 0 30px;
+    padding: 0 20px;
   }
 
   .sideMenu {
@@ -27,7 +27,7 @@
     top: 0;
     right: 0;
     width: 240px;
-    height: 100vh;
+    height: $full-height;
     padding: 16px 0;
     background-color: $gray0;
     transform: translateX(100%);
@@ -112,6 +112,7 @@
         flex-direction: column;
         gap: 2px;
         margin-bottom: 20px;
+        padding: 0 20px;
       }
 
       .itemBtn {

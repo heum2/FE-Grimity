@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 import Icon from "@/components/Asset/IconTemp";
 import IconComponent from "@/components/Asset/Icon";
@@ -35,7 +36,7 @@ const ChatRoomHeader = ({ chatId, data }: ChatRoomHeaderProps) => {
         <ChatLeave selectedChatIds={[chatId]} close={close} onSuccess={() => router.back()} />
       ),
       {
-        className: styles.leaveModal,
+        props: { className: styles.leaveModal },
       },
     );
   };
@@ -44,6 +45,7 @@ const ChatRoomHeader = ({ chatId, data }: ChatRoomHeaderProps) => {
     openModalStore({
       type: "REPORT",
       data: { refType: "CHAT", refId: data?.id },
+      isFill: isMobile,
     });
     setIsDropdownOpen(false);
   };
@@ -86,20 +88,22 @@ const ChatRoomHeader = ({ chatId, data }: ChatRoomHeaderProps) => {
     <>
       <header className={styles.header}>
         <div className={styles.desktopLayout}>
-          <div className={styles.userInfo}>
-            <div className={styles.avatar}>
-              <img
-                src={data?.image || "/image/default.svg"}
-                alt="프로필 이미지"
-                width={40}
-                height={40}
-              />
+          <Link href={`/${data?.url}`}>
+            <div className={styles.userInfo}>
+              <div className={styles.avatar}>
+                <img
+                  src={data?.image || "/image/default.svg"}
+                  alt="프로필 이미지"
+                  width={40}
+                  height={40}
+                />
+              </div>
+              <div>
+                <p className={styles.username}>{data?.name}</p>
+                <p className={styles.hashtag}>@{data?.url}</p>
+              </div>
             </div>
-            <div>
-              <p className={styles.username}>{data?.name}</p>
-              <p className={styles.hashtag}>@{data?.url}</p>
-            </div>
-          </div>
+          </Link>
 
           <div className={styles.headerButtons}>
             <button
@@ -127,19 +131,21 @@ const ChatRoomHeader = ({ chatId, data }: ChatRoomHeaderProps) => {
               <Icon icon="chevronLeft" size="2xl" />
             </button>
 
-            <div className={styles.userInfo}>
-              <div className={styles.avatar}>
-                <img
-                  src={data?.image || "/image/default.svg"}
-                  alt="프로필 이미지"
-                  width={30}
-                  height={30}
-                />
+            <Link href={`/${data?.url}`}>
+              <div className={styles.userInfo}>
+                <div className={styles.avatar}>
+                  <img
+                    src={data?.image || "/image/default.svg"}
+                    alt="프로필 이미지"
+                    width={30}
+                    height={30}
+                  />
+                </div>
+                <div>
+                  <p className={styles.username}>{data?.name}</p>
+                </div>
               </div>
-              <div>
-                <p className={styles.username}>{data?.name}</p>
-              </div>
-            </div>
+            </Link>
           </div>
 
           <div className={styles.headerButtons}>

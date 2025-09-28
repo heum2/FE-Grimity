@@ -1,5 +1,6 @@
 import { useState, useCallback, useMemo, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
+import Highlighter from "react-highlight-words";
 
 import { useMyFollowing } from "@/api/users/getMeFollow";
 import { usePostChat } from "@/api/chats/postChat";
@@ -42,7 +43,7 @@ const MessageSendModal = ({ onClose }: MessageSendModalProps) => {
 
   const { mutate: createChat } = usePostChat();
 
-  const users = useMemo(() => {
+  const followingList = useMemo(() => {
     if (!searchResults?.pages) return [];
     return searchResults.pages.flatMap((page) => page.followings || []);
   }, [searchResults]);
@@ -111,7 +112,7 @@ const MessageSendModal = ({ onClose }: MessageSendModalProps) => {
         <SearchBar
           searchValue={searchKeyword}
           setSearchValue={setSearchKeyword}
-          placeholder="팔로우한 사용자 중 누구에게 메시지를 보낼까요?"
+          placeholder="누구에게 메시지를 보낼까요?"
           onSearch={() => {}}
         />
       </div>
@@ -122,14 +123,23 @@ const MessageSendModal = ({ onClose }: MessageSendModalProps) => {
             <p>검색 중...</p>
           </div>
         )}
-        {!isLoading && debouncedKeyword && users.length === 0 && (
+        {!debouncedKeyword.length && followingList.length === 0 && (
+          <div className={styles.empty}>
+            <p>
+              관심 있는 작가를 팔로우하고
+              <br />
+              메세지를 주고받아 보세요.
+            </p>
+          </div>
+        )}
+        {!isLoading && debouncedKeyword && followingList.length === 0 && (
           <div className={styles.empty}>
             <p>검색 결과가 없습니다.</p>
           </div>
         )}
 
         <div className={styles.userListContainer}>
-          {users.map((user: SearchedUser) => (
+          {followingList.map((user: SearchedUser) => (
             <div
               key={user.id}
               className={styles.userItem}
@@ -144,7 +154,18 @@ const MessageSendModal = ({ onClose }: MessageSendModalProps) => {
                 />
               </div>
               <div className={styles.userInfo}>
-                <span className={styles.nickname}>{user.name}</span>
+                <div className={styles.nickname}>
+                  <Highlighter
+                    highlightClassName={styles.highlighted}
+                    searchWords={[debouncedKeyword || ""]}
+                    autoEscape
+                    textToHighlight={user.name}
+                    highlightStyle={{
+                      backgroundColor: "transparent",
+                      color: "#2bc466",
+                    }}
+                  />
+                </div>
                 <span className={styles.url}>@{user.url}</span>
               </div>
               <div className={styles.deliveryIcon}>

@@ -1,15 +1,16 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { useRouter } from "next/router";
 
 import { useChatStore } from "@/states/chatStore";
 
-import DMHeader from "./DMHeader/DMHeader";
-import DMControls from "./DMControls/DMControls";
-import ChatList from "./ChatList/ChatList";
+import DMHeader from "@/components/DirectPage/DMHeader/DMHeader";
+import DMControls from "@/components/DirectPage/DMControls/DMControls";
+import ChatList from "@/components/DirectPage/ChatList/ChatList";
+import ChatListSkeleton from "@/components/DirectPage/ChatListSkeleton/ChatListSkeleton";
 import Button from "@/components/Button/Button";
 import MessageSendModal from "@/components/Modal/MessageSend/MessageSendModal";
 
-import { useGetChats } from "@/api/chats/getChats";
+import { useGetChatsInfinite } from "@/api/chats/getChats";
 
 import { useModal } from "@/hooks/useModal";
 
@@ -23,13 +24,17 @@ const DirectPage = () => {
 
   const { openModal } = useModal();
   const { markAsRead } = useChatStore();
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
-  const { data: chatsData, isLoading } = useGetChats({
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetChatsInfinite({
     keyword: searchValue,
     size: 20,
   });
 
-  const chatList = chatsData?.chats || [];
+  const chatList = useMemo(() => {
+    if (!data?.pages) return [];
+    return data.pages.flatMap((page) => page.chats || []);
+  }, [data]);
 
   const isAllSelected = chatList.length > 0 && selectedChatIds.length === chatList.length;
 
@@ -42,6 +47,29 @@ const DirectPage = () => {
   useEffect(() => {
     markAsRead();
   }, [markAsRead]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      {
+        rootMargin: "100px",
+      },
+    );
+
+    if (loadMoreRef.current) {
+      observer.observe(loadMoreRef.current);
+    }
+
+    return () => {
+      if (loadMoreRef.current) {
+        observer.unobserve(loadMoreRef.current);
+      }
+    };
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage, data?.pages.length]);
 
   const handleSearch = useCallback((value?: string) => {
     setSearchValue(value);
@@ -94,9 +122,7 @@ const DirectPage = () => {
           onNewMessage={handleNewMessage}
           onCloseEditMode={handleCloseEditMode}
         />
-        <div className={styles.loading}>
-          <p>채팅 목록을 불러오는 중...</p>
-        </div>
+        <ChatListSkeleton count={5} />
       </section>
     );
   }
@@ -145,6 +171,10 @@ const DirectPage = () => {
             onChatClick={handleChatClick}
             onToggleSelect={handleToggleSelect}
           />
+
+          {hasNextPage && <div ref={loadMoreRef} className={styles.loadMore} />}
+
+          {isFetchingNextPage && <ChatListSkeleton count={3} />}
         </div>
       )}
     </section>

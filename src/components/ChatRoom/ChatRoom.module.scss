@@ -5,12 +5,12 @@ $footer-height: 84px;
 
 .container {
   width: 100%;
-  height: calc(100vh - $header-height);
+  height: calc($full-height - $header-height);
   display: flex;
   flex-direction: column;
 
   @include Size("mobile") {
-    height: 100vh;
+    height: $full-height;
   }
 }
 
@@ -68,7 +68,7 @@ $footer-height: 84px;
 .messagesContainer {
   flex: 1;
   min-height: 0;
-  max-height: calc(100vh - $header-height - $chat-room-height - $footer-height);
+  max-height: calc($full-height - $header-height - $chat-room-height - $footer-height);
   padding: 20px 40px;
   overflow-y: auto;
   display: flex;
@@ -78,7 +78,7 @@ $footer-height: 84px;
 
   @include Size("mobile") {
     padding: 10px 16px;
-    max-height: calc(100vh - $chat-room-height - $footer-height);
+    max-height: calc($full-height - $chat-room-height - $footer-height);
   }
 
   .loadingContainer {
@@ -228,17 +228,25 @@ $footer-height: 84px;
   display: flex;
   flex-direction: column;
 
-  padding: 7px 8px 7px 16px;
+  padding: 13px 8px 13px 16px;
   background-color: $gray10;
   border: 1px solid $gray30;
   border-radius: 12px;
 
   &:focus-within {
     background-color: $gray0;
+  }
 
-    .sendButton {
-      visibility: visible;
-    }
+  @include Size("mobile") {
+    padding: 12px 4px 12px 8px;
+  }
+}
+
+.imageListContainer {
+  margin-bottom: 10px;
+
+  @include Size("mobile") {
+    margin-bottom: 14px;
   }
 }
 
@@ -246,6 +254,7 @@ $footer-height: 84px;
   display: flex;
   align-items: center;
   gap: 12px;
+  position: relative;
 }
 
 .cameraButton {
@@ -259,7 +268,7 @@ $footer-height: 84px;
 }
 
 .input {
-  flex-grow: 1;
+  width: 60%;
   padding: 3px 0;
   @include Body1;
   color: $gray70;
@@ -273,7 +282,8 @@ $footer-height: 84px;
 }
 
 .sendButton {
-  visibility: hidden;
+  position: absolute;
+  right: 0;
 }
 
 .imageWrapper {

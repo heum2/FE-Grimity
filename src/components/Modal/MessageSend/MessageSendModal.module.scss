@@ -9,6 +9,14 @@
   flex-direction: column;
   overflow: hidden;
   padding: 30px 32px;
+
+  @include Size("mobile") {
+    width: 100vw;
+    height: $full-height;
+    max-height: none;
+    border-radius: 0;
+    padding: 16px;
+  }
 }
 
 .header {
@@ -107,6 +115,12 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.highlighted {
+  background-color: transparent !important;
+  color: #2bc466 !important;
+  font-weight: 600;
 }
 
 .url {

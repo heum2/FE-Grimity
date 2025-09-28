@@ -1,4 +1,5 @@
 import { AxiosError } from "axios";
+import { useMutation } from "@tanstack/react-query";
 
 import axiosInstance from "@/constants/baseurl";
 
@@ -25,4 +26,8 @@ export const deleteChatMessageLike = async (params: DeleteChatMessageLikeParams)
   }
 };
 
-export default deleteChatMessageLike;
+export const useDeleteChatMessageLike = () => {
+  return useMutation({
+    mutationFn: deleteChatMessageLike,
+  });
+};
