@@ -35,7 +35,7 @@ const ChatRoomHeader = ({ chatId, data }: ChatRoomHeaderProps) => {
         <ChatLeave selectedChatIds={[chatId]} close={close} onSuccess={() => router.back()} />
       ),
       {
-        className: styles.leaveModal,
+        props: { className: styles.leaveModal },
       },
     );
   };
@@ -44,6 +44,7 @@ const ChatRoomHeader = ({ chatId, data }: ChatRoomHeaderProps) => {
     openModalStore({
       type: "REPORT",
       data: { refType: "CHAT", refId: data?.id },
+      isFill: isMobile,
     });
     setIsDropdownOpen(false);
   };
