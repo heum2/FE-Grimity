@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useRouter } from "next/router";
 
 import { useChatStore } from "@/states/chatStore";
@@ -7,12 +7,13 @@ import DMHeader from "@/components/DirectPage/DMHeader/DMHeader";
 import DMControls from "@/components/DirectPage/DMControls/DMControls";
 import ChatList from "@/components/DirectPage/ChatList/ChatList";
 import ChatListSkeleton from "@/components/DirectPage/ChatListSkeleton/ChatListSkeleton";
-import Button from "@/components/Button/Button";
+import EmptyState from "@/components/DirectPage/EmptyState/EmptyState";
 import MessageSendModal from "@/components/Modal/MessageSend/MessageSendModal";
 
 import { useGetChatsInfinite } from "@/api/chats/getChats";
 
 import { useModal } from "@/hooks/useModal";
+import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 
 import styles from "./DirectPage.module.scss";
 
@@ -24,11 +25,16 @@ const DirectPage = () => {
 
   const { openModal } = useModal();
   const { markAsRead } = useChatStore();
-  const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetChatsInfinite({
     keyword: searchValue,
     size: 20,
+  });
+
+  const { loadMoreRef } = useInfiniteScroll({
+    hasNextPage: hasNextPage || false,
+    isFetching: isFetchingNextPage,
+    onLoadMore: fetchNextPage,
   });
 
   const chatList = useMemo(() => {
@@ -48,29 +54,6 @@ const DirectPage = () => {
     markAsRead();
   }, [markAsRead]);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
-        }
-      },
-      {
-        rootMargin: "100px",
-      },
-    );
-
-    if (loadMoreRef.current) {
-      observer.observe(loadMoreRef.current);
-    }
-
-    return () => {
-      if (loadMoreRef.current) {
-        observer.unobserve(loadMoreRef.current);
-      }
-    };
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage, data?.pages.length]);
-
   const handleSearch = useCallback((value?: string) => {
     setSearchValue(value);
   }, []);
@@ -83,6 +66,12 @@ const DirectPage = () => {
     setIsEditMode(false);
   }, []);
 
+  const handleToggleSelect = useCallback((chatId: string) => {
+    setSelectedChatIds((prev) =>
+      prev.includes(chatId) ? prev.filter((id) => id !== chatId) : [...prev, chatId],
+    );
+  }, []);
+
   const handleChatClick = useCallback(
     (chatId: string) => {
       if (isEditMode) {
@@ -91,14 +80,8 @@ const DirectPage = () => {
       }
       router.push(`/direct/${chatId}`);
     },
-    [isEditMode, router],
+    [isEditMode, router, handleToggleSelect],
   );
-
-  const handleToggleSelect = useCallback((chatId: string) => {
-    setSelectedChatIds((prev) =>
-      prev.includes(chatId) ? prev.filter((id) => id !== chatId) : [...prev, chatId],
-    );
-  }, []);
 
   const handleSelectAll = useCallback(() => {
     if (isAllSelected) {
@@ -130,6 +113,7 @@ const DirectPage = () => {
   return (
     <section className={styles.container}>
       <DMHeader
+        isChatEmpty={!chatList.length}
         isEditMode={isEditMode}
         searchKeyword={searchValue}
         onSearch={handleSearch}
@@ -139,17 +123,7 @@ const DirectPage = () => {
       />
 
       {chatList.length === 0 ? (
-        <div className={styles.empty}>
-          <p className={styles.emptyText}>아직 주고 받은 메세지가 없어요</p>
-          <Button
-            type="filled-primary"
-            size="m"
-            className={styles.emptyButton}
-            onClick={handleNewMessage}
-          >
-            새 메시지 보내기
-          </Button>
-        </div>
+        <EmptyState onNewMessage={handleNewMessage} />
       ) : (
         <div className={styles.chatContainer}>
           <div className={`${styles.controls} ${isEditMode ? styles.editModeControls : ""}`}>
