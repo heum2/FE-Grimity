@@ -63,5 +63,13 @@ export const useChatRoom = ({ chatId, onSetupListeners }: UseChatRoomOptions) =>
 
       setCurrentChatId(null);
     };
-  }, [chatId, getSocket, getSocketId, joinChat, leaveChat, showToast, setCurrentChatId, initializeChatRoom, onSetupListeners]);
+  }, [
+    chatId,
+    joinChat,
+    leaveChat,
+    showToast,
+    setCurrentChatId,
+    initializeChatRoom,
+    onSetupListeners,
+  ]);
 };

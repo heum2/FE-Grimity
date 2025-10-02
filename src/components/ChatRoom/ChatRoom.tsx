@@ -1,5 +1,4 @@
 import { useEffect, useState, useCallback, useRef } from "react";
-import { useQueryClient } from "@tanstack/react-query";
 import { Socket } from "socket.io-client";
 
 import { useGetChatMessages } from "@/api/chat-messages/getChatMessages";
@@ -19,7 +18,7 @@ import MessageInput from "@/components/ChatRoom/MessageInput/MessageInput";
 import ReplyBar from "@/components/ChatRoom/ReplyBar/ReplyBar";
 
 import type { ChatMessage } from "@/types/socket.types";
-import type { ChatsResponse, NewChatMessageEventResponse } from "@grimity/dto";
+import type { NewChatMessageEventResponse } from "@grimity/dto";
 
 import { convertApiMessageToChatMessage } from "@/utils/messageConverter";
 
@@ -47,7 +46,6 @@ const ChatRoom = ({ chatId }: ChatRoomProps) => {
   const { mutate: postChatMessage } = usePostChatMessage();
 
   const { user_id } = useAuthStore();
-  const queryClient = useQueryClient();
 
   const { addMessage, initializeWithMessages, updateMessageLike } = useChatStore();
 
@@ -175,40 +173,6 @@ const ChatRoom = ({ chatId }: ChatRoomProps) => {
             addMessage(chatId, convertedMessage);
           });
 
-          const lastMessage = socketResponse.messages[socketResponse.messages.length - 1];
-
-          queryClient
-            .getQueryCache()
-            .findAll({ queryKey: ["chats"] })
-            .forEach((query) => {
-              queryClient.setQueryData(query.queryKey, (oldData: ChatsResponse) => {
-                if (!oldData?.chats) return oldData;
-
-                const updatedChat = oldData.chats.find((chat) => chat.id === socketResponse.chatId);
-                if (!updatedChat) return oldData;
-
-                const otherChats = oldData.chats.filter(
-                  (chat) => chat.id !== socketResponse.chatId,
-                );
-
-                const updatedChatWithNewMessage = {
-                  ...updatedChat,
-                  lastMessage: {
-                    id: lastMessage.id,
-                    content: lastMessage.content,
-                    image: lastMessage.image,
-                    createdAt: lastMessage.createdAt,
-                    updatedAt: lastMessage.createdAt,
-                  },
-                };
-
-                return {
-                  ...oldData,
-                  chats: [updatedChatWithNewMessage, ...otherChats],
-                };
-              });
-            });
-
           if (socketResponse.senderId === user_id) {
             handleScrollBehavior("user-send");
           } else {
@@ -234,7 +198,7 @@ const ChatRoom = ({ chatId }: ChatRoomProps) => {
         socketInstance.off("unlikeChatMessage", handleUnlikeChatMessage);
       };
     },
-    [chatId, addMessage, user_id, handleScrollBehavior, queryClient, updateMessageLike],
+    [chatId, addMessage, user_id, handleScrollBehavior, updateMessageLike],
   );
 
   useChatRoom({ chatId, onSetupListeners: setupSocketListeners });
