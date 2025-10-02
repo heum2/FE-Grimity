@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { useMyData } from "@/api/users/getMe";
 
@@ -19,6 +20,7 @@ import type { LayoutProps } from "@/components/Layout/Layout.types";
 import type { NewChatMessageEventResponse } from "@grimity/dto";
 
 import { setDocumentViewportHeight } from "@/utils/viewport";
+import { updateChatListWithNewMessage, type ChatQueryData } from "@/utils/chatListUpdater";
 
 import styles from "@/components/Layout/Layout.module.scss";
 
@@ -29,12 +31,13 @@ export default function Layout({ children }: LayoutProps) {
 
   const { isMobile, isTablet } = useDeviceStore();
 
-  const { isLoggedIn, setIsLoggedIn, setAccessToken, setUserId, setIsAuthReady, access_token } =
+  const { isLoggedIn, setIsLoggedIn, setAccessToken, setUserId, setIsAuthReady, access_token, user_id } =
     useAuthStore();
   const { refetch: fetchMyData } = useMyData();
   const { currentChatId, setHasUnreadMessages } = useChatStore();
 
   const { connect, disconnect, getSocket } = useSocket({ autoConnect: false });
+  const queryClient = useQueryClient();
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -91,7 +94,7 @@ export default function Layout({ children }: LayoutProps) {
     }
   }, [isLoggedIn, access_token, connect, disconnect]);
 
-  // 전역 메시지 알림 처리
+  // 전역 메시지 알림 및 채팅 목록 업데이트 처리
   useEffect(() => {
     if (!isLoggedIn || !access_token) return;
 
@@ -103,6 +106,16 @@ export default function Layout({ children }: LayoutProps) {
       if (newMessage.chatId !== currentChatId) {
         setHasUnreadMessages(true);
       }
+
+      // 채팅 목록 업데이트
+      queryClient
+        .getQueryCache()
+        .findAll({ queryKey: ["chats"] })
+        .forEach((query) => {
+          queryClient.setQueryData(query.queryKey, (oldData: ChatQueryData) => {
+            return updateChatListWithNewMessage(oldData, newMessage, user_id || "");
+          });
+        });
     };
 
     socketInstance.on("newChatMessage", handleNewChatMessage);
@@ -110,7 +123,7 @@ export default function Layout({ children }: LayoutProps) {
     return () => {
       socketInstance.off("newChatMessage", handleNewChatMessage);
     };
-  }, [isLoggedIn, access_token, getSocket, currentChatId, setHasUnreadMessages]);
+  }, [isLoggedIn, access_token, currentChatId, setHasUnreadMessages, queryClient]);
 
   // 스크롤 위치 감지
   useEffect(() => {
