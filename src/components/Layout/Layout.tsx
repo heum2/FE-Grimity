@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { useMyData } from "@/api/users/getMe";
 
@@ -19,6 +20,7 @@ import type { LayoutProps } from "@/components/Layout/Layout.types";
 import type { NewChatMessageEventResponse } from "@grimity/dto";
 
 import { setDocumentViewportHeight } from "@/utils/viewport";
+import { updateChatListWithNewMessage, type ChatQueryData } from "@/utils/chatListUpdater";
 
 import styles from "@/components/Layout/Layout.module.scss";
 
@@ -29,12 +31,12 @@ export default function Layout({ children }: LayoutProps) {
 
   const { isMobile, isTablet } = useDeviceStore();
 
-  const { isLoggedIn, setIsLoggedIn, setAccessToken, setUserId, setIsAuthReady, access_token } =
-    useAuthStore();
+  const { setIsLoggedIn, setAccessToken, setUserId, setIsAuthReady, user_id } = useAuthStore();
   const { refetch: fetchMyData } = useMyData();
   const { currentChatId, setHasUnreadMessages } = useChatStore();
 
-  const { connect, disconnect, getSocket } = useSocket({ autoConnect: false });
+  const { socket, isConnected } = useSocket();
+  const queryClient = useQueryClient();
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -82,35 +84,33 @@ export default function Layout({ children }: LayoutProps) {
     initializeAuth();
   }, []);
 
-  // 글로벌 소켓 연결 관리
+  // 전역 메시지 알림 및 채팅 목록 업데이트 처리
   useEffect(() => {
-    if (isLoggedIn && access_token) {
-      connect();
-    } else {
-      disconnect();
-    }
-  }, [isLoggedIn, access_token, connect, disconnect]);
-
-  // 전역 메시지 알림 처리
-  useEffect(() => {
-    if (!isLoggedIn || !access_token) return;
-
-    const socketInstance = getSocket();
-    if (!socketInstance) return;
+    if (!isConnected || !socket) return;
 
     const handleNewChatMessage = (newMessage: NewChatMessageEventResponse) => {
       // 현재 보고 있는 채팅방의 메시지가 아닌 경우에만 알림 표시
       if (newMessage.chatId !== currentChatId) {
         setHasUnreadMessages(true);
       }
+
+      // 채팅 목록 업데이트
+      queryClient
+        .getQueryCache()
+        .findAll({ queryKey: ["chats"] })
+        .forEach((query) => {
+          queryClient.setQueryData(query.queryKey, (oldData: ChatQueryData) => {
+            return updateChatListWithNewMessage(oldData, newMessage, user_id || "");
+          });
+        });
     };
 
-    socketInstance.on("newChatMessage", handleNewChatMessage);
+    socket.on("newChatMessage", handleNewChatMessage);
 
     return () => {
-      socketInstance.off("newChatMessage", handleNewChatMessage);
+      socket.off("newChatMessage", handleNewChatMessage);
     };
-  }, [isLoggedIn, access_token, getSocket, currentChatId, setHasUnreadMessages]);
+  }, [isConnected, currentChatId, setHasUnreadMessages, queryClient]);
 
   // 스크롤 위치 감지
   useEffect(() => {

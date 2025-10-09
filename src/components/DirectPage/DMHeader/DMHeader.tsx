@@ -7,20 +7,22 @@ import Button from "@/components/Button/Button";
 import styles from "./DMHeader.module.scss";
 
 interface DMHeaderProps {
-  onSearch: (value?: string) => void;
+  isChatEmpty?: boolean;
   searchKeyword?: string;
+  isEditMode?: boolean;
+  onSearch: (value?: string) => void;
   onEditMode?: () => void;
   onNewMessage?: () => void;
-  isEditMode?: boolean;
   onCloseEditMode?: () => void;
 }
 
 const DMHeader = ({
+  isChatEmpty,
   searchKeyword,
+  isEditMode,
   onSearch,
   onEditMode,
   onNewMessage,
-  isEditMode,
   onCloseEditMode,
 }: DMHeaderProps) => {
   const [keyword, setKeyword] = useState(searchKeyword || "");
@@ -30,36 +32,46 @@ const DMHeader = ({
     onSearch();
   };
 
+  const buttonRender = () => {
+    if (isChatEmpty) {
+      return null;
+    }
+
+    if (isEditMode) {
+      return (
+        <Button
+          type="outlined-assistive"
+          size="s"
+          leftIcon={<Icon icon="close" />}
+          onClick={onCloseEditMode}
+        >
+          닫기
+        </Button>
+      );
+    }
+
+    return (
+      <>
+        <Button
+          type="outlined-assistive"
+          size="s"
+          leftIcon={<Icon icon="setting" />}
+          onClick={onEditMode}
+        >
+          편집
+        </Button>
+        <Button type="filled-primary" size="s" onClick={onNewMessage}>
+          새 메시지
+        </Button>
+      </>
+    );
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <h1 className={styles.title}>DM</h1>
-        <div className={styles.headerButtons}>
-          {isEditMode ? (
-            <Button
-              type="outlined-assistive"
-              size="s"
-              leftIcon={<Icon icon="close" />}
-              onClick={onCloseEditMode}
-            >
-              닫기
-            </Button>
-          ) : (
-            <>
-              <Button
-                type="outlined-assistive"
-                size="s"
-                leftIcon={<Icon icon="setting" />}
-                onClick={onEditMode}
-              >
-                편집
-              </Button>
-              <Button type="filled-primary" size="s" onClick={onNewMessage}>
-                새 메시지
-              </Button>
-            </>
-          )}
-        </div>
+        <div className={styles.headerButtons}>{buttonRender()}</div>
       </div>
 
       <div className={styles.searchContainer}>
