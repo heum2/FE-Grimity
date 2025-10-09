@@ -14,24 +14,23 @@ interface UseChatRoomOptions {
 
 export const useChatRoom = ({ chatId, onSetupListeners }: UseChatRoomOptions) => {
   const joinedSocketIdRef = useRef<string | null>(null);
-  const { getSocketId, getSocket } = useSocket({ autoConnect: false });
+  const { socket, isConnected } = useSocket();
   const { mutate: joinChat } = usePutChatJoin();
   const { mutate: leaveChat } = usePutChatLeave();
   const { showToast } = useToast();
   const { setCurrentChatId, initializeChatRoom } = useChatStore();
 
   useEffect(() => {
-    const socketInstance = getSocket();
-    if (!socketInstance) {
+    if (!isConnected || !socket) {
       return;
     }
 
     setCurrentChatId(chatId);
     initializeChatRoom(chatId);
 
-    const cleanup = onSetupListeners(socketInstance);
+    const cleanup = onSetupListeners(socket);
 
-    const socketId = getSocketId();
+    const socketId = socket.id;
     if (socketId) {
       joinedSocketIdRef.current = socketId;
       joinChat(
@@ -65,6 +64,7 @@ export const useChatRoom = ({ chatId, onSetupListeners }: UseChatRoomOptions) =>
     };
   }, [
     chatId,
+    isConnected,
     joinChat,
     leaveChat,
     showToast,

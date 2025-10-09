@@ -1,60 +1,51 @@
-import { useEffect, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
-
-import { socketManager } from "@/utils/socket";
 
 import { useAuthStore } from "@/states/authStore";
 
+import { socketManager } from "@/utils/socket";
+
 interface UseSocketProps {
-  serverUrl?: string;
   autoConnect?: boolean;
 }
 
-export const useSocket = ({
-  serverUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://api.grimity.com",
-  autoConnect = true,
-}: UseSocketProps = {}) => {
-  const { access_token } = useAuthStore();
+export const useSocket = ({ autoConnect = false }: UseSocketProps = {}) => {
+  const serverUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://api.grimity.com";
+  const { access_token, isLoggedIn } = useAuthStore();
 
-  const connect = useCallback(() => {
-    return socketManager.connect(serverUrl, access_token);
-  }, [serverUrl, access_token]);
+  const [isConnected, setIsConnected] = useState(socketManager.getConnectionStatus());
+  const [socket, setSocket] = useState<Socket | null>(socketManager.getSocket());
 
-  const disconnect = useCallback(() => {
-    socketManager.disconnect();
-  }, []);
+  // 소켓 초기화 및 구독
+  useEffect(() => {
+    const socketInstance = socketManager.initialize(serverUrl, access_token);
+    setSocket(socketInstance);
 
-  const getSocket = useCallback((): Socket | null => {
-    return socketManager.getSocket();
-  }, []);
+    const unsubscribe = socketManager.subscribe(() => {
+      setIsConnected(socketManager.getConnectionStatus());
+    });
 
-  const isConnected = useCallback((): boolean => {
-    return socketManager.isSocketConnected();
-  }, []);
+    return unsubscribe;
+  }, [serverUrl]);
 
-  const getSocketId = useCallback((): string | null => {
-    return socketManager.getSocketId();
-  }, []);
+  // 소켓 연결/해제 관리
+  useEffect(() => {
+    if (isLoggedIn && access_token) {
+      socketManager.connect(access_token);
+    } else {
+      socketManager.disconnect();
+    }
+  }, [isLoggedIn, access_token]);
 
+  // autoConnect 옵션 처리 (하위 호환성)
   useEffect(() => {
     if (autoConnect && access_token) {
-      connect();
-    } else if (autoConnect && !access_token) {
-      disconnect();
+      socketManager.connect(access_token);
     }
-
-    return () => {
-      if (autoConnect) {
-        disconnect();
-      }
-    };
-  }, [autoConnect, access_token, connect, disconnect]);
+  }, [autoConnect, access_token]);
 
   return {
-    connect,
-    disconnect,
-    getSocket,
+    socket,
     isConnected,
-    getSocketId,
   };
 };

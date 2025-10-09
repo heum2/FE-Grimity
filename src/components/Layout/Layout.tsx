@@ -31,12 +31,11 @@ export default function Layout({ children }: LayoutProps) {
 
   const { isMobile, isTablet } = useDeviceStore();
 
-  const { isLoggedIn, setIsLoggedIn, setAccessToken, setUserId, setIsAuthReady, access_token, user_id } =
-    useAuthStore();
+  const { setIsLoggedIn, setAccessToken, setUserId, setIsAuthReady, user_id } = useAuthStore();
   const { refetch: fetchMyData } = useMyData();
   const { currentChatId, setHasUnreadMessages } = useChatStore();
 
-  const { connect, disconnect, getSocket } = useSocket({ autoConnect: false });
+  const { socket, isConnected } = useSocket();
   const queryClient = useQueryClient();
 
   const scrollToTop = () => {
@@ -85,21 +84,9 @@ export default function Layout({ children }: LayoutProps) {
     initializeAuth();
   }, []);
 
-  // 글로벌 소켓 연결 관리
-  useEffect(() => {
-    if (isLoggedIn && access_token) {
-      connect();
-    } else {
-      disconnect();
-    }
-  }, [isLoggedIn, access_token, connect, disconnect]);
-
   // 전역 메시지 알림 및 채팅 목록 업데이트 처리
   useEffect(() => {
-    if (!isLoggedIn || !access_token) return;
-
-    const socketInstance = getSocket();
-    if (!socketInstance) return;
+    if (!isConnected || !socket) return;
 
     const handleNewChatMessage = (newMessage: NewChatMessageEventResponse) => {
       // 현재 보고 있는 채팅방의 메시지가 아닌 경우에만 알림 표시
@@ -118,12 +105,12 @@ export default function Layout({ children }: LayoutProps) {
         });
     };
 
-    socketInstance.on("newChatMessage", handleNewChatMessage);
+    socket.on("newChatMessage", handleNewChatMessage);
 
     return () => {
-      socketInstance.off("newChatMessage", handleNewChatMessage);
+      socket.off("newChatMessage", handleNewChatMessage);
     };
-  }, [isLoggedIn, access_token, currentChatId, setHasUnreadMessages, queryClient]);
+  }, [isConnected, currentChatId, setHasUnreadMessages, queryClient]);
 
   // 스크롤 위치 감지
   useEffect(() => {
