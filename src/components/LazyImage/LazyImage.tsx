@@ -6,36 +6,33 @@ import styles from "./LazyImage.module.scss";
 interface LazyImageProps {
   src: string;
   alt: string;
-  width?: number;
-  height?: number;
+  width: number;
+  height: number;
   className?: string;
 }
 
 const LazyImage: React.FC<LazyImageProps> = ({ src, alt, width, height, className }) => {
-  const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
 
-  const handleLoad = () => {
-    setIsLoaded(true);
-  };
+  const paddingTop = `${(height / width) * 100}%`;
 
   const handleError = () => {
     setHasError(true);
-    setIsLoaded(true);
   };
 
   return (
     <div className={`${styles.container} ${className || ""}`}>
       {!hasError && (
-        <Image
-          src={src}
-          alt={alt}
-          width={width}
-          height={height}
-          className={`${styles.image} ${isLoaded ? styles.loaded : styles.loading}`}
-          onLoad={handleLoad}
-          onError={handleError}
-        />
+        <div className={styles.imageContainer} style={{ paddingTop }}>
+          <Image
+            src={src}
+            alt={alt}
+            fill
+            sizes="(max-width: 768px) 100vw, 240px"
+            className={styles.image}
+            onError={handleError}
+          />
+        </div>
       )}
 
       {hasError && (
