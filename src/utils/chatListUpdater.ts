@@ -7,6 +7,11 @@ import type { ChatsResponse, ChatResponse, NewChatMessageEventResponse } from "@
 export type ChatQueryData = ChatsResponse | InfiniteData<ChatsResponse> | undefined;
 
 /**
+ * 업데이트 결과 타입 (null은 채팅을 찾지 못한 경우)
+ */
+export type UpdateResult = ChatQueryData | null;
+
+/**
  * InfiniteData 타입 가드
  */
 function isInfiniteData(data: ChatQueryData): data is InfiniteData<ChatsResponse> {
@@ -45,7 +50,7 @@ function updateInfiniteQueryData(
   newMessage: NewChatMessageEventResponse,
   lastMessage: NewChatMessageEventResponse["messages"][0],
   currentUserId: string,
-): InfiniteData<ChatsResponse> | undefined {
+): InfiniteData<ChatsResponse> | null {
   let chatFound = false;
 
   const updatedPages = oldData.pages.map((page) => {
@@ -69,7 +74,8 @@ function updateInfiniteQueryData(
     };
   });
 
-  if (!chatFound) return oldData;
+  // 채팅을 찾지 못한 경우 null 반환 (새 채팅임을 알림)
+  if (!chatFound) return null;
 
   return {
     ...oldData,
@@ -85,11 +91,12 @@ function updateNormalQueryData(
   newMessage: NewChatMessageEventResponse,
   lastMessage: NewChatMessageEventResponse["messages"][0],
   currentUserId: string,
-): ChatsResponse | undefined {
+): ChatsResponse | null {
   if (!oldData.chats) return oldData;
 
   const updatedChat = oldData.chats.find((chat) => chat.id === newMessage.chatId);
-  if (!updatedChat) return oldData;
+  // 채팅을 찾지 못한 경우 null 반환 (새 채팅임을 알림)
+  if (!updatedChat) return null;
 
   const otherChats = oldData.chats.filter((chat) => chat.id !== newMessage.chatId);
   const updatedChatWithNewMessage = createUpdatedChat(
@@ -111,13 +118,13 @@ function updateNormalQueryData(
  * @param oldData - 기존 쿼리 데이터 (무한 스크롤 또는 일반 쿼리)
  * @param newMessage - 새로 받은 채팅 메시지 이벤트
  * @param currentUserId - 현재 사용자 ID
- * @returns 업데이트된 쿼리 데이터
+ * @returns 업데이트된 쿼리 데이터 (null이면 채팅을 찾지 못한 경우 - 새 채팅)
  */
 export function updateChatListWithNewMessage(
   oldData: ChatQueryData,
   newMessage: NewChatMessageEventResponse,
   currentUserId: string,
-): ChatQueryData {
+): UpdateResult {
   if (!oldData || !newMessage.messages?.length) return oldData;
 
   const lastMessage = newMessage.messages[newMessage.messages.length - 1];

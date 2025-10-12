@@ -92,7 +92,7 @@ export const useChatMessages = ({ chatId, containerRef }: UseChatMessagesOptions
   );
 
   useEffect(() => {
-    if (data?.pages.length && !currentRoom?.messages.length) {
+    if (data?.pages.length) {
       const firstPage = data.pages[0];
       const convertedMessages = firstPage.messages.map((msg) =>
         convertApiMessageToChatMessage(msg, chatId),
@@ -100,7 +100,7 @@ export const useChatMessages = ({ chatId, containerRef }: UseChatMessagesOptions
 
       initializeWithMessages(chatId, convertedMessages.reverse(), firstPage.nextCursor);
     }
-  }, [data, chatId, currentRoom?.messages.length, initializeWithMessages]);
+  }, [data, chatId, initializeWithMessages]);
 
   return {
     currentRoom,
