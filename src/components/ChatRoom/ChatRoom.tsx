@@ -1,7 +1,6 @@
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useLayoutEffect } from "react";
 import { Socket } from "socket.io-client";
 
-import { useGetChatMessages } from "@/api/chat-messages/getChatMessages";
 import { usePostChatMessage } from "@/api/chat-messages/postChatMessage";
 import { useGetChatsUser } from "@/api/chats/getChatsUser";
 
@@ -20,8 +19,6 @@ import ReplyBar from "@/components/ChatRoom/ReplyBar/ReplyBar";
 import type { ChatMessage } from "@/types/socket.types";
 import type { NewChatMessageEventResponse } from "@grimity/dto";
 
-import { convertApiMessageToChatMessage } from "@/utils/messageConverter";
-
 import styles from "./ChatRoom.module.scss";
 
 interface ChatRoomProps {
@@ -34,22 +31,17 @@ const ChatRoom = ({ chatId }: ChatRoomProps) => {
   const [images, setImages] = useState<{ fileName: string; fullUrl: string }[]>([]);
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
-  const lastMessageCountRef = useRef<number>(0);
   const isUserSendingRef = useRef<boolean>(false);
   const messageInputRef = useRef<HTMLInputElement>(null);
 
-  const { data: initialChatData } = useGetChatMessages(
-    { chatId, size: 20 },
-    { enabled: !!chatId && typeof chatId === "string" },
-  );
   const { data: userData } = useGetChatsUser({ chatId });
   const { mutate: postChatMessage } = usePostChatMessage();
 
   const { user_id } = useAuthStore();
 
-  const { addMessage, initializeWithMessages, updateMessageLike } = useChatStore();
+  const { addMessage, updateMessageLike } = useChatStore();
 
-  const { currentRoom, handleScroll } = useChatMessages({
+  const { currentRoom, onScroll } = useChatMessages({
     chatId,
     containerRef: messagesContainerRef,
   });
@@ -70,33 +62,6 @@ const ChatRoom = ({ chatId }: ChatRoomProps) => {
       container.scrollTop = container.scrollHeight;
     }
   }, []);
-
-  const isScrolledToBottom = useCallback(() => {
-    const container = messagesContainerRef.current;
-    if (!container) return false;
-
-    const threshold = 10;
-    return container.scrollTop + container.clientHeight >= container.scrollHeight - threshold;
-  }, []);
-
-  const handleScrollBehavior = useCallback(
-    (type: "user-send" | "new-message" | "initial-load") => {
-      switch (type) {
-        case "user-send":
-          setTimeout(() => scrollToBottom(), 100);
-          break;
-        case "new-message":
-          if (isScrolledToBottom()) {
-            scrollToBottom();
-          }
-          break;
-        case "initial-load":
-          setTimeout(() => scrollToBottom(), 100);
-          break;
-      }
-    },
-    [scrollToBottom, isScrolledToBottom],
-  );
 
   const handleSendMessage = useCallback(() => {
     if ((!message.trim() && images.length === 0) || !chatId || isSending) return;
@@ -172,12 +137,6 @@ const ChatRoom = ({ chatId }: ChatRoomProps) => {
 
             addMessage(chatId, convertedMessage);
           });
-
-          if (socketResponse.senderId === user_id) {
-            handleScrollBehavior("user-send");
-          } else {
-            handleScrollBehavior("new-message");
-          }
         }
       };
 
@@ -198,46 +157,16 @@ const ChatRoom = ({ chatId }: ChatRoomProps) => {
         socketInstance.off("unlikeChatMessage", handleUnlikeChatMessage);
       };
     },
-    [chatId, addMessage, user_id, handleScrollBehavior, updateMessageLike],
+    [chatId, addMessage, user_id, updateMessageLike],
   );
 
   useChatRoom({ chatId, onSetupListeners: setupSocketListeners });
 
-  useEffect(() => {
-    if (initialChatData?.pages.length) {
-      const firstPage = initialChatData.pages[0];
-      const convertedMessages = firstPage.messages.map((msg) =>
-        convertApiMessageToChatMessage(msg, chatId),
-      );
-
-      initializeWithMessages(chatId, convertedMessages.reverse(), firstPage.nextCursor);
+  useLayoutEffect(() => {
+    if (currentRoom?.messages.length > 0) {
+      scrollToBottom();
     }
-  }, [initialChatData, chatId, initializeWithMessages]);
-
-  useEffect(() => {
-    const messages = currentRoom?.messages;
-    if (!messages || messages.length === 0) return;
-
-    const currentMessageCount = messages.length;
-    const previousMessageCount = lastMessageCountRef.current;
-
-    if (currentMessageCount !== previousMessageCount) {
-      const isFirstLoad = previousMessageCount === 0;
-      const isNewMessageAdded = currentMessageCount > previousMessageCount;
-      const isLoadingMore = currentRoom?.isLoadingMore;
-
-      if (isFirstLoad) {
-        handleScrollBehavior("initial-load");
-      } else if (isNewMessageAdded && !isLoadingMore) {
-        if (isUserSendingRef.current) {
-          return;
-        } else {
-          handleScrollBehavior("new-message");
-        }
-      }
-      lastMessageCountRef.current = currentMessageCount;
-    }
-  }, [currentRoom?.messages, currentRoom?.isLoadingMore, handleScrollBehavior]);
+  }, [currentRoom?.messages.length, scrollToBottom]);
 
   return (
     <section className={styles.container}>
@@ -249,7 +178,7 @@ const ChatRoom = ({ chatId }: ChatRoomProps) => {
         userData={userData}
         hoveredMessageId={hoveredMessageId}
         containerRef={messagesContainerRef}
-        onScroll={handleScroll}
+        onScroll={onScroll}
         onMouseEnterMessage={handleMouseEnterMessage}
         onMouseLeaveMessage={handleMouseLeaveMessage}
         onLikeMessage={handleLikeMessage}

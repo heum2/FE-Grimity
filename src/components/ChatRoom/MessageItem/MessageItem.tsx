@@ -52,8 +52,8 @@ const MessageItem = ({
               key={index}
               src={src}
               alt={`${index + 1}번째 이미지`}
-              width={300}
-              height={300}
+              width={240}
+              height={360}
             />
           ))}
 

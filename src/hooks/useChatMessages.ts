@@ -1,8 +1,9 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect } from "react";
 
-import { getChatMessages } from "@/api/chat-messages/getChatMessages";
-import { useToast } from "@/hooks/useToast";
+import { useGetChatMessages } from "@/api/chat-messages/getChatMessages";
 import { useChatStore } from "@/states/chatStore";
+import { useToast } from "@/hooks/useToast";
+
 import { convertApiMessageToChatMessage } from "@/utils/messageConverter";
 
 interface UseChatMessagesOptions {
@@ -12,13 +13,24 @@ interface UseChatMessagesOptions {
 
 export const useChatMessages = ({ chatId, containerRef }: UseChatMessagesOptions) => {
   const { showToast } = useToast();
-  const { chatRooms, setIsLoadingMore, addOlderMessages, setNextCursor, setHasNextPage } =
-    useChatStore();
+  const {
+    chatRooms,
+    setIsLoadingMore,
+    addOlderMessages,
+    setNextCursor,
+    setHasNextPage,
+    initializeWithMessages,
+  } = useChatStore();
 
   const currentRoom = chatRooms[chatId];
 
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetChatMessages(
+    { chatId, size: 20 },
+    { enabled: !!chatId && typeof chatId === "string" },
+  );
+
   const loadMoreMessages = useCallback(async () => {
-    if (!currentRoom?.hasNextPage || currentRoom?.isLoadingMore) return;
+    if (!hasNextPage || isFetchingNextPage) return;
 
     const container = containerRef.current;
     if (!container) return;
@@ -29,19 +41,18 @@ export const useChatMessages = ({ chatId, containerRef }: UseChatMessagesOptions
     setIsLoadingMore(chatId, true);
 
     try {
-      const response = await getChatMessages({
-        chatId,
-        size: 20,
-        cursor: currentRoom.nextCursor || undefined,
-      });
+      const result = await fetchNextPage();
 
-      const convertedMessages = response.messages.map((msg) =>
-        convertApiMessageToChatMessage(msg, chatId),
-      );
+      if (result.data) {
+        const lastPage = result.data.pages[result.data.pages.length - 1];
+        const convertedMessages = lastPage.messages.map((msg) =>
+          convertApiMessageToChatMessage(msg, chatId),
+        );
 
-      addOlderMessages(chatId, convertedMessages.reverse());
-      setNextCursor(chatId, response.nextCursor);
-      setHasNextPage(chatId, !!response.nextCursor);
+        addOlderMessages(chatId, convertedMessages.reverse());
+        setNextCursor(chatId, lastPage.nextCursor);
+        setHasNextPage(chatId, !!lastPage.nextCursor);
+      }
 
       requestAnimationFrame(() => {
         if (container) {
@@ -58,10 +69,10 @@ export const useChatMessages = ({ chatId, containerRef }: UseChatMessagesOptions
     }
   }, [
     chatId,
-    currentRoom?.hasNextPage,
-    currentRoom?.isLoadingMore,
-    currentRoom?.nextCursor,
+    hasNextPage,
+    isFetchingNextPage,
     containerRef,
+    fetchNextPage,
     setIsLoadingMore,
     addOlderMessages,
     setNextCursor,
@@ -73,16 +84,28 @@ export const useChatMessages = ({ chatId, containerRef }: UseChatMessagesOptions
     (e: React.UIEvent<HTMLDivElement>) => {
       const { scrollTop } = e.currentTarget;
 
-      if (scrollTop === 0 && currentRoom?.hasNextPage && !currentRoom?.isLoadingMore) {
+      if (scrollTop === 0 && hasNextPage && !isFetchingNextPage) {
         loadMoreMessages();
       }
     },
-    [currentRoom?.hasNextPage, currentRoom?.isLoadingMore, loadMoreMessages],
+    [hasNextPage, isFetchingNextPage, loadMoreMessages],
   );
+
+  useEffect(() => {
+    if (data?.pages.length) {
+      const firstPage = data.pages[0];
+      const convertedMessages = firstPage.messages.map((msg) =>
+        convertApiMessageToChatMessage(msg, chatId),
+      );
+
+      initializeWithMessages(chatId, convertedMessages.reverse(), firstPage.nextCursor);
+    }
+  }, [data, chatId, initializeWithMessages]);
 
   return {
     currentRoom,
-    loadMoreMessages,
-    handleScroll,
+    hasNextPage,
+    isFetchingNextPage,
+    onScroll: handleScroll,
   };
 };

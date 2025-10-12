@@ -95,14 +95,26 @@ export default function Layout({ children }: LayoutProps) {
       }
 
       // 채팅 목록 업데이트
+      let shouldRefetch = false;
+
       queryClient
         .getQueryCache()
         .findAll({ queryKey: ["chats"] })
         .forEach((query) => {
           queryClient.setQueryData(query.queryKey, (oldData: ChatQueryData) => {
-            return updateChatListWithNewMessage(oldData, newMessage, user_id || "");
+            const updated = updateChatListWithNewMessage(oldData, newMessage, user_id || "");
+            // null이 반환되면 채팅을 찾지 못한 것 (새 채팅)
+            if (updated === null) {
+              shouldRefetch = true;
+              return oldData;
+            }
+            return updated;
           });
         });
+
+      if (shouldRefetch) {
+        queryClient.invalidateQueries({ queryKey: ["chats"] });
+      }
     };
 
     socket.on("newChatMessage", handleNewChatMessage);
@@ -110,7 +122,7 @@ export default function Layout({ children }: LayoutProps) {
     return () => {
       socket.off("newChatMessage", handleNewChatMessage);
     };
-  }, [isConnected, currentChatId, setHasUnreadMessages, queryClient]);
+  }, [isConnected, currentChatId, setHasUnreadMessages, queryClient, user_id]);
 
   // 스크롤 위치 감지
   useEffect(() => {
