@@ -34,7 +34,6 @@ const ChatRoom = ({ chatId }: ChatRoomProps) => {
   const [images, setImages] = useState<{ fileName: string; fullUrl: string }[]>([]);
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
-  const lastMessageCountRef = useRef<number>(0);
   const isUserSendingRef = useRef<boolean>(false);
   const messageInputRef = useRef<HTMLInputElement>(null);
 
@@ -75,22 +74,19 @@ const ChatRoom = ({ chatId }: ChatRoomProps) => {
     const container = messagesContainerRef.current;
     if (!container) return false;
 
-    const threshold = 10;
+    const threshold = 200;
     return container.scrollTop + container.clientHeight >= container.scrollHeight - threshold;
   }, []);
 
   const handleScrollBehavior = useCallback(
     (type: "user-send" | "new-message" | "initial-load") => {
       switch (type) {
-        case "user-send":
-          setTimeout(() => scrollToBottom(), 100);
-          break;
         case "new-message":
           if (isScrolledToBottom()) {
-            scrollToBottom();
+            setTimeout(() => scrollToBottom(), 100);
           }
           break;
-        case "initial-load":
+        default:
           setTimeout(() => scrollToBottom(), 100);
           break;
       }
@@ -211,33 +207,12 @@ const ChatRoom = ({ chatId }: ChatRoomProps) => {
       );
 
       initializeWithMessages(chatId, convertedMessages.reverse(), firstPage.nextCursor);
+
+      requestAnimationFrame(() => {
+        scrollToBottom();
+      });
     }
-  }, [initialChatData, chatId, initializeWithMessages]);
-
-  useEffect(() => {
-    const messages = currentRoom?.messages;
-    if (!messages || messages.length === 0) return;
-
-    const currentMessageCount = messages.length;
-    const previousMessageCount = lastMessageCountRef.current;
-
-    if (currentMessageCount !== previousMessageCount) {
-      const isFirstLoad = previousMessageCount === 0;
-      const isNewMessageAdded = currentMessageCount > previousMessageCount;
-      const isLoadingMore = currentRoom?.isLoadingMore;
-
-      if (isFirstLoad) {
-        handleScrollBehavior("initial-load");
-      } else if (isNewMessageAdded && !isLoadingMore) {
-        if (isUserSendingRef.current) {
-          return;
-        } else {
-          handleScrollBehavior("new-message");
-        }
-      }
-      lastMessageCountRef.current = currentMessageCount;
-    }
-  }, [currentRoom?.messages, currentRoom?.isLoadingMore, handleScrollBehavior]);
+  }, [initialChatData, chatId, initializeWithMessages, scrollToBottom]);
 
   return (
     <section className={styles.container}>
