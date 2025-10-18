@@ -2,12 +2,14 @@
 
 .container {
   width: 100%;
-  height: calc($full-height - $header-height);
+  min-height: calc($full-height - $header-height);
   display: flex;
   flex-direction: column;
+  flex-basis: 0;
+  flex-grow: 1;
 
   @include Size("mobile") {
-    height: $full-height;
+    min-height: $full-height;
   }
 }
 
