@@ -1,9 +1,15 @@
-import styles from "./ProfileLink.module.scss";
-import { useDeviceStore } from "@/states/deviceStore";
-import IconComponent from "@/components/Asset/Icon";
-import { useUserDataByUrl } from "@/api/users/getId";
+import Link from "next/link";
 import { useRouter } from "next/router";
+
+import { useDeviceStore } from "@/states/deviceStore";
+
+import { useUserDataByUrl } from "@/api/users/getId";
+
+import IconComponent from "@/components/Asset/Icon";
+
 import { useClipboard } from "@/utils/copyToClipboard";
+
+import styles from "./ProfileLink.module.scss";
 
 export default function ProfileLink() {
   const { copyToClipboard } = useClipboard();
@@ -32,30 +38,26 @@ export default function ProfileLink() {
           const iconName = getIconName(linkName);
 
           return (
-            <div key={index} className={styles.linkItem}>
-              <IconComponent name={iconName} size={32} isBtn />
-              <div className={styles.linkInfo}>
-                <span className={styles.linkLabel}>{linkName}</span>
-                {linkName === "이메일" ? (
-                  <span
-                    className={styles.link}
-                    onClick={() => copyToClipboard(link, "이메일 주소가 복사되었습니다.")}
-                  >
-                    {link}
-                  </span>
-                ) : (
-                  <a
-                    href={link}
-                    className={styles.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title={link}
-                  >
-                    {link}
-                  </a>
-                )}
+            <Link
+              title={link}
+              href={link}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => {
+                if (linkName === "이메일") {
+                  e.preventDefault();
+                  copyToClipboard(link, "이메일 주소가 복사되었습니다.");
+                }
+              }}
+            >
+              <div key={index} className={styles.linkItem}>
+                <IconComponent name={iconName} size={32} isBtn />
+                <div className={styles.linkInfo}>
+                  <span className={styles.linkLabel}>{linkName}</span>
+                  <span className={styles.link}>{link}</span>
+                </div>
               </div>
-            </div>
+            </Link>
           );
         })}
       </div>
