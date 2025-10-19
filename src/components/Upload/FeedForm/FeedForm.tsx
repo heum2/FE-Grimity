@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import router from "next/router";
 
-import { postPresignedUrls, PresignedUrlRequest } from "@/api/aws/postPresigned";
+import { postPresignedUrls, PresignedUrlRequest } from "@/api/images/postPresigned";
 
 import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
 
@@ -272,7 +272,7 @@ export default function FeedForm({
       const presignedUrls = await postPresignedUrls(requests);
 
       const uploadPromises = processedFiles.map((file, index) =>
-        fetch(presignedUrls[index].url, {
+        fetch(presignedUrls[index].uploadUrl, {
           method: "PUT",
           body: file,
           headers: { "Content-Type": file.type },

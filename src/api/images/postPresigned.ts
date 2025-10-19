@@ -6,15 +6,16 @@ export interface PresignedUrlRequest {
 }
 
 export interface PresignedUrlResponse {
-  url: string;
+  imageUrl: string;
   imageName: string;
+  uploadUrl: string;
 }
 
 export async function postPresignedUrl({
   type,
   ext,
 }: PresignedUrlRequest): Promise<PresignedUrlResponse> {
-  const response = await BASE_URL.post("/aws/image-upload-url", {
+  const response = await BASE_URL.post("/images/get-upload-url", {
     type,
     ext,
   });
@@ -24,6 +25,6 @@ export async function postPresignedUrl({
 export async function postPresignedUrls(
   requests: PresignedUrlRequest[],
 ): Promise<PresignedUrlResponse[]> {
-  const response = await BASE_URL.post("/aws/image-upload-urls", requests);
+  const response = await BASE_URL.post("/images/get-upload-urls", requests);
   return response.data;
 }
