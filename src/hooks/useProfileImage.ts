@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 
-import { postPresignedUrl } from "@/api/aws/postPresigned";
+import { postPresignedUrl } from "@/api/images/postPresigned";
 import { putProfileImage } from "@/api/users/putMeImage";
 import { deleteMyProfileImage } from "@/api/users/deleteMeImage";
 
@@ -39,7 +39,7 @@ export const useProfileImage = (
 
       updateProfileImage(data.imageName);
 
-      const uploadResponse = await fetch(data.url, {
+      const uploadResponse = await fetch(data.uploadUrl, {
         method: "PUT",
         body: webpFile,
         headers: {

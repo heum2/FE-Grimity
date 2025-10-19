@@ -1,4 +1,4 @@
-import { postPresignedUrl } from "@/api/aws/postPresigned";
+import { postPresignedUrl } from "@/api/images/postPresigned";
 import { imageUrl } from "@/constants/imageUrl";
 import { convertToWebP } from "@/utils/convertToWebP";
 
@@ -17,7 +17,7 @@ export const useEditorImageUploader = () => {
         ext: "webp",
       });
 
-      const uploadResponse = await fetch(data.url, {
+      const uploadResponse = await fetch(data.uploadUrl, {
         method: "PUT",
         body: webpFile,
         headers: {

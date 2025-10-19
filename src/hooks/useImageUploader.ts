@@ -1,4 +1,4 @@
-import { postPresignedUrls, PresignedUrlRequest } from "@/api/aws/postPresigned";
+import { postPresignedUrls, PresignedUrlRequest } from "@/api/images/postPresigned";
 import { imageUrl } from "@/constants/imageUrl";
 import { convertToWebP } from "@/utils/convertToWebP";
 import { useToast } from "@/hooks/useToast";
@@ -45,7 +45,7 @@ export const useImageUploader = (options: UseImageUploaderOptions = {}) => {
 
       // 모든 파일을 병렬로 업로드
       const uploadPromises = processedFiles.map((file, index) =>
-        fetch(presignedUrls[index].url, {
+        fetch(presignedUrls[index].uploadUrl, {
           method: "PUT",
           body: file,
           headers: {

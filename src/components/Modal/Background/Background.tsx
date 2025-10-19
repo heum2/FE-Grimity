@@ -5,7 +5,7 @@ import { useModalStore } from "@/states/modalStore";
 import Button from "@/components/Button/Button";
 import styles from "./Background.module.scss";
 import { useToast } from "@/hooks/useToast";
-import { postPresignedUrl } from "@/api/aws/postPresigned";
+import { postPresignedUrl } from "@/api/images/postPresigned";
 import { putBackgroundImage } from "@/api/users/putMeImage";
 import IconComponent from "@/components/Asset/Icon";
 import { useMutation } from "@tanstack/react-query";
@@ -109,7 +109,7 @@ export default function Background({ imageSrc, file, onUploadSuccess }: Backgrou
 
       updateBackgroundImage(data.imageName);
 
-      const uploadResponse = await fetch(data.url, {
+      const uploadResponse = await fetch(data.uploadUrl, {
         method: "PUT",
         body: webpFile,
         headers: {

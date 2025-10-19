@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
 
-import { postPresignedUrl } from "@/api/aws/postPresigned";
+import { postPresignedUrl } from "@/api/images/postPresigned";
 import { putBackgroundImage } from "@/api/users/putMeImage";
 import { deleteMyBackgroundImage } from "@/api/users/deleteMeImage";
 
@@ -49,7 +49,7 @@ export const useCoverImage = (
 
       updateBackgroundImage(data.imageName);
 
-      const uploadResponse = await fetch(data.url, {
+      const uploadResponse = await fetch(data.uploadUrl, {
         method: "PUT",
         body: webpFile,
         headers: {
