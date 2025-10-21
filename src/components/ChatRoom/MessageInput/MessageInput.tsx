@@ -102,7 +102,7 @@ const MessageInput = ({
 
       <div className={styles.inputWrapper}>
         <button type="button" className={styles.cameraButton} onClick={handleClickFile}>
-          <Icon icon="camera_alt" size="2.5xl" />
+          <Icon icon="cameraAlt" size="2.5xl" />
           <input
             ref={fileInputRef}
             multiple

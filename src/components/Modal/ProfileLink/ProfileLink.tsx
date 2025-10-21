@@ -5,7 +5,7 @@ import { useDeviceStore } from "@/states/deviceStore";
 
 import { useUserDataByUrl } from "@/api/users/getId";
 
-import IconComponent from "@/components/Asset/Icon";
+import IconComponent, { IconList } from "@/components/Asset/IconTemp";
 
 import { useClipboard } from "@/utils/copyToClipboard";
 
@@ -17,7 +17,7 @@ export default function ProfileLink() {
   const { query } = useRouter();
   const { data: userData } = useUserDataByUrl(query.url as string);
 
-  const getIconName = (linkName: string) => {
+  const getIconName = (linkName: string): IconList => {
     if (linkName === "인스타그램") return "linkInstagram";
     if (linkName === "X") return "linkX";
     if (linkName === "유튜브") return "linkYoutube";
@@ -51,7 +51,7 @@ export default function ProfileLink() {
               }}
             >
               <div key={index} className={styles.linkItem}>
-                <IconComponent name={iconName} size={32} isBtn />
+                <IconComponent icon={iconName} size="3xl" />
                 <div className={styles.linkInfo}>
                   <span className={styles.linkLabel}>{linkName}</span>
                   <span className={styles.link}>{link}</span>

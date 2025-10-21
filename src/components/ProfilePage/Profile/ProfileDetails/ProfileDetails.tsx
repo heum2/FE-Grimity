@@ -1,6 +1,6 @@
 import { useModalStore } from "@/states/modalStore";
 
-import IconComponent from "@/components/Asset/Icon";
+import IconComponent, { IconList } from "@/components/Asset/IconTemp";
 
 import type { UserProfileResponse as UserData } from "@grimity/dto";
 
@@ -10,9 +10,7 @@ import { useClipboard } from "@/utils/copyToClipboard";
 import styles from "@/components/ProfilePage/Profile/ProfileDetails/ProfileDetails.module.scss";
 import ProfileActions from "@/components/ProfilePage/Profile/ProfileActions/ProfileActions";
 
-type IconName = "linkInstagram" | "linkX" | "linkYoutube" | "linkPixiv" | "linkMail" | "linkCustom";
-
-const ICON_MAP_KO: Record<string, IconName> = {
+const ICON_MAP_KO: Record<string, IconList> = {
   인스타그램: "linkInstagram",
   유튜브: "linkYoutube",
   픽시브: "linkPixiv",
@@ -82,7 +80,7 @@ export default function ProfileDetails({
         <div className={styles.linkContainer}>
           {userData.links.slice(0, MAX_VISIBLE_LINKS).map(({ linkName, link }, index) => {
             const isEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(link);
-            const iconName: IconName = isEmail ? "linkMail" : ICON_MAP_KO[linkName] || "linkCustom";
+            const iconName = isEmail ? "linkMail" : ICON_MAP_KO[linkName] || "linkCustom";
 
             const displayName = (() => {
               if (isEmail) return link;
@@ -95,7 +93,7 @@ export default function ProfileDetails({
 
             return (
               <div key={index} className={styles.linkWrapper}>
-                <IconComponent name={iconName} size={18} />
+                <IconComponent icon={iconName} size="xl" className={styles.link} />
                 {isEmail ? (
                   <span
                     className={styles.link}
