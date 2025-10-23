@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
+
+import { getSubscribe, putSubscribe, SubscriptionType } from "@/api/users/subscribe";
 import { useGetNotifications } from "@/api/notifications/getNotifications";
-import IconComponent from "../Asset/Icon";
-import Noti from "./Noti/Noti";
-import styles from "./Notifications.module.scss";
-import { NotificationsProps } from "./Notifications.types";
 import { deleteNotifications } from "@/api/notifications/deleteNotifications";
 import { putNotifications } from "@/api/notifications/putNotifications";
-import { getSubscribe, putSubscribe, SubscriptionType } from "@/api/users/subscribe";
+
+import Icon from "@/components/Asset/IconTemp";
+import Noti from "@/components/Notifications/Noti/Noti";
+
 import { useDeviceStore } from "@/states/deviceStore";
+
+import type { NotificationsProps } from "./Notifications.types";
+
+import styles from "./Notifications.module.scss";
 
 const ALL_SUBSCRIPTION_TYPES: SubscriptionType[] = [
   "FOLLOW",
@@ -41,17 +46,17 @@ const NotificationSettings = ({
         <div className={styles.titleContainer}>
           <h2 className={styles.title}>알림 설정</h2>
           <button className={styles.closeButton} onClick={onBack}>
-            <IconComponent name="notiClose" size={24} isBtn padding={8} />
+            <Icon icon="notiClose" size="xl" />
           </button>
         </div>
       ) : (
         <div className={styles.titleContainer}>
           <button className={styles.backButton} onClick={onBack} data-setting-button="true">
-            <IconComponent name="notiBack" size={24} isBtn padding={8} />
+            <Icon icon="notiBack" size="xl" />
           </button>
           <h2 className={styles.title}>알림 설정</h2>
           <button className={styles.closeButton} onClick={onClose}>
-            <IconComponent name="notiClose" size={24} isBtn padding={8} />
+            <Icon icon="notiClose" size="xl" />
           </button>
         </div>
       )}
@@ -231,11 +236,11 @@ export default function Notifications({ onClose }: NotificationsProps) {
               onClick={() => setIsOpen((prev) => !prev)}
               data-setting-button="true"
             >
-              <IconComponent name="notiSetting" size={24} isBtn padding={8} />
+              <Icon icon="notiSetting" size="2xl" />
             </button>
             {!isMobile && (
               <button className={styles.closeButton} onClick={onClose}>
-                <IconComponent name="notiClose" size={24} isBtn padding={8} />
+                <Icon icon="notiClose" size="2xl" />
               </button>
             )}
           </div>
@@ -252,17 +257,23 @@ export default function Notifications({ onClose }: NotificationsProps) {
             />
           ))
         ) : (
-          <div className={styles.noneNoti}>새로운 알림이 없어요</div>
+          <div className={styles.noneNoti}>
+            <Icon icon="alarm" size="6xl" />
+            <p className={styles.noneNotiTitle}>새로운 알림이 없어요</p>
+            <p className={styles.noneNotiDescription}>
+              내 글의 댓글와 좋아요, 다른 작가의 활동 등 새로운 소식을 알려드려요
+            </p>
+          </div>
         )}
       </section>
       {data.length !== 0 && (
         <div className={styles.options}>
           <button onClick={handleMarkAllAsRead} className={styles.option}>
-            <IconComponent name="notiRead" size={16} isBtn />
+            <Icon icon="notiRead" size="md" />
             전체 읽음
           </button>
           <button onClick={handleDeleteAllNotifications} className={styles.option}>
-            <IconComponent name="notiDeleteAll" size={16} isBtn />
+            <Icon icon="notiDeleteAll" size="md" />
             전체 삭제
           </button>
         </div>
