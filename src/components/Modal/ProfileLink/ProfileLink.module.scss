@@ -38,6 +38,14 @@
     justify-content: center;
     gap: 16px;
     cursor: pointer;
+
+    &:hover .link {
+      text-decoration: underline;
+    }
+  }
+
+  .icon {
+    color: $gray50;
   }
 
   .linkInfo {
@@ -63,10 +71,5 @@
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: 1.2;
-    cursor: pointer;
-
-    &:hover {
-      text-decoration: underline;
-    }
   }
 }
