@@ -18,12 +18,12 @@ export default function ProfileLink() {
   const { data: userData } = useUserDataByUrl(query.url as string);
 
   const getIconName = (linkName: string): IconList => {
-    if (linkName === "인스타그램") return "linkInstagram";
-    if (linkName === "X") return "linkX";
-    if (linkName === "유튜브") return "linkYoutube";
-    if (linkName === "픽시브") return "linkPixiv";
-    if (linkName === "이메일") return "linkMail";
-    return "linkCustom";
+    if (linkName === "인스타그램") return "instagram";
+    if (linkName === "X") return "twitter";
+    if (linkName === "유튜브") return "youtube";
+    if (linkName === "픽시브") return "pixiv";
+    if (linkName === "이메일") return "mail";
+    return "link";
   };
 
   return (
@@ -39,10 +39,12 @@ export default function ProfileLink() {
 
           return (
             <Link
+              key={index}
               title={link}
               href={link}
               target="_blank"
               rel="noopener noreferrer"
+              className={styles.linkItem}
               onClick={(e) => {
                 if (linkName === "이메일") {
                   e.preventDefault();
@@ -50,12 +52,10 @@ export default function ProfileLink() {
                 }
               }}
             >
-              <div key={index} className={styles.linkItem}>
-                <IconComponent icon={iconName} size="3xl" />
-                <div className={styles.linkInfo}>
-                  <span className={styles.linkLabel}>{linkName}</span>
-                  <span className={styles.link}>{link}</span>
-                </div>
+              <IconComponent icon={iconName} size="3xl" className={styles.icon} />
+              <div className={styles.linkInfo}>
+                <span className={styles.linkLabel}>{linkName}</span>
+                <span className={styles.link}>{link}</span>
               </div>
             </Link>
           );

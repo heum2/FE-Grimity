@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { useModalStore } from "@/states/modalStore";
 
 import IconComponent, { IconList } from "@/components/Asset/IconTemp";
@@ -7,16 +9,15 @@ import type { UserProfileResponse as UserData } from "@grimity/dto";
 import { formatCurrency } from "@/utils/formatCurrency";
 import { useClipboard } from "@/utils/copyToClipboard";
 
-import styles from "@/components/ProfilePage/Profile/ProfileDetails/ProfileDetails.module.scss";
-import ProfileActions from "@/components/ProfilePage/Profile/ProfileActions/ProfileActions";
+import styles from "./ProfileDetails.module.scss";
 
 const ICON_MAP_KO: Record<string, IconList> = {
-  인스타그램: "linkInstagram",
-  유튜브: "linkYoutube",
-  픽시브: "linkPixiv",
-  X: "linkX",
-  이메일: "linkMail",
-  "직접 입력": "linkCustom",
+  인스타그램: "instagram",
+  유튜브: "youtube",
+  픽시브: "pixiv",
+  X: "twitter",
+  이메일: "mail",
+  "직접 입력": "link",
 };
 
 interface ProfileDetailsProps extends React.PropsWithChildren {
@@ -77,10 +78,11 @@ export default function ProfileDetails({
         }}
       >
         {userData.description && <p className={styles.description}>{userData.description}</p>}
+
         <div className={styles.linkContainer}>
           {userData.links.slice(0, MAX_VISIBLE_LINKS).map(({ linkName, link }, index) => {
             const isEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(link);
-            const iconName = isEmail ? "linkMail" : ICON_MAP_KO[linkName] || "linkCustom";
+            const iconName = isEmail ? "mail" : ICON_MAP_KO[linkName] || "link";
 
             const displayName = (() => {
               if (isEmail) return link;
@@ -93,19 +95,24 @@ export default function ProfileDetails({
 
             return (
               <div key={index} className={styles.linkWrapper}>
-                <IconComponent icon={iconName} size="xl" className={styles.link} />
-                {isEmail ? (
-                  <span
-                    className={styles.link}
-                    onClick={() => copyToClipboard(link, "이메일 주소가 복사되었습니다.")}
-                  >
-                    {displayName}
-                  </span>
-                ) : (
-                  <a href={link} className={styles.link} target="_blank" rel="noopener noreferrer">
-                    {displayName}
-                  </a>
-                )}
+                <Link
+                  title={link}
+                  href={link}
+                  className={styles.linkWrapper}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => {
+                    if (isEmail) {
+                      e.preventDefault();
+                      copyToClipboard(link, "이메일 주소가 복사되었습니다.");
+                      return;
+                    }
+                  }}
+                >
+                  <IconComponent icon={iconName} size="xl" className={styles.link} />
+                  <span className={styles.link}>{displayName}</span>
+                </Link>
+
                 {index === MAX_VISIBLE_LINKS - 1 && userData.links.length > MAX_VISIBLE_LINKS && (
                   <span
                     className={styles.moreLinksText}
