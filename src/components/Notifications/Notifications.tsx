@@ -8,6 +8,7 @@ import { deleteNotifications } from "@/api/notifications/deleteNotifications";
 import { putNotifications } from "@/api/notifications/putNotifications";
 import { getSubscribe, putSubscribe, SubscriptionType } from "@/api/users/subscribe";
 import { useDeviceStore } from "@/states/deviceStore";
+import Icon from "@/components/Asset/IconTemp";
 
 const ALL_SUBSCRIPTION_TYPES: SubscriptionType[] = [
   "FOLLOW",
@@ -252,7 +253,13 @@ export default function Notifications({ onClose }: NotificationsProps) {
             />
           ))
         ) : (
-          <div className={styles.noneNoti}>새로운 알림이 없어요</div>
+          <div className={styles.noneNoti}>
+            <Icon icon="alarm" size="6xl" />
+            <p className={styles.noneNotiTitle}>새로운 알림이 없어요</p>
+            <p className={styles.noneNotiDescription}>
+              내 글의 댓글와 좋아요, 다른 작가의 활동 등 새로운 소식을 알려드려요
+            </p>
+          </div>
         )}
       </section>
       {data.length !== 0 && (
