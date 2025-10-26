@@ -1,0 +1,90 @@
+@use "@/styles/globals.scss" as *;
+
+.skeleton {
+  .skeletonCover {
+    width: 100%;
+    height: 120px;
+    background: $gray30;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  .skeletonProfileSection {
+    padding: 0 20px;
+    margin-top: -40px;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    .skeletonProfileImage {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: $gray30;
+      border: 4px solid $gray0;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    .skeletonButton {
+      width: 70px;
+      height: 32px;
+      background: $gray30;
+      border-radius: 8px;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+  }
+
+  .skeletonInfoSection {
+    padding: 12px 20px 20px;
+
+    .skeletonNameRow {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+
+      .skeletonName {
+        width: 100px;
+        height: 18px;
+        background: $gray30;
+        border-radius: 4px;
+        animation: pulse 1.5s ease-in-out infinite;
+      }
+
+      .skeletonFollower {
+        width: 60px;
+        height: 14px;
+        background: $gray30;
+        border-radius: 4px;
+        animation: pulse 1.5s ease-in-out infinite;
+      }
+    }
+
+    .skeletonDescription {
+      width: 100%;
+      height: 14px;
+      background: $gray30;
+      border-radius: 4px;
+      animation: pulse 1.5s ease-in-out infinite;
+      margin-bottom: 6px;
+
+      &:last-child {
+        width: 80%;
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
+}

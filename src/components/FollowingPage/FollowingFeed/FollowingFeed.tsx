@@ -26,6 +26,8 @@ import { useMyData } from "@/api/users/getMe";
 import { useDeviceStore } from "@/states/deviceStore";
 import { FollowingFeedsResponse } from "@/api/feeds/getFeedsFollowing";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
+import { useProfileCardHover } from "@/hooks/useProfileCardHover";
+import ProfileCardPopover from "@/components/Layout/ProfileCardPopover/ProfileCardPopover";
 
 interface FollowingFeedProps {
   id: string;
@@ -57,6 +59,7 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
   const imgRef = usePreventRightClick<HTMLImageElement>();
   const divRef = usePreventRightClick<HTMLDivElement>();
   const sectionRef = usePreventRightClick<HTMLElement>();
+  const { triggerProps, popoverProps, isOpen, targetRef } = useProfileCardHover(details?.author.url);
 
   usePreventScroll(!!overlayImage);
 
@@ -235,9 +238,11 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
                   )}
                 </Link>
                 <div className={styles.authorInfo}>
-                  <Link href={`/${details.author.url}`}>
-                    <p className={styles.authorName}>{details.author.name}</p>
-                  </Link>
+                  <span ref={targetRef as React.RefObject<HTMLSpanElement>} {...triggerProps}>
+                    <Link href={`/${details.author.url}`}>
+                      <p className={styles.authorName}>{details.author.name}</p>
+                    </Link>
+                  </span>
                   <p className={styles.createdAt}>{timeAgo(details.createdAt)}</p>
                 </div>
               </div>
@@ -464,6 +469,9 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
             )}
             <div className={styles.bar} />
           </>
+        )}
+        {isOpen && details?.author.url && (
+          <ProfileCardPopover {...popoverProps} authorUrl={details.author.url} />
         )}
       </div>
     </div>

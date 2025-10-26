@@ -1,19 +1,29 @@
-import IconComponent from "@/components/Asset/Icon";
-import styles from "./AllCard.module.scss";
-import Chip from "@/components/Chip/Chip";
-import { timeAgo } from "@/utils/timeAgo";
-import { AllCardProps } from "./AllCard.types";
-import Link from "next/link";
-import { deletePostsSave, putPostsSave } from "@/api/posts/putDeletePostsIdSave";
 import { useState, useContext } from "react";
-import Dropdown from "@/components/Dropdown/Dropdown";
-import { useModalStore } from "@/states/modalStore";
-import { deletePostsFeeds } from "@/api/posts/deletePostsId";
 import { useRouter } from "next/router";
-import { useToast } from "@/hooks/useToast";
-import { useDeviceStore } from "@/states/deviceStore";
+import Link from "next/link";
+
+import { deletePostsFeeds } from "@/api/posts/deletePostsId";
+import { deletePostsSave, putPostsSave } from "@/api/posts/putDeletePostsIdSave";
+
 import { SearchHighlightContext } from "@/pages/search";
+
+import { useModalStore } from "@/states/modalStore";
+import { useDeviceStore } from "@/states/deviceStore";
+
+import Dropdown from "@/components/Dropdown/Dropdown";
+import IconComponent from "@/components/Asset/Icon";
 import Icon from "@/components/Asset/IconTemp";
+import ProfileCardPopover from "@/components/Layout/ProfileCardPopover/ProfileCardPopover";
+import Chip from "@/components/Chip/Chip";
+
+import { AllCardProps } from "./AllCard.types";
+
+import { timeAgo } from "@/utils/timeAgo";
+
+import { useToast } from "@/hooks/useToast";
+import { useProfileCardHover } from "@/hooks/useProfileCardHover";
+
+import styles from "./AllCard.module.scss";
 
 export function getTypeLabel(type: string): string {
   switch (type) {
@@ -37,6 +47,7 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
 
   const [isSaved, setIsSaved] = useState(true);
   const router = useRouter();
+  const { triggerProps, popoverProps, isOpen, targetRef } = useProfileCardHover(post.author?.url);
 
   const handleSaveClick = async () => {
     if (isSaved) {
@@ -106,9 +117,11 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
           </Link>
           <div className={styles.rightContainer}>
             {post.type !== "NOTICE" && cardCase !== "saved-posts" && post.author && !isMobile && (
-              <Link href={`/${post.author?.url}`}>
-                <p className={styles.author}>{post.author.name}</p>
-              </Link>
+              <span ref={targetRef as React.RefObject<HTMLSpanElement>} {...triggerProps}>
+                <Link href={`/${post.author?.url}`}>
+                  <p className={styles.author}>{post.author.name}</p>
+                </Link>
+              </span>
             )}
             {cardCase === "saved-posts" ? (
               isMobile ? (
@@ -245,6 +258,9 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
           </div>
         )}
       </div>
+      {isOpen && post.author?.url && (
+        <ProfileCardPopover {...popoverProps} authorUrl={post.author.url} />
+      )}
     </div>
   );
 }

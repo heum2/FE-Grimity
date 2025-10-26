@@ -15,7 +15,7 @@ export interface ButtonProps {
   type: ButtonType;
   size?: ButtonSize;
   disabled?: boolean;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent) => void;
   onMouseDown?: (e: React.MouseEvent) => void;
   width?: string;
   leftIcon?: React.ReactNode;

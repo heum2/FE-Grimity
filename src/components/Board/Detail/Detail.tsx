@@ -28,6 +28,8 @@ import { timeAgo } from "@/utils/timeAgo";
 import { getTypeLabel } from "@/components/Board/BoardAll/AllCard/AllCard";
 
 import { PostDetailProps } from "@/components/Board/Detail/Detail.types";
+import { useProfileCardHover } from "@/hooks/useProfileCardHover";
+import ProfileCardPopover from "@/components/Layout/ProfileCardPopover/ProfileCardPopover";
 
 import styles from "@/components/Board/Detail/Detail.module.scss";
 import { PATH_ROUTES } from "@/constants/routes";
@@ -48,6 +50,7 @@ export default function PostDetail({ id }: PostDetailProps) {
   const [isSaved, setIsSaved] = useState(false);
 
   const { data: posts, isLoading, refetch } = usePostsDetails(id as string);
+  const { triggerProps, popoverProps, isOpen, targetRef } = useProfileCardHover(posts?.author.url);
 
   const isAuthor = useMemo(() => user_id === posts?.author.id, [user_id, posts?.author.id]);
   const sanitizedContent = useMemo(
@@ -271,9 +274,11 @@ export default function PostDetail({ id }: PostDetailProps) {
             <h1 className={styles.title}>{posts.title}</h1>
             <div className={styles.authorCreatedAt}>
               {posts.type !== "NOTICE" && (
-                <Link href={`/${posts.author.url}`} className={styles.author}>
-                  <p>{posts.author.name}</p>
-                </Link>
+                <span ref={targetRef as React.RefObject<HTMLSpanElement>} {...triggerProps}>
+                  <Link href={`/${posts.author.url}`} className={styles.author}>
+                    <p>{posts.author.name}</p>
+                  </Link>
+                </span>
               )}
               <p className={styles.createdAt}>{timeAgo(posts.createdAt)}</p>
             </div>
@@ -308,6 +313,9 @@ export default function PostDetail({ id }: PostDetailProps) {
         </section>
 
         <BoardAll isDetail hasChip={true} />
+        {isOpen && posts?.author.url && (
+          <ProfileCardPopover {...popoverProps} authorUrl={posts.author.url} />
+        )}
       </div>
     </div>
   );

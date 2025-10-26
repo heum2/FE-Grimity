@@ -8,6 +8,8 @@ import Link from "next/link";
 import { useAuthStore } from "@/states/authStore";
 import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
 import { timeAgo } from "@/utils/timeAgo";
+import { useProfileCardHover } from "@/hooks/useProfileCardHover";
+import ProfileCardPopover from "@/components/Layout/ProfileCardPopover/ProfileCardPopover";
 
 export default function SquareCard({
   title,
@@ -26,6 +28,7 @@ export default function SquareCard({
   const [currentLikeCount, setCurrentLikeCount] = useState(likeCount);
   const hasMultipleImages = cards && cards.length > 1;
   const imgRef = usePreventRightClick<HTMLImageElement>();
+  const { triggerProps, popoverProps, isOpen, targetRef } = useProfileCardHover(author?.url);
 
   const handleLikeClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -65,9 +68,11 @@ export default function SquareCard({
             {createdAt ? (
               <p className={styles.createdAt}>{timeAgo(createdAt)}</p>
             ) : (
-              <Link href={`/${author?.url}`}>
-                <p className={styles.author}>{author?.name}</p>
-              </Link>
+              <span ref={targetRef} {...triggerProps}>
+                <Link href={`/${author?.url}`}>
+                  <p className={styles.author}>{author?.name}</p>
+                </Link>
+              </span>
             )}
             <IconComponent name="dot" size={3} />
             <div className={styles.likeContainer}>
@@ -81,6 +86,9 @@ export default function SquareCard({
           </div>
         </div>
       </div>
+      {isOpen && author?.url && (
+        <ProfileCardPopover {...popoverProps} authorUrl={author.url} />
+      )}
     </div>
   );
 }

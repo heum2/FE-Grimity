@@ -18,6 +18,8 @@ import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import Loader from "../Layout/Loader/Loader";
 import Author from "./Author/Author";
+import { useProfileCardHover } from "@/hooks/useProfileCardHover";
+import ProfileCardPopover from "@/components/Layout/ProfileCardPopover/ProfileCardPopover";
 import ShareBtn from "./ShareBtn/ShareBtn";
 import { timeAgo } from "@/utils/timeAgo";
 import Chip from "../Chip/Chip";
@@ -47,6 +49,7 @@ export default function Detail({ id }: DetailProps) {
   const openModal = useModalStore((state) => state.openModal);
   const { isMobile } = useDeviceStore();
   usePreventScroll(!!overlayImage);
+  const { triggerProps, popoverProps, isOpen, targetRef } = useProfileCardHover(details?.author.url);
 
   const { pathname } = useRouter();
   useEffect(() => {
@@ -239,9 +242,11 @@ export default function Detail({ id }: DetailProps) {
                   )}
                 </Link>
                 <div className={styles.authorInfo}>
-                  <Link href={`/${details.author.url}`}>
-                    <p className={styles.authorName}>{details.author.name}</p>
-                  </Link>
+                  <span ref={targetRef as React.RefObject<HTMLSpanElement>} {...triggerProps}>
+                    <Link href={`/${details.author.url}`}>
+                      <p className={styles.authorName}>{details.author.name}</p>
+                    </Link>
+                  </span>
                   <div className={styles.stats}>
                     <p className={styles.createdAt}>{timeAgo(details.createdAt)}</p>
                     <div className={styles.stat}>
@@ -447,6 +452,9 @@ export default function Detail({ id }: DetailProps) {
               <NewFeed isDetail />
             </div>
           </>
+        )}
+        {isOpen && details?.author.url && (
+          <ProfileCardPopover {...popoverProps} authorUrl={details.author.url} />
         )}
       </div>
     </div>
