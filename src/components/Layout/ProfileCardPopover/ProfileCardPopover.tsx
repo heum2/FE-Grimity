@@ -11,6 +11,7 @@ import { useDeleteFollow } from "@/api/users/deleteIdFollow";
 
 import Button from "@/components/Button/Button";
 import Icon from "@/components/Asset/IconTemp";
+import ProfileCardSkeleton from "@/components/Layout/ProfileCardPopover/ProfileCardSkeleton";
 
 import type { ProfileCardPopoverProps } from "./ProfileCardPopover.types";
 
@@ -68,7 +69,7 @@ export default function ProfileCardPopover({
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      {isLoading && <div className={styles.loading}>로딩 중...</div>}
+      {isLoading && <ProfileCardSkeleton />}
 
       {isError && <div className={styles.error}>프로필을 불러올 수 없습니다</div>}
 
