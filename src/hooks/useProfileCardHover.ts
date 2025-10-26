@@ -33,8 +33,8 @@ export function useProfileCardHover(authorUrl?: string): UseProfileCardHoverRetu
     const viewportWidth = window.innerWidth;
     const spaceBelow = viewportHeight - rect.bottom;
     const spaceAbove = rect.top;
-    const popoverHeight = 300; // 예상 팝오버 높이
-    const popoverWidth = 340; // 프로필 카드 너비
+    const popoverHeight = 320; // 예상 팝오버 높이
+    const popoverWidth = 280; // 프로필 카드 너비
 
     // 위/아래 위치 계산
     const shouldPlaceBelow = spaceBelow >= popoverHeight || spaceBelow > spaceAbove;

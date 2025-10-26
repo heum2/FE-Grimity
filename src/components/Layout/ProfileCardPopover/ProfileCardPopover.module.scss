@@ -2,17 +2,13 @@
 
 .popover {
   position: absolute;
-  z-index: 9999;
+  z-index: 99;
   background: $gray0;
-  border-radius: 16px;
+  border-radius: 12px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.16);
-  width: 340px;
+  width: 280px;
   pointer-events: auto;
   overflow: hidden;
-
-  @include Size("mobile") {
-    width: 300px;
-  }
 
   &.top {
     transform: translateY(-100%);
@@ -35,18 +31,16 @@
   }
 
   .profileSection {
-    padding: 0 20px;
-    margin-top: -40px;
+    margin-top: -32px;
     position: relative;
     z-index: 1;
     display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
+    justify-content: center;
 
     .profileImageContainer {
       display: block;
-      width: 80px;
-      height: 80px;
+      width: 64px;
+      height: 64px;
       border-radius: 50%;
       overflow: hidden;
       border: 4px solid $gray0;
@@ -62,14 +56,12 @@
   }
 
   .infoSection {
-    padding: 12px 20px 20px;
+    padding: 16px 24px;
 
-    .nameRow {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 8px;
-    }
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
     .name {
       @include Sub2;
@@ -80,26 +72,10 @@
       flex: 1;
     }
 
-    .dot {
-      color: $gray40;
-      width: 3px;
-      height: 3px;
-    }
-
-    .followerCount {
-      @include Label2;
-      color: $gray60;
-      display: flex;
-      gap: 4px;
-
-      .followerValue {
-        color: $gray70;
-      }
-    }
-
     .description {
       @include Label2;
       color: $gray60;
+      margin-top: 6px;
       line-height: 1.5;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -107,6 +83,19 @@
       -webkit-line-clamp: 2;
       line-clamp: 2;
       -webkit-box-orient: vertical;
+    }
+  }
+
+  .footer {
+    margin-top: 16px;
+    width: 100%;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+
+    button {
+      flex: 1;
+      max-width: 140px;
     }
   }
 
