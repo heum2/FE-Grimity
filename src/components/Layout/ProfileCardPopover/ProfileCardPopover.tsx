@@ -1,21 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { createPortal } from "react-dom";
+import { useRouter } from "next/router";
 
 import { useAuthStore } from "@/states/authStore";
 
 import { useUserDataByUrl } from "@/api/users/getId";
 import { usePutFollow } from "@/api/users/putIdFollow";
 import { useDeleteFollow } from "@/api/users/deleteIdFollow";
+import { usePostChat } from "@/api/chats/postChat";
 
 import Button from "@/components/Button/Button";
-import Icon from "@/components/Asset/IconTemp";
 import ProfileCardSkeleton from "@/components/Layout/ProfileCardPopover/ProfileCardSkeleton";
 
-import type { ProfileCardPopoverProps } from "./ProfileCardPopover.types";
+import { PATH_ROUTES } from "@/constants/routes";
 
-import { formatCurrency } from "@/utils/formatCurrency";
+import type { ProfileCardPopoverProps } from "./ProfileCardPopover.types";
 
 import styles from "./ProfileCardPopover.module.scss";
 
@@ -31,10 +32,12 @@ export default function ProfileCardPopover({
   const userId = useAuthStore((state) => state.user_id);
 
   const [isFollowing, setIsFollowing] = useState(userData?.isFollowing ?? false);
-  const [followerCount, setFollowerCount] = useState(userData?.followerCount ?? 0);
+
+  const router = useRouter();
 
   const { mutateAsync: putFollow, isPending: isPutFollowPending } = usePutFollow();
   const { mutateAsync: deleteFollow, isPending: isDeleteFollowPending } = useDeleteFollow();
+  const { mutateAsync: postChat, isPending: isPostChatPending } = usePostChat();
 
   const isMyProfile = userId === userData?.id;
   const shouldShowFollowButton = isLoggedIn && !isMyProfile;
@@ -48,16 +51,33 @@ export default function ProfileCardPopover({
     try {
       if (isFollowing) {
         await deleteFollow({ id: userData.id });
-        setFollowerCount((prev) => prev - 1);
       } else {
         await putFollow({ id: userData.id });
-        setFollowerCount((prev) => prev + 1);
       }
       setIsFollowing(!isFollowing);
     } catch (error) {
       console.error("Failed to toggle follow:", error);
     }
   };
+
+  const handleChat = async () => {
+    const userId = userData?.id;
+    if (!userId) {
+      return;
+    }
+
+    const { id } = await postChat({
+      targetUserId: userId,
+    });
+
+    router.push(`${PATH_ROUTES.DIRECT}/${id}`);
+  };
+
+  useEffect(() => {
+    if (userData) {
+      setIsFollowing(userData.isFollowing);
+    }
+  }, [userData]);
 
   const popoverContent = (
     <div
@@ -97,31 +117,38 @@ export default function ProfileCardPopover({
                 unoptimized
               />
             </Link>
-            {shouldShowFollowButton && (
-              <Button
-                type={isFollowing ? "outlined-primary" : "filled-primary"}
-                size="s"
-                disabled={isPutFollowPending || isDeleteFollowPending}
-                onClick={handleFollowClick}
-              >
-                {isFollowing ? "팔로잉" : "팔로우"}
-              </Button>
-            )}
           </div>
 
           <div className={styles.infoSection}>
-            <div className={styles.nameRow}>
-              <Link href={`/${userData.url}`}>
-                <h3 className={styles.name}>{userData.name}</h3>
-              </Link>
-              <Icon icon="dot" className={styles.dot} />
-              <div className={styles.followerCount}>
-                <span>팔로워</span>
-                <span className={styles.followerValue}>{formatCurrency(followerCount)}</span>
-              </div>
-            </div>
+            <Link href={`/${userData.url}`}>
+              <h3 className={styles.name}>{userData.name}</h3>
+            </Link>
 
             {userData.description && <p className={styles.description}>{userData.description}</p>}
+
+            {shouldShowFollowButton && (
+              <div className={styles.footer}>
+                {isFollowing && (
+                  <Button
+                    type="filled-primary"
+                    size="s"
+                    disabled={isPutFollowPending || isDeleteFollowPending || isPostChatPending}
+                    onClick={handleChat}
+                  >
+                    메시지 보내기
+                  </Button>
+                )}
+
+                <Button
+                  type={isFollowing ? "outlined-primary" : "filled-primary"}
+                  size="s"
+                  disabled={isPutFollowPending || isDeleteFollowPending}
+                  onClick={handleFollowClick}
+                >
+                  {isFollowing ? "팔로잉" : "팔로우"}
+                </Button>
+              </div>
+            )}
           </div>
         </>
       )}
