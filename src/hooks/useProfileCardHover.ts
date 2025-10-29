@@ -1,4 +1,3 @@
-import { useUserDataByUrl } from "@/api/users/getId";
 import { useState, useRef, useCallback, useEffect } from "react";
 
 export interface UseProfileCardHoverReturn {
