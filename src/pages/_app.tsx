@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import type { AppProps } from "next/app";
 import Script from "next/script";
 
@@ -11,6 +10,7 @@ import Toast from "@/components/Toast/Toast";
 import ModalProvider from "@/components/Modal/Provider";
 
 import { useInitializeDevice } from "@/hooks/useInitializeDevice";
+import { useNavigationTracker } from "@/hooks/useNavigationTracker";
 
 import "@/styles/globals.scss";
 import "@/styles/reset.css";
@@ -22,6 +22,7 @@ const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
   useInitializeDevice();
+  useNavigationTracker();
 
   return (
     <>
