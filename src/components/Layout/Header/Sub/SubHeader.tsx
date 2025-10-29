@@ -8,15 +8,19 @@ import IconComponent from "@/components/Asset/Icon";
 import SideMenu from "@/components/Layout/SideMenu/SideMenu";
 import Icon from "@/components/Asset/IconTemp";
 
+import useGoBack from "@/hooks/useGoBack";
+
 import styles from "./SubHeader.module.scss";
 
 const SubHeader = () => {
   const router = useRouter();
-  const { isMobile } = useDeviceStore();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const { isMobile } = useDeviceStore();
+  const { goBack } = useGoBack();
+
   const handleBack = () => {
-    router.back();
+    goBack();
   };
 
   const toggleMenu = () => {

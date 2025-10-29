@@ -11,6 +11,7 @@ import { useModalStore } from "@/states/modalStore";
 import { useDeviceStore } from "@/states/deviceStore";
 
 import { useModal } from "@/hooks/useModal";
+import useGoBack from "@/hooks/useGoBack";
 
 import type { UserBaseResponse } from "@grimity/dto";
 
@@ -29,6 +30,8 @@ const ChatRoomHeader = ({ chatId, data }: ChatRoomHeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const { goBack } = useGoBack();
 
   const handleShowLeaveModal = () => {
     openModal(
@@ -51,7 +54,7 @@ const ChatRoomHeader = ({ chatId, data }: ChatRoomHeaderProps) => {
   };
 
   const handleBack = () => {
-    router.back();
+    goBack();
   };
 
   const toggleMenu = () => {
