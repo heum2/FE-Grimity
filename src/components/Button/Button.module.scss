@@ -30,11 +30,12 @@
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%), $primary4;
     color: $gray40;
   }
-}
 
-.filled-primary.disabled {
-  background-color: $gray30;
-  color: $gray0;
+  &:disabled {
+    border-color: $gray30;
+    background-color: $gray30;
+    color: $gray0;
+  }
 }
 
 .outlined-primary {
