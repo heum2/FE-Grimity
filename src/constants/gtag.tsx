@@ -6,8 +6,8 @@ export const pageview = (url: string) => {
     return;
   }
 
-  window.gtag("config", code, {
-    page_path: url,
+  window.gtag("event", "page_view", {
+    page_location: url,
   });
 };
 

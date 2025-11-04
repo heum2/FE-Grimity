@@ -8,6 +8,7 @@ import { postPosts } from "@/api/posts/postPosts";
 import PostForm from "@/components/Board/BoardWrite/PostForm/PostForm";
 
 import { useToast } from "@/hooks/useToast";
+import * as gtag from "@/constants/gtag";
 
 export default function BoardWrite() {
   const [title, setTitle] = useState("");
@@ -60,6 +61,13 @@ export default function BoardWrite() {
         title,
         content,
         type: typeMap[selectedCategory as keyof typeof typeMap],
+      });
+
+      // GA 게시글 업로드 완료 이벤트 추적
+      gtag.event({
+        action: "upload_post",
+        category: "conversion",
+        label: `${selectedCategory}: ${title}`,
       });
 
       showToast("글이 등록되었어요.", "success");

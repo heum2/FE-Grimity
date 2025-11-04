@@ -10,6 +10,7 @@ import { putEditFeeds } from "@/api/feeds/putFeedsId";
 import { useModal } from "@/hooks/useModal";
 import UploadModal from "@/components/Modal/Upload/Upload";
 import { useRouter } from "next/router";
+import * as gtag from "@/constants/gtag";
 
 interface FeedConfirmProps {
   id?: string;
@@ -33,6 +34,14 @@ const FeedConfirm = ({ id, data, isEditMode, onSuccessCallback, close }: FeedCon
         showToast("업로드 중 문제가 발생했습니다. 다시 시도해주세요.", "error");
         return;
       }
+
+      // GA 피드 업로드 완료 이벤트 추적
+      gtag.event({
+        action: "upload_feed",
+        category: "conversion",
+        label: variables.title,
+      });
+
       onSuccessCallback?.();
       const imageUrl = `${imageDomain}/${variables.thumbnail}`;
       close();
