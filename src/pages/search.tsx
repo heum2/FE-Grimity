@@ -5,6 +5,7 @@ import { useScrollRestoration } from "@/hooks/useScrollRestoration";
 import { useRouter } from "next/router";
 import React, { useEffect, useState, createContext } from "react";
 import Highlighter from "react-highlight-words";
+import * as gtag from "@/constants/gtag";
 
 interface SearchHighlightContextType {
   highlight: (text: string) => React.ReactNode;
@@ -29,6 +30,17 @@ export default function Search() {
   useEffect(() => {
     setOGUrl(`${serviceUrl}/${router.asPath}`);
   }, [router.asPath]);
+
+  // GA 검색 이벤트 추적
+  useEffect(() => {
+    if (keyword) {
+      gtag.event({
+        action: "search",
+        category: "engagement",
+        label: keyword,
+      });
+    }
+  }, [keyword]);
 
   useEffect(() => {
     if (sessionStorage.getItem("search-scroll") !== null) {
