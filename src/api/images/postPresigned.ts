@@ -3,6 +3,8 @@ import BASE_URL from "@/constants/baseurl";
 export interface PresignedUrlRequest {
   type: "profile" | "feed" | "background" | "post" | "chat";
   ext: "jpg" | "jpeg" | "png" | "webp";
+  width: number;
+  height: number;
 }
 
 export interface PresignedUrlResponse {

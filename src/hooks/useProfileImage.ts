@@ -7,6 +7,7 @@ import { deleteMyProfileImage } from "@/api/users/deleteMeImage";
 import { useToast } from "@/hooks/useToast";
 
 import { convertToWebP } from "@/utils/imageConverter";
+import { getImageDimensions } from "@/utils/getImageDimensions";
 
 export const useProfileImage = (
   refetchUserData: () => void,
@@ -32,9 +33,13 @@ export const useProfileImage = (
         webpFile = await convertToWebP(file);
       }
 
+      const { width, height } = await getImageDimensions(webpFile);
+
       const data = await postPresignedUrl({
         type: "profile",
         ext: "webp",
+        width,
+        height,
       });
 
       updateProfileImage(data.imageName);

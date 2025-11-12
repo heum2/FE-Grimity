@@ -1,6 +1,7 @@
 import { postPresignedUrl } from "@/api/images/postPresigned";
 import { imageUrl } from "@/constants/imageUrl";
 import { convertToWebP } from "@/utils/convertToWebP";
+import { getImageDimensions } from "@/utils/getImageDimensions";
 
 export const useEditorImageUploader = () => {
   const uploadImage = async (blobInfo: {
@@ -12,9 +13,13 @@ export const useEditorImageUploader = () => {
 
       const webpFile = await convertToWebP(file as File);
 
+      const { width, height } = await getImageDimensions(webpFile);
+
       const data = await postPresignedUrl({
         type: "post",
         ext: "webp",
+        width,
+        height,
       });
 
       const uploadResponse = await fetch(data.uploadUrl, {

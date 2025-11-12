@@ -20,6 +20,7 @@ import { useToast } from "@/hooks/useToast";
 import { useDeviceStore } from "@/states/deviceStore";
 
 import { removeUrlPrefix } from "@/utils/removeUrlPrefix";
+import { getImageDimensions } from "@/utils/getImageDimensions";
 
 import styles from "@/components/Upload/FeedForm/FeedForm.module.scss";
 
@@ -262,10 +263,17 @@ export default function FeedForm({
 
       if (processedFiles.length === 0) return;
 
-      const requests: PresignedUrlRequest[] = processedFiles.map(() => ({
-        type: "feed",
-        ext: "webp",
-      }));
+      const requests: PresignedUrlRequest[] = await Promise.all(
+        processedFiles.map(async (file) => {
+          const { width, height } = await getImageDimensions(file);
+          return {
+            type: "feed",
+            ext: "webp",
+            width,
+            height,
+          };
+        }),
+      );
 
       if (requests.length === 0) return;
 
