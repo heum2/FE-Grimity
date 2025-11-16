@@ -37,7 +37,7 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
   const setUserId = useAuthStore((state) => state.setUserId);
-  const { hasUnreadMessages } = useChatStore();
+  const { hasUnreadMessages, reset } = useChatStore();
 
   const isNavPage = ["/", "/ranking", "/board", "/following"].includes(router.pathname);
 
@@ -79,6 +79,7 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
       setIsLoggedIn(false);
       setAccessToken("");
       setUserId("");
+      reset();
       router.push("/");
       window.scrollTo({ top: 0, behavior: "smooth" });
       onClose();
