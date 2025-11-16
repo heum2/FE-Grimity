@@ -69,6 +69,7 @@ export default function Layout({ children }: LayoutProps) {
           if (myData.data) {
             setIsLoggedIn(true);
             setUserId(myData.data.id.toString());
+            setHasUnreadMessages(myData.data.hasUnreadChatMessage);
           } else {
             localStorage.clear();
             setIsLoggedIn(false);
