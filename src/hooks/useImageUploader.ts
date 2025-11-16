@@ -2,6 +2,7 @@ import { postPresignedUrls, PresignedUrlRequest } from "@/api/images/postPresign
 import { imageUrl } from "@/constants/imageUrl";
 import { convertToWebP } from "@/utils/convertToWebP";
 import { useToast } from "@/hooks/useToast";
+import { getImageDimensions } from "@/utils/getImageDimensions";
 
 interface UseImageUploaderOptions {
   uploadType?: PresignedUrlRequest["type"];
@@ -35,10 +36,17 @@ export const useImageUploader = (options: UseImageUploaderOptions = {}) => {
       }
 
       // Presigned URL 요청 배열 생성
-      const requests: PresignedUrlRequest[] = processedFiles.map(() => ({
-        type: uploadType,
-        ext: "webp",
-      }));
+      const requests: PresignedUrlRequest[] = await Promise.all(
+        processedFiles.map(async (file) => {
+          const { width, height } = await getImageDimensions(file);
+          return {
+            type: uploadType,
+            ext: "webp",
+            width,
+            height,
+          };
+        }),
+      );
 
       // 여러 Presigned URL 요청
       const presignedUrls = await postPresignedUrls(requests);

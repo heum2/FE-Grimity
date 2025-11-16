@@ -12,6 +12,7 @@ import type { UserProfileResponse as UserData } from "@grimity/dto";
 import { useToast } from "@/hooks/useToast";
 import { useDeviceStore } from "@/states/deviceStore";
 import { convertToWebP } from "@/utils/imageConverter";
+import { getImageDimensions } from "@/utils/getImageDimensions";
 
 export const useCoverImage = (
   refetchUserData: () => void,
@@ -42,9 +43,13 @@ export const useCoverImage = (
     try {
       const webpFile = await convertToWebP(file);
 
+      const { width, height } = await getImageDimensions(webpFile);
+
       const data = await postPresignedUrl({
         type: "background",
         ext: "webp",
+        width,
+        height,
       });
 
       updateBackgroundImage(data.imageName);

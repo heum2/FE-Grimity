@@ -10,6 +10,7 @@ import { putBackgroundImage } from "@/api/users/putMeImage";
 import IconComponent from "@/components/Asset/Icon";
 import { useMutation } from "@tanstack/react-query";
 import { useMyData } from "@/api/users/getMe";
+import { getImageDimensions } from "@/utils/getImageDimensions";
 
 interface BackgroundProps {
   imageSrc: string;
@@ -102,9 +103,13 @@ export default function Background({ imageSrc, file, onUploadSuccess }: Backgrou
       const croppedBlob = await getCroppedImage(imgRef.current, completedCrop);
       const webpFile = await convertToWebP(croppedBlob);
 
+      const { width, height } = await getImageDimensions(webpFile);
+
       const data = await postPresignedUrl({
         type: "background",
         ext: "webp",
+        width,
+        height,
       });
 
       updateBackgroundImage(data.imageName);
