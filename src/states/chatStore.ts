@@ -22,6 +22,9 @@ interface ChatStore {
 
   // Message interactions
   updateMessageLike: (chatId: string, messageId: string, isLiked: boolean) => void;
+
+  // Reset
+  reset: () => void;
 }
 
 export const useChatStore = create<ChatStore>((set) => ({
@@ -128,4 +131,11 @@ export const useChatStore = create<ChatStore>((set) => ({
         },
       },
     })),
+
+  reset: () =>
+    set({
+      chatRooms: {},
+      currentChatId: null,
+      hasUnreadMessages: false,
+    }),
 }));

@@ -3,9 +3,11 @@ import { useMutation } from "@tanstack/react-query";
 import { useGoogleLogin } from "@react-oauth/google";
 
 import postLogin, { AuthProvider } from "@/api/auth/postLogin";
+import { useMyData } from "@/api/users/getMe";
 
 import { useAuthStore } from "@/states/authStore";
 import { useModalStore } from "@/states/modalStore";
+import { useChatStore } from "@/states/chatStore";
 
 import IconComponent from "@/components/Asset/Icon";
 
@@ -44,17 +46,29 @@ export default function Login({ close }: LoginProps) {
   const setUserId = useAuthStore((state) => state.setUserId);
   const openModal = useModalStore((state) => state.openModal);
   const { showToast } = useToast();
+  const { refetch: fetchMyData } = useMyData();
+  const { setHasUnreadMessages } = useChatStore();
 
   const { mutateAsync: login, isPending } = useMutation({
     mutationFn: postLogin,
-    onSuccess: (data: LoginResponse) => {
+    onSuccess: async (data: LoginResponse) => {
       setAccessToken(data.accessToken);
       setIsLoggedIn(true);
       setUserId(data.id);
-      close();
       localStorage.setItem("access_token", data.accessToken);
       localStorage.setItem("refresh_token", data.refreshToken);
       localStorage.setItem("user_id", data.id);
+
+      try {
+        const myData = await fetchMyData();
+        if (myData.data) {
+          setHasUnreadMessages(myData.data.hasUnreadChatMessage);
+        }
+      } catch (error) {
+        console.error("Failed to fetch user data", error);
+      }
+
+      close();
     },
   });
 
