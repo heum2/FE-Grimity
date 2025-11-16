@@ -10,6 +10,7 @@ import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 import { SearchHighlightContext } from "@/pages/search";
 import { useDeviceStore } from "@/states/deviceStore";
 import "swiper/css";
+import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
 
 export default function SearchCard({
   id,
@@ -53,7 +54,13 @@ export default function SearchCard({
           </div>
         )}
         <Link href={`/feeds/${id}`}>
-          <img src={thumbnail} alt={title} loading="lazy" className={styles.image} ref={imgRef} />
+          <ResponsiveImage
+            src={thumbnail}
+            alt={title}
+            loading="lazy"
+            className={styles.image}
+            ref={imgRef}
+          />
         </Link>
       </div>
       <div className={styles.infoContainer}>
