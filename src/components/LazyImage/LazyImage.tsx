@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Image from "next/image";
+import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
 
 import styles from "./LazyImage.module.scss";
 
@@ -24,14 +24,7 @@ const LazyImage: React.FC<LazyImageProps> = ({ src, alt, width, height, classNam
     <div className={`${styles.container} ${className || ""}`}>
       {!hasError && (
         <div className={styles.imageContainer} style={{ paddingTop }}>
-          <Image
-            src={src}
-            alt={alt}
-            fill
-            sizes="(max-width: 768px) 100vw, 240px"
-            className={styles.image}
-            onError={handleError}
-          />
+          <ResponsiveImage src={src} alt={alt} className={styles.image} onError={handleError} />
         </div>
       )}
 
