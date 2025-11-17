@@ -30,6 +30,7 @@ import NewFeed from "../Layout/NewFeed/NewFeed";
 import { useDeviceStore } from "@/states/deviceStore";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 import { useAuthRefresh } from "@/hooks/useAuthRefresh";
+import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
 
 export default function Detail({ id }: DetailProps) {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -49,7 +50,9 @@ export default function Detail({ id }: DetailProps) {
   const openModal = useModalStore((state) => state.openModal);
   const { isMobile } = useDeviceStore();
   usePreventScroll(!!overlayImage);
-  const { triggerProps, popoverProps, isOpen, targetRef } = useProfileCardHover(details?.author.url);
+  const { triggerProps, popoverProps, isOpen, targetRef } = useProfileCardHover(
+    details?.author.url,
+  );
 
   const { pathname } = useRouter();
   useEffect(() => {
@@ -299,16 +302,16 @@ export default function Detail({ id }: DetailProps) {
             <section className={styles.imageGallery} ref={sectionRef}>
               {details.cards.slice(0, 2).map((card, index) => (
                 <div key={index} className={styles.imageWrapper} ref={divRef}>
-                  <img
+                  <ResponsiveImage
                     src={card}
                     alt={`Card image ${index + 1}`}
                     width={880}
                     height={0}
-                    loading="lazy"
+                    loading={index ? "lazy" : "eager"}
                     className={styles.cardImage}
                     onClick={() => handleImageClick(card)}
                     ref={imgRef}
-                    onContextMenu={(e) => e.preventDefault()}
+                    onContextMenu={(e: React.MouseEvent<HTMLImageElement>) => e.preventDefault()}
                   />
                   {index === 1 && details.cards.length > 2 && !isExpanded && (
                     <>
@@ -327,7 +330,7 @@ export default function Detail({ id }: DetailProps) {
               {isExpanded &&
                 details.cards.slice(2).map((card, index) => (
                   <div key={index + 2} className={styles.imageWrapper2} ref={divRef}>
-                    <img
+                    <ResponsiveImage
                       src={card}
                       alt={`Card image ${index + 3}`}
                       width={600}
@@ -336,7 +339,7 @@ export default function Detail({ id }: DetailProps) {
                       className={styles.cardImage}
                       onClick={() => handleImageClick(card)}
                       ref={imgRef}
-                      onContextMenu={(e) => e.preventDefault()}
+                      onContextMenu={(e: React.MouseEvent<HTMLImageElement>) => e.preventDefault()}
                     />
                   </div>
                 ))}

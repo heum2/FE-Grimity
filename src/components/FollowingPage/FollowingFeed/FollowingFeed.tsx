@@ -28,6 +28,7 @@ import { FollowingFeedsResponse } from "@/api/feeds/getFeedsFollowing";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 import { useProfileCardHover } from "@/hooks/useProfileCardHover";
 import ProfileCardPopover from "@/components/Layout/ProfileCardPopover/ProfileCardPopover";
+import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
 
 interface FollowingFeedProps {
   id: string;
@@ -59,7 +60,9 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
   const imgRef = usePreventRightClick<HTMLImageElement>();
   const divRef = usePreventRightClick<HTMLDivElement>();
   const sectionRef = usePreventRightClick<HTMLElement>();
-  const { triggerProps, popoverProps, isOpen, targetRef } = useProfileCardHover(details?.author.url);
+  const { triggerProps, popoverProps, isOpen, targetRef } = useProfileCardHover(
+    details?.author.url,
+  );
 
   usePreventScroll(!!overlayImage);
 
@@ -285,16 +288,16 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
             <section className={styles.imageGallery} ref={sectionRef}>
               {details.cards.slice(0, 2).map((card, index) => (
                 <div key={index} className={styles.imageWrapper} ref={divRef}>
-                  <img
+                  <ResponsiveImage
                     src={card}
                     alt={`Card image ${index + 1}`}
                     width={880}
                     height={0}
                     className={styles.cardImage}
                     onClick={() => handleImageClick(card)}
-                    loading="lazy"
+                    loading={index ? "lazy" : "eager"}
                     ref={imgRef}
-                    onContextMenu={(e) => e.preventDefault()}
+                    onContextMenu={(e: React.MouseEvent<HTMLImageElement>) => e.preventDefault()}
                   />
                   {index === 1 && details.cards.length > 2 && !isExpanded && (
                     <>
@@ -313,7 +316,7 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
               {isExpanded &&
                 details.cards.slice(2).map((card, index) => (
                   <div key={index + 2} className={styles.imageWrapper2} ref={divRef}>
-                    <img
+                    <ResponsiveImage
                       src={card}
                       alt={`Card image ${index + 3}`}
                       width={600}
@@ -322,7 +325,7 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
                       onClick={() => handleImageClick(card)}
                       loading="lazy"
                       ref={imgRef}
-                      onContextMenu={(e) => e.preventDefault()}
+                      onContextMenu={(e: React.MouseEvent<HTMLImageElement>) => e.preventDefault()}
                     />
                   </div>
                 ))}

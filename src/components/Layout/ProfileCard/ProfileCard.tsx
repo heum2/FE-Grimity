@@ -6,6 +6,7 @@ import Link from "next/link";
 import { formattedDate } from "@/utils/formatDate";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 import Icon from "@/components/Asset/IconTemp";
+import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
 
 export default function ProfileCard({
   title,
@@ -35,7 +36,13 @@ export default function ProfileCard({
             <Icon icon="gallery" size="2xl" />
           </div>
         )}
-        <img src={thumbnail} alt={title} loading="lazy" className={styles.image} ref={imgRef} />
+        <ResponsiveImage
+          src={thumbnail}
+          alt={title}
+          loading="lazy"
+          className={styles.image}
+          ref={imgRef}
+        />
 
         {isEditMode && (
           <div className={styles.checkmark}>
