@@ -10,6 +10,7 @@ import { useDeleteFollow } from "@/api/users/deleteIdFollow";
 import IconComponent from "@/components/Asset/Icon";
 import { useAuthStore } from "@/states/authStore";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
+import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
 
 export default function RecommendCard({
   id,
@@ -58,7 +59,7 @@ export default function RecommendCard({
           <div className={styles.imageContainer}>
             {thumbnails[0] ? (
               <div className={styles.background}>
-                <img
+                <ResponsiveImage
                   src={thumbnails[0]}
                   alt="인기 유저 헤더 이미지"
                   loading="lazy"
@@ -97,7 +98,7 @@ export default function RecommendCard({
           <div className={styles.imageContainer}>
             {thumbnails[1] ? (
               <div className={styles.background}>
-                <img
+                <ResponsiveImage
                   src={thumbnails[1]}
                   alt="인기 유저 헤더 이미지"
                   loading="lazy"

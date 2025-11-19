@@ -10,6 +10,7 @@ import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
 import { timeAgo } from "@/utils/timeAgo";
 import { useProfileCardHover } from "@/hooks/useProfileCardHover";
 import ProfileCardPopover from "@/components/Layout/ProfileCardPopover/ProfileCardPopover";
+import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
 
 export default function SquareCard({
   title,
@@ -56,7 +57,13 @@ export default function SquareCard({
           </div>
         )}
         <Link href={`/feeds/${id}`}>
-          <img src={thumbnail} alt={title} loading="lazy" className={styles.image} ref={imgRef} />
+          <ResponsiveImage
+            src={thumbnail}
+            alt={title}
+            loading="lazy"
+            className={styles.image}
+            ref={imgRef}
+          />
         </Link>
       </div>
       <div className={styles.infoContainer}>
@@ -86,9 +93,7 @@ export default function SquareCard({
           </div>
         </div>
       </div>
-      {isOpen && author?.url && (
-        <ProfileCardPopover {...popoverProps} authorUrl={author.url} />
-      )}
+      {isOpen && author?.url && <ProfileCardPopover {...popoverProps} authorUrl={author.url} />}
     </div>
   );
 }
