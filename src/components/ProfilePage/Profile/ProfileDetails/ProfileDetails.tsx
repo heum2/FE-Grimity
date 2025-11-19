@@ -71,12 +71,7 @@ export default function ProfileDetails({
         <div className={styles.followEdit}>{children}</div>
       </div>
 
-      <div
-        className={styles.descriptionContainer}
-        style={{
-          gap: userData.description && userData.links.length > 0 ? "12px" : "0",
-        }}
-      >
+      <div className={styles.descriptionContainer}>
         {userData.description && <p className={styles.description}>{userData.description}</p>}
 
         <div className={styles.linkContainer}>
