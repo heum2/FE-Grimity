@@ -5,7 +5,7 @@ import { useInViewImage } from "@/hooks/useInViewImage";
 import { ResponsiveImageProps } from "./ResponsiveImage.types";
 
 const ResponsiveImage = forwardRef<HTMLImageElement, ResponsiveImageProps>(
-  ({ src, alt = "", ...props }, forwardedRef) => {
+  ({ src, alt = "", mobileSize = 600, desktopSize = 1200, ...props }, forwardedRef) => {
     const { imgRef, imageSrc, isInView } = useInViewImage(src);
     useImperativeHandle(forwardedRef, () => imgRef.current!);
 
@@ -15,9 +15,8 @@ const ResponsiveImage = forwardRef<HTMLImageElement, ResponsiveImageProps>(
       <picture>
         {isInView && (
           <>
-            <source media="(min-width: 1024px)" srcSet={`${imageSrc}?s=1200`} />
-            <source media="(min-width: 768px)" srcSet={`${imageSrc}?s=600`} />
-            <source media="(max-width: 767px)" srcSet={`${imageSrc}?s=300`} />
+            <source media="(min-width: 1024px)" srcSet={`${imageSrc}?s=${desktopSize}`} />
+            <source media="(max-width: 1023px)" srcSet={`${imageSrc}?s=${mobileSize}`} />
           </>
         )}
         <img
