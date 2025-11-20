@@ -311,6 +311,7 @@ export default function Detail({ id }: DetailProps) {
                     className={styles.cardImage}
                     onClick={() => handleImageClick(card)}
                     ref={imgRef}
+                    mobileSize={1200}
                     onContextMenu={(e: React.MouseEvent<HTMLImageElement>) => e.preventDefault()}
                   />
                   {index === 1 && details.cards.length > 2 && !isExpanded && (
