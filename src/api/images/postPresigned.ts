@@ -16,10 +16,14 @@ export interface PresignedUrlResponse {
 export async function postPresignedUrl({
   type,
   ext,
+  width,
+  height,
 }: PresignedUrlRequest): Promise<PresignedUrlResponse> {
   const response = await BASE_URL.post("/images/get-upload-url", {
     type,
     ext,
+    width,
+    height,
   });
   return response.data;
 }
