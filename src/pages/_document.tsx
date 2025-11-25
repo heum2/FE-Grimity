@@ -46,6 +46,11 @@ export default function Document() {
             }),
           }}
         />
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184997415763530"
+          crossOrigin="anonymous"
+        />
       </Head>
       <body>
         <Main />
