@@ -1,5 +1,5 @@
 import axiosInstance from "@/constants/baseurl";
-import { UserBaseResponse } from "@grimity/dto";
+import { UserBaseWithBlockedResponse } from "@grimity/dto";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 
@@ -8,9 +8,10 @@ interface GetChatsUserRequest {
 }
 
 export const getChatsUser = async ({ chatId }: GetChatsUserRequest) => {
-  const response = await axiosInstance.get<GetChatsUserRequest, AxiosResponse<UserBaseResponse>>(
-    `/chats/${chatId}/user`,
-  );
+  const response = await axiosInstance.get<
+    GetChatsUserRequest,
+    AxiosResponse<UserBaseWithBlockedResponse>
+  >(`/chats/${chatId}/user`);
 
   return response.data;
 };

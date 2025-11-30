@@ -7,6 +7,7 @@ import { useGetChatsUser } from "@/api/chats/getChatsUser";
 import { useChatRoom } from "@/hooks/useChatRoom";
 import { useChatMessages } from "@/hooks/useChatMessages";
 import { useMessageActions } from "@/hooks/useMessageActions";
+import useUserBlock from "@/hooks/useUserBlock";
 
 import { useChatStore } from "@/states/chatStore";
 import { useAuthStore } from "@/states/authStore";
@@ -37,6 +38,7 @@ const ChatRoom = ({ chatId }: ChatRoomProps) => {
   const { data: userData } = useGetChatsUser({ chatId });
   const { mutate: postChatMessage } = usePostChatMessage();
 
+  useUserBlock(userData?.isBlocked);
   const { user_id } = useAuthStore();
 
   const { addMessage, updateMessageLike } = useChatStore();
@@ -195,6 +197,7 @@ const ChatRoom = ({ chatId }: ChatRoomProps) => {
         )}
 
         <MessageInput
+          disabled={userData?.isBlocked}
           message={message}
           isSending={isSending}
           inputRef={messageInputRef}
