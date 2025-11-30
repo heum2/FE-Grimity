@@ -7,9 +7,7 @@ export type { FeedMetaResponse };
 
 export async function getDetails(id: string): Promise<FeedDetailResponse> {
   try {
-    const response = await axiosInstance.get(`/feeds/${id}`, {
-      params: { id },
-    });
+    const response = await axiosInstance.get(`/feeds/${id}`);
 
     return response.data;
   } catch (error) {
