@@ -5,27 +5,33 @@ import Icon from "@/components/Asset/IconTemp";
 import styles from "@/components/ProfilePage/Profile/ProfileActions/ProfileActions.module.scss";
 
 interface ProfileActionsProps {
-  isMobile: boolean;
   isMyProfile: boolean;
   isFollowing: boolean;
+  isBlocked: boolean;
   handleOpenEditModal: () => void;
   handleUnfollowClick: () => void;
   handleFollowClick: () => void;
   handleShareProfile: () => void;
   handleWithdrawal: () => void;
   handleOpenReportModal: () => void;
+  handleBlockClick: () => void;
+  handleUnblockClick: () => void;
+  handleOpenBlocklistModal: () => void;
 }
 
 export default function ProfileActions({
-  isMobile,
   isMyProfile,
   isFollowing,
+  isBlocked,
   handleOpenEditModal,
   handleUnfollowClick,
   handleFollowClick,
   handleShareProfile,
   handleWithdrawal,
   handleOpenReportModal,
+  handleBlockClick,
+  handleUnblockClick,
+  handleOpenBlocklistModal,
 }: ProfileActionsProps) {
   const commonDropdownProps = {
     trigger: (
@@ -52,6 +58,16 @@ export default function ProfileActions({
     isDelete: true,
   };
 
+  const blocklistMenuItem = {
+    label: "차단 목록",
+    onClick: handleOpenBlocklistModal,
+  };
+
+  const blockMenuItem = {
+    label: isBlocked ? "차단 해제" : "차단하기",
+    onClick: isBlocked ? handleUnblockClick : handleBlockClick,
+  };
+
   if (isMyProfile) {
     return (
       <>
@@ -60,7 +76,10 @@ export default function ProfileActions({
         </Button>
 
         <div className={styles.dropdown}>
-          <Dropdown {...commonDropdownProps} menuItems={[shareMenuItem, withdrawalMenuItem]} />
+          <Dropdown
+            {...commonDropdownProps}
+            menuItems={[shareMenuItem, blocklistMenuItem, withdrawalMenuItem]}
+          />
         </div>
       </>
     );
@@ -78,7 +97,10 @@ export default function ProfileActions({
         </Button>
 
         <div className={styles.dropdown}>
-          <Dropdown {...commonDropdownProps} menuItems={[shareMenuItem, reportMenuItem]} />
+          <Dropdown
+            {...commonDropdownProps}
+            menuItems={[shareMenuItem, blockMenuItem, reportMenuItem]}
+          />
         </div>
       </>
     );
@@ -90,7 +112,10 @@ export default function ProfileActions({
         팔로우
       </Button>
       <div className={styles.dropdown}>
-        <Dropdown {...commonDropdownProps} menuItems={[shareMenuItem, reportMenuItem]} />
+        <Dropdown
+          {...commonDropdownProps}
+          menuItems={[shareMenuItem, blockMenuItem, reportMenuItem]}
+        />
       </div>
     </>
   );

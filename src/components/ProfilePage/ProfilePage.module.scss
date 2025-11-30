@@ -132,16 +132,11 @@
       @include Body1;
       gap: 10px;
       flex-shrink: 0;
-      white-space: nowrap;
 
       @media (min-width: 1024px) and (max-width: 1500px) {
         margin-left: auto;
         flex: 0 0 auto;
         width: auto;
-      }
-
-      @include Size("tablet") {
-        min-width: 180px;
       }
 
       @include Size("mobile") {
