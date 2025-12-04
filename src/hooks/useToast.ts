@@ -1,7 +1,8 @@
 import { useToastStore } from "@/states/toastState";
 
 export function useToast() {
-  const { message, type, isShow, showToast, removeToast } = useToastStore();
+  const { message, type, isShow, container, showToast, removeToast } =
+    useToastStore();
 
-  return { toast: { message, type, isShow }, showToast, removeToast };
+  return { toast: { message, type, isShow, container }, showToast, removeToast };
 }

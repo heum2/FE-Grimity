@@ -13,10 +13,6 @@
   border-radius: 12px;
   transition: opacity 0.5s ease-in-out;
   opacity: 1;
-  position: fixed;
-  top: 130px;
-  left: 50%;
-  transform: translate(-50%);
   z-index: 2000;
 
   @include Size("mobile") {
@@ -48,4 +44,18 @@
   &.information {
     border: 1px solid $primary4;
   }
+}
+
+.global {
+  position: fixed;
+  top: 130px;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+.local {
+  position: absolute;
+  top: var(--toast-offset, 16px);
+  left: 50%;
+  transform: translate(-50%);
 }

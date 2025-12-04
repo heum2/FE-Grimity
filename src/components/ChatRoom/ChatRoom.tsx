@@ -16,6 +16,7 @@ import ChatRoomHeader from "@/components/ChatRoom/Header/Header";
 import MessageList from "@/components/ChatRoom/MessageList/MessageList";
 import MessageInput from "@/components/ChatRoom/MessageInput/MessageInput";
 import ReplyBar from "@/components/ChatRoom/ReplyBar/ReplyBar";
+import Toast from "@/components/Toast/Toast";
 
 import type { ChatMessage } from "@/types/socket.types";
 import type { NewChatMessageEventResponse } from "@grimity/dto";
@@ -174,6 +175,7 @@ const ChatRoom = ({ chatId }: ChatRoomProps) => {
   return (
     <section className={styles.container}>
       <ChatRoomHeader chatId={chatId} data={userData} />
+      <Toast target="local" />
 
       <MessageList
         messages={currentRoom?.messages || []}

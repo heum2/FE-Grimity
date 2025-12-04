@@ -6,7 +6,7 @@ const useUserBlock = (isBlocked?: boolean, identifier?: string) => {
 
   useEffect(() => {
     if (isBlocked) {
-      showToast("차단당한 계정입니다.", "warning", null);
+      showToast("차단당한 계정입니다.", "warning", null, "local");
     }
   }, [isBlocked, identifier, showToast]);
 };

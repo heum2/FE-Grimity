@@ -5,7 +5,11 @@ import IconComponent from "../Asset/Icon";
 import styles from "./Toast.module.scss";
 import { useToast } from "@/hooks/useToast";
 
-export default function Toast() {
+interface ToastProps {
+  target?: "global" | "local";
+}
+
+export default function Toast({ target }: ToastProps = {}) {
   const { toast, removeToast } = useToast();
   const router = useRouter();
 
@@ -24,6 +28,12 @@ export default function Toast() {
   }, [toast.isShow, removeToast, router.events]);
 
   if (!toast.isShow) return null;
+
+  if (target && toast.container !== target) {
+    return null;
+  }
+
+  const containerClass = toast.container === "global" ? styles.global : styles.local;
 
   let borderColor = "";
 
@@ -45,7 +55,7 @@ export default function Toast() {
   }
 
   return (
-    <div className={`${styles.toast} ${borderColor}`}>
+    <div className={`${styles.toast} ${containerClass} ${borderColor}`}>
       <IconComponent name={toast.type} size={30} />
       {toast.message}
     </div>
