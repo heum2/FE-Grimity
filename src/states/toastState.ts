@@ -6,7 +6,7 @@ interface ToastState {
   message: string;
   type: ToastType;
   isShow: boolean;
-  showToast: (message: string, type: ToastType) => void;
+  showToast: (message: string, type: ToastType, duration?: number | null) => void;
   removeToast: () => void;
 }
 
@@ -15,11 +15,14 @@ export const useToastStore = create<ToastState>((set) => ({
   type: "success",
   isShow: false,
 
-  showToast: (message, type) => {
+  showToast: (message, type, duration = 4000) => {
     set({ message, type, isShow: true });
-    setTimeout(() => {
-      set((state) => ({ ...state, isShow: false }));
-    }, 4000);
+
+    if (duration !== null) {
+      setTimeout(() => {
+        set((state) => ({ ...state, isShow: false }));
+      }, duration);
+    }
   },
 
   removeToast: () => {

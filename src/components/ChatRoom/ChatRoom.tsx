@@ -38,7 +38,8 @@ const ChatRoom = ({ chatId }: ChatRoomProps) => {
   const { data: userData } = useGetChatsUser({ chatId });
   const { mutate: postChatMessage } = usePostChatMessage();
 
-  useUserBlock(userData?.isBlocked);
+  useUserBlock(userData?.isBlocked, chatId);
+
   const { user_id } = useAuthStore();
 
   const { addMessage, updateMessageLike } = useChatStore();
