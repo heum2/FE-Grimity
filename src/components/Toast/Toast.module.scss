@@ -48,9 +48,17 @@
 
 .global {
   position: fixed;
-  top: 130px;
-  left: 50%;
+  top: calc($header-height + 16px);
+  left: calc(50% + $sidebar-width / 2);
   transform: translate(-50%);
+
+  @include Size("tablet") {
+    left: calc(50% + $sidebar-width-tablet / 2);
+  }
+
+  @include Size("mobile") {
+    left: 50%;
+  }
 }
 
 .local {
