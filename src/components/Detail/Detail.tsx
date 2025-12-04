@@ -372,7 +372,7 @@ export default function Detail({ id }: DetailProps) {
             )}
             <section className={styles.contentContainer}>
               <h2 className={styles.title}>{details.title}</h2>
-              <div className={styles.bar} />
+
               <p
                 className={styles.content}
                 dangerouslySetInnerHTML={{ __html: formattedContent }}
@@ -401,61 +401,69 @@ export default function Detail({ id }: DetailProps) {
                 </div>
               )}
             </section>
-            <div className={styles.btnContainer}>
-              <div className={styles.likeBtn} onClick={handleLikeClick}>
-                <Button
-                  size="l"
-                  type="outlined-assistive"
-                  leftIcon={
-                    <IconComponent name={isLiked ? "detailLikeOn" : "detailLikeOff"} size={20} />
-                  }
-                >
-                  {currentLikeCount}
-                </Button>
-              </div>
-              <div className={styles.saveBtn} onClick={handleSaveClick}>
-                <IconComponent name={isSaved ? "detailSaveOn" : "detailSaveOff"} size={20} />
-              </div>
-              {user_id === details.author.id || !isLoggedIn ? (
-                <div className={styles.dropdown}>
-                  <Dropdown
-                    trigger={
-                      <div className={styles.menuBtn}>
-                        <IconComponent name="meatball" size={20} />
-                      </div>
-                    }
-                    menuItems={[
-                      {
-                        label: "공유하기",
-                        onClick: handleOpenShareModal,
-                      },
-                    ]}
-                  />
+            {!details?.author.isBlocked && (
+              <>
+                <div className={styles.btnContainer}>
+                  <div className={styles.likeBtn} onClick={handleLikeClick}>
+                    <Button
+                      size="l"
+                      type="outlined-assistive"
+                      leftIcon={
+                        <IconComponent
+                          name={isLiked ? "detailLikeOn" : "detailLikeOff"}
+                          size={20}
+                        />
+                      }
+                    >
+                      {currentLikeCount}
+                    </Button>
+                  </div>
+                  <div className={styles.saveBtn} onClick={handleSaveClick}>
+                    <IconComponent name={isSaved ? "detailSaveOn" : "detailSaveOff"} size={20} />
+                  </div>
+                  {user_id === details.author.id || !isLoggedIn ? (
+                    <div className={styles.dropdown}>
+                      <Dropdown
+                        trigger={
+                          <div className={styles.menuBtn}>
+                            <IconComponent name="meatball" size={20} />
+                          </div>
+                        }
+                        menuItems={[
+                          {
+                            label: "공유하기",
+                            onClick: handleOpenShareModal,
+                          },
+                        ]}
+                      />
+                    </div>
+                  ) : (
+                    <div className={styles.dropdown}>
+                      <Dropdown
+                        trigger={
+                          <div className={styles.menuBtn}>
+                            <IconComponent name="meatball" size={20} />
+                          </div>
+                        }
+                        menuItems={[
+                          {
+                            label: "공유하기",
+                            onClick: handleOpenShareModal,
+                          },
+                          {
+                            label: "신고하기",
+                            onClick: handleOpenReportModal,
+                            isDelete: true,
+                          },
+                        ]}
+                      />
+                    </div>
+                  )}
                 </div>
-              ) : (
-                <div className={styles.dropdown}>
-                  <Dropdown
-                    trigger={
-                      <div className={styles.menuBtn}>
-                        <IconComponent name="meatball" size={20} />
-                      </div>
-                    }
-                    menuItems={[
-                      {
-                        label: "공유하기",
-                        onClick: handleOpenShareModal,
-                      },
-                      {
-                        label: "신고하기",
-                        onClick: handleOpenReportModal,
-                        isDelete: true,
-                      },
-                    ]}
-                  />
-                </div>
-              )}
-            </div>
-            <Comment feedId={id} feedWriterId={details.author.id} />
+                <Comment feedId={id} feedWriterId={details.author.id} />
+              </>
+            )}
+
             <div className={styles.bar} />
             <div className={styles.cards}>
               <Author authorId={details.author.id} feedId={id} authorUrl={details.author.url} />
