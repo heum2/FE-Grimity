@@ -31,6 +31,7 @@ import { useDeviceStore } from "@/states/deviceStore";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 import { useAuthRefresh } from "@/hooks/useAuthRefresh";
 import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
+import useUserBlock from "@/hooks/useUserBlock";
 
 export default function Detail({ id }: DetailProps) {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -53,6 +54,11 @@ export default function Detail({ id }: DetailProps) {
   const { triggerProps, popoverProps, isOpen, targetRef } = useProfileCardHover(
     details?.author.url,
   );
+
+  useUserBlock({
+    identifier: id,
+    isBlocked: details?.author.isBlocked,
+  });
 
   const { pathname } = useRouter();
   useEffect(() => {

@@ -55,7 +55,7 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
   );
   const { openModal: newModalOpen } = useModal();
 
-  useUserBlock(userData?.isBlocked);
+  useUserBlock({ isBlocked: userData?.isBlocked, identifier: userData?.id });
 
   const { mutate: blockUser } = usePutUserBlock();
   const { mutate: unblockUser } = useDeleteUserBlock();

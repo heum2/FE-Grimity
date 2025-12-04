@@ -39,7 +39,11 @@ const ChatRoom = ({ chatId }: ChatRoomProps) => {
   const { data: userData } = useGetChatsUser({ chatId });
   const { mutate: postChatMessage } = usePostChatMessage();
 
-  useUserBlock(userData?.isBlocked, chatId);
+  useUserBlock({
+    isBlocked: userData?.isBlocked,
+    identifier: chatId,
+    isToastLocal: true,
+  });
 
   const { user_id } = useAuthStore();
 

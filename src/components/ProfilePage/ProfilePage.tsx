@@ -18,6 +18,8 @@ import { useDragScroll } from "@/hooks/useDragScroll";
 import Icon from "@/components/Asset/IconTemp";
 import Pagination from "@/components/Pagination";
 import { useDeviceStore } from "@/states/deviceStore";
+import useUserBlock from "@/hooks/useUserBlock";
+import Toast from "@/components/Toast/Toast";
 
 type SortOption = "latest" | "like" | "oldest";
 
@@ -30,25 +32,35 @@ const sortOptions: { value: SortOption; label: string }[] = [
 const PAGE_SIZE = 12;
 
 export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) {
+  const router = useRouter();
+
   const openModal = useModalStore((state) => state.openModal);
   const { isMobile } = useDeviceStore();
-  const [sortBy, setSortBy] = useState<SortOption>("latest");
-  const [indicatorStyle, setIndicatorStyle] = useState({ width: 0, left: 0 });
-  const feedsTabRef = useRef<HTMLDivElement>(null);
-  const postsTabRef = useRef<HTMLDivElement>(null);
-  const { data: userData } = useUserDataByUrl(url);
-  const loadMoreRef = useRef(null);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const router = useRouter();
+
   const { query, pathname } = router;
   const currentPage = Number(query.page) || 1;
+
+  const [sortBy, setSortBy] = useState<SortOption>("latest");
+  const [indicatorStyle, setIndicatorStyle] = useState({ width: 0, left: 0 });
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"feeds" | "posts">(
     (query.tab as "feeds" | "posts") || "feeds",
   );
-  const categoryBarRef = useRef<HTMLDivElement>(null);
-  useDragScroll(categoryBarRef as React.RefObject<HTMLElement>, { scrollSpeed: 2 });
   const [isEditMode, setIsEditMode] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+
+  const feedsTabRef = useRef<HTMLDivElement>(null);
+  const postsTabRef = useRef<HTMLDivElement>(null);
+  const loadMoreRef = useRef(null);
+  const categoryBarRef = useRef<HTMLDivElement>(null);
+
+  const { data: userData } = useUserDataByUrl(url);
+
+  useDragScroll(categoryBarRef as React.RefObject<HTMLElement>, { scrollSpeed: 2 });
+  useUserBlock({
+    identifier: userData?.id,
+    isBlocked: userData?.isBlocked,
+  });
 
   const toggleEditMode = () => {
     setIsEditMode(!isEditMode);
@@ -202,6 +214,7 @@ export default function ProfilePage({ isMyProfile, id, url }: ProfilePageProps) 
 
   return (
     <div className={styles.container}>
+      <Toast target="local" />
       {/* 그림 정리 모드 */}
       {isEditMode ? (
         <FeedAlbumEditor
