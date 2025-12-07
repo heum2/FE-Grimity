@@ -8,6 +8,7 @@ interface ProfileActionsProps {
   isMyProfile: boolean;
   isFollowing: boolean;
   isBlocked: boolean;
+  isBlocking: boolean;
   handleOpenEditModal: () => void;
   handleUnfollowClick: () => void;
   handleFollowClick: () => void;
@@ -23,6 +24,7 @@ export default function ProfileActions({
   isMyProfile,
   isFollowing,
   isBlocked,
+  isBlocking,
   handleOpenEditModal,
   handleUnfollowClick,
   handleFollowClick,
@@ -64,8 +66,8 @@ export default function ProfileActions({
   };
 
   const blockMenuItem = {
-    label: isBlocked ? "차단 해제" : "차단하기",
-    onClick: isBlocked ? handleUnblockClick : handleBlockClick,
+    label: isBlocking ? "차단 해제" : "차단하기",
+    onClick: isBlocking ? handleUnblockClick : handleBlockClick,
   };
 
   if (isMyProfile) {

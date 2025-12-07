@@ -17,6 +17,7 @@ export default function User({
   followerCount: initialFollowerCount,
   isFollowing: initialIsFollowing,
   thumbnails,
+  isBlocked,
 }: PopularUserResponse) {
   const { showToast } = useToast();
   const [isFollowing, setIsFollowing] = useState(initialIsFollowing);
@@ -25,6 +26,8 @@ export default function User({
 
   const { mutateAsync: putFollow } = usePutFollow();
   const { mutateAsync: deleteFollow } = useDeleteFollow();
+
+  const isShowFollowButton = !isBlocked;
 
   const handleFollowClick = async () => {
     try {
@@ -128,15 +131,16 @@ export default function User({
             </div>
           </div>
         </Link>
-        {isFollowing ? (
-          <Button size="s" type="outlined-assistive" onClick={handleUnfollowClick}>
-            팔로잉
-          </Button>
-        ) : (
-          <Button size="s" type="filled-primary" onClick={handleFollowClick}>
-            팔로우
-          </Button>
-        )}
+        {isShowFollowButton &&
+          (isFollowing ? (
+            <Button size="s" type="outlined-assistive" onClick={handleUnfollowClick}>
+              팔로잉
+            </Button>
+          ) : (
+            <Button size="s" type="filled-primary" onClick={handleFollowClick}>
+              팔로우
+            </Button>
+          ))}
       </div>
     </div>
   );

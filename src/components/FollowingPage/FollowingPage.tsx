@@ -97,6 +97,8 @@ export default function FollowingPage() {
                       followerCount={user.followerCount}
                       isFollowing={user.isFollowing}
                       thumbnails={user.thumbnails}
+                      isBlocking={user.isBlocking}
+                      isBlocked={user.isBlocked}
                     />
                   ),
               )}
@@ -128,6 +130,8 @@ export default function FollowingPage() {
                       followerCount={user.followerCount}
                       isFollowing={user.isFollowing}
                       thumbnails={user.thumbnails}
+                      isBlocking={user.isBlocking}
+                      isBlocked={user.isBlocked}
                     />
                   ),
               )}

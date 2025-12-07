@@ -218,7 +218,8 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                         <ProfileActions
                           isMyProfile={isMyProfile}
                           isFollowing={userData.isFollowing}
-                          isBlocked={userData.isBlocking}
+                          isBlocked={userData.isBlocked}
+                          isBlocking={userData.isBlocking}
                           handleOpenEditModal={handleOpenEditModal}
                           handleUnfollowClick={handleUnfollowClick}
                           handleFollowClick={handleFollowClick}
