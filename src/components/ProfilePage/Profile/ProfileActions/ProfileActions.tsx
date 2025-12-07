@@ -85,6 +85,17 @@ export default function ProfileActions({
     );
   }
 
+  if (isBlocked) {
+    return (
+      <div className={styles.dropdown}>
+        <Dropdown
+          {...commonDropdownProps}
+          menuItems={[shareMenuItem, blockMenuItem, reportMenuItem]}
+        />
+      </div>
+    );
+  }
+
   if (isFollowing) {
     return (
       <>
