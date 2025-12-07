@@ -4,7 +4,7 @@ import { formatCurrency } from "@/utils/formatCurrency";
 import Image from "next/image";
 import Link from "next/link";
 import { useAuthStore } from "@/states/authStore";
-import { SearchProfileProps } from "./SearchProfile.types";
+import { SearchedUserResponse } from "@grimity/dto";
 import { useDeleteFollow } from "@/api/users/deleteIdFollow";
 import { usePutFollow } from "@/api/users/putIdFollow";
 import { useToast } from "@/hooks/useToast";
@@ -22,7 +22,7 @@ export default function SearchProfile({
   followerCount: initialFollowerCount,
   isFollowing: initialIsFollowing,
   isBlocked,
-}: SearchProfileProps) {
+}: SearchedUserResponse) {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const user_id = useAuthStore((state) => state.user_id);
   const { showToast } = useToast();
