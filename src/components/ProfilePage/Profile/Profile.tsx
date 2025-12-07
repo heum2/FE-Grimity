@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import router, { useRouter } from "next/router";
 
 import { useAuthStore } from "@/states/authStore";
-import { useModalStore, useNewModalStore } from "@/states/modalStore";
+import { useModalStore } from "@/states/modalStore";
 
 import { useMyData } from "@/api/users/getMe";
 import { useUserDataByUrl } from "@/api/users/getId";
@@ -54,8 +54,6 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
     userData?.image || "/image/default.svg",
   );
   const { openModal: newModalOpen } = useModal();
-
-  useUserBlock({ isBlocked: userData?.isBlocked, identifier: userData?.id });
 
   const { mutate: blockUser } = usePutUserBlock();
   const { mutate: unblockUser } = useDeleteUserBlock();
