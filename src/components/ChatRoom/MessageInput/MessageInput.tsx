@@ -103,7 +103,12 @@ const MessageInput = ({
       )}
 
       <div className={styles.inputWrapper}>
-        <button type="button" className={styles.cameraButton} onClick={handleClickFile}>
+        <button
+          disabled={disabled}
+          type="button"
+          className={styles.cameraButton}
+          onClick={handleClickFile}
+        >
           <Icon icon="cameraAlt" size="2.5xl" />
           <input
             disabled={disabled}
