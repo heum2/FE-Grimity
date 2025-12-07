@@ -9,7 +9,7 @@ interface MessageItemProps {
   message: ChatMessage;
   isMyMessage: boolean;
   isHovered: boolean;
-  userData?: { name: string };
+  userData?: { name: string; isBlocked?: boolean };
   onMouseEnter: () => void;
   onMouseLeave: () => void;
   onLike: (messageId: string, isLiked: boolean) => void;
@@ -68,7 +68,7 @@ const MessageItem = ({
           </div>
         )}
 
-        {!isMyMessage && isHovered && (
+        {!isMyMessage && isHovered && !userData?.isBlocked && (
           <div className={styles.hoverActions}>
             <button
               className={styles.actionButton}

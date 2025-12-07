@@ -7,7 +7,7 @@ import styles from "./MessageList.module.scss";
 interface MessageListProps {
   messages: ChatMessage[];
   userId: string;
-  userData?: { name: string };
+  userData?: { name: string; isBlocked?: boolean };
   hoveredMessageId: string | null;
   containerRef: React.RefObject<HTMLDivElement | null>;
   onScroll: (e: React.UIEvent<HTMLDivElement>) => void;
