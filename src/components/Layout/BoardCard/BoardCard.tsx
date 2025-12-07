@@ -4,6 +4,7 @@ import { formatCurrency } from "@/utils/formatCurrency";
 import { BoardCardProps } from "./BoardCard.types";
 import Link from "next/link";
 import { timeAgo } from "@/utils/timeAgo";
+import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
 
 export default function BoardCard({
   id,
@@ -17,11 +18,12 @@ export default function BoardCard({
     <div className={styles.container}>
       {thumbnail && (
         <div className={styles.thumbnailContainer}>
-          <img
+          <ResponsiveImage
             src={thumbnail}
             alt="썸네일"
             width={48}
             height={48}
+            desktopSize={600}
             className={styles.thumbnailImage}
           />
         </div>
