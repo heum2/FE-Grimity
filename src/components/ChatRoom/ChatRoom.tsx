@@ -7,6 +7,7 @@ import { useGetChatsUser } from "@/api/chats/getChatsUser";
 import { useChatRoom } from "@/hooks/useChatRoom";
 import { useChatMessages } from "@/hooks/useChatMessages";
 import { useMessageActions } from "@/hooks/useMessageActions";
+import useUserBlock from "@/hooks/useUserBlock";
 
 import { useChatStore } from "@/states/chatStore";
 import { useAuthStore } from "@/states/authStore";
@@ -15,6 +16,7 @@ import ChatRoomHeader from "@/components/ChatRoom/Header/Header";
 import MessageList from "@/components/ChatRoom/MessageList/MessageList";
 import MessageInput from "@/components/ChatRoom/MessageInput/MessageInput";
 import ReplyBar from "@/components/ChatRoom/ReplyBar/ReplyBar";
+import Toast from "@/components/Toast/Toast";
 
 import type { ChatMessage } from "@/types/socket.types";
 import type { NewChatMessageEventResponse } from "@grimity/dto";
@@ -36,6 +38,12 @@ const ChatRoom = ({ chatId }: ChatRoomProps) => {
 
   const { data: userData } = useGetChatsUser({ chatId });
   const { mutate: postChatMessage } = usePostChatMessage();
+
+  useUserBlock({
+    isBlocked: userData?.isBlocked,
+    identifier: chatId,
+    isToastLocal: true,
+  });
 
   const { user_id } = useAuthStore();
 
@@ -171,6 +179,7 @@ const ChatRoom = ({ chatId }: ChatRoomProps) => {
   return (
     <section className={styles.container}>
       <ChatRoomHeader chatId={chatId} data={userData} />
+      <Toast target="local" />
 
       <MessageList
         messages={currentRoom?.messages || []}
@@ -195,6 +204,7 @@ const ChatRoom = ({ chatId }: ChatRoomProps) => {
         )}
 
         <MessageInput
+          disabled={userData?.isBlocked}
           message={message}
           isSending={isSending}
           inputRef={messageInputRef}

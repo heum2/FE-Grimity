@@ -15,10 +15,11 @@ interface MessageInputProps {
   message: string;
   isSending: boolean;
   inputRef?: React.RefObject<HTMLInputElement | null>;
+  images: { fileName: string; fullUrl: string }[];
+  disabled?: boolean;
   onMessageChange: (value: string) => void;
   onSend: () => void;
   onKeyPress: (e: React.KeyboardEvent) => void;
-  images: { fileName: string; fullUrl: string }[];
   onImagesChange: (images: { fileName: string; fullUrl: string }[]) => void;
 }
 
@@ -26,10 +27,11 @@ const MessageInput = ({
   message,
   isSending,
   inputRef,
+  images,
+  disabled,
   onMessageChange,
   onSend,
   onKeyPress,
-  images,
   onImagesChange,
 }: MessageInputProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -101,9 +103,15 @@ const MessageInput = ({
       )}
 
       <div className={styles.inputWrapper}>
-        <button type="button" className={styles.cameraButton} onClick={handleClickFile}>
+        <button
+          disabled={disabled}
+          type="button"
+          className={styles.cameraButton}
+          onClick={handleClickFile}
+        >
           <Icon icon="cameraAlt" size="2.5xl" />
           <input
+            disabled={disabled}
             ref={fileInputRef}
             multiple
             hidden
@@ -116,6 +124,7 @@ const MessageInput = ({
         </button>
         <input
           ref={inputRef}
+          disabled={disabled}
           type="text"
           className={styles.input}
           placeholder="메시지 보내기"
@@ -130,7 +139,7 @@ const MessageInput = ({
             className={styles.sendButton}
             onClick={onSend}
             onMouseDown={(e) => e.preventDefault()}
-            disabled={isSending}
+            disabled={isSending || disabled}
           >
             전송
           </Button>

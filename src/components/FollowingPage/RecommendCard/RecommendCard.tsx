@@ -21,6 +21,7 @@ export default function RecommendCard({
   followerCount: initialFollowerCount,
   isFollowing: initialIsFollowing,
   thumbnails,
+  isBlocked,
 }: PopularUserResponse) {
   const user_id = useAuthStore((state) => state.user_id);
   const { showToast } = useToast();
@@ -31,6 +32,8 @@ export default function RecommendCard({
 
   const { mutateAsync: putFollow } = usePutFollow();
   const { mutateAsync: deleteFollow } = useDeleteFollow();
+
+  const isShowFollowButton = !isBlocked && id !== user_id;
 
   const handleFollowClick = async () => {
     try {
@@ -171,7 +174,7 @@ export default function RecommendCard({
           </div>
         </Link>
         <p className={styles.description}>{description}</p>
-        {id !== user_id &&
+        {isShowFollowButton &&
           (isFollowing ? (
             <Button size="m" type="outlined-assistive" onClick={handleUnfollowClick}>
               팔로잉

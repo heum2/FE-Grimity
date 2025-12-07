@@ -80,6 +80,8 @@ export default function PopularUser() {
                 isFollowing={user.isFollowing}
                 thumbnails={user.thumbnails}
                 description={user.description}
+                isBlocking={user.isBlocking}
+                isBlocked={user.isBlocked}
               />
             </SwiperSlide>
           ))}
@@ -97,6 +99,8 @@ export default function PopularUser() {
                 isFollowing={user.isFollowing}
                 thumbnails={user.thumbnails}
                 description={user.description}
+                isBlocking={user.isBlocking}
+                isBlocked={user.isBlocked}
               />
             </div>
           ))}

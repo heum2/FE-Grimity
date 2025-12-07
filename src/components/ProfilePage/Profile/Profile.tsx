@@ -7,21 +7,26 @@ import { useModalStore } from "@/states/modalStore";
 import { useMyData } from "@/api/users/getMe";
 import { useUserDataByUrl } from "@/api/users/getId";
 import { deleteMe } from "@/api/users/deleteMe";
+import { usePutUserBlock } from "@/api/users/putUserBlock";
+import { useDeleteUserBlock } from "@/api/users/deleteUserBlock";
 
 import ProfileActions from "@/components/ProfilePage/Profile/ProfileActions/ProfileActions";
 import ProfileCover from "@/components/ProfilePage/Profile/ProfileCover/ProfileCover";
 import ProfileImage from "@/components/ProfilePage/Profile/ProfileImage/ProfileImage";
 import ProfileDetails from "@/components/ProfilePage/Profile/ProfileDetails/ProfileDetails";
+import Blocklist from "@/components/Modal/Blocklist/Blocklist";
 
 import { useToast } from "@/hooks/useToast";
 import { useDeviceStore } from "@/states/deviceStore";
 import { useFollow } from "@/hooks/useFollow";
 import { useCoverImage } from "@/hooks/useCoverImage";
 import { useProfileImage } from "@/hooks/useProfileImage";
+import useUserBlock from "@/hooks/useUserBlock";
+import { useModal } from "@/hooks/useModal";
 
 import { ProfileProps } from "@/components/ProfilePage/Profile/Profile.types";
 
-import styles from "@/components/ProfilePage/Profile/Profile.module.scss";
+import styles from "./Profile.module.scss";
 
 export default function Profile({ isMyProfile, id, url }: ProfileProps) {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -30,6 +35,7 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
   const setUserId = useAuthStore((state) => state.setUserId);
   const openModal = useModalStore((state) => state.openModal);
+
   const { data: myData } = useMyData();
   const { data: userData, refetch: refetchUserData } = useUserDataByUrl(url);
   const [profileImage, setProfileImage] = useState<string>("");
@@ -47,8 +53,13 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
     setProfileImage,
     userData?.image || "/image/default.svg",
   );
+  const { openModal: newModalOpen } = useModal();
+
+  const { mutate: blockUser } = usePutUserBlock();
+  const { mutate: unblockUser } = useDeleteUserBlock();
 
   const { pathname } = useRouter();
+
   useEffect(() => {
     refetchUserData();
   }, [pathname]);
@@ -123,6 +134,56 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
     });
   };
 
+  const handleBlockClick = () => {
+    if (!isLoggedIn) {
+      showToast("로그인 후 가능합니다.", "warning");
+      return;
+    }
+
+    blockUser(
+      { id: userData?.id || "" },
+      {
+        onSuccess: () => {
+          refetchUserData();
+        },
+        onError: () => {
+          showToast("차단 해제 중 오류가 발생했습니다.", "error");
+        },
+      },
+    );
+  };
+
+  const handleUnblockClick = () => {
+    if (!isLoggedIn) {
+      showToast("로그인 후 가능합니다.", "warning");
+      return;
+    }
+    unblockUser(
+      { id: userData?.id || "" },
+      {
+        onSuccess: () => {
+          refetchUserData();
+        },
+        onError: () => {
+          showToast("차단 해제 중 오류가 발생했습니다.", "error");
+        },
+      },
+    );
+  };
+
+  const handleOpenBlocklistModal = () => {
+    if (!isLoggedIn) {
+      showToast("로그인 후 가능합니다.", "warning");
+      return;
+    }
+
+    newModalOpen(
+      (close) => <Blocklist close={close} />,
+      { className: styles.blacklist },
+      { isFill: isMobile, title: "차단 목록" },
+    );
+  };
+
   return (
     <div className={styles.container}>
       {userData && (
@@ -155,15 +216,19 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                     <div className={styles.followEdit}>
                       {isLoggedIn && (
                         <ProfileActions
-                          isMobile
                           isMyProfile={isMyProfile}
                           isFollowing={userData.isFollowing}
+                          isBlocked={userData.isBlocked}
+                          isBlocking={userData.isBlocking}
                           handleOpenEditModal={handleOpenEditModal}
                           handleUnfollowClick={handleUnfollowClick}
                           handleFollowClick={handleFollowClick}
                           handleShareProfile={handleShareProfile}
                           handleWithdrawal={handleWithdrawal}
                           handleOpenReportModal={handleOpenReportModal}
+                          handleBlockClick={handleBlockClick}
+                          handleUnblockClick={handleUnblockClick}
+                          handleOpenBlocklistModal={handleOpenBlocklistModal}
                         />
                       )}
                     </div>

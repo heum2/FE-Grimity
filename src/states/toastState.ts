@@ -1,28 +1,58 @@
 import { create } from "zustand";
 
 type ToastType = "success" | "error" | "warning" | "information";
+type ToastContainer = "global" | "local";
 
-interface ToastState {
+interface Toast {
+  id: string;
   message: string;
   type: ToastType;
-  isShow: boolean;
-  showToast: (message: string, type: ToastType) => void;
-  removeToast: () => void;
+  container: ToastContainer;
+  duration: number | null;
 }
 
-export const useToastStore = create<ToastState>((set) => ({
-  message: "",
-  type: "success",
-  isShow: false,
+interface ToastState {
+  toasts: Toast[];
+  showToast: (
+    message: string,
+    type: ToastType,
+    duration?: number | null,
+    container?: ToastContainer
+  ) => void;
+  removeToast: (id: string) => void;
+}
 
-  showToast: (message, type) => {
-    set({ message, type, isShow: true });
-    setTimeout(() => {
-      set((state) => ({ ...state, isShow: false }));
-    }, 4000);
+const MAX_TOASTS = 3;
+
+export const useToastStore = create<ToastState>((set) => ({
+  toasts: [],
+
+  showToast: (message, type, duration = 4000, container = "global") => {
+    const id = `toast-${Date.now()}-${Math.random()}`;
+
+    set((state) => {
+      let newToasts = [...state.toasts, { id, message, type, container, duration }];
+
+      // Limit to maximum 3 toasts - remove oldest if exceeding limit
+      if (newToasts.length > MAX_TOASTS) {
+        newToasts = newToasts.slice(-MAX_TOASTS); // Keep last 3 toasts
+      }
+
+      return { toasts: newToasts };
+    });
+
+    if (duration !== null) {
+      setTimeout(() => {
+        set((state) => ({
+          toasts: state.toasts.filter((t) => t.id !== id),
+        }));
+      }, duration);
+    }
   },
 
-  removeToast: () => {
-    set((state) => ({ ...state, isShow: false }));
+  removeToast: (id: string) => {
+    set((state) => ({
+      toasts: state.toasts.filter((t) => t.id !== id),
+    }));
   },
 }));

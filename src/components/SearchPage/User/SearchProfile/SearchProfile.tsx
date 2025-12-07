@@ -4,7 +4,7 @@ import { formatCurrency } from "@/utils/formatCurrency";
 import Image from "next/image";
 import Link from "next/link";
 import { useAuthStore } from "@/states/authStore";
-import { SearchProfileProps } from "./SearchProfile.types";
+import { SearchedUserResponse } from "@grimity/dto";
 import { useDeleteFollow } from "@/api/users/deleteIdFollow";
 import { usePutFollow } from "@/api/users/putIdFollow";
 import { useToast } from "@/hooks/useToast";
@@ -21,7 +21,8 @@ export default function SearchProfile({
   backgroundImage,
   followerCount: initialFollowerCount,
   isFollowing: initialIsFollowing,
-}: SearchProfileProps) {
+  isBlocked,
+}: SearchedUserResponse) {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const user_id = useAuthStore((state) => state.user_id);
   const { showToast } = useToast();
@@ -32,6 +33,8 @@ export default function SearchProfile({
 
   const { mutateAsync: putFollow } = usePutFollow();
   const { mutateAsync: deleteFollow } = useDeleteFollow();
+
+  const isShowFollowButton = !isBlocked && isLoggedIn && id !== user_id;
 
   const handleFollowClick = async () => {
     try {
@@ -84,7 +87,7 @@ export default function SearchProfile({
               unoptimized
             />
           </Link>
-          {isLoggedIn && id !== user_id && (
+          {isShowFollowButton && (
             <div className={styles.followButton}>
               {isFollowing ? (
                 <Button size="s" type="outlined-assistive" onClick={handleUnfollowClick}>
