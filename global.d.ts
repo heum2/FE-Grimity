@@ -4,6 +4,7 @@ declare global {
     google: any;
     tinymce: any;
     gtag: (type: string, action: string, params?: Record<string, any>) => void;
+    adsbygoogle?: Record<string, unknown>[];
   }
 }
 
