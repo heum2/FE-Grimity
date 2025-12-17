@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 
-import { ADSENSE_CLIENT_ID } from "@/config/adsense";
+import { CONFIG } from "@/config";
 
 import type { AdSenseProps } from "./AdSense.types";
 
 import styles from "./AdSense.module.scss";
 
 export default function AdSense({
-  adClient = ADSENSE_CLIENT_ID,
+  adClient = CONFIG.MARKETING.ADSENSE_CLIENT_ID,
   adSlot,
   adFormat = "fluid",
   adLayoutKey,
@@ -46,7 +46,7 @@ export default function AdSense({
         if (adRef.current && typeof window !== "undefined") {
           const rect = adRef.current.getBoundingClientRect();
           if (rect.width > 0) {
-            ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
             isAdLoadedRef.current = true;
 
             observer = new MutationObserver(() => {
@@ -74,9 +74,7 @@ export default function AdSense({
       }
     };
 
-    let rafId: number;
-
-    rafId = requestAnimationFrame(() => {
+    const rafId = requestAnimationFrame(() => {
       requestAnimationFrame(loadAd);
     });
 

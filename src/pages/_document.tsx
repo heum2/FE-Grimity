@@ -1,6 +1,6 @@
 import { Html, Head, Main, NextScript } from "next/document";
 
-import { ADSENSE_CLIENT_ID } from "@/config/adsense";
+import { CONFIG } from "@/config";
 
 export default function Document() {
   return (
@@ -11,7 +11,7 @@ export default function Document() {
           content="width=device-width, initial-scale=1, maximum-scale=1.0, 
     user-scalable=0"
         />
-        <meta name="google-adsense-account" content={ADSENSE_CLIENT_ID} />
+        <meta name="google-adsense-account" content={CONFIG.MARKETING.ADSENSE_CLIENT_ID} />
         <link rel="icon" href="/favicon/favicon-16x16.png" />
         <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png" />
         <link
@@ -50,7 +50,7 @@ export default function Document() {
         />
         <script
           async
-          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT_ID}`}
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${CONFIG.MARKETING.ADSENSE_CLIENT_ID}`}
           crossOrigin="anonymous"
         />
       </Head>
