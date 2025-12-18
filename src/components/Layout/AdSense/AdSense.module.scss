@@ -2,18 +2,20 @@
   width: 100%;
   min-width: 250px; // AdSense fluid 광고 최소 너비 요구사항
   min-height: 100px;
-  display: block;
+  display: block; // flex 대신 block 사용
   position: relative;
 
   &.fullWidth {
-    grid-column: 1 / -1;
+    grid-column: 1 / -1; // 그리드 전체 너비를 차지
   }
 
+  // AdSense ins 태그에 너비 보장
   ins {
     width: 100%;
     min-width: 250px;
   }
 
+  // 플레이스홀더 스타일
   &.withPlaceholder {
     border: 2px dashed #e0e0e0;
     background-color: #fafafa;

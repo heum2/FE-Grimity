@@ -46,7 +46,7 @@ export default function AdSense({
         if (adRef.current && typeof window !== "undefined") {
           const rect = adRef.current.getBoundingClientRect();
           if (rect.width > 0) {
-            (window.adsbygoogle = window.adsbygoogle || []).push({});
+            ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
             isAdLoadedRef.current = true;
 
             observer = new MutationObserver(() => {
@@ -74,7 +74,9 @@ export default function AdSense({
       }
     };
 
-    const rafId = requestAnimationFrame(() => {
+    let rafId: number;
+
+    rafId = requestAnimationFrame(() => {
       requestAnimationFrame(loadAd);
     });
 
