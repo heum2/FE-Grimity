@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 
-import { CONFIG } from "@/config";
+import { ADSENSE_CLIENT_ID } from "@/config/adsense";
 
 import type { AdSenseProps } from "./AdSense.types";
 
 import styles from "./AdSense.module.scss";
 
 export default function AdSense({
-  adClient = CONFIG.MARKETING.ADSENSE_CLIENT_ID,
+  adClient = ADSENSE_CLIENT_ID,
   adSlot,
   adFormat = "fluid",
   adLayoutKey,
