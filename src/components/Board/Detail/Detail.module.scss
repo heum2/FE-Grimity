@@ -7,16 +7,30 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  column-gap: 80px;
+
   padding-top: 60px;
   padding-bottom: 80px;
   padding-left: 32px;
   padding-right: 32px;
 
+  max-width: 1180px;
+  margin: 0 auto;
+
+  @media (min-width: 1440px) {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
   @include Size("mobile") {
+    flex-direction: column;
+    align-items: center;
     padding: 16px 16px 60px 16px;
   }
 
   @include Size("tablet") {
+    flex-direction: column;
+    align-items: center;
     padding-top: 24px;
     padding-left: 16px;
     padding-right: 16px;
@@ -228,6 +242,17 @@
     .boardPopular {
       margin-top: 60px;
       margin-bottom: 50px;
+    }
+  }
+
+  .right {
+    position: sticky;
+    top: calc($header-height + 60px);
+
+    display: none;
+
+    @media (min-width: 1440px) {
+      display: block;
     }
   }
 }

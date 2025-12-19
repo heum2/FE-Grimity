@@ -12,9 +12,13 @@ import Dropdown from "@/components/Dropdown/Dropdown";
 import BoardAll from "@/components/Board/BoardAll/BoardAll";
 import ShareBtn from "@/components/Board/Detail/ShareBtn/ShareBtn";
 import PostComment from "@/components/Board/Detail/Comment/Comment";
+import ProfileCardPopover from "@/components/Layout/ProfileCardPopover/ProfileCardPopover";
+import Icon from "@/components/Asset/IconTemp";
+import DisplayAd from "@/components/Layout/AdSense/DisplayAd";
 
 import { useToast } from "@/hooks/useToast";
 import { useDeviceStore } from "@/states/deviceStore";
+import { useProfileCardHover } from "@/hooks/useProfileCardHover";
 
 import { useModalStore } from "@/states/modalStore";
 import { useAuthStore } from "@/states/authStore";
@@ -27,13 +31,12 @@ import { deletePostsFeeds } from "@/api/posts/deletePostsId";
 import { timeAgo } from "@/utils/timeAgo";
 import { getTypeLabel } from "@/components/Board/BoardAll/AllCard/AllCard";
 
-import { PostDetailProps } from "@/components/Board/Detail/Detail.types";
-import { useProfileCardHover } from "@/hooks/useProfileCardHover";
-import ProfileCardPopover from "@/components/Layout/ProfileCardPopover/ProfileCardPopover";
-
-import styles from "@/components/Board/Detail/Detail.module.scss";
 import { PATH_ROUTES } from "@/constants/routes";
-import Icon from "@/components/Asset/IconTemp";
+import { CONFIG } from "@/config";
+
+import type { PostDetailProps } from "@/components/Board/Detail/Detail.types";
+
+import styles from "./Detail.module.scss";
 
 export default function PostDetail({ id }: PostDetailProps) {
   const router = useRouter();
@@ -298,6 +301,8 @@ export default function PostDetail({ id }: PostDetailProps) {
         {renderCounts()}
         {renderActionButtons()}
 
+        <DisplayAd adSlot={CONFIG.MARKETING.AD_SLOTS.BOARD_DETAIL_HORIZONTAL} />
+
         <PostComment postId={id} postWriterId={posts.author.id} />
 
         {!posts.commentCount && <div className={styles.bar} />}
@@ -316,6 +321,10 @@ export default function PostDetail({ id }: PostDetailProps) {
         {isOpen && posts?.author.url && (
           <ProfileCardPopover {...popoverProps} authorUrl={posts.author.url} />
         )}
+      </div>
+
+      <div className={styles.right}>
+        <DisplayAd adSlot={CONFIG.MARKETING.AD_SLOTS.BOARD_DETAIL_VERTICAL} />
       </div>
     </div>
   );
