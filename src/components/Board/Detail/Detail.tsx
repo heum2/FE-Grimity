@@ -14,7 +14,7 @@ import ShareBtn from "@/components/Board/Detail/ShareBtn/ShareBtn";
 import PostComment from "@/components/Board/Detail/Comment/Comment";
 import ProfileCardPopover from "@/components/Layout/ProfileCardPopover/ProfileCardPopover";
 import Icon from "@/components/Asset/IconTemp";
-import DisplayAd from "@/components/Layout/AdSense/DisplayAd";
+import { DetailLayout } from "@/components/Layout/DetailLayout";
 
 import { useToast } from "@/hooks/useToast";
 import { useDeviceStore } from "@/states/deviceStore";
@@ -262,8 +262,8 @@ export default function PostDetail({ id }: PostDetailProps) {
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.center}>
+    <DetailLayout>
+      <DetailLayout.Content>
         <section className={styles.header}>
           <div className={styles.headerLeft}>
             <div className={styles.chip}>
@@ -301,7 +301,7 @@ export default function PostDetail({ id }: PostDetailProps) {
         {renderCounts()}
         {renderActionButtons()}
 
-        <DisplayAd adSlot={CONFIG.MARKETING.AD_SLOTS.BOARD_DETAIL_HORIZONTAL} />
+        <DetailLayout.HorizontalAd adSlot={CONFIG.MARKETING.AD_SLOTS.BOARD_DETAIL_HORIZONTAL} />
 
         <PostComment postId={id} postWriterId={posts.author.id} />
 
@@ -321,11 +321,11 @@ export default function PostDetail({ id }: PostDetailProps) {
         {isOpen && posts?.author.url && (
           <ProfileCardPopover {...popoverProps} authorUrl={posts.author.url} />
         )}
-      </div>
+      </DetailLayout.Content>
 
-      <div className={styles.right}>
-        <DisplayAd adSlot={CONFIG.MARKETING.AD_SLOTS.BOARD_DETAIL_VERTICAL} />
-      </div>
-    </div>
+      <DetailLayout.Sidebar>
+        <DetailLayout.VerticalAd adSlot={CONFIG.MARKETING.AD_SLOTS.BOARD_DETAIL_VERTICAL} />
+      </DetailLayout.Sidebar>
+    </DetailLayout>
   );
 }
