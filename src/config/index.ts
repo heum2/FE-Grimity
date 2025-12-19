@@ -19,6 +19,8 @@ export const CONFIG = {
     AD_SLOTS: {
       BOARD_DETAIL_VERTICAL: "2474324282", // 게시판 상세 - 수직형
       BOARD_DETAIL_HORIZONTAL: "8521923544", // 게시판 상세 - 수평형
+      FEED_DETAIL_VERTICAL: "5434819104", // 피드 상세 - 수직형
+      FEED_DETAIL_HORIZONTAL: "1868653777", // 피드 상세 - 수평형
     },
   },
 } as const;

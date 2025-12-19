@@ -1,277 +1,51 @@
 @use "@/styles/globals.scss" as *;
 @use "sass:color";
 
-.container {
+.header {
   width: 100%;
-  height: 100%;
   display: flex;
-  justify-content: center;
-  position: relative;
-  padding-top: 30px;
-  padding-bottom: 80px;
-  padding-left: 32px;
-  padding-right: 32px;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 30px;
 
   @include Size("mobile") {
-    padding-top: 16px;
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-bottom: 24px;
   }
 
-  @include Size("tablet") {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-
-  .center {
-    width: 100%;
-    max-width: $max-width-content;
-    margin: 0 auto;
-
-    .header {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-bottom: 30px;
-
-      @include Size("mobile") {
-        padding-bottom: 24px;
-      }
-
-      .profileLeft {
-        display: flex;
-        align-items: center;
-
-        .authorImage {
-          width: 40px;
-          height: 40px;
-          object-fit: cover;
-          border-radius: 50%;
-          border: 1px solid $gray30;
-          cursor: pointer;
-          @include Drag;
-
-          @include Size("mobile") {
-            width: 32px;
-            height: 32px;
-          }
-        }
-
-        .authorInfo {
-          display: flex;
-          flex-direction: column;
-          margin-left: 16px;
-          margin-right: 24px;
-
-          .authorName {
-            @include Sub2;
-            color: $gray80;
-            cursor: pointer;
-
-            @include Size("mobile") {
-              @include Sub4;
-            }
-          }
-        }
-
-        .stats {
-          display: flex;
-          align-items: center;
-          height: 20px;
-          gap: 8px;
-          line-height: 0;
-          @include Drag;
-
-          .createdAt {
-            @include Label1;
-            color: $gray50;
-
-            @include Size("mobile") {
-              @include Cap2;
-            }
-          }
-
-          .statIcon {
-            width: 16px;
-            height: 16px;
-            object-fit: cover;
-          }
-
-          .stat {
-            height: 16px;
-            display: flex;
-            align-items: center;
-            gap: 2px;
-            color: $gray50;
-            @include Cap2;
-            line-height: 12px;
-          }
-        }
-      }
-
-      .dropdownContainer {
-        width: fit-content;
-        display: flex;
-        justify-content: flex-end;
-        gap: 16px;
-
-        @include Size("mobile") {
-          gap: 0;
-        }
-
-        .dropdown {
-          position: relative;
-          width: 24px;
-          height: 24px;
-          margin: 8px;
-          cursor: pointer;
-        }
-      }
-    }
-  }
-
-  .imageGallery {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-  }
-
-  .imageWrapper {
-    width: 100%;
-    margin-bottom: 30px;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  .imageWrapper2 {
-    width: 100%;
-    margin-top: 30px;
-  }
-
-  .showMore {
-    width: 200px;
-    cursor: pointer;
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1;
-  }
-
-  .gradient {
-    width: 100%;
-    height: 95px;
-    background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0) 0%,
-      rgba(255, 255, 255, 0.7) 50%,
-      rgba(255, 255, 255, 1) 100%
-    );
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    z-index: 0;
-  }
-
-  .cardImage {
-    width: 100%;
-    height: auto;
-    cursor: pointer;
-  }
-
-  .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1600;
-    cursor: pointer;
-  }
-
-  .overlayContent {
-    max-width: 90%;
-    max-height: 90%;
-    overflow: hidden;
-    border-radius: 8px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-  }
-
-  .btnContainer {
+  .profileLeft {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 16px;
 
-    .likeBtn {
-      cursor: pointer;
-    }
-
-    .saveBtn {
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      outline: none;
-      border: none;
+    .authorImage {
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 1px solid $gray30;
       cursor: pointer;
       @include Drag;
-      border: 1px solid $gray30;
-      color: $gray70;
-      background-color: $gray0;
-      padding: 16px 16px;
-      border-radius: 12px;
-      @include Btn1;
-
-      &:hover {
-        background-color: color.adjust($gray0, $lightness: 4%);
-      }
-
-      &:active {
-        background-color: color.adjust($gray0, $lightness: 8%);
-      }
-    }
-
-    .dropdown {
-      cursor: pointer;
-      position: relative;
-    }
-
-    .menuBtn {
-      @extend .saveBtn;
-    }
-  }
-
-  .contentContainer {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    margin-top: 40px;
-
-    .title {
-      color: $gray80;
-      @include Title3;
-      padding-bottom: 20px;
 
       @include Size("mobile") {
-        @include Sub1;
+        width: 32px;
+        height: 32px;
       }
     }
 
-    .content {
-      @include Body1;
-      color: $gray70;
-      white-space: pre-line;
-      word-break: break-word;
-      overflow-wrap: break-word;
-      margin-bottom: 20px;
+    .authorInfo {
+      display: flex;
+      flex-direction: column;
+      margin-left: 16px;
+      margin-right: 24px;
+
+      .authorName {
+        @include Sub2;
+        color: $gray80;
+        cursor: pointer;
+
+        @include Size("mobile") {
+          @include Sub4;
+        }
+      }
     }
 
     .stats {
@@ -280,12 +54,15 @@
       height: 20px;
       gap: 8px;
       line-height: 0;
-      margin-bottom: 16px;
       @include Drag;
 
       .createdAt {
         @include Label1;
-        color: $gray60;
+        color: $gray50;
+
+        @include Size("mobile") {
+          @include Cap2;
+        }
       }
 
       .statIcon {
@@ -299,30 +76,224 @@
         display: flex;
         align-items: center;
         gap: 2px;
-        color: $gray60;
+        color: $gray50;
         @include Cap2;
         line-height: 12px;
       }
     }
+  }
 
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 28px;
+  .dropdownContainer {
+    width: fit-content;
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+
+    @include Size("mobile") {
+      gap: 0;
+    }
+
+    .dropdown {
+      position: relative;
+      width: 24px;
+      height: 24px;
+      margin: 8px;
+      cursor: pointer;
+    }
+  }
+}
+
+.imageGallery {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.imageWrapper {
+  width: 100%;
+  margin-bottom: 30px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.imageWrapper2 {
+  width: 100%;
+  margin-top: 30px;
+}
+
+.showMore {
+  width: 200px;
+  cursor: pointer;
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.gradient {
+  width: 100%;
+  height: 95px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.7) 50%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.cardImage {
+  width: 100%;
+  height: auto;
+  cursor: pointer;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1600;
+  cursor: pointer;
+}
+
+.overlayContent {
+  max-width: 90%;
+  max-height: 90%;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.btnContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+
+  .likeBtn {
+    cursor: pointer;
+  }
+
+  .saveBtn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    @include Drag;
+    border: 1px solid $gray30;
+    color: $gray70;
+    background-color: $gray0;
+    padding: 16px 16px;
+    border-radius: 12px;
+    @include Btn1;
+
+    &:hover {
+      background-color: color.adjust($gray0, $lightness: 4%);
+    }
+
+    &:active {
+      background-color: color.adjust($gray0, $lightness: 8%);
     }
   }
 
-  .cards {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 60px;
+  .dropdown {
+    cursor: pointer;
+    position: relative;
+  }
+
+  .menuBtn {
+    @extend .saveBtn;
+  }
+}
+
+.contentContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+
+  .title {
+    color: $gray80;
+    @include Title3;
+    padding-bottom: 20px;
 
     @include Size("mobile") {
-      gap: 50px;
+      @include Sub1;
     }
+  }
+
+  .content {
+    @include Body1;
+    color: $gray70;
+    white-space: pre-line;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    margin-bottom: 20px;
+  }
+
+  .stats {
+    display: flex;
+    align-items: center;
+    height: 20px;
+    gap: 8px;
+    line-height: 0;
+    margin-bottom: 16px;
+    @include Drag;
+
+    .createdAt {
+      @include Label1;
+      color: $gray60;
+    }
+
+    .statIcon {
+      width: 16px;
+      height: 16px;
+      object-fit: cover;
+    }
+
+    .stat {
+      height: 16px;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      color: $gray60;
+      @include Cap2;
+      line-height: 12px;
+    }
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+}
+
+.cards {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+
+  @include Size("mobile") {
+    gap: 50px;
   }
 }
 

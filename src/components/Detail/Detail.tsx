@@ -32,6 +32,8 @@ import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 import { useAuthRefresh } from "@/hooks/useAuthRefresh";
 import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
 import useUserBlock from "@/hooks/useUserBlock";
+import { DetailLayout } from "@/components/Layout/DetailLayout";
+import { CONFIG } from "@/config";
 
 export default function Detail({ id }: DetailProps) {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -217,8 +219,8 @@ export default function Detail({ id }: DetailProps) {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.center}>
+    <DetailLayout>
+      <DetailLayout.Content>
         {details && (
           <>
             <section className={styles.header}>
@@ -460,6 +462,11 @@ export default function Detail({ id }: DetailProps) {
                     </div>
                   )}
                 </div>
+
+                <DetailLayout.HorizontalAd
+                  adSlot={CONFIG.MARKETING.AD_SLOTS.FEED_DETAIL_HORIZONTAL}
+                />
+
                 <Comment feedId={id} feedWriterId={details.author.id} />
               </>
             )}
@@ -474,7 +481,11 @@ export default function Detail({ id }: DetailProps) {
         {isOpen && details?.author.url && (
           <ProfileCardPopover {...popoverProps} authorUrl={details.author.url} />
         )}
-      </div>
-    </div>
+      </DetailLayout.Content>
+
+      <DetailLayout.Sidebar>
+        <DetailLayout.VerticalAd adSlot={CONFIG.MARKETING.AD_SLOTS.FEED_DETAIL_VERTICAL} />
+      </DetailLayout.Sidebar>
+    </DetailLayout>
   );
 }
