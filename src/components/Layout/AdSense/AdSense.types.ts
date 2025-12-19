@@ -10,4 +10,5 @@ export interface AdSenseProps {
   style?: React.CSSProperties;
   className?: string;
   fullWidth?: boolean; // 그리드 전체 너비를 차지할지 여부
+  dataFullWidthResposive?: string;
 }

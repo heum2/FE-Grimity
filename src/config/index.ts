@@ -16,5 +16,9 @@ export const CONFIG = {
   MARKETING: {
     GA_TRACKING_ID: process.env.NEXT_PUBLIC_GA_TRACKING_ID || "",
     ADSENSE_CLIENT_ID: process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || "",
+    AD_SLOTS: {
+      BOARD_DETAIL_VERTICAL: "2474324282", // 게시판 상세 - 수직형
+      BOARD_DETAIL_HORIZONTAL: "8521923544", // 게시판 상세 - 수평형
+    },
   },
 } as const;

@@ -15,6 +15,7 @@ export default function AdSense({
   style,
   className,
   fullWidth = false,
+  dataFullWidthResposive,
 }: AdSenseProps) {
   const adRef = useRef<HTMLModElement>(null);
   const [adStatus, setAdStatus] = useState<"loading" | "loaded" | "failed">("loading");
@@ -124,6 +125,7 @@ export default function AdSense({
         data-ad-layout={adLayout}
         data-ad-client={adClient}
         data-ad-slot={adSlot}
+        data-full-width-responsive={dataFullWidthResposive}
       />
     </div>
   );

@@ -1,8 +1,8 @@
 .adContainer {
   width: 100%;
-  min-width: 250px; // AdSense fluid 광고 최소 너비 요구사항
+  min-width: 300px;
   min-height: 100px;
-  display: block; // flex 대신 block 사용
+  display: block;
   position: relative;
 
   &.fullWidth {
@@ -12,7 +12,7 @@
   // AdSense ins 태그에 너비 보장
   ins {
     width: 100%;
-    min-width: 250px;
+    min-width: 300px;
   }
 
   // 플레이스홀더 스타일
