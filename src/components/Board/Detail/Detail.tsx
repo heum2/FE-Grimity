@@ -15,6 +15,8 @@ import PostComment from "@/components/Board/Detail/Comment/Comment";
 import ProfileCardPopover from "@/components/Layout/ProfileCardPopover/ProfileCardPopover";
 import Icon from "@/components/Asset/IconTemp";
 import { DetailLayout } from "@/components/Layout/DetailLayout";
+import ActionBar from "@/components/ActionBar/ActionBar";
+import { ActionBarConfig } from "@/components/ActionBar/ActionBar.types";
 
 import { useToast } from "@/hooks/useToast";
 import { useDeviceStore } from "@/states/deviceStore";
@@ -188,6 +190,39 @@ export default function PostDetail({ id }: PostDetailProps) {
     ];
   }, [isAuthor, isLoggedIn, handleOpenShareModal, handleOpenReportModal]);
 
+  const actionBarConfig: ActionBarConfig = useMemo(
+    () => ({
+      like: {
+        isLiked,
+        count: currentLikeCount,
+        iconNameOn: "boardLikeCountOn",
+        iconNameOff: "boardLikeCountOff",
+        onToggle: handleLikeClick,
+        allowSelfLike: true,
+      },
+      save: {
+        isSaved,
+        iconNameOn: "detailSaveOn",
+        iconNameOff: "detailSaveOff",
+        onToggle: handleSaveClick,
+      },
+      dropdown: {
+        menuItems: isMobile ? getMobileMenuItems() : getDesktopMenuItems(),
+        isMobile: true,
+      },
+    }),
+    [
+      isLiked,
+      currentLikeCount,
+      isSaved,
+      isMobile,
+      handleLikeClick,
+      handleSaveClick,
+      getMobileMenuItems,
+      getDesktopMenuItems,
+    ],
+  );
+
   const renderDesktopDropdown = () => {
     if (!isLoggedIn) return null;
 
@@ -203,18 +238,18 @@ export default function PostDetail({ id }: PostDetailProps) {
     );
   };
 
-  const renderMobileDropdown = () => (
-    <div className={styles.dropdown}>
-      <Dropdown
-        trigger={
-          <div className={styles.menuBtn}>
-            <IconComponent name="meatball" size={20} />
-          </div>
-        }
-        menuItems={isMobile ? getMobileMenuItems() : getDesktopMenuItems()}
-      />
-    </div>
-  );
+  // const renderMobileDropdown = () => (
+  //   <div className={styles.dropdown}>
+  //     <Dropdown
+  //       trigger={
+  //         <div className={styles.menuBtn}>
+  //           <IconComponent name="meatball" size={20} />
+  //         </div>
+  //       }
+  //       menuItems={isMobile ? getMobileMenuItems() : getDesktopMenuItems()}
+  //     />
+  //   </div>
+  // );
 
   const renderCounts = () => (
     <div className={styles.counts}>
@@ -233,25 +268,25 @@ export default function PostDetail({ id }: PostDetailProps) {
     </div>
   );
 
-  const renderActionButtons = () => (
-    <div className={styles.btnContainer}>
-      <div className={styles.likeBtn} onClick={handleLikeClick}>
-        <Button
-          size="l"
-          type="outlined-assistive"
-          leftIcon={
-            <IconComponent name={isLiked ? "boardLikeCountOn" : "boardLikeCountOff"} size={20} />
-          }
-        >
-          {currentLikeCount}
-        </Button>
-      </div>
-      <div className={styles.saveBtn} onClick={handleSaveClick}>
-        <IconComponent name={isSaved ? "detailSaveOn" : "detailSaveOff"} size={20} />
-      </div>
-      {renderMobileDropdown()}
-    </div>
-  );
+  // const renderActionButtons = () => (
+  //   <div className={styles.btnContainer}>
+  //     <div className={styles.likeBtn} onClick={handleLikeClick}>
+  //       <Button
+  //         size="l"
+  //         type="outlined-assistive"
+  //         leftIcon={
+  //           <IconComponent name={isLiked ? "boardLikeCountOn" : "boardLikeCountOff"} size={20} />
+  //         }
+  //       >
+  //         {currentLikeCount}
+  //       </Button>
+  //     </div>
+  //     <div className={styles.saveBtn} onClick={handleSaveClick}>
+  //       <IconComponent name={isSaved ? "detailSaveOn" : "detailSaveOff"} size={20} />
+  //     </div>
+  //     {renderMobileDropdown()}
+  //   </div>
+  // );
 
   if (isLoading) {
     return <Loader />;
@@ -299,7 +334,7 @@ export default function PostDetail({ id }: PostDetailProps) {
         <div className={styles.content} dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
 
         {renderCounts()}
-        {renderActionButtons()}
+        <ActionBar config={actionBarConfig} isAuthor={isAuthor} className={styles.boardActionBar} />
 
         <DetailLayout.HorizontalAd adSlot={CONFIG.MARKETING.AD_SLOTS.BOARD_DETAIL_HORIZONTAL} />
 
