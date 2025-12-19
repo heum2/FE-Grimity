@@ -142,55 +142,12 @@
 
 .boardActionBar {
   margin-top: 28px;
-  margin-bottom: 40px;
+  margin-bottom: 60px;
+
+  @include Size("mobile") {
+    margin-bottom: 40px;
+  }
 }
-
-// .btnContainer {
-//   width: 100%;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   gap: 16px;
-//   margin-top: 28px;
-//   margin-bottom: 40px;
-
-//   .likeBtn {
-//     cursor: pointer;
-//   }
-
-//   .saveBtn {
-//     display: inline-flex;
-//     justify-content: center;
-//     align-items: center;
-//     outline: none;
-//     border: none;
-//     cursor: pointer;
-//     @include Drag;
-//     border: 1px solid $gray30;
-//     color: $gray70;
-//     background-color: $gray0;
-//     padding: 16px 16px;
-//     border-radius: 12px;
-//     @include Btn1;
-
-//     &:hover {
-//       background-color: color.adjust($gray0, $lightness: 4%);
-//     }
-
-//     &:active {
-//       background-color: color.adjust($gray0, $lightness: 8%);
-//     }
-//   }
-
-//   .dropdown {
-//     cursor: pointer;
-//     position: relative;
-//   }
-
-//   .menuBtn {
-//     @extend .saveBtn;
-//   }
-// }
 
 .uploadBtn {
   margin-top: 24px;

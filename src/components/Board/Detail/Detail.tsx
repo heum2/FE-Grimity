@@ -238,19 +238,6 @@ export default function PostDetail({ id }: PostDetailProps) {
     );
   };
 
-  // const renderMobileDropdown = () => (
-  //   <div className={styles.dropdown}>
-  //     <Dropdown
-  //       trigger={
-  //         <div className={styles.menuBtn}>
-  //           <IconComponent name="meatball" size={20} />
-  //         </div>
-  //       }
-  //       menuItems={isMobile ? getMobileMenuItems() : getDesktopMenuItems()}
-  //     />
-  //   </div>
-  // );
-
   const renderCounts = () => (
     <div className={styles.counts}>
       <div className={styles.count}>
@@ -267,26 +254,6 @@ export default function PostDetail({ id }: PostDetailProps) {
       </div>
     </div>
   );
-
-  // const renderActionButtons = () => (
-  //   <div className={styles.btnContainer}>
-  //     <div className={styles.likeBtn} onClick={handleLikeClick}>
-  //       <Button
-  //         size="l"
-  //         type="outlined-assistive"
-  //         leftIcon={
-  //           <IconComponent name={isLiked ? "boardLikeCountOn" : "boardLikeCountOff"} size={20} />
-  //         }
-  //       >
-  //         {currentLikeCount}
-  //       </Button>
-  //     </div>
-  //     <div className={styles.saveBtn} onClick={handleSaveClick}>
-  //       <IconComponent name={isSaved ? "detailSaveOn" : "detailSaveOff"} size={20} />
-  //     </div>
-  //     {renderMobileDropdown()}
-  //   </div>
-  // );
 
   if (isLoading) {
     return <Loader />;

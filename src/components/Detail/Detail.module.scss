@@ -177,60 +177,33 @@
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
-// .btnContainer {
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   gap: 16px;
-
-//   .likeBtn {
-//     cursor: pointer;
-//   }
-
-//   .saveBtn {
-//     display: inline-flex;
-//     justify-content: center;
-//     align-items: center;
-//     outline: none;
-//     border: none;
-//     cursor: pointer;
-//     @include Drag;
-//     border: 1px solid $gray30;
-//     color: $gray70;
-//     background-color: $gray0;
-//     padding: 16px 16px;
-//     border-radius: 12px;
-//     @include Btn1;
-
-//     &:hover {
-//       background-color: color.adjust($gray0, $lightness: 4%);
-//     }
-
-//     &:active {
-//       background-color: color.adjust($gray0, $lightness: 8%);
-//     }
-//   }
-
-//   .dropdown {
-//     cursor: pointer;
-//     position: relative;
-//   }
-
-//   .menuBtn {
-//     @extend .saveBtn;
-//   }
-// }
-
 .contentContainer {
   width: 100%;
   display: flex;
   flex-direction: column;
   margin-top: 40px;
 
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+  }
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+
+  @include Size("mobile") {
+    row-gap: 16px;
+  }
+
   .title {
     color: $gray80;
     @include Title3;
-    padding-bottom: 20px;
 
     @include Size("mobile") {
       @include Sub1;
@@ -243,7 +216,6 @@
     white-space: pre-line;
     word-break: break-word;
     overflow-wrap: break-word;
-    margin-bottom: 20px;
   }
 
   .stats {
@@ -252,7 +224,6 @@
     height: 20px;
     gap: 8px;
     line-height: 0;
-    margin-bottom: 16px;
     @include Drag;
 
     .createdAt {
@@ -276,14 +247,6 @@
       line-height: 12px;
     }
   }
-
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 28px;
-  }
 }
 
 .cards {
@@ -299,4 +262,13 @@
 
 .bar {
   border-top: 1px solid $gray30;
+}
+
+.boardActionBar {
+  margin-top: 28px;
+  margin-bottom: 60px;
+
+  @include Size("mobile") {
+    margin-bottom: 40px;
+  }
 }

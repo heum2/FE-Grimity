@@ -417,25 +417,28 @@ export default function Detail({ id }: DetailProps) {
                 </div>
               </div>
             )}
-            <section className={styles.contentContainer}>
-              <h2 className={styles.title}>{details.title}</h2>
 
-              <p
-                className={styles.content}
-                dangerouslySetInnerHTML={{ __html: formattedContent }}
-              />
-              <div className={styles.stats}>
-                <p className={styles.createdAt}>{timeAgo(details.createdAt)}</p>
-                <IconComponent name="dot" size={3} />
-                <div className={styles.stat}>
-                  <IconComponent name="commentCount" size={16} />
-                  {details.commentCount}
-                </div>
-                <div className={styles.stat}>
-                  <IconComponent name="viewCount" size={16} />
-                  {details.viewCount}
+            <section className={styles.contentContainer}>
+              <div className={styles.contentWrapper}>
+                <h2 className={styles.title}>{details.title}</h2>
+                <p
+                  className={styles.content}
+                  dangerouslySetInnerHTML={{ __html: formattedContent }}
+                />
+                <div className={styles.stats}>
+                  <p className={styles.createdAt}>{timeAgo(details.createdAt)}</p>
+                  <IconComponent name="dot" size={3} />
+                  <div className={styles.stat}>
+                    <IconComponent name="commentCount" size={16} />
+                    {details.commentCount}
+                  </div>
+                  <div className={styles.stat}>
+                    <IconComponent name="viewCount" size={16} />
+                    {details.viewCount}
+                  </div>
                 </div>
               </div>
+
               {details.tags.length > 0 && (
                 <div className={styles.tags}>
                   {details.tags.map((tag, index) => (
@@ -448,9 +451,14 @@ export default function Detail({ id }: DetailProps) {
                 </div>
               )}
             </section>
+
             {!details?.author.isBlocked && (
               <>
-                <ActionBar config={actionBarConfig} isAuthor={user_id === details.author.id} />
+                <ActionBar
+                  config={actionBarConfig}
+                  isAuthor={user_id === details.author.id}
+                  className={styles.boardActionBar}
+                />
 
                 <DetailLayout.HorizontalAd
                   adSlot={CONFIG.MARKETING.AD_SLOTS.FEED_DETAIL_HORIZONTAL}
