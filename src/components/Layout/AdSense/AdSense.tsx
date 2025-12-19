@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 
 import { CONFIG } from "@/config";
+import { useDeviceStore, type DeviceType } from "@/states/deviceStore";
 
 import type { AdSenseProps } from "./AdSense.types";
 
 import styles from "./AdSense.module.scss";
+
+const MIN_RELOAD_INTERVAL = 30000; // 30초 - AdSense 정책 준수
 
 export default function AdSense({
   adClient = CONFIG.MARKETING.ADSENSE_CLIENT_ID,
@@ -19,15 +22,35 @@ export default function AdSense({
 }: AdSenseProps) {
   const adRef = useRef<HTMLModElement>(null);
   const [adStatus, setAdStatus] = useState<"loading" | "loaded" | "failed">("loading");
-  const isAdLoadedRef = useRef(false);
+  const [shouldReload, setShouldReload] = useState(0);
+  const previousDeviceTypeRef = useRef<DeviceType | null>(null);
+  const lastReloadTimeRef = useRef<number>(0);
+  const observerRef = useRef<MutationObserver | null>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const { deviceType } = useDeviceStore();
 
   const showPlaceholder = process.env.NODE_ENV === "development";
 
+  // DeviceType 변경 감지
   useEffect(() => {
-    if (isAdLoadedRef.current) return;
+    const now = Date.now();
 
-    let observer: MutationObserver | null = null;
-    let timeoutId: NodeJS.Timeout | null = null;
+    if (
+      previousDeviceTypeRef.current &&
+      previousDeviceTypeRef.current !== deviceType &&
+      now - lastReloadTimeRef.current > MIN_RELOAD_INTERVAL
+    ) {
+      lastReloadTimeRef.current = now;
+      setShouldReload((prev) => prev + 1);
+    }
+
+    previousDeviceTypeRef.current = deviceType;
+  }, [deviceType]);
+
+  // 광고 로드
+  useEffect(() => {
+    let rafId: number | null = null;
 
     const checkAdStatus = () => {
       if (!adRef.current) return;
@@ -42,31 +65,54 @@ export default function AdSense({
       }
     };
 
-    const loadAd = () => {
+    const loadAd = async () => {
       try {
         if (adRef.current && typeof window !== "undefined") {
           const rect = adRef.current.getBoundingClientRect();
           if (rect.width > 0) {
-            (window.adsbygoogle = window.adsbygoogle || []).push({});
-            isAdLoadedRef.current = true;
+            if (shouldReload > 0) {
+              const adElement = adRef.current;
 
-            observer = new MutationObserver(() => {
+              while (adElement.firstChild) {
+                adElement.removeChild(adElement.firstChild);
+              }
+
+              adElement.removeAttribute("data-ad-status");
+              adElement.removeAttribute("data-adsbygoogle-status");
+              adElement.removeAttribute("data-page-url");
+
+              await new Promise((resolve) => setTimeout(resolve, 100));
+            }
+
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+            setAdStatus("loading");
+
+            if (observerRef.current) {
+              observerRef.current.disconnect();
+              observerRef.current = null;
+            }
+
+            observerRef.current = new MutationObserver(() => {
               checkAdStatus();
             });
 
-            observer.observe(adRef.current, {
+            observerRef.current.observe(adRef.current, {
               attributes: true,
               attributeFilter: ["data-ad-status"],
             });
 
-            timeoutId = setTimeout(() => {
+            if (timeoutRef.current) {
+              clearTimeout(timeoutRef.current);
+            }
+
+            timeoutRef.current = setTimeout(() => {
               const currentStatus = adRef.current?.getAttribute("data-ad-status");
               if (!currentStatus || currentStatus === "unfilled") {
                 setAdStatus("failed");
               }
             }, 5000);
           } else {
-            requestAnimationFrame(loadAd);
+            rafId = requestAnimationFrame(loadAd);
           }
         }
       } catch (error) {
@@ -75,16 +121,19 @@ export default function AdSense({
       }
     };
 
-    const rafId = requestAnimationFrame(() => {
-      requestAnimationFrame(loadAd);
+    rafId = requestAnimationFrame(() => {
+      rafId = requestAnimationFrame(loadAd);
     });
 
     return () => {
       if (rafId) cancelAnimationFrame(rafId);
-      if (timeoutId) clearTimeout(timeoutId);
-      if (observer) observer.disconnect();
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+        observerRef.current = null;
+      }
     };
-  }, []);
+  }, [shouldReload]);
 
   const containerClassName = [
     styles.adContainer,

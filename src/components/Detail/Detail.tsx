@@ -2,7 +2,7 @@ import styles from "./Detail.module.scss";
 import { DetailProps } from "./Detail.types";
 import { useDetails } from "@/api/feeds/getFeedsId";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Dropdown from "../Dropdown/Dropdown";
 import { useAuthStore } from "@/states/authStore";
 import { useToast } from "@/hooks/useToast";
@@ -32,6 +32,10 @@ import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 import { useAuthRefresh } from "@/hooks/useAuthRefresh";
 import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
 import useUserBlock from "@/hooks/useUserBlock";
+import { DetailLayout } from "@/components/Layout/DetailLayout";
+import { CONFIG } from "@/config";
+import ActionBar from "@/components/ActionBar/ActionBar";
+import { ActionBarConfig } from "@/components/ActionBar/ActionBar.types";
 
 export default function Detail({ id }: DetailProps) {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -61,56 +65,6 @@ export default function Detail({ id }: DetailProps) {
   });
 
   const { pathname } = useRouter();
-  useEffect(() => {
-    refetch();
-  }, [pathname]);
-
-  useAuthRefresh();
-
-  useEffect(() => {
-    if (!details) return;
-    setIsLiked(details.isLike ?? false);
-    setCurrentLikeCount(details.likeCount ?? 0);
-  }, [details]);
-
-  // 새로고침 조회수 증가
-  useEffect(() => {
-    const incrementViewCount = async () => {
-      if (!id || viewCounted) return;
-
-      try {
-        await putView(id);
-        setViewCounted(true);
-      } catch (error) {
-        console.error("조회수 증가 에러", error);
-      }
-    };
-
-    incrementViewCount();
-  }, [id, viewCounted]);
-
-  useEffect(() => {
-    if (overlayImage) {
-      history.pushState(null, "", location.href);
-      const handlePopstate = () => {
-        setOverlayImage(null);
-      };
-      window.addEventListener("popstate", handlePopstate);
-      return () => {
-        window.removeEventListener("popstate", handlePopstate);
-      };
-    }
-  }, [overlayImage]);
-
-  const urlRegex = /(https?:\/\/[^\s]+)/g;
-  const formattedContent = (details?.content ?? "").replace(
-    urlRegex,
-    '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>',
-  );
-
-  if (isLoading) {
-    return <Loader />;
-  }
 
   const handleShowMore = () => {
     setIsExpanded(!isExpanded);
@@ -216,9 +170,102 @@ export default function Detail({ id }: DetailProps) {
     }
   };
 
+  const actionBarConfig: ActionBarConfig = useMemo(
+    () => ({
+      like: {
+        isLiked,
+        count: currentLikeCount,
+        iconNameOn: "detailLikeOn",
+        iconNameOff: "detailLikeOff",
+        onToggle: handleLikeClick,
+        allowSelfLike: false,
+      },
+      save: {
+        isSaved,
+        iconNameOn: "detailSaveOn",
+        iconNameOff: "detailSaveOff",
+        onToggle: handleSaveClick,
+      },
+      dropdown: {
+        menuItems:
+          user_id === details?.author.id || !isLoggedIn
+            ? [{ label: "공유하기", onClick: handleOpenShareModal }]
+            : [
+                { label: "공유하기", onClick: handleOpenShareModal },
+                { label: "신고하기", onClick: handleOpenReportModal, isDelete: true },
+              ],
+        isMobile: true,
+      },
+    }),
+    [
+      isLiked,
+      currentLikeCount,
+      isSaved,
+      user_id,
+      details?.author.id,
+      isLoggedIn,
+      handleLikeClick,
+      handleSaveClick,
+      handleOpenShareModal,
+      handleOpenReportModal,
+    ],
+  );
+
+  useEffect(() => {
+    refetch();
+  }, [pathname]);
+
+  useAuthRefresh();
+
+  useEffect(() => {
+    if (!details) return;
+    setIsLiked(details.isLike ?? false);
+    setIsSaved(details.isSave ?? false);
+    setCurrentLikeCount(details.likeCount ?? 0);
+  }, [details]);
+
+  // 새로고침 조회수 증가
+  useEffect(() => {
+    const incrementViewCount = async () => {
+      if (!id || viewCounted) return;
+
+      try {
+        await putView(id);
+        setViewCounted(true);
+      } catch (error) {
+        console.error("조회수 증가 에러", error);
+      }
+    };
+
+    incrementViewCount();
+  }, [id, viewCounted]);
+
+  useEffect(() => {
+    if (overlayImage) {
+      history.pushState(null, "", location.href);
+      const handlePopstate = () => {
+        setOverlayImage(null);
+      };
+      window.addEventListener("popstate", handlePopstate);
+      return () => {
+        window.removeEventListener("popstate", handlePopstate);
+      };
+    }
+  }, [overlayImage]);
+
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  const formattedContent = (details?.content ?? "").replace(
+    urlRegex,
+    '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>',
+  );
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
   return (
-    <div className={styles.container}>
-      <div className={styles.center}>
+    <DetailLayout>
+      <DetailLayout.Content>
         {details && (
           <>
             <section className={styles.header}>
@@ -370,25 +417,28 @@ export default function Detail({ id }: DetailProps) {
                 </div>
               </div>
             )}
-            <section className={styles.contentContainer}>
-              <h2 className={styles.title}>{details.title}</h2>
 
-              <p
-                className={styles.content}
-                dangerouslySetInnerHTML={{ __html: formattedContent }}
-              />
-              <div className={styles.stats}>
-                <p className={styles.createdAt}>{timeAgo(details.createdAt)}</p>
-                <IconComponent name="dot" size={3} />
-                <div className={styles.stat}>
-                  <IconComponent name="commentCount" size={16} />
-                  {details.commentCount}
-                </div>
-                <div className={styles.stat}>
-                  <IconComponent name="viewCount" size={16} />
-                  {details.viewCount}
+            <section className={styles.contentContainer}>
+              <div className={styles.contentWrapper}>
+                <h2 className={styles.title}>{details.title}</h2>
+                <p
+                  className={styles.content}
+                  dangerouslySetInnerHTML={{ __html: formattedContent }}
+                />
+                <div className={styles.stats}>
+                  <p className={styles.createdAt}>{timeAgo(details.createdAt)}</p>
+                  <IconComponent name="dot" size={3} />
+                  <div className={styles.stat}>
+                    <IconComponent name="commentCount" size={16} />
+                    {details.commentCount}
+                  </div>
+                  <div className={styles.stat}>
+                    <IconComponent name="viewCount" size={16} />
+                    {details.viewCount}
+                  </div>
                 </div>
               </div>
+
               {details.tags.length > 0 && (
                 <div className={styles.tags}>
                   {details.tags.map((tag, index) => (
@@ -401,65 +451,19 @@ export default function Detail({ id }: DetailProps) {
                 </div>
               )}
             </section>
+
             {!details?.author.isBlocked && (
               <>
-                <div className={styles.btnContainer}>
-                  <div className={styles.likeBtn} onClick={handleLikeClick}>
-                    <Button
-                      size="l"
-                      type="outlined-assistive"
-                      leftIcon={
-                        <IconComponent
-                          name={isLiked ? "detailLikeOn" : "detailLikeOff"}
-                          size={20}
-                        />
-                      }
-                    >
-                      {currentLikeCount}
-                    </Button>
-                  </div>
-                  <div className={styles.saveBtn} onClick={handleSaveClick}>
-                    <IconComponent name={isSaved ? "detailSaveOn" : "detailSaveOff"} size={20} />
-                  </div>
-                  {user_id === details.author.id || !isLoggedIn ? (
-                    <div className={styles.dropdown}>
-                      <Dropdown
-                        trigger={
-                          <div className={styles.menuBtn}>
-                            <IconComponent name="meatball" size={20} />
-                          </div>
-                        }
-                        menuItems={[
-                          {
-                            label: "공유하기",
-                            onClick: handleOpenShareModal,
-                          },
-                        ]}
-                      />
-                    </div>
-                  ) : (
-                    <div className={styles.dropdown}>
-                      <Dropdown
-                        trigger={
-                          <div className={styles.menuBtn}>
-                            <IconComponent name="meatball" size={20} />
-                          </div>
-                        }
-                        menuItems={[
-                          {
-                            label: "공유하기",
-                            onClick: handleOpenShareModal,
-                          },
-                          {
-                            label: "신고하기",
-                            onClick: handleOpenReportModal,
-                            isDelete: true,
-                          },
-                        ]}
-                      />
-                    </div>
-                  )}
-                </div>
+                <ActionBar
+                  config={actionBarConfig}
+                  isAuthor={user_id === details.author.id}
+                  className={styles.boardActionBar}
+                />
+
+                <DetailLayout.HorizontalAd
+                  adSlot={CONFIG.MARKETING.AD_SLOTS.FEED_DETAIL_HORIZONTAL}
+                />
+
                 <Comment feedId={id} feedWriterId={details.author.id} />
               </>
             )}
@@ -474,7 +478,11 @@ export default function Detail({ id }: DetailProps) {
         {isOpen && details?.author.url && (
           <ProfileCardPopover {...popoverProps} authorUrl={details.author.url} />
         )}
-      </div>
-    </div>
+      </DetailLayout.Content>
+
+      <DetailLayout.Sidebar>
+        <DetailLayout.VerticalAd adSlot={CONFIG.MARKETING.AD_SLOTS.FEED_DETAIL_VERTICAL} />
+      </DetailLayout.Sidebar>
+    </DetailLayout>
   );
 }
