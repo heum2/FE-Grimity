@@ -10,7 +10,7 @@ import { useScrollRestoration } from "@/hooks/useScrollRestoration";
 
 function RankingPage() {
   const router = useRouter();
-  const [OGTitle] = useState("그리미티");
+  const [OGTitle] = useState("랭킹 - 그리미티");
   const [OGUrl, setOGUrl] = useState(serviceUrl);
   const { restoreScrollPosition } = useScrollRestoration("popular-scroll");
 

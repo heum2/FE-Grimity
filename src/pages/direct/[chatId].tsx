@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 import AuthLayout from "@/components/Layout/AuthLayout/AuthLayout";
 import DirectPage from "@/components/DirectPage/DirectPage";
@@ -16,8 +17,11 @@ const DirectChatPage = () => {
   }
 
   if (isMobile || isTablet) {
-    return (
+    return (  
       <AuthLayout>
+        <Head>
+          <title>DM - 그리미티</title>
+        </Head>
         <ChatRoom chatId={chatId} />
       </AuthLayout>
     );
@@ -25,6 +29,9 @@ const DirectChatPage = () => {
 
   return (
     <AuthLayout>
+      <Head>
+        <title>DM - 그리미티</title>
+      </Head>
       <DirectPage />
       <ChatRoom chatId={chatId} />
     </AuthLayout>
