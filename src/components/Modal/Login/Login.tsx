@@ -1,3 +1,5 @@
+import Script from "next/script";
+
 import { AxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
 import { useGoogleLogin } from "@react-oauth/google";
@@ -9,9 +11,11 @@ import { useAuthStore } from "@/states/authStore";
 import { useModalStore } from "@/states/modalStore";
 import { useChatStore } from "@/states/chatStore";
 
+import Icon from "@/components/Asset/IconTemp";
 import IconComponent from "@/components/Asset/Icon";
 
 import { useToast } from "@/hooks/useToast";
+import { CONFIG } from "@/config";
 
 import styles from "./Login.module.scss";
 
@@ -40,7 +44,6 @@ interface LoginResponse {
 }
 
 export default function Login({ close }: LoginProps) {
-  const APP_KEY = process.env.NEXT_PUBLIC_KAKAO_APP_KEY;
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
   const setUserId = useAuthStore((state) => state.setUserId);
@@ -74,7 +77,7 @@ export default function Login({ close }: LoginProps) {
 
   const handleKaKaoLogin = async () => {
     if (!window.Kakao.isInitialized()) {
-      window.Kakao.init(APP_KEY);
+      window.Kakao.init(CONFIG.AUTH.KAKAO_APP_KEY);
     }
 
     window.Kakao.Auth.login({
@@ -88,8 +91,9 @@ export default function Login({ close }: LoginProps) {
           if (error instanceof AxiosError && error.response?.status === 404) {
             openModal({
               type: "NICKNAME",
-              data: { accessToken: authObj.access_token, provider: "KAKAO" },
+              data: { accessToken: authObj.access_token, provider: AuthProvider.KAKAO },
             });
+            close();
           } else {
             console.error("카카오 로그인 실패", error);
             showToast("로그인 실패", "error");
@@ -114,8 +118,9 @@ export default function Login({ close }: LoginProps) {
         if (error instanceof AxiosError && error.response?.status === 404) {
           openModal({
             type: "NICKNAME",
-            data: { accessToken: tokenResponse.access_token, provider: "GOOGLE" },
+            data: { accessToken: tokenResponse.access_token, provider: AuthProvider.GOOGLE },
           });
+          close();
         } else {
           console.error("구글 로그인 실패", error);
           showToast("로그인에 실패했습니다. 다시 시도해주세요.", "error");
@@ -128,22 +133,79 @@ export default function Login({ close }: LoginProps) {
     },
   });
 
+  const handleAppleLogin = async () => {
+    try {
+      const data = await window.AppleID.auth.signIn();
+      await login({
+        provider: AuthProvider.APPLE,
+        providerAccessToken: data.authorization.id_token,
+      });
+    } catch (error) {
+      if (error instanceof AxiosError && error.response?.status === 404) {
+        const data = error.config?.data ? JSON.parse(error.config.data) : {};
+        openModal({
+          type: "NICKNAME",
+          data: { accessToken: data.providerAccessToken, provider: AuthProvider.APPLE },
+        });
+        close();
+      } else {
+        console.error("애플 로그인 실패", error);
+        showToast("로그인에 실패했습니다. 다시 시도해주세요.", "error");
+      }
+    }
+  };
+
   return (
-    <div className={styles.container}>
-      <div className={styles.messageContainer}>
-        <img src="/image/logo.svg" width={120} height={34} alt="logo" loading="lazy" />
-        <p className={styles.text}>그리미티에 가입 후 나의 그림을 뽐내보세요</p>
+    <>
+      <Script
+        src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"
+        onReady={() => {
+          window.AppleID.auth.init({
+            clientId: CONFIG.AUTH.APPLE_CLIENT_ID,
+            scope: "name email",
+            redirectURI: CONFIG.AUTH.APPLE_REDIRECT_URI,
+            usePopup: true,
+          });
+        }}
+      />
+      <div className={styles.container}>
+        <div className={styles.messageContainer}>
+          <div className={styles.header}>
+            <Icon icon="logo" className={styles.logo} />
+            <button type="button" className={styles.closeButton} onClick={close}>
+              <Icon icon="close" size="2xl" className={styles.close} />
+            </button>
+          </div>
+          <p className={styles.text}>그리미티에 가입 후 나의 그림을 뽐내보세요</p>
+        </div>
+
+        <div className={styles.buttonContainer}>
+          <button
+            className={`${styles.button} ${styles.kakao}`}
+            onClick={handleKaKaoLogin}
+            disabled={isPending}
+          >
+            <IconComponent name="kakao" size={24} />
+            {isPending ? "로그인 중..." : "카카오로 계속하기"}
+          </button>
+          <button
+            className={`${styles.button} ${styles.google}`}
+            onClick={() => googleLogin()}
+            disabled={isPending}
+          >
+            <IconComponent name="google" size={20} />
+            {isPending ? "로그인 중..." : "구글로 계속하기"}
+          </button>
+          <button
+            className={`${styles.button} ${styles.apple}`}
+            onClick={handleAppleLogin}
+            disabled={isPending}
+          >
+            <Icon icon="apple" className={styles.appleIcon} size="2xl" />
+            {isPending ? "로그인 중..." : "애플로 계속하기"}
+          </button>
+        </div>
       </div>
-      <div className={styles.buttonContainer}>
-        <button className={styles.kakaoButton} onClick={handleKaKaoLogin} disabled={isPending}>
-          <IconComponent name="kakao" size={24} />
-          {isPending ? "로그인 중..." : "카카오로 계속하기"}
-        </button>
-        <button className={styles.googleButton} onClick={() => googleLogin()} disabled={isPending}>
-          <IconComponent name="google" size={20} />
-          {isPending ? "로그인 중..." : "구글로 계속하기"}
-        </button>
-      </div>
-    </div>
+    </>
   );
 }
