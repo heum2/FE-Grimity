@@ -1,4 +1,5 @@
 import type { AppProps } from "next/app";
+import Head from "next/head";
 import Script from "next/script";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -26,6 +27,13 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <>
+      <Head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1.0, 
+            user-scalable=0"
+        />
+      </Head>
       <QueryClientProvider client={queryClient}>
         <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
           <div className="body">

@@ -6,11 +6,6 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1.0, 
-    user-scalable=0"
-        />
         <meta name="google-adsense-account" content={CONFIG.MARKETING.ADSENSE_CLIENT_ID} />
         <link rel="icon" href="/favicon/favicon-16x16.png" />
         <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png" />
