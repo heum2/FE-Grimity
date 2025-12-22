@@ -1,9 +1,7 @@
 import DisplayAd from "@/components/Layout/AdSense/DisplayAd";
-import type {
-  DetailLayoutProps,
-  AdSlotProps,
-  DetailLayoutComposition,
-} from "./DetailLayout.types";
+
+import type { DetailLayoutProps, AdSlotProps, DetailLayoutComposition } from "./DetailLayout.types";
+
 import styles from "./DetailLayout.module.scss";
 
 function DetailLayoutRoot({ children }: DetailLayoutProps) {
