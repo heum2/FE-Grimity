@@ -1,10 +1,10 @@
-import { useLayoutEffect } from "react";
+import { useEffect } from "react";
 import { useDeviceStore, type DeviceType } from "@/states/deviceStore";
 
 export const useInitializeDevice = () => {
   const { setDevice } = useDeviceStore();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const mobileQuery = window.matchMedia("(max-width: 767px)");
     const tabletQuery = window.matchMedia("(min-width: 768px) and (max-width: 1023px)");
 
