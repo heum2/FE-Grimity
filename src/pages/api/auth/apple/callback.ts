@@ -9,7 +9,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   // 성공한 경우
-  // usePopup:true 모드에서는 호출되지 않지만, 이 엔드포인트가 팝업 창에서 호출되고
+  // usePopup:true 에서는 호출되지 않지만, 이 엔드포인트가 팝업 창에서 호출되고
   // Apple SDK가 자동으로 처리
 
   // 간단한 성공 페이지 HTML 반환
@@ -19,6 +19,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       <head>
         <meta charset="utf-8">
         <title>애플 로그인 처리 중...</title>
+        <script type="text/javascript" src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"></script>
         <style>
           body {
             display: flex;
@@ -33,8 +34,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       <body>
         <p>애플 로그인 처리 중...</p>
         <script>
-          // usePopup 모드에서는 Apple SDK가 자동으로 팝업을 닫습니다
-          // 필요한 경우 여기서 추가 처리 가능
+          // Apple SDK가 자동으로 팝업을 닫고 부모 창으로 인증 데이터를 전달합니다
+          console.log("Apple callback page loaded");
         </script>
       </body>
     </html>

@@ -181,12 +181,14 @@ export default function Login({ close }: LoginProps) {
       <Script
         src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"
         onReady={() => {
-          window.AppleID.auth.init({
+          const appleConfig = {
             clientId: CONFIG.AUTH.APPLE_CLIENT_ID,
             scope: "name email",
             redirectURI: CONFIG.AUTH.APPLE_REDIRECT_URI,
             usePopup: true,
-          });
+          };
+          console.log("Apple ID Init Config:", appleConfig);
+          window.AppleID.auth.init(appleConfig);
         }}
       />
       <div className={styles.container}>
