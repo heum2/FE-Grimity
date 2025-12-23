@@ -136,11 +136,16 @@ export default function Login({ close }: LoginProps) {
   const handleAppleLogin = async () => {
     try {
       const data = await window.AppleID.auth.signIn();
+      console.log("Apple Sign In Response:", data);
+      console.log("ID Token:", data.authorization?.id_token);
       await login({
         provider: AuthProvider.APPLE,
         providerAccessToken: data.authorization.id_token,
       });
+      console.log("Login success!");
     } catch (error) {
+      console.error("Error caught:", error);
+
       if (error instanceof AxiosError && error.response?.status === 404) {
         const data = error.config?.data ? JSON.parse(error.config.data) : {};
         openModal({
