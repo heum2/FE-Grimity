@@ -11,7 +11,7 @@ export const CONFIG = {
     KAKAO_APP_KEY: process.env.NEXT_PUBLIC_KAKAO_APP_KEY || "",
     GOOGLE_CLIENT_ID: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "",
     APPLE_CLIENT_ID: process.env.NEXT_PUBLIC_APPLE_CLIENT_ID || "",
-    APPLE_REDIRECT_URI: process.env.NEXT_PUBLIC_APPLE_REDIRECT_URI || "",
+    APPLE_REDIRECT_URI: "https://www.grimity.com/api/auth/apple/callback",
   },
 
   // 분석 및 광고 (Marketing)
