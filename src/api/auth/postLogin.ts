@@ -3,6 +3,7 @@ import axiosInstance from "@/constants/baseurl";
 export enum AuthProvider {
   GOOGLE = "GOOGLE",
   KAKAO = "KAKAO",
+  APPLE = "APPLE",
 }
 
 interface LoginRequest {
