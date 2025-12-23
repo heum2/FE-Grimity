@@ -137,6 +137,7 @@ export default function Login({ close }: LoginProps) {
     console.log("=== handleAppleLogin started ===");
     console.log("window.AppleID exists:", !!window.AppleID);
     console.log("window.AppleID.auth exists:", !!window.AppleID?.auth);
+    console.log(CONFIG.AUTH.APPLE_REDIRECT_URI);
 
     try {
       console.log("Calling window.AppleID.auth.signIn()...");
