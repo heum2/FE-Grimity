@@ -134,34 +134,13 @@ export default function Login({ close }: LoginProps) {
   });
 
   const handleAppleLogin = async () => {
-    console.log("=== handleAppleLogin started ===");
-    console.log("window.AppleID exists:", !!window.AppleID);
-    console.log("window.AppleID.auth exists:", !!window.AppleID?.auth);
-
     try {
-      console.log("Calling window.AppleID.auth.signIn()...");
       const data = await window.AppleID.auth.signIn();
-      console.log("Apple Sign In Response:", data);
-      console.log("ID Token:", data.authorization?.id_token);
-
-      console.log("Calling login API...");
       await login({
         provider: AuthProvider.APPLE,
         providerAccessToken: data.authorization.id_token,
       });
-
-      console.log("Login success!");
     } catch (error) {
-      console.error("Error caught:", error);
-      console.error("Error type:", typeof error);
-      console.error("Error message:", error instanceof Error ? error.message : String(error));
-
-      // 사용자가 팝업을 닫은 경우
-      if (error instanceof Error && error.message === "popup_closed_by_user") {
-        console.log("User closed the popup");
-        return;
-      }
-
       if (error instanceof AxiosError && error.response?.status === 404) {
         const data = error.config?.data ? JSON.parse(error.config.data) : {};
         openModal({

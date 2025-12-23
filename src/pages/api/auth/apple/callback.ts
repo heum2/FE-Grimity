@@ -9,7 +9,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   // 성공한 경우
-  // usePopup:true 모드에서는 호출되지 않지만, 이 엔드포인트가 팝업 창에서 호출되고
+  // usePopup:true 에서는 호출되지 않지만, 이 엔드포인트가 팝업 창에서 호출되고
   // Apple SDK가 자동으로 처리
 
   // 간단한 성공 페이지 HTML 반환
