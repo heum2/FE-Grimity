@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 export default function Following() {
   const router = useRouter();
-  const [OGTitle] = useState("그리미티");
+  const [OGTitle] = useState("팔로잉 - 그리미티");
   const [OGUrl, setOGUrl] = useState(serviceUrl);
   const { restoreScrollPosition } = useScrollRestoration("following-scroll");
 

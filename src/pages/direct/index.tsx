@@ -1,3 +1,5 @@
+import Head from "next/head";
+
 import DirectPage from "@/components/DirectPage/DirectPage";
 import AuthLayout from "@/components/Layout/AuthLayout/AuthLayout";
 import EmptyChatRoom from "@/components/DirectPage/EmptyChatRoom/EmptyChatRoom";
@@ -9,6 +11,9 @@ const Direct = () => {
 
   return (
     <AuthLayout>
+      <Head>
+        <title>DM - 그리미티</title>
+      </Head>
       <DirectPage />
       {!isMobile && !isTablet && <EmptyChatRoom />}
     </AuthLayout>

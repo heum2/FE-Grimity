@@ -6,6 +6,7 @@ Disallow: /write
 Disallow: /board/write
 Disallow: /feeds/:id/edit
 Disallow: /posts/:id/edit
+Disallow: /direct
 
 Allow: /
 
