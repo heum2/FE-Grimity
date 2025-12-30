@@ -18,6 +18,7 @@ interface ProfileActionsProps {
   handleBlockClick: () => void;
   handleUnblockClick: () => void;
   handleOpenBlocklistModal: () => void;
+  handleSendMessage: () => void;
 }
 
 export default function ProfileActions({
@@ -34,6 +35,7 @@ export default function ProfileActions({
   handleBlockClick,
   handleUnblockClick,
   handleOpenBlocklistModal,
+  handleSendMessage,
 }: ProfileActionsProps) {
   const commonDropdownProps = {
     trigger: (
@@ -68,6 +70,11 @@ export default function ProfileActions({
   const blockMenuItem = {
     label: isBlocking ? "차단 해제" : "차단하기",
     onClick: isBlocking ? handleUnblockClick : handleBlockClick,
+  };
+
+  const messageMenuItem = {
+    label: "메시지 보내기",
+    onClick: handleSendMessage,
   };
 
   if (isMyProfile) {
@@ -112,7 +119,7 @@ export default function ProfileActions({
         <div className={styles.dropdown}>
           <Dropdown
             {...commonDropdownProps}
-            menuItems={[shareMenuItem, blockMenuItem, reportMenuItem]}
+            menuItems={[shareMenuItem, messageMenuItem, blockMenuItem, reportMenuItem]}
           />
         </div>
       </>
@@ -127,7 +134,7 @@ export default function ProfileActions({
       <div className={styles.dropdown}>
         <Dropdown
           {...commonDropdownProps}
-          menuItems={[shareMenuItem, blockMenuItem, reportMenuItem]}
+          menuItems={[shareMenuItem, messageMenuItem, blockMenuItem, reportMenuItem]}
         />
       </div>
     </>

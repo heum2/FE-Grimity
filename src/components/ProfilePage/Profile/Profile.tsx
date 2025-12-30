@@ -9,6 +9,7 @@ import { useUserDataByUrl } from "@/api/users/getId";
 import { deleteMe } from "@/api/users/deleteMe";
 import { usePutUserBlock } from "@/api/users/putUserBlock";
 import { useDeleteUserBlock } from "@/api/users/deleteUserBlock";
+import { usePostChat } from "@/api/chats/postChat";
 
 import ProfileActions from "@/components/ProfilePage/Profile/ProfileActions/ProfileActions";
 import ProfileCover from "@/components/ProfilePage/Profile/ProfileCover/ProfileCover";
@@ -21,7 +22,6 @@ import { useDeviceStore } from "@/states/deviceStore";
 import { useFollow } from "@/hooks/useFollow";
 import { useCoverImage } from "@/hooks/useCoverImage";
 import { useProfileImage } from "@/hooks/useProfileImage";
-import useUserBlock from "@/hooks/useUserBlock";
 import { useModal } from "@/hooks/useModal";
 
 import { ProfileProps } from "@/components/ProfilePage/Profile/Profile.types";
@@ -57,6 +57,7 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
 
   const { mutate: blockUser } = usePutUserBlock();
   const { mutate: unblockUser } = useDeleteUserBlock();
+  const { mutate: createChat } = usePostChat();
 
   const { pathname } = useRouter();
 
@@ -184,6 +185,25 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
     );
   };
 
+  const handleSendMessage = () => {
+    if (!isLoggedIn) {
+      showToast("로그인 후 가능합니다.", "warning");
+      return;
+    }
+
+    createChat(
+      { targetUserId: userData?.id || "" },
+      {
+        onSuccess: (data) => {
+          router.push(`/direct/${data.id}`);
+        },
+        onError: (error) => {
+          console.error("채팅방 생성 실패:", error);
+        },
+      },
+    );
+  };
+
   return (
     <div className={styles.container}>
       {userData && (
@@ -229,6 +249,7 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
                           handleBlockClick={handleBlockClick}
                           handleUnblockClick={handleUnblockClick}
                           handleOpenBlocklistModal={handleOpenBlocklistModal}
+                          handleSendMessage={handleSendMessage}
                         />
                       )}
                     </div>
