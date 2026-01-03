@@ -18,8 +18,7 @@
   box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.15);
   border-radius: 12px;
   list-style: none;
-  min-width: 117px;
-  width: 100%;
+  min-width: 150px;
   display: flex;
   flex-direction: column;
   z-index: 10;
@@ -63,15 +62,11 @@
   color: $gray80;
   @include Sub4;
   transition: background 0.2s;
-  border-bottom: 1px solid $gray30;
+
   @include Drag;
 
   &:hover {
     background-color: $gray10;
-  }
-
-  &:last-child {
-    border-bottom: none;
   }
 }
 
