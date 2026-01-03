@@ -3,16 +3,27 @@ import Link from "next/link";
 import styles from "@/components/Layout/Banner/Banner.module.scss";
 
 function Banner() {
-  const noticeUrl = "/posts/048ae290-4b1e-4292-9845-e4b2ca68ea6a";
+  const noticeUrl = "/posts/2793deed-2267-481f-867f-dc6c6d3d05da";
 
   return (
     <Link href={noticeUrl}>
       <picture>
-        <source media="(max-width: 767px)" srcSet="/image/main-banner-m.webp" />
-        <source media="(max-width: 1023px)" srcSet="/image/main-banner-t.webp" />
+        <source
+          width={358}
+          height={100}
+          media="(max-width: 767px)"
+          srcSet="/image/main-banner-m.webp"
+        />
+        <source
+          width={880}
+          height={120}
+          media="(max-width: 1023px)"
+          srcSet="/image/main-banner-t.webp"
+        />
         <img
           src="/image/main-banner.webp"
-          loading="lazy"
+          width={1462}
+          height={120}
           className={styles.banner}
           alt="메인 배너"
         />
