@@ -1,7 +1,6 @@
 import styles from "./Detail.module.scss";
 import { DetailProps } from "./Detail.types";
 import { useDetails } from "@/api/feeds/getFeedsId";
-import Image from "next/image";
 import { useState, useEffect, useMemo } from "react";
 import Dropdown from "../Dropdown/Dropdown";
 import { useAuthStore } from "@/states/authStore";

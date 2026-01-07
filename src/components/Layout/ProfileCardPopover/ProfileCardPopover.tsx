@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/router";
 
@@ -13,6 +12,7 @@ import { usePostChat } from "@/api/chats/postChat";
 
 import Button from "@/components/Button/Button";
 import ProfileCardSkeleton from "@/components/Layout/ProfileCardPopover/ProfileCardSkeleton";
+import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
 
 import { PATH_ROUTES } from "@/constants/routes";
 
@@ -96,25 +96,25 @@ export default function ProfileCardPopover({
       {userData && (
         <>
           <div className={styles.coverContainer}>
-            <Image
+            <ResponsiveImage
               src={userData.backgroundImage ?? "/image/default-cover.png"}
               alt={`${userData.name} 커버 이미지`}
-              fill
               className={styles.coverImage}
-              style={{ objectFit: "cover" }}
-              unoptimized
+              width={280}
+              height={120}
             />
           </div>
 
           <div className={styles.profileSection}>
             <Link href={`/${userData.url}`} className={styles.profileImageContainer}>
-              <Image
+              <ResponsiveImage
                 src={userData.image ?? "/image/default.svg"}
                 alt={userData.name}
                 className={styles.profileImage}
+                desktopSize={300}
+                mobileSize={300}
                 width={80}
                 height={80}
-                unoptimized
               />
             </Link>
           </div>

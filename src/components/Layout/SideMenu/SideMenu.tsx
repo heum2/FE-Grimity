@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import Image from "next/image";
 
 import { useMyData } from "@/api/users/getMe";
 
@@ -13,6 +12,7 @@ import Button from "@/components/Button/Button";
 import FooterSection from "@/components/Layout/FooterSection/FooterSection";
 import Login from "@/components/Modal/Login/Login";
 import Icon from "@/components/Asset/IconTemp";
+import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
 
 import { useModal } from "@/hooks/useModal";
 
@@ -161,15 +161,14 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
                 }`}
               >
                 <Link href={`/${myData?.url}`} className={styles.mobileMyInfo} onClick={onClose}>
-                  <Image
+                  <ResponsiveImage
                     src={myData?.image || "/image/default.svg"}
                     width={32}
                     height={32}
                     alt="프로필 이미지"
                     className={styles.profileImage}
-                    quality={50}
-                    style={{ objectFit: "cover" }}
-                    unoptimized
+                    desktopSize={300}
+                    mobileSize={300}
                   />
                   <span className={styles.name}>{myData?.name}</span>
                 </Link>

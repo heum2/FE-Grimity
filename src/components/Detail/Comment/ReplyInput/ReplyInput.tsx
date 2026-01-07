@@ -1,5 +1,4 @@
 import React, { forwardRef } from "react";
-import Image from "next/image";
 
 import { useMyData } from "@/api/users/getMe";
 
@@ -7,6 +6,7 @@ import TextArea from "@/components/TextArea/TextArea";
 import Button from "@/components/Button/Button";
 
 import styles from "@/components/Detail/Comment/Comment.module.scss";
+import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
 
 type ToastType = "success" | "error" | "warning" | "information";
 
@@ -38,24 +38,20 @@ const ReplyInput = forwardRef<HTMLTextAreaElement, ReplyInputProps>(
     return (
       <div className={styles.input}>
         {userData && userData.image !== null ? (
-          <Image
+          <ResponsiveImage
             src={userData.image}
             width={24}
             height={24}
             alt="내 프로필"
-            quality={50}
             className={styles.writerImage}
-            unoptimized
           />
         ) : (
-          <Image
+          <ResponsiveImage
             src="/image/default.svg"
             width={24}
             height={24}
             alt="내 프로필"
-            quality={50}
             className={styles.writerImage}
-            unoptimized
           />
         )}
         <TextArea

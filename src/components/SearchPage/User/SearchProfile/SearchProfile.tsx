@@ -1,7 +1,6 @@
 import { useState, useContext } from "react";
 import styles from "./SearchProfile.module.scss";
 import { formatCurrency } from "@/utils/formatCurrency";
-import Image from "next/image";
 import Link from "next/link";
 import { useAuthStore } from "@/states/authStore";
 import { SearchedUserResponse } from "@grimity/dto";
@@ -11,6 +10,7 @@ import { useToast } from "@/hooks/useToast";
 import Button from "@/components/Button/Button";
 import { useDeviceStore } from "@/states/deviceStore";
 import { SearchHighlightContext } from "@/pages/search";
+import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
 
 export default function SearchProfile({
   id,
@@ -77,14 +77,12 @@ export default function SearchProfile({
       <div className={styles.profile}>
         <div className={styles.topRow}>
           <Link href={`/${url}`}>
-            <Image
+            <ResponsiveImage
               src={image !== null ? image : "/image/default.svg"}
               alt="프로필"
               width={64}
               height={64}
-              quality={75}
               className={styles.image}
-              unoptimized
             />
           </Link>
           {isShowFollowButton && (

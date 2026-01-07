@@ -1,5 +1,4 @@
 import styles from "./FollowingFeed.module.scss";
-import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { useAuthStore } from "@/states/authStore";
 import { useToast } from "@/hooks/useToast";
@@ -214,31 +213,14 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
             <section className={styles.header}>
               <div className={styles.profileLeft}>
                 <Link href={`/${details.author.url}`}>
-                  {details.author.image !== null ? (
-                    <Image
-                      src={details.author.image}
-                      alt={details.author.name}
-                      className={styles.authorImage}
-                      width={40}
-                      height={40}
-                      quality={50}
-                      style={{ objectFit: "cover" }}
-                      unoptimized
-                      ref={imgRef}
-                    />
-                  ) : (
-                    <Image
-                      src="/image/default.svg"
-                      width={40}
-                      height={40}
-                      alt="프로필 이미지"
-                      className={styles.authorImage}
-                      quality={50}
-                      style={{ objectFit: "cover" }}
-                      unoptimized
-                      ref={imgRef}
-                    />
-                  )}
+                  <ResponsiveImage
+                    src={details.author.image || "/image/default.svg"}
+                    alt={details.author.name}
+                    className={styles.authorImage}
+                    width={40}
+                    height={40}
+                    ref={imgRef}
+                  />
                 </Link>
                 <div className={styles.authorInfo}>
                   <span ref={targetRef as React.RefObject<HTMLSpanElement>} {...triggerProps}>

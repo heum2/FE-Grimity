@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { PopularUserResponse } from "@/api/users/getPopular";
 import styles from "./RecommendCard.module.scss";
-import Image from "next/image";
 import Button from "@/components/Button/Button";
 import Link from "next/link";
 import { useToast } from "@/hooks/useToast";
@@ -142,29 +141,16 @@ export default function RecommendCard({
       <div className={styles.profileWrapper}>
         <Link href={`/${url}`}>
           <div className={styles.profileLeft}>
-            {image !== null ? (
-              <Image
-                src={image}
-                width={24}
-                height={24}
-                quality={50}
-                alt="인기 유저 프로필 이미지"
-                className={styles.profileImage}
-                unoptimized
-                ref={imgRef}
-              />
-            ) : (
-              <Image
-                src="/image/default.svg"
-                width={24}
-                height={24}
-                quality={50}
-                alt="인기 유저 프로필 이미지"
-                className={styles.profileImage}
-                unoptimized
-                ref={imgRef}
-              />
-            )}
+            <ResponsiveImage
+              src={image ? image : "/image/default.svg"}
+              width={24}
+              height={24}
+              alt="인기 유저 프로필 이미지"
+              className={styles.profileImage}
+              mobileSize={300}
+              desktopSize={300}
+              ref={imgRef}
+            />
             <div className={styles.nameContainer}>
               <p className={styles.name}>{name}</p>
               <div className={styles.follower}>

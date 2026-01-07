@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
-import Image from "next/image";
 import Link from "next/link";
 
 import { useMyData } from "@/api/users/getMe";
@@ -14,6 +13,7 @@ import Button from "@/components/Button/Button";
 import Notifications from "@/components/Notifications/Notifications";
 import Login from "@/components/Modal/Login/Login";
 import SideMenu from "@/components/Layout/SideMenu/SideMenu";
+import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
 
 import { usePreventScroll } from "@/hooks/usePreventScroll";
 import { useOnClickOutside } from "@/hooks/useOnClickOutside";
@@ -209,30 +209,30 @@ export default function DefaultHeader() {
                   <div className={styles.profileContact} ref={dropdownRef}>
                     <div className={styles.profileSection}>
                       <div className={styles.profileContainer} onClick={handleToggleDropdown}>
-                        <Image
+                        <ResponsiveImage
                           src={myData.image || "/image/default.svg"}
                           width={28}
                           height={28}
                           alt="프로필 이미지"
                           className={styles.profileImage}
-                          quality={50}
                           style={{ objectFit: "cover" }}
-                          unoptimized
+                          desktopSize={300}
+                          mobileSize={300}
                         />
                       </div>
                       {isDropdownOpen && (
                         <div className={styles.dropdown}>
                           <Link href={`/${myData.url}`}>
                             <div className={styles.dropdownItem}>
-                              <Image
+                              <ResponsiveImage
                                 src={myData.image ?? "/image/default.svg"}
                                 width={32}
                                 height={32}
                                 alt="프로필 이미지"
                                 className={styles.profileImage}
-                                quality={50}
                                 style={{ objectFit: "cover" }}
-                                unoptimized
+                                desktopSize={300}
+                                mobileSize={300}
                               />
                               <span>내 프로필</span>
                             </div>

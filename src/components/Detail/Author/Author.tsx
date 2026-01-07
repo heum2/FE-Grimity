@@ -1,6 +1,5 @@
 import styles from "./Author.module.scss";
 import { formatCurrency } from "@/utils/formatCurrency";
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useAuthStore } from "@/states/authStore";
 import { usePutFollow } from "@/api/users/putIdFollow";
@@ -16,6 +15,7 @@ import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 import Loader from "@/components/Layout/Loader/Loader";
 import { useDeviceStore } from "@/states/deviceStore";
 import { useRouter } from "next/router";
+import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
 
 export default function Author({ authorId, authorUrl, feedId }: AuthorProps) {
   const { data: userData } = useUserData(authorId);
@@ -83,27 +83,27 @@ export default function Author({ authorId, authorUrl, feedId }: AuthorProps) {
               <Link href={`/${authorUrl}`}>
                 <div className={styles.profileLeft}>
                   {userData.image !== null ? (
-                    <Image
+                    <ResponsiveImage
                       src={userData.image}
                       alt={userData.name}
                       className={styles.authorImage}
                       width={40}
                       height={40}
-                      quality={50}
                       style={{ objectFit: "cover" }}
-                      unoptimized
+                      desktopSize={300}
+                      mobileSize={300}
                       ref={imgRef}
                     />
                   ) : (
-                    <Image
+                    <ResponsiveImage
                       src="/image/default.svg"
                       width={40}
                       height={40}
                       alt="프로필 이미지"
                       className={styles.authorImage}
-                      quality={50}
                       style={{ objectFit: "cover" }}
-                      unoptimized
+                      desktopSize={300}
+                      mobileSize={300}
                       ref={imgRef}
                     />
                   )}

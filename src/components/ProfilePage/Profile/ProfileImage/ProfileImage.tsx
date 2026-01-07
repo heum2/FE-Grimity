@@ -1,11 +1,9 @@
-import Image from "next/image";
-
-import IconComponent from "@/components/Asset/Icon";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 
 import styles from "@/components/ProfilePage/Profile/ProfileImage/ProfileImage.module.scss";
 import Icon from "@/components/Asset/IconTemp";
 import { useRef } from "react";
+import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
 
 interface ProfileImageProps {
   profileImage: string;
@@ -33,14 +31,12 @@ export default function ProfileImage({
 
   return (
     <div className={styles.profileImageContainer}>
-      <Image
+      <ResponsiveImage
         src={profileImage}
         width={isMobile ? 80 : 140}
         height={isMobile ? 80 : 140}
-        quality={75}
         alt="프로필 이미지"
         className={styles.profileImage}
-        unoptimized
         ref={imgRef}
       />
       {isMyProfile && (

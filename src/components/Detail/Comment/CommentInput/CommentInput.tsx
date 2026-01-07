@@ -1,10 +1,10 @@
-import Image from "next/image";
 import { useState } from "react";
 import styles from "./CommentInput.module.scss";
 import Button from "@/components/Button/Button";
 import { usePostFeedsComments } from "@/api/feeds-comments/postFeedComments";
 import TextArea from "@/components/TextArea/TextArea";
 import { useDeviceStore } from "@/states/deviceStore";
+import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
 
 interface CommentInputProps {
   feedId: string;
@@ -61,24 +61,20 @@ export default function CommentInput({
     <section className={styles.inputContainer}>
       {!isMobile &&
         (isLoggedIn && userData ? (
-          <Image
+          <ResponsiveImage
             src={userData.image !== null ? userData.image : "/image/default.svg"}
             width={40}
             height={40}
             alt="프로필 이미지"
-            quality={50}
             className={styles.writerImage}
-            unoptimized
           />
         ) : (
-          <Image
+          <ResponsiveImage
             src="/image/default.svg"
             width={40}
             height={40}
             alt="프로필 이미지"
-            quality={50}
             className={styles.writerImage}
-            unoptimized
           />
         ))}
       <TextArea
