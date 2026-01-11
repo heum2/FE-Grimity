@@ -1,10 +1,10 @@
 import styles from "./Like.module.scss";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { useModalStore } from "@/states/modalStore";
 import { useFeedsLike } from "@/api/feeds/getFeedsIdLike";
 import Loader from "@/components/Layout/Loader/Loader";
 import { useDeviceStore } from "@/states/deviceStore";
+import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
 
 export default function Like() {
   const closeModal = useModalStore((state) => state.closeModal);
@@ -31,29 +31,17 @@ export default function Like() {
           ) : (
             data.map((like, index) => (
               <li key={index} className={styles.item}>
-                {like.image !== null ? (
-                  <Image
-                    src={like.image}
-                    width={isMobile ? 40 : 50}
-                    height={isMobile ? 40 : 50}
-                    quality={50}
-                    onClick={() => handleClickUser(like.id)}
-                    className={styles.image}
-                    alt="프로필 이미지"
-                    unoptimized
-                  />
-                ) : (
-                  <Image
-                    src="/image/default.svg"
-                    width={isMobile ? 40 : 50}
-                    height={isMobile ? 40 : 50}
-                    quality={50}
-                    onClick={() => handleClickUser(like.id)}
-                    className={styles.image}
-                    alt="프로필 이미지"
-                    unoptimized
-                  />
-                )}
+                <ResponsiveImage
+                  src={like.image ?? "/image/default.svg"}
+                  width={isMobile ? 40 : 50}
+                  height={isMobile ? 40 : 50}
+                  onClick={() => handleClickUser(like.id)}
+                  className={styles.image}
+                  alt="프로필 이미지"
+                  desktopSize={300}
+                  mobileSize={300}
+                />
+
                 {like.description !== "" ? (
                   <div className={styles.nameDescription} onClick={() => handleClickUser(like.url)}>
                     <p className={styles.name}>{like.name}</p>

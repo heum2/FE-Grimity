@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Image from "next/image";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -31,6 +30,7 @@ import { timeAgo } from "@/utils/timeAgo";
 import type { CommentProps, CommentWriter } from "@/components/Detail/Comment/Comment.types";
 
 import styles from "@/components/Detail/Comment/Comment.module.scss";
+import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
 
 export default function Comment({ feedId, feedWriterId, isFollowingPage }: CommentProps) {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -251,24 +251,20 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
             <div className={styles.childCommentBox}>
               <Link href={`/${reply.writer.url}`}>
                 {reply.writer.image !== null ? (
-                  <Image
+                  <ResponsiveImage
                     src={reply.writer.image}
                     width={24}
                     height={24}
                     alt="답글 프로필"
-                    quality={50}
                     className={styles.writerImage}
-                    unoptimized
                   />
                 ) : (
-                  <Image
+                  <ResponsiveImage
                     src="/image/default.svg"
                     width={24}
                     height={24}
                     alt="답글 프로필"
-                    quality={50}
                     className={styles.writerImage}
-                    unoptimized
                   />
                 )}
               </Link>
@@ -377,24 +373,20 @@ export default function Comment({ feedId, feedWriterId, isFollowingPage }: Comme
         <div className={styles.commentBox}>
           <Link href={`/${comment.writer.url}`}>
             {comment.writer.image !== null ? (
-              <Image
+              <ResponsiveImage
                 src={comment.writer.image}
                 width={isMobile ? 24 : 40}
                 height={isMobile ? 24 : 40}
                 alt="댓글 프로필"
-                quality={50}
                 className={styles.writerImage}
-                unoptimized
               />
             ) : (
-              <Image
+              <ResponsiveImage
                 src="/image/default.svg"
                 width={isMobile ? 24 : 40}
                 height={isMobile ? 24 : 40}
                 alt="댓글 프로필"
-                quality={50}
                 className={styles.writerImage}
-                unoptimized
               />
             )}
           </Link>

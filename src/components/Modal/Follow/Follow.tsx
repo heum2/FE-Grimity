@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import styles from "./Follow.module.scss";
 import { useMyFollower, useMyFollowing } from "@/api/users/getMeFollow";
-import Image from "next/image";
 import Button from "@/components/Button/Button";
 import { useRouter } from "next/router";
 import { useModalStore } from "@/states/modalStore";
@@ -10,6 +9,7 @@ import { useDeleteFollow } from "@/api/users/deleteIdFollow";
 import { useToast } from "@/hooks/useToast";
 import { FollowProps } from "./Follow.types";
 import { useDeviceStore } from "@/states/deviceStore";
+import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
 
 export default function Follow({ initialTab }: FollowProps) {
   const [activeTab, setActiveTab] = useState<"follower" | "following">(initialTab);
@@ -162,29 +162,16 @@ export default function Follow({ initialTab }: FollowProps) {
           ) : (
             data.map((follow, index) => (
               <li key={index} className={styles.item}>
-                {follow.image !== null ? (
-                  <Image
-                    src={follow.image}
-                    width={isMobile ? 40 : 50}
-                    height={isMobile ? 40 : 50}
-                    quality={50}
-                    onClick={() => handleClickUser(follow.url)}
-                    className={styles.image}
-                    alt={`${activeTab === "follower" ? "팔로워" : "팔로잉"} 프로필 이미지`}
-                    unoptimized
-                  />
-                ) : (
-                  <Image
-                    src="/image/default.svg"
-                    width={isMobile ? 40 : 50}
-                    height={isMobile ? 40 : 50}
-                    quality={50}
-                    onClick={() => handleClickUser(follow.url)}
-                    className={styles.image}
-                    alt={`${activeTab === "follower" ? "팔로워" : "팔로잉"} 프로필 이미지`}
-                    unoptimized
-                  />
-                )}
+                <ResponsiveImage
+                  src={follow.image ?? "/image/default.svg"}
+                  width={isMobile ? 40 : 50}
+                  height={isMobile ? 40 : 50}
+                  onClick={() => handleClickUser(follow.url)}
+                  className={styles.image}
+                  alt={`${activeTab === "follower" ? "팔로워" : "팔로잉"} 프로필 이미지`}
+                  desktopSize={300}
+                  mobileSize={300}
+                />
                 {follow.description !== "" ? (
                   <div
                     className={styles.nameDescription}

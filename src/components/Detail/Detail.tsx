@@ -1,7 +1,6 @@
 import styles from "./Detail.module.scss";
 import { DetailProps } from "./Detail.types";
 import { useDetails } from "@/api/feeds/getFeedsId";
-import Image from "next/image";
 import { useState, useEffect, useMemo } from "react";
 import Dropdown from "../Dropdown/Dropdown";
 import { useAuthStore } from "@/states/authStore";
@@ -272,28 +271,28 @@ export default function Detail({ id }: DetailProps) {
               <div className={styles.profileLeft}>
                 <Link href={`/${details.author.url}`}>
                   {details.author.image !== null ? (
-                    <Image
+                    <ResponsiveImage
                       src={details.author.image}
                       alt={details.author.name}
                       className={styles.authorImage}
                       width={40}
                       height={40}
-                      quality={50}
                       style={{ objectFit: "cover" }}
-                      unoptimized
                       ref={imgRef}
+                      desktopSize={300}
+                      mobileSize={300}
                     />
                   ) : (
-                    <Image
+                    <ResponsiveImage
                       src="/image/default.svg"
                       width={40}
                       height={40}
                       alt="프로필 이미지"
                       className={styles.authorImage}
-                      quality={50}
                       style={{ objectFit: "cover" }}
-                      unoptimized
                       ref={imgRef}
+                      desktopSize={300}
+                      mobileSize={300}
                     />
                   )}
                 </Link>
