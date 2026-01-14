@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.grimity.flutter",
+      "sha256_cert_fingerprints": [
+        "2D:78:D8:F7:7B:BE:75:E8:63:3F:FB:9A:93:D3:CA:0B:63:E0:38:9F:AB:9C:41:63:B3:A3:4F:2D:3F:9C:D9:E5"
+      ]
+    }
+  }
+]
