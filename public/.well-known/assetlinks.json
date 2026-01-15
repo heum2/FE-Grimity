@@ -8,5 +8,15 @@
         "2D:78:D8:F7:7B:BE:75:E8:63:3F:FB:9A:93:D3:CA:0B:63:E0:38:9F:AB:9C:41:63:B3:A3:4F:2D:3F:9C:D9:E5"
       ]
     }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.grimity.flutter",
+      "sha256_cert_fingerprints": [
+        "08:1E:27:32:DA:9D:DD:CE:B7:16:3F:2E:F5:1F:26:90:53:F5:DB:79:A8:DD:27:42:EC:B0:B4:5C:99:4E:3D:27"
+      ]
+    }
   }
 ]
