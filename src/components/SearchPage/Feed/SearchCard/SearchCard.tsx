@@ -4,7 +4,7 @@ import styles from "./SearchCard.module.scss";
 import { formatCurrency } from "@/utils/formatCurrency";
 import Link from "next/link";
 import { useAuthStore } from "@/states/authStore";
-import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
+import { useFeedsLikeMutation } from "@/queries/feeds/useFeedsLikeMutation";
 import { SearchCardProps } from "./SearchCard.types";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 import { SearchHighlightContext } from "@/pages/search";
@@ -23,22 +23,24 @@ export default function SearchCard({
   author,
 }: SearchCardProps) {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const [isLiked, setIsLiked] = useState(isLike);
+  const [isLiked, setIsLiked] = useState(isLike ?? false);
   const [currentLikeCount, setCurrentLikeCount] = useState(likeCount);
   const imgRef = usePreventRightClick<HTMLImageElement>();
   const { isMobile } = useDeviceStore();
   const { highlight } = useContext(SearchHighlightContext);
+  const { mutate: toggleLike } = useFeedsLikeMutation();
 
-  const handleLikeClick = async (e: React.MouseEvent) => {
+  const handleLikeClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (isLiked) {
-      await deleteLike(id);
-      setCurrentLikeCount((prev) => prev - 1);
-    } else {
-      await putLike(id);
-      setCurrentLikeCount((prev) => prev + 1);
-    }
-    setIsLiked(!isLiked);
+    toggleLike(
+      { id, isLiked },
+      {
+        onSuccess: () => {
+          setIsLiked(!isLiked);
+          setCurrentLikeCount((prev) => (isLiked ? prev - 1 : prev + 1));
+        },
+      }
+    );
   };
 
   return (

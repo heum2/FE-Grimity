@@ -6,7 +6,7 @@ import Dropdown from "../Dropdown/Dropdown";
 import { useAuthStore } from "@/states/authStore";
 import { useToast } from "@/hooks/useToast";
 import IconComponent from "../Asset/Icon";
-import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
+import { useFeedsLikeMutation } from "@/queries/feeds/useFeedsLikeMutation";
 import Button from "../Button/Button";
 import Link from "next/link";
 import { putView } from "@/api/feeds/putIdView";
@@ -42,9 +42,8 @@ export default function Detail({ id }: DetailProps) {
   const { data: details, isLoading, refetch } = useDetails(id);
   const [isExpanded, setIsExpanded] = useState(false);
   const { showToast } = useToast();
-  const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
-  const [currentLikeCount, setCurrentLikeCount] = useState(0);
+  const { mutate: toggleLike } = useFeedsLikeMutation();
   const [viewCounted, setViewCounted] = useState(false);
   const [overlayImage, setOverlayImage] = useState<string | null>(null);
   const imgRef = usePreventRightClick<HTMLImageElement>();
@@ -98,32 +97,14 @@ export default function Detail({ id }: DetailProps) {
     router.push(`/feeds/${id}/edit`);
   };
 
-  const handleLikeClick = async () => {
+  const handleLikeClick = () => {
     if (!isLoggedIn) {
       showToast("로그인 후 좋아요를 누를 수 있어요.", "error");
       return;
     }
 
-    if (details?.author.id === user_id) {
-      // if (isMobile) {
-      //   openModal({
-      //     type: "LIKE",
-      //     isFill: true,
-      //   });
-      // } else {
-      //   openModal({
-      //     type: "LIKE",
-      //   });
-      // }
-    } else {
-      if (isLiked) {
-        await deleteLike(id);
-        setCurrentLikeCount((prev) => prev - 1);
-      } else {
-        await putLike(id);
-        setCurrentLikeCount((prev) => prev + 1);
-      }
-      setIsLiked(!isLiked);
+    if (details?.author.id !== user_id) {
+      toggleLike({ id, isLiked: details?.isLike ?? false });
     }
   };
 
@@ -172,8 +153,8 @@ export default function Detail({ id }: DetailProps) {
   const actionBarConfig: ActionBarConfig = useMemo(
     () => ({
       like: {
-        isLiked,
-        count: currentLikeCount,
+        isLiked: details?.isLike ?? false,
+        count: details?.likeCount ?? 0,
         iconNameOn: "detailLikeOn",
         iconNameOff: "detailLikeOff",
         onToggle: handleLikeClick,
@@ -197,8 +178,8 @@ export default function Detail({ id }: DetailProps) {
       },
     }),
     [
-      isLiked,
-      currentLikeCount,
+      details?.isLike,
+      details?.likeCount,
       isSaved,
       user_id,
       details?.author.id,
@@ -218,9 +199,7 @@ export default function Detail({ id }: DetailProps) {
 
   useEffect(() => {
     if (!details) return;
-    setIsLiked(details.isLike ?? false);
     setIsSaved(details.isSave ?? false);
-    setCurrentLikeCount(details.likeCount ?? 0);
   }, [details]);
 
   // 새로고침 조회수 증가
@@ -306,7 +285,7 @@ export default function Detail({ id }: DetailProps) {
                     <p className={styles.createdAt}>{timeAgo(details.createdAt)}</p>
                     <div className={styles.stat}>
                       <IconComponent name="detailLikeCount" size={16} />
-                      {currentLikeCount}
+                      {details.likeCount}
                     </div>
                     <div className={styles.stat}>
                       <IconComponent name="detailViewCount" size={16} />
