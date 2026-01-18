@@ -27,7 +27,7 @@ import { useAuthStore } from "@/states/authStore";
 
 import { usePostsDetails } from "@/api/posts/getPostsId";
 import { deletePostsSave, putPostsSave } from "@/api/posts/putDeletePostsIdSave";
-import { deletePostsLike, putPostsLike } from "@/api/posts/putDeletePostsLike";
+import { usePostsLikeMutation } from "@/queries/posts/usePostsLikeMutation";
 import { deletePostsFeeds } from "@/api/posts/deletePostsId";
 
 import { timeAgo } from "@/utils/timeAgo";
@@ -50,12 +50,11 @@ export default function PostDetail({ id }: PostDetailProps) {
   const { showToast } = useToast();
   const { isMobile } = useDeviceStore();
 
-  const [currentLikeCount, setCurrentLikeCount] = useState(0);
-  const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
   const { data: posts, isLoading, refetch } = usePostsDetails(id as string);
   const { triggerProps, popoverProps, isOpen, targetRef } = useProfileCardHover(posts?.author.url);
+  const { mutate: toggleLike } = usePostsLikeMutation();
 
   const isAuthor = useMemo(() => user_id === posts?.author.id, [user_id, posts?.author.id]);
   const sanitizedContent = useMemo(
@@ -69,9 +68,7 @@ export default function PostDetail({ id }: PostDetailProps) {
 
   useEffect(() => {
     if (!posts) return;
-    setIsLiked(posts.isLike ?? false);
     setIsSaved(posts.isSave ?? false);
-    setCurrentLikeCount(posts.likeCount ?? 0);
   }, [posts]);
 
   const handleOpenShareModal = useCallback(() => {
@@ -90,25 +87,21 @@ export default function PostDetail({ id }: PostDetailProps) {
     });
   }, [openModal, posts?.author.id]);
 
-  const handleLikeClick = useCallback(async () => {
+  const handleLikeClick = useCallback(() => {
     if (!isLoggedIn) {
       showToast("로그인 후 좋아요를 누를 수 있어요.", "error");
       return;
     }
 
-    try {
-      if (isLiked) {
-        await deletePostsLike(id);
-        setCurrentLikeCount((prev) => prev - 1);
-      } else {
-        await putPostsLike(id);
-        setCurrentLikeCount((prev) => prev + 1);
+    toggleLike(
+      { id, isLiked: posts?.isLike ?? false },
+      {
+        onError: () => {
+          showToast("좋아요 처리 중 오류가 발생했습니다.", "error");
+        },
       }
-      setIsLiked(!isLiked);
-    } catch (error) {
-      showToast("좋아요 처리 중 오류가 발생했습니다.", "error");
-    }
-  }, [isLoggedIn, isLiked, id, showToast]);
+    );
+  }, [isLoggedIn, id, posts?.isLike, toggleLike, showToast]);
 
   const handleSaveClick = useCallback(async () => {
     if (!isLoggedIn) {
@@ -193,8 +186,8 @@ export default function PostDetail({ id }: PostDetailProps) {
   const actionBarConfig: ActionBarConfig = useMemo(
     () => ({
       like: {
-        isLiked,
-        count: currentLikeCount,
+        isLiked: posts?.isLike ?? false,
+        count: posts?.likeCount ?? 0,
         iconNameOn: "boardLikeCountOn",
         iconNameOff: "boardLikeCountOff",
         onToggle: handleLikeClick,
@@ -212,8 +205,8 @@ export default function PostDetail({ id }: PostDetailProps) {
       },
     }),
     [
-      isLiked,
-      currentLikeCount,
+      posts?.isLike,
+      posts?.likeCount,
       isSaved,
       isMobile,
       handleLikeClick,

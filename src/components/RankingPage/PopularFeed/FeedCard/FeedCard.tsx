@@ -4,7 +4,7 @@ import styles from "./FeedCard.module.scss";
 import { formatCurrency } from "@/utils/formatCurrency";
 import Link from "next/link";
 import { useAuthStore } from "@/states/authStore";
-import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
+import { useFeedsLikeMutation } from "@/queries/feeds/useFeedsLikeMutation";
 import { FeedCardProps } from "./FeedCard.types";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
@@ -19,20 +19,22 @@ export default function FeedCard({
   author,
 }: FeedCardProps) {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const [isLiked, setIsLiked] = useState(isLike);
+  const [isLiked, setIsLiked] = useState(isLike ?? false);
   const [currentLikeCount, setCurrentLikeCount] = useState(likeCount);
   const imgRef = usePreventRightClick<HTMLImageElement>();
+  const { mutate: toggleLike } = useFeedsLikeMutation();
 
-  const handleLikeClick = async (e: React.MouseEvent) => {
+  const handleLikeClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (isLiked) {
-      await deleteLike(id);
-      setCurrentLikeCount((prev) => prev - 1);
-    } else {
-      await putLike(id);
-      setCurrentLikeCount((prev) => prev + 1);
-    }
-    setIsLiked(!isLiked);
+    toggleLike(
+      { id, isLiked },
+      {
+        onSuccess: () => {
+          setIsLiked(!isLiked);
+          setCurrentLikeCount((prev) => (isLiked ? prev - 1 : prev + 1));
+        },
+      }
+    );
   };
 
   return (

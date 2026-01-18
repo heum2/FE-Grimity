@@ -2,7 +2,7 @@ import styles from "./FollowingFeed.module.scss";
 import { useState, useEffect, useRef } from "react";
 import { useAuthStore } from "@/states/authStore";
 import { useToast } from "@/hooks/useToast";
-import { deleteLike, putLike } from "@/api/feeds/putDeleteFeedsLike";
+import { useFeedsLikeMutation } from "@/queries/feeds/useFeedsLikeMutation";
 import Link from "next/link";
 import { putView } from "@/api/feeds/putIdView";
 import { deleteFeeds } from "@/api/feeds/deleteFeedsId";
@@ -62,6 +62,7 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
   const { triggerProps, popoverProps, isOpen, targetRef } = useProfileCardHover(
     details?.author.url,
   );
+  const { mutate: toggleLike } = useFeedsLikeMutation();
 
   usePreventScroll(!!overlayImage);
 
@@ -147,20 +148,21 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
     router.push(`/feeds/${id}/edit`);
   };
 
-  const handleLikeClick = async () => {
+  const handleLikeClick = () => {
     if (!isLoggedIn) {
       showToast("로그인 후 좋아요를 누를 수 있어요.", "error");
       return;
     }
 
-    if (isLiked) {
-      await deleteLike(id);
-      setCurrentLikeCount((prev) => prev - 1);
-    } else {
-      await putLike(id);
-      setCurrentLikeCount((prev) => prev + 1);
-    }
-    setIsLiked(!isLiked);
+    toggleLike(
+      { id, isLiked },
+      {
+        onSuccess: () => {
+          setIsLiked(!isLiked);
+          setCurrentLikeCount((prev) => (isLiked ? prev - 1 : prev + 1));
+        },
+      }
+    );
   };
 
   const handleSaveClick = async () => {
