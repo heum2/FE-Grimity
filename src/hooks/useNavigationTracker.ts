@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 
-import * as gtag from "@/constants/gtag";
+import { pageview } from "@/constants/gtag";
 
 import { useNavigationStore } from "@/states/navigationStore";
 
@@ -12,7 +12,7 @@ export const useNavigationTracker = () => {
   const { increaseDepth, decreaseDepth } = useNavigationStore();
 
   useEffect(() => {
-    gtag.pageview(window.location.pathname + window.location.search);
+    pageview(window.location.pathname + window.location.search);
   }, []);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export const useNavigationTracker = () => {
     };
 
     const handleRouteChangeComplete = (url: string) => {
-      gtag.pageview(url);
+      pageview(url);
       if (!isPopStateRef.current) {
         increaseDepth();
       }

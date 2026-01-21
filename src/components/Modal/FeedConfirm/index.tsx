@@ -10,7 +10,7 @@ import { putEditFeeds } from "@/api/feeds/putFeedsId";
 import { useModal } from "@/hooks/useModal";
 import UploadModal from "@/components/Modal/Upload/Upload";
 import { useRouter } from "next/router";
-import * as gtag from "@/constants/gtag";
+import { event as gtagEvent } from "@/constants/gtag";
 
 interface FeedConfirmProps {
   id?: string;
@@ -36,7 +36,7 @@ const FeedConfirm = ({ id, data, isEditMode, onSuccessCallback, close }: FeedCon
       }
 
       // GA 피드 업로드 완료 이벤트 추적
-      gtag.event({
+      gtagEvent({
         action: "upload_feed",
         category: "conversion",
         label: variables.title,
