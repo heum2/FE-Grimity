@@ -27,9 +27,9 @@ export default function MainBoard({ type }: MainBoardProps) {
   const { pathname } = useRouter();
 
   useEffect(() => {
-    latestRefetch();
-    noticeRefetch();
-  }, [pathname]);
+    // Parallel refetch for better performance
+    void Promise.all([latestRefetch(), noticeRefetch()]);
+  }, [pathname, latestRefetch, noticeRefetch]);
 
   if ((type === "ALL" && isLatestLoading) || (type === "NOTICE" && isNoticeLoading)) {
     return <Loader />;
