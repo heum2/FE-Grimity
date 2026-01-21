@@ -6,7 +6,6 @@ export function useOnClickOutside<T extends HTMLElement = HTMLElement>(
   ref: RefObject<T | null>,
   handler: Handler,
 ): void {
-  // useLatest pattern - stable handler reference to prevent re-registration
   const handlerRef = useRef(handler);
   useLayoutEffect(() => {
     handlerRef.current = handler;

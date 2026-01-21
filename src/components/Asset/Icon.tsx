@@ -8,7 +8,6 @@ const colorMap = {
   gray: "#adafbb",
 };
 
-// Hoisted static style to prevent recreation on every render
 const svgStyle = { display: "inline-block", paddingTop: "3px" } as const;
 
 export interface IconComponentProps {
@@ -32,7 +31,6 @@ function IconComponent({
   // size가 3 이하일 경우 padding-bottom 추가
   const additionalPadding = size <= 3 ? "10px" : padding;
 
-  // Memoize span style to prevent recreation
   const spanStyle = useMemo(
     () => ({
       padding: padding,
@@ -42,7 +40,6 @@ function IconComponent({
     [padding, additionalPadding, isBtn],
   );
 
-  // Memoize beforeInjection callback
   const beforeInjection = useMemo(
     () => (svg: SVGSVGElement) => {
       svg.setAttribute("width", `${size}`);

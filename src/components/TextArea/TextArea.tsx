@@ -20,7 +20,6 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
   ) => {
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
-    // Single effect for height adjustment - removes duplicate call from onChange
     useEffect(() => {
       if (textareaRef.current) {
         textareaRef.current.style.height = "auto";
