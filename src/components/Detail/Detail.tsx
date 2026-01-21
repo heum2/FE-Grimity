@@ -13,9 +13,11 @@ import { putView } from "@/api/feeds/putIdView";
 import { deleteFeeds } from "@/api/feeds/deleteFeedsId";
 import { useRouter } from "next/router";
 import { usePreventScroll } from "@/hooks/usePreventScroll";
-import Zoom from "react-medium-image-zoom";
+import dynamic from "next/dynamic";
 import "react-medium-image-zoom/dist/styles.css";
 import Loader from "../Layout/Loader/Loader";
+
+const Zoom = dynamic(() => import("react-medium-image-zoom"), { ssr: false });
 import Author from "./Author/Author";
 import { useProfileCardHover } from "@/hooks/useProfileCardHover";
 import ProfileCardPopover from "@/components/Layout/ProfileCardPopover/ProfileCardPopover";

@@ -1,7 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
-import ReactCrop, { PercentCrop } from "react-image-crop";
+import dynamic from "next/dynamic";
+import type { PercentCrop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import { useModalStore } from "@/states/modalStore";
+
+const ReactCrop = dynamic(() => import("react-image-crop"), { ssr: false });
 import Button from "@/components/Button/Button";
 import styles from "./Background.module.scss";
 import { useToast } from "@/hooks/useToast";
