@@ -67,13 +67,13 @@ export function useDragScroll(ref: RefObject<HTMLElement>, options: DragScrollOp
     };
 
     element.addEventListener("wheel", handleWheel, { passive: false });
-    element.addEventListener("mousedown", handleMouseDown);
-    element.addEventListener("mouseleave", handleMouseLeave);
-    element.addEventListener("mouseup", handleMouseUp);
+    element.addEventListener("mousedown", handleMouseDown, { passive: true });
+    element.addEventListener("mouseleave", handleMouseLeave, { passive: true });
+    element.addEventListener("mouseup", handleMouseUp, { passive: true });
     element.addEventListener("mousemove", handleMouseMove);
-    element.addEventListener("touchstart", handleTouchStart);
-    element.addEventListener("touchend", handleMouseUp);
-    element.addEventListener("touchmove", handleTouchMove);
+    element.addEventListener("touchstart", handleTouchStart, { passive: true });
+    element.addEventListener("touchend", handleMouseUp, { passive: true });
+    element.addEventListener("touchmove", handleTouchMove, { passive: true });
 
     return () => {
       element.removeEventListener("wheel", handleWheel);
