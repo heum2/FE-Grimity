@@ -20,15 +20,11 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
   ) => {
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
-    const adjustHeight = () => {
+    useEffect(() => {
       if (textareaRef.current) {
         textareaRef.current.style.height = "auto";
         textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
       }
-    };
-
-    useEffect(() => {
-      adjustHeight();
     }, [value]);
 
     const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -68,10 +64,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
             className={`${isReply ? styles.textareaReply : styles.textarea}`}
             placeholder={placeholder}
             value={value}
-            onChange={(event) => {
-              onChange(event);
-              adjustHeight();
-            }}
+            onChange={onChange}
             onKeyDown={handleKeyPress}
             maxLength={maxLength}
             onFocus={onFocus}

@@ -3,6 +3,12 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   reactStrictMode: true,
+  experimental: {
+    optimizePackageImports: ["date-fns", "swiper"],
+  },
+  images: {
+    domains: ["image.grimity.com", "d1qkekeyuugv87.cloudfront.net"],
+  },
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
@@ -11,12 +17,6 @@ const nextConfig: NextConfig = {
       };
     }
     return config;
-  },
-};
-
-module.exports = {
-  images: {
-    domains: ["image.grimity.com", "d1qkekeyuugv87.cloudfront.net"],
   },
 };
 

@@ -22,8 +22,8 @@ export function useMyData() {
     queryKey: ["myInfo"],
     queryFn: getMyInfo,
     enabled: isLoggedIn && Boolean(accessToken),
-    refetchOnMount: true,
-    refetchOnReconnect: true,
-    refetchOnWindowFocus: true,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
   });
 }

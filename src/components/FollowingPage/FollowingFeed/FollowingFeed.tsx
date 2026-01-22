@@ -8,9 +8,11 @@ import { putView } from "@/api/feeds/putIdView";
 import { deleteFeeds } from "@/api/feeds/deleteFeedsId";
 import { useRouter } from "next/router";
 import { usePreventScroll } from "@/hooks/usePreventScroll";
-import Zoom from "react-medium-image-zoom";
+import dynamic from "next/dynamic";
 import "react-medium-image-zoom/dist/styles.css";
 import { timeAgo } from "@/utils/timeAgo";
+
+const Zoom = dynamic(() => import("react-medium-image-zoom"), { ssr: false });
 import { useModalStore } from "@/states/modalStore";
 import { deleteSave, putSave } from "@/api/feeds/putDeleteFeedsIdSave";
 import IconComponent from "@/components/Asset/Icon";

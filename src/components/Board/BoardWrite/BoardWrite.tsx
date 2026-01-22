@@ -8,7 +8,7 @@ import { postPosts } from "@/api/posts/postPosts";
 import PostForm from "@/components/Board/BoardWrite/PostForm/PostForm";
 
 import { useToast } from "@/hooks/useToast";
-import * as gtag from "@/constants/gtag";
+import { event as gtagEvent } from "@/constants/gtag";
 
 export default function BoardWrite() {
   const [title, setTitle] = useState("");
@@ -64,7 +64,7 @@ export default function BoardWrite() {
       });
 
       // GA 게시글 업로드 완료 이벤트 추적
-      gtag.event({
+      gtagEvent({
         action: "upload_post",
         category: "conversion",
         label: `${selectedCategory}: ${title}`,

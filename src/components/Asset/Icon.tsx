@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, memo } from "react";
 import { ICONS } from "@/constants/asset";
 import { ReactSVG } from "react-svg";
 
@@ -8,6 +8,8 @@ const colorMap = {
   gray: "#adafbb",
 };
 
+const svgStyle = { display: "inline-block", paddingTop: "3px" } as const;
+
 export interface IconComponentProps {
   name: keyof typeof ICONS;
   color?: keyof typeof colorMap;
@@ -16,7 +18,7 @@ export interface IconComponentProps {
   isBtn?: boolean;
 }
 
-export default function IconComponent({
+function IconComponent({
   name,
   color,
   size = 24,
@@ -29,6 +31,26 @@ export default function IconComponent({
   // size가 3 이하일 경우 padding-bottom 추가
   const additionalPadding = size <= 3 ? "10px" : padding;
 
+  const spanStyle = useMemo(
+    () => ({
+      padding: padding,
+      paddingBottom: additionalPadding,
+      cursor: isBtn ? "pointer" : "default",
+    }),
+    [padding, additionalPadding, isBtn],
+  );
+
+  const beforeInjection = useMemo(
+    () => (svg: SVGSVGElement) => {
+      svg.setAttribute("width", `${size}`);
+      svg.setAttribute("height", `${size}`);
+      if (selectedColor) {
+        svg.setAttribute("fill", selectedColor);
+      }
+    },
+    [size, selectedColor],
+  );
+
   if (!iconSrc) {
     console.warn(`Icon "${name}" not found in ICONS`);
     return null;
@@ -36,23 +58,11 @@ export default function IconComponent({
 
   if (typeof iconSrc === "string") {
     return (
-      <span
-        style={{
-          padding: padding,
-          paddingBottom: additionalPadding,
-          cursor: isBtn ? "pointer" : "default",
-        }}
-      >
+      <span style={spanStyle}>
         <ReactSVG
           src={iconSrc}
-          beforeInjection={(svg) => {
-            svg.setAttribute("width", `${size}`);
-            svg.setAttribute("height", `${size}`);
-            if (selectedColor) {
-              svg.setAttribute("fill", selectedColor);
-            }
-          }}
-          style={{ display: "inline-block", paddingTop: "3px" }}
+          beforeInjection={beforeInjection}
+          style={svgStyle}
         />
       </span>
     );
@@ -60,3 +70,5 @@ export default function IconComponent({
 
   return null;
 }
+
+export default memo(IconComponent);
