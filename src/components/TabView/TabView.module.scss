@@ -13,10 +13,10 @@
 .tabButton {
   @include Body1;
   padding: 12px 22px;
-  border: 1px solid $gray30;
+  border: 1px solid $color-border-gray-subtle;
   border-radius: 32px;
-  background-color: $gray0;
-  color: $gray70;
+  background-color: $color-surface-base;
+  color: $color-text-gray-bold;
   cursor: pointer;
   transition: all 0.2s ease;
 
@@ -26,15 +26,15 @@
   }
 
   &:hover {
-    border-color: $secandary1;
-    color: $secandary1;
+    border-color: $color-status-positive;
+    color: $color-status-positive;
   }
 
   &.active {
     @include Sub4;
-    background-color: $secandary1;
-    border-color: $secandary1;
-    color: $gray0;
+    background-color: $color-status-positive;
+    border-color: $color-status-positive;
+    color: $color-surface-base;
 
     @include Size("mobile") {
       @include Label1;

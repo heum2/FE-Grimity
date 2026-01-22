@@ -8,7 +8,7 @@
 
   .title {
     @include Title3;
-    color: $gray70;
+    color: $color-text-gray-bold;
   }
 
   .message {
@@ -16,17 +16,17 @@
     align-items: center;
     gap: 4px;
     @include Sub4;
-    color: $gray70;
+    color: $color-text-gray-bold;
     margin-bottom: 16px;
 
     .op1 {
       @include Body1;
-      color: $secandary1;
+      color: $color-status-positive;
     }
 
     .op2 {
       @include Body1;
-      color: $gray50;
+      color: $color-text-gray-subtle;
     }
   }
 
@@ -47,7 +47,7 @@
         cursor: pointer;
         position: relative;
         @include Sub4;
-        color: $gray80;
+        color: $color-surface-inverse;
       }
 
       .radioInput {
@@ -72,12 +72,12 @@
     width: 100%;
     min-height: 100px;
     border-radius: 12px;
-    border: 1px solid $gray30;
-    background: $gray10;
+    border: 1px solid $color-border-gray-subtle;
+    background: $color-surface-gray-subtlest;
     padding: 12px 16px;
 
     &:focus-within {
-      background-color: $gray0;
+      background-color: $color-surface-base;
     }
 
     .textarea {
@@ -88,14 +88,14 @@
       border: none;
       outline: none;
       @include Body1;
-      color: $gray80;
+      color: $color-surface-inverse;
 
       &::placeholder {
-        color: $gray50;
+        color: $color-text-gray-subtle;
       }
 
       &:focus-within {
-        background-color: $gray0;
+        background-color: $color-surface-base;
       }
     }
   }

@@ -24,7 +24,7 @@
 
 .noResult {
   @include Sub2;
-  color: $gray50;
+  color: $color-text-gray-subtle;
   width: 100%;
   display: flex;
   flex-direction: column;

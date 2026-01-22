@@ -6,7 +6,7 @@
   width: 100%;
   max-width: 460px;
   gap: 30px;
-  box-shadow: inset -1px 0 0 $gray30;
+  box-shadow: inset -1px 0 0 $color-border-gray-subtle;
 
   @include Size("mobile") {
     max-width: 100%;
@@ -76,17 +76,17 @@
 
 .emptyText {
   @include Sub4;
-  color: $gray60;
+  color: $color-text-gray-normal;
   text-align: center;
 
   @include Size("mobile") {
     @include Sub2;
-    color: $gray50;
+    color: $color-text-gray-subtle;
   }
 
   @include Size("tablet") {
     @include Sub2;
-    color: $gray50;
+    color: $color-text-gray-subtle;
   }
 }
 
@@ -110,7 +110,7 @@
 
   p {
     @include Sub4;
-    color: $gray60;
+    color: $color-text-gray-normal;
   }
 }
 

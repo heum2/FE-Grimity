@@ -13,11 +13,11 @@
 
   .title {
     @include Sub2;
-    color: $gray60;
+    color: $color-text-gray-normal;
     @include Drag;
 
     .searchCount {
-      color: $gray70;
+      color: $color-text-gray-bold;
     }
 
     @include Size("mobile") {
@@ -44,7 +44,7 @@
   justify-content: center;
   align-items: center;
   @include Sub2;
-  color: $gray50;
+  color: $color-text-gray-subtle;
   margin-top: 50px;
   @include Drag;
 }
@@ -69,15 +69,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: $gray0;
+    background-color: $color-surface-base;
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
     @include Label2;
-    color: $gray70;
+    color: $color-text-gray-bold;
 
     &:hover {
-      background-color: $gray10;
+      background-color: $color-surface-gray-subtlest;
     }
   }
 
@@ -86,7 +86,7 @@
     border: none;
 
     &:hover {
-      background-color: $gray10;
+      background-color: $color-surface-gray-subtlest;
     }
 
     &:disabled {
@@ -95,6 +95,6 @@
   }
 
   .active {
-    background-color: $gray20;
+    background-color: $color-border-gray-subtler;
   }
 }

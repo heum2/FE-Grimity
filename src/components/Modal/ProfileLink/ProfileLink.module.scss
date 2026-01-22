@@ -12,7 +12,7 @@
   .titleContainer {
     .title {
       @include Title3;
-      color: $gray70;
+      color: $color-text-gray-bold;
     }
   }
 
@@ -45,7 +45,7 @@
   }
 
   .icon {
-    color: $gray50;
+    color: $color-text-gray-subtle;
   }
 
   .linkInfo {
@@ -57,7 +57,7 @@
 
   .linkLabel {
     @include Sub4;
-    color: $gray80;
+    color: $color-surface-inverse;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -65,7 +65,7 @@
 
   .link {
     @include Label3;
-    color: $gray60;
+    color: $color-text-gray-normal;
     text-decoration: none;
     white-space: nowrap;
     overflow: hidden;

@@ -18,7 +18,7 @@
 
   .title {
     @include Title3;
-    color: $gray80;
+    color: $color-surface-inverse;
 
     @include Size("mobile") {
       @include Sub1;
@@ -31,7 +31,7 @@
 
   .btn {
     @include Sub2;
-    color: $gray60;
+    color: $color-text-gray-normal;
     cursor: pointer;
 
     @include Size("mobile") {

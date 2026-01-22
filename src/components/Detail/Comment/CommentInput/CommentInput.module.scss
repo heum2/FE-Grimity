@@ -17,7 +17,7 @@
     border-radius: 50%;
     overflow: hidden;
     flex-shrink: 0;
-    border: 1px solid $gray30;
+    border: 1px solid $color-border-gray-subtle;
     @include Drag;
   }
 

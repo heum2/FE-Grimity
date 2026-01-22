@@ -8,7 +8,7 @@
   max-height: 760px;
   padding: 40px 32px;
   gap: 30px;
-  background-color: $gray0;
+  background-color: $color-surface-base;
   border-radius: 12px;
   width: 100%;
 
@@ -22,7 +22,7 @@
     width: 100%;
     .title {
       @include Title3;
-      color: $gray70;
+      color: $color-text-gray-bold;
     }
   }
 
@@ -34,12 +34,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: $gray70;
+    color: $color-text-gray-bold;
     width: 24px;
     height: 24px;
 
     &:hover {
-      color: $gray80;
+      color: $color-surface-inverse;
     }
   }
 
@@ -87,7 +87,7 @@
 
   .userName {
     @include Sub4;
-    color: $gray80;
+    color: $color-surface-inverse;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -95,7 +95,7 @@
 
   .emptyState {
     @include Body2;
-    color: $gray60;
+    color: $color-text-gray-normal;
     text-align: center;
     padding: 40px 0;
     width: 100%;

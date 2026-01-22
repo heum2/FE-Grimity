@@ -21,7 +21,7 @@
       height: 40px;
       object-fit: cover;
       border-radius: 50%;
-      border: 1px solid $gray30;
+      border: 1px solid $color-border-gray-subtle;
       cursor: pointer;
       @include Drag;
 
@@ -39,7 +39,7 @@
 
       .authorName {
         @include Sub2;
-        color: $gray80;
+        color: $color-surface-inverse;
         cursor: pointer;
 
         @include Size("mobile") {
@@ -58,7 +58,7 @@
 
       .createdAt {
         @include Label1;
-        color: $gray50;
+        color: $color-text-gray-subtle;
 
         @include Size("mobile") {
           @include Cap2;
@@ -76,7 +76,7 @@
         display: flex;
         align-items: center;
         gap: 2px;
-        color: $gray50;
+        color: $color-text-gray-subtle;
         @include Cap2;
         line-height: 12px;
       }
@@ -202,7 +202,7 @@
   }
 
   .title {
-    color: $gray80;
+    color: $color-surface-inverse;
     @include Title3;
 
     @include Size("mobile") {
@@ -212,7 +212,7 @@
 
   .content {
     @include Body1;
-    color: $gray70;
+    color: $color-text-gray-bold;
     white-space: pre-line;
     word-break: break-word;
     overflow-wrap: break-word;
@@ -228,7 +228,7 @@
 
     .createdAt {
       @include Label1;
-      color: $gray60;
+      color: $color-text-gray-normal;
     }
 
     .statIcon {
@@ -242,7 +242,7 @@
       display: flex;
       align-items: center;
       gap: 2px;
-      color: $gray60;
+      color: $color-text-gray-normal;
       @include Cap2;
       line-height: 12px;
     }
@@ -261,7 +261,7 @@
 }
 
 .bar {
-  border-top: 1px solid $gray30;
+  border-top: 1px solid $color-border-gray-subtle;
 }
 
 .boardActionBar {

@@ -23,9 +23,9 @@
   width: 240px;
   height: 240px;
   object-fit: contain;
-  background-color: $gray20;
+  background-color: $color-border-gray-subtler;
   border-radius: 18px;
-  border: 1px solid $gray30;
+  border: 1px solid $color-border-gray-subtle;
   cursor: grab;
 
   &:active {
@@ -43,7 +43,7 @@
     margin-top: 12px;
     width: 240px;
     @include Body1;
-    color: $gray70;
+    color: $color-text-gray-bold;
     overflow: hidden;
     text-overflow: ellipsis;
     word-break: break-word;
@@ -60,7 +60,7 @@
 .loading {
   width: 240px;
   height: 240px;
-  background-color: $gray0;
+  background-color: $color-surface-base;
   border-radius: 12px;
   padding: 0 30px;
   display: flex;
@@ -68,11 +68,11 @@
   align-items: center;
   justify-content: center;
   gap: 80px;
-  border: 1px solid $gray30;
+  border: 1px solid $color-border-gray-subtle;
 
   .loadingMsg {
     @include Title5;
-    color: $gray50;
+    color: $color-text-gray-subtle;
     text-align: center;
   }
 
@@ -85,7 +85,7 @@
     height: 8px;
     display: inline-block;
     position: relative;
-    background: $gray20;
+    background: $color-border-gray-subtler;
     overflow: hidden;
     border-radius: 0px 10px 10px 0px;
   }
@@ -95,7 +95,7 @@
     box-sizing: border-box;
     width: 0;
     height: 8px;
-    background: $secandary1;
+    background: $color-status-positive;
     position: absolute;
     top: 0;
     left: 0;

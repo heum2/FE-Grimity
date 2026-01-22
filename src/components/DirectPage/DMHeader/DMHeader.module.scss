@@ -37,13 +37,13 @@
   padding: 8px 0;
   border: none;
   background: none;
-  color: $gray80;
+  color: $color-surface-inverse;
   cursor: pointer;
 }
 
 .title {
   @include Title3;
-  color: $gray80;
+  color: $color-surface-inverse;
 
   @include Size("mobile") {
     @include Title4;

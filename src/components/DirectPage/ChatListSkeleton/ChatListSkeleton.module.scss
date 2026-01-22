@@ -11,7 +11,7 @@
   align-items: flex-start;
   gap: 16px;
   padding: 20px 24px;
-  border-bottom: 1px solid $gray20;
+  border-bottom: 1px solid $color-border-gray-subtler;
 
   @include Size("mobile") {
     padding: 16px 20px;
@@ -28,7 +28,7 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: $gray30;
+  background: $color-border-gray-subtle;
   flex-shrink: 0;
   animation: pulse 1.5s ease-in-out infinite;
 
@@ -61,7 +61,7 @@
 .username {
   height: 16px;
   width: 80px;
-  background: $gray30;
+  background: $color-border-gray-subtle;
   border-radius: 4px;
   animation: pulse 1.5s ease-in-out infinite;
 
@@ -79,7 +79,7 @@
 .timestamp {
   height: 12px;
   width: 50px;
-  background: $gray30;
+  background: $color-border-gray-subtle;
   border-radius: 4px;
   animation: pulse 1.5s ease-in-out infinite;
 
@@ -102,7 +102,7 @@
 .lastMessage {
   height: 14px;
   width: 180px;
-  background: $gray30;
+  background: $color-border-gray-subtle;
   border-radius: 4px;
   animation: pulse 1.5s ease-in-out infinite;
 

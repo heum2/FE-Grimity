@@ -36,7 +36,7 @@
           height: 40px;
           object-fit: cover;
           border-radius: 50%;
-          border: 1px solid $gray30;
+          border: 1px solid $color-border-gray-subtle;
           cursor: pointer;
           @include Drag;
 
@@ -54,7 +54,7 @@
 
           .authorName {
             @include Sub2;
-            color: $gray80;
+            color: $color-surface-inverse;
             cursor: pointer;
 
             @include Size("mobile") {
@@ -65,7 +65,7 @@
 
         .createdAt {
           @include Label1;
-          color: $gray60;
+          color: $color-text-gray-normal;
           @include Drag;
         }
       }
@@ -184,20 +184,20 @@
       border: none;
       cursor: pointer;
       @include Drag;
-      border: 1px solid $gray30;
-      color: $gray70;
-      background-color: $gray0;
+      border: 1px solid $color-border-gray-subtle;
+      color: $color-text-gray-bold;
+      background-color: $color-surface-base;
       width: 100%;
       padding: 16px 16px;
       border-radius: 12px;
       @include Btn1;
 
       &:hover {
-        background-color: color.adjust($gray0, $lightness: 4%);
+        background-color: color.adjust($color-surface-base, $lightness: 4%);
       }
 
       &:active {
-        background-color: color.adjust($gray0, $lightness: 8%);
+        background-color: color.adjust($color-surface-base, $lightness: 8%);
       }
     }
 
@@ -218,7 +218,7 @@
     margin-top: 40px;
 
     .title {
-      color: $gray80;
+      color: $color-surface-inverse;
       @include Title3;
       padding-bottom: 20px;
 
@@ -229,7 +229,7 @@
 
     .content {
       @include Body1;
-      color: $gray70;
+      color: $color-text-gray-bold;
       white-space: pre-line;
       word-break: break-word;
       overflow-wrap: break-word;
@@ -249,7 +249,7 @@
     .readMore {
       background: none;
       border: none;
-      color: $gray60;
+      color: $color-text-gray-normal;
       cursor: pointer;
       @include Btn2;
       width: 100%;
@@ -268,7 +268,7 @@
       line-height: 0;
       margin: 16px 0;
       @include Drag;
-      color: $gray60;
+      color: $color-text-gray-normal;
 
       .statIcon {
         width: 16px;
@@ -301,7 +301,7 @@
     width: 100%;
     justify-content: flex-start;
     gap: 6px;
-    color: $gray60;
+    color: $color-text-gray-normal;
     @include Btn2;
     @include Drag;
     cursor: pointer;

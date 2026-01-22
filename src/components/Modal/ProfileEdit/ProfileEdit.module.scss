@@ -18,12 +18,12 @@
 
     .title {
       @include Title3;
-      color: $gray70;
+      color: $color-text-gray-bold;
     }
 
     .subtitle {
       @include Sub4;
-      color: $gray60;
+      color: $color-text-gray-normal;
     }
   }
 
@@ -100,12 +100,12 @@
   }
 
   .text {
-    color: $gray60;
+    color: $color-text-gray-normal;
     @include Cap1;
 
     .underline {
       text-decoration: underline;
-      color: $gray70;
+      color: $color-text-gray-bold;
     }
   }
 
@@ -118,7 +118,7 @@
     .label {
       @include Sub3;
       align-self: stretch;
-      color: $gray80;
+      color: $color-surface-inverse;
     }
 
     .textareaContainer {
@@ -126,14 +126,14 @@
       height: 120px;
       padding: 16px 20px;
       border-radius: 12px;
-      background-color: $gray10;
-      border: 1px solid $gray30;
+      background-color: $color-surface-gray-subtlest;
+      border: 1px solid $color-border-gray-subtle;
       position: relative;
       overflow-y: auto;
 
       &:focus-within {
-        border: 1px solid $secandary1;
-        background-color: $gray0;
+        border: 1px solid $color-status-positive;
+        background-color: $color-surface-base;
       }
 
       @include Size("mobile") {
@@ -144,15 +144,15 @@
         width: 100%;
         height: 87%;
         @include Label2;
-        color: $gray80;
+        color: $color-surface-inverse;
         border: none;
         outline: none;
         padding: 0;
-        background-color: $gray10;
+        background-color: $color-surface-gray-subtlest;
         resize: none;
 
         &:focus-within {
-          background-color: $gray0;
+          background-color: $color-surface-base;
         }
 
         &::-webkit-scrollbar {
@@ -165,13 +165,13 @@
         }
 
         &::-webkit-scrollbar-thumb {
-          background: $gray40;
+          background: $color-text-gray-subtler;
           border-radius: 10px;
           cursor: pointer;
         }
 
         &::-webkit-scrollbar-thumb:hover {
-          background: $gray50;
+          background: $color-text-gray-subtle;
         }
       }
 
@@ -181,11 +181,11 @@
         bottom: 12px;
         display: flex;
         @include Label1;
-        color: $gray60;
+        color: $color-text-gray-normal;
       }
 
       .count {
-        color: $gray80;
+        color: $color-surface-inverse;
       }
     }
   }
@@ -199,7 +199,7 @@
       .editOrderBtn {
         align-items: flex-end;
         @include Label2;
-        color: $gray60;
+        color: $color-text-gray-normal;
         cursor: pointer;
       }
     }
@@ -211,7 +211,7 @@
     .label {
       @include Sub3;
       align-self: stretch;
-      color: $gray80;
+      color: $color-surface-inverse;
       margin-bottom: 12px;
     }
 

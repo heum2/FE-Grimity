@@ -3,7 +3,7 @@
 .popover {
   position: absolute;
   z-index: 99;
-  background: $gray0;
+  background: $color-surface-base;
   border-radius: 12px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.16);
   width: 280px;
@@ -48,8 +48,8 @@
       height: 64px;
       border-radius: 50%;
       overflow: hidden;
-      border: 4px solid $gray0;
-      background-color: $gray10;
+      border: 4px solid $color-surface-base;
+      background-color: $color-surface-gray-subtlest;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
       .profileImage {
@@ -70,7 +70,7 @@
 
     .name {
       @include Sub2;
-      color: $gray80;
+      color: $color-surface-inverse;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -79,7 +79,7 @@
 
     .description {
       @include Label2;
-      color: $gray60;
+      color: $color-text-gray-normal;
       margin-top: 6px;
       line-height: 1.5;
       overflow: hidden;
@@ -109,7 +109,7 @@
     align-items: center;
     justify-content: center;
     height: 200px;
-    color: $gray40;
+    color: $color-text-gray-subtler;
     @include Label1;
   }
 }

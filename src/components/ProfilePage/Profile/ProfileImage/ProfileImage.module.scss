@@ -4,13 +4,13 @@
   position: absolute;
   cursor: pointer;
   padding: 9px;
-  border: 1px solid $gray30;
-  background-color: $gray0;
+  border: 1px solid $color-border-gray-subtle;
+  background-color: $color-surface-base;
   border-radius: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: $gray70;
+  color: $color-text-gray-bold;
 }
 
 .profileImageContainer {
@@ -28,11 +28,11 @@
     object-fit: cover;
     border-radius: 50%;
     overflow: hidden;
-    border: 1px solid $gray30;
-    background-color: $gray0;
+    border: 1px solid $color-border-gray-subtle;
+    background-color: $color-surface-base;
 
     @include Size("mobile") {
-      border: 4px solid $gray0;
+      border: 4px solid $color-surface-base;
     }
   }
 

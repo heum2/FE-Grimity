@@ -61,7 +61,7 @@
 
         .recommendMessage {
           @include Sub2;
-          color: $gray70;
+          color: $color-text-gray-bold;
           flex-shrink: 0;
           @include Drag;
         }
@@ -94,14 +94,14 @@
           justify-content: center;
           align-items: center;
           border-radius: 50px;
-          background-color: $gray10;
+          background-color: $color-surface-gray-subtlest;
           @include Label1;
-          color: $gray60;
+          color: $color-text-gray-normal;
           white-space: nowrap;
           @include Drag;
 
           &:active {
-            background-color: $gray20;
+            background-color: $color-border-gray-subtler;
           }
         }
       }
@@ -120,17 +120,17 @@
       padding: 0 12px 8px;
       background: none;
       border: none;
-      color: $gray60;
+      color: $color-text-gray-normal;
       @include Title4;
       cursor: pointer;
 
       &:hover {
-        color: $gray70;
+        color: $color-text-gray-bold;
       }
 
       &.selected {
-        border-bottom: 2px solid $gray70;
-        color: $gray70;
+        border-bottom: 2px solid $color-text-gray-bold;
+        color: $color-text-gray-bold;
         padding: 0 12px 6px;
         transition: transform 0.3s ease, width 0.3s ease;
 
@@ -148,7 +148,7 @@
     .bar {
       width: 1px;
       height: 20px;
-      background-color: $gray30;
+      background-color: $color-border-gray-subtle;
       padding: 0;
       margin-bottom: 8px;
     }

@@ -6,7 +6,7 @@
 
   .message {
     @include Body1;
-    color: $gray80;
+    color: $color-surface-inverse;
     width: 100%;
     display: flex;
     justify-content: center;

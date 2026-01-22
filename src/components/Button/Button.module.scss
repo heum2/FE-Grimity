@@ -17,97 +17,97 @@
 }
 
 .filled-primary {
-  border: 1px solid $primary4;
-  background-color: $primary4;
-  color: $gray0;
+  border: 1px solid $color-surface-primary-normal;
+  background-color: $color-surface-primary-normal;
+  color: $color-text-white;
 
   &:hover {
-    background: linear-gradient(0deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.1) 100%), $primary4;
-    color: $gray30;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.1) 100%), $color-surface-primary-normal;
+    color: $color-text-gray-subtler;
   }
 
   &:active {
-    background: linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%), $primary4;
-    color: $gray40;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%), $color-surface-primary-normal;
+    color: $color-surface-gray-subtle;
   }
 
   &:disabled {
-    border-color: $gray30;
-    background-color: $gray30;
-    color: $gray0;
+    border-color: $color-border-gray-subtle;
+    background-color: $color-border-gray-subtle;
+    color: $color-text-white;
   }
 }
 
 .outlined-primary {
-  border: 1px solid $primary4;
-  color: $primary4;
-  background-color: $gray0;
+  border: 1px solid $color-border-primary-normal;
+  color: $color-text-primary-normal;
+  background-color: $color-bg-primary;
 
   &:hover {
-    background-color: color.adjust($gray0, $lightness: 4%);
+    background-color: color.adjust($color-bg-primary, $lightness: 4%);
   }
 
   &:active {
-    background-color: color.adjust($gray0, $lightness: 8%);
+    background-color: color.adjust($color-bg-primary, $lightness: 8%);
   }
 }
 
 .outlined-primary.disabled {
-  border: 1px solid $gray30;
-  color: $gray30;
+  border: 1px solid $color-border-gray-subtle;
+  color: $color-text-gray-subtler;
 }
 
 .outlined-secondary {
-  border: 1px solid $secandary1;
-  color: $secandary1;
-  background-color: $gray0;
+  border: 1px solid $color-status-positive;
+  color: $color-status-positive;
+  background-color: $color-bg-primary;
 
   &:hover {
-    background-color: color.adjust($gray0, $lightness: 4%);
+    background-color: color.adjust($color-bg-primary, $lightness: 4%);
   }
 
   &:active {
-    background-color: color.adjust($gray0, $lightness: 8%);
+    background-color: color.adjust($color-bg-primary, $lightness: 8%);
   }
 }
 
 .outlined-secondary.disabled {
-  border: 1px solid $gray30;
-  color: $gray30;
+  border: 1px solid $color-border-gray-subtle;
+  color: $color-text-gray-subtler;
 }
 
 .outlined-assistive {
-  border: 1px solid $gray30;
-  color: $gray70;
-  background-color: $gray0;
+  border: 1px solid $color-border-gray-subtle;
+  color: $color-text-gray-bold;
+  background-color: $color-bg-primary;
 
   &:hover {
-    background-color: color.adjust($gray0, $lightness: 4%);
-    border-color: $gray50;
+    background-color: color.adjust($color-bg-primary, $lightness: 4%);
+    border-color: $color-text-gray-subtle;
   }
 
   &:active {
-    background-color: color.adjust($gray0, $lightness: 8%);
+    background-color: color.adjust($color-bg-primary, $lightness: 8%);
   }
 }
 
 .outlined-assistive.disabled {
-  border-color: $gray30;
-  color: $gray30;
+  border-color: $color-border-gray-subtle;
+  color: $color-text-gray-subtler;
 }
 
 .text-primary {
-  color: $gray70;
-  background-color: $gray0;
+  color: $color-text-gray-bold;
+  background-color: $color-bg-primary;
 
   &.disabled {
-    color: $gray30;
+    color: $color-text-gray-subtler;
   }
 }
 
 .text-assistive {
-  color: $primary4;
-  background-color: $gray0;
+  color: $color-text-primary-normal;
+  background-color: $color-bg-primary;
 
   @include Size("mobile") {
     padding: 16px 0;
@@ -125,8 +125,8 @@
 }
 
 .text-assistive-category.l {
-  color: $gray70;
-  background-color: $gray0;
+  color: $color-text-gray-bold;
+  background-color: $color-bg-primary;
   font-size: 16px;
   font-weight: 500;
   line-height: 22.4px;
@@ -141,7 +141,7 @@
 }
 
 .text-assistive .disabled {
-  color: $gray30;
+  color: $color-text-gray-subtler;
 }
 
 .l {

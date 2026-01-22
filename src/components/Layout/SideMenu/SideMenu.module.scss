@@ -29,7 +29,7 @@
     width: 240px;
     height: $full-height;
     padding: 16px 0;
-    background-color: $gray0;
+    background-color: $color-surface-base;
     transform: translateX(100%);
     transition: transform 0.3s ease-in-out;
     z-index: 1600;
@@ -55,7 +55,7 @@
     .bar {
       width: 100%;
       height: 1px;
-      background-color: $gray30;
+      background-color: $color-border-gray-subtle;
     }
 
     .mobileProfile {
@@ -84,7 +84,7 @@
 
       .name {
         @include Sub4;
-        color: $gray80;
+        color: $color-surface-inverse;
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;
@@ -102,8 +102,8 @@
         align-items: center;
         flex-shrink: 0;
         border-radius: 8px;
-        border: 1px solid $gray30;
-        background: $gray0;
+        border: 1px solid $color-border-gray-subtle;
+        background: $color-surface-base;
       }
 
       .btns {
@@ -117,7 +117,7 @@
 
       .itemBtn {
         @include Label1;
-        color: $gray60;
+        color: $color-text-gray-normal;
         display: flex;
         align-items: center;
         gap: 10px;
@@ -180,14 +180,14 @@
     height: 25px;
 
     .item {
-      color: $gray60;
+      color: $color-text-gray-normal;
       @include Sub2;
       display: inline-block;
       margin: 0;
       transition: color 0.3s;
 
       &.active {
-        color: $gray70;
+        color: $color-text-gray-bold;
       }
 
       @include Size("mobile") {

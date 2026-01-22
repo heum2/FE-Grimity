@@ -53,14 +53,14 @@
     height: 25px;
 
     .item {
-      color: $gray60;
+      color: $color-text-gray-normal;
       @include Sub2;
       display: inline-block;
       margin: 0;
       transition: color 0.3s;
 
       &.active {
-        color: $gray70;
+        color: $color-text-gray-bold;
       }
 
       @include Size("mobile") {
@@ -79,7 +79,7 @@
   .indicator {
     position: absolute;
     height: 2px;
-    background-color: $gray80;
+    background-color: $color-surface-inverse;
     transition: transform 0.3s ease, width 0.3s ease;
     bottom: -8px;
   }
@@ -129,7 +129,7 @@
   padding: 8px 0;
   top: 40px;
   right: 0;
-  background: $gray0;
+  background: $color-surface-base;
   box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.15);
   border-radius: 12px;
   z-index: 10;
@@ -142,21 +142,21 @@
     padding: 10px 16px;
     cursor: pointer;
     @include Sub4;
-    color: $gray80;
+    color: $color-surface-inverse;
 
     &:hover {
-      background: $gray10;
+      background: $color-surface-gray-subtlest;
     }
 
     &.logout {
-      color: $gray60;
+      color: $color-text-gray-normal;
       @include Sub4;
     }
 
     .dropdownProfileImage {
       width: 28px;
       height: 28px;
-      border: 1px solid $gray20;
+      border: 1px solid $color-border-gray-subtler;
       object-fit: cover;
       border-radius: 50px;
       overflow: hidden;
@@ -200,20 +200,20 @@
   align-items: center;
   gap: 10px;
   border-radius: 12px;
-  border: 1px solid $gray30;
-  background-color: $gray10;
+  border: 1px solid $color-border-gray-subtle;
+  background-color: $color-surface-gray-subtlest;
   transition: transform 0.3s ease, width 0.3s ease;
 
   .input {
     width: 100%;
-    color: $gray70;
+    color: $color-text-gray-bold;
     @include Label2;
     background: none;
     border: none;
     outline: none;
 
     &::placeholder {
-      color: $gray50;
+      color: $color-text-gray-subtle;
     }
   }
 }

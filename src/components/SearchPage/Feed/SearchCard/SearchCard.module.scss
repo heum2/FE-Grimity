@@ -45,7 +45,7 @@
 
     .title {
       overflow: hidden;
-      color: $gray80;
+      color: $color-surface-inverse;
       text-overflow: ellipsis;
       @include Sub4;
       overflow: hidden;
@@ -63,7 +63,7 @@
 
       .author {
         @include Label1;
-        color: $gray60;
+        color: $color-text-gray-normal;
 
         @include Size("mobile") {
           @include Cap1;
@@ -88,7 +88,7 @@
 
           .count {
             @include Cap2;
-            color: $gray60;
+            color: $color-text-gray-normal;
           }
         }
       }

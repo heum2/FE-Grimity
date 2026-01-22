@@ -9,7 +9,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  background-color: $gray0;
+  background-color: $color-surface-base;
   z-index: 15;
   padding: 16px;
 }
@@ -22,7 +22,7 @@
   flex-direction: column;
   align-items: flex-start;
   border-radius: 12px;
-  background-color: $gray0;
+  background-color: $color-surface-base;
   box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.15);
   z-index: 15;
   top: 100%;
@@ -64,7 +64,7 @@
 
       .title {
         @include Title3;
-        color: $gray70;
+        color: $color-text-gray-bold;
 
         @include Size("tablet") {
           @include Title5;
@@ -105,13 +105,13 @@
     }
 
     &::-webkit-scrollbar-thumb {
-      background: $gray20;
+      background: $color-border-gray-subtler;
       border-radius: 10px;
       cursor: pointer;
     }
 
     &::-webkit-scrollbar-thumb:hover {
-      background: $gray30;
+      background: $color-border-gray-subtle;
     }
 
     @include Size("mobile") {
@@ -146,12 +146,12 @@
 
   .noneNotiTitle {
     @include Title3;
-    color: $gray70;
+    color: $color-text-gray-bold;
   }
 
   .noneNotiDescription {
     @include Label2;
-    color: $gray50;
+    color: $color-text-gray-subtle;
     text-align: center;
   }
 
@@ -167,15 +167,15 @@
       position: absolute;
       bottom: 0;
       left: 0;
-      background-color: $gray0;
+      background-color: $color-surface-base;
       padding: 32px 16px 50px;
     }
 
     .option {
       width: 100%;
-      border: 1px solid $gray30;
-      color: $gray70;
-      background-color: $gray0;
+      border: 1px solid $color-border-gray-subtle;
+      color: $color-text-gray-bold;
+      background-color: $color-surface-base;
       display: inline-flex;
       justify-content: center;
       align-items: center;
@@ -189,11 +189,11 @@
       @include Drag;
 
       &:hover {
-        background-color: color.adjust($gray0, $lightness: 4%);
+        background-color: color.adjust($color-surface-base, $lightness: 4%);
       }
 
       &:active {
-        background-color: color.adjust($gray0, $lightness: 8%);
+        background-color: color.adjust($color-surface-base, $lightness: 8%);
       }
     }
   }
@@ -243,7 +243,7 @@
 
       .title {
         @include Title3;
-        color: $gray70;
+        color: $color-text-gray-bold;
 
         @include Size("tablet") {
           @include Title5;
@@ -282,13 +282,13 @@
     .bar {
       width: 100%;
       height: 1px;
-      background-color: $gray30;
+      background-color: $color-border-gray-subtle;
       margin: 20px 0;
     }
 
     .label {
       @include Sub4;
-      color: $gray80;
+      color: $color-surface-inverse;
     }
 
     .gap {
@@ -314,7 +314,7 @@
 
       .topLabel {
         @include Sub4;
-        color: $gray60;
+        color: $color-text-gray-normal;
         width: 100px;
         flex-shrink: 0;
 

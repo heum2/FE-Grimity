@@ -14,12 +14,12 @@
   .bar {
     width: 100%;
     height: 1px;
-    background-color: $gray20;
+    background-color: $color-border-gray-subtler;
   }
 
   .noPosts {
     @include Body1;
-    color: $gray80;
+    color: $color-surface-inverse;
     width: 100%;
     display: flex;
     justify-content: center;

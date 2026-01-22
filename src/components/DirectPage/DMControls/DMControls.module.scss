@@ -41,7 +41,7 @@
   gap: 8px;
   cursor: pointer;
   @include Label2;
-  color: $gray70;
+  color: $color-text-gray-bold;
 
   @include Size("mobile") {
     @include Cap2;
@@ -106,30 +106,30 @@
 
 .leaveChatChip {
   @include Size("mobile") {
-    background-color: $primary4;
-    color: $gray0;
+    background-color: $color-surface-primary-normal;
+    color: $color-surface-base;
   }
 
   @include Size("tablet") {
-    background-color: $primary4;
-    color: $gray0;
+    background-color: $color-surface-primary-normal;
+    color: $color-surface-base;
   }
 
   &.disabled {
     @include Size("mobile") {
-      background-color: $gray10;
-      color: $gray40;
+      background-color: $color-surface-gray-subtlest;
+      color: $color-text-gray-subtler;
     }
 
     @include Size("tablet") {
-      background-color: $gray10;
-      color: $gray40;
+      background-color: $color-surface-gray-subtlest;
+      color: $color-text-gray-subtler;
     }
   }
 }
 
 .cancelChip {
-  color: $gray70;
+  color: $color-text-gray-bold;
 }
 
 .leaveModal {

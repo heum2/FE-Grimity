@@ -9,7 +9,7 @@
 .imageContainer {
   position: relative;
   width: 100%;
-  background-color: $gray20;
+  background-color: $color-border-gray-subtler;
   overflow: hidden;
 }
 
@@ -29,11 +29,11 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  background-color: $gray20;
-  color: $gray60;
+  background-color: $color-border-gray-subtler;
+  color: $color-text-gray-normal;
   @include Label2;
   text-align: center;
-  border: 1px solid $gray30;
+  border: 1px solid $color-border-gray-subtle;
   border-radius: 4px;
 
   span {

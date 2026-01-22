@@ -34,9 +34,9 @@
     position: fixed;
     bottom: 30px;
     right: 16px;
-    background-color: $primary4;
+    background-color: $color-surface-primary-normal;
     border: none;
-    color: $gray0;
+    color: $color-surface-base;
     border-radius: 50%;
     width: 60px;
     height: 60px;
@@ -50,7 +50,7 @@
     @include Drag;
 
     &:hover {
-      background-color: color.adjust($primary4, $lightness: 10%);
+      background-color: color.adjust($color-surface-primary-normal, $lightness: 10%);
     }
   }
 }

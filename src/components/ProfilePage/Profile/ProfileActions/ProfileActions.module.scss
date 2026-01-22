@@ -40,20 +40,20 @@
   border: none;
   cursor: pointer;
   @include Drag;
-  border: 1px solid $gray30;
-  color: $gray70;
-  background-color: $gray0;
+  border: 1px solid $color-border-gray-subtle;
+  color: $color-text-gray-bold;
+  background-color: $color-surface-base;
   width: 100%;
   padding: 17px;
   border-radius: 12px;
   @include Btn1;
 
   &:hover {
-    background-color: color.adjust($gray0, $lightness: 4%);
+    background-color: color.adjust($color-surface-base, $lightness: 4%);
   }
 
   &:active {
-    background-color: color.adjust($gray0, $lightness: 8%);
+    background-color: color.adjust($color-surface-base, $lightness: 8%);
   }
 
   @include Size("mobile") {

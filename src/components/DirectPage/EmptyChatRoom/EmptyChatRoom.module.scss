@@ -6,7 +6,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: $gray10;
+  background-color: $color-surface-gray-subtlest;
 }
 
 .emptyChatRoomTextWrapper {
@@ -18,5 +18,5 @@
 
 .emptyChatRoomText {
   @include Sub4;
-  color: $gray60;
+  color: $color-text-gray-normal;
 }

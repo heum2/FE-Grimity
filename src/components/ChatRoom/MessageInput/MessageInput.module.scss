@@ -7,13 +7,13 @@
   width: 100%;
   min-height: 42px;
   padding: 16px;
-  background-color: $gray0;
-  border: 1px solid $gray30;
+  background-color: $color-surface-base;
+  border: 1px solid $color-border-gray-subtle;
   border-radius: 8px;
   box-sizing: border-box;
 
   &:focus-within {
-    background-color: $gray0;
+    background-color: $color-surface-base;
   }
 
   @include Size("mobile") {
@@ -41,7 +41,7 @@
 .input {
   width: 100%;
   @include Label2;
-  color: $gray70;
+  color: $color-text-gray-bold;
   outline: none;
   border: none;
   background-color: inherit;
@@ -54,11 +54,11 @@
   -ms-overflow-style: none;
 
   &::-webkit-scrollbar {
-    display: none; 
+    display: none;
   }
 
   &::placeholder {
-    color: $gray50;
+    color: $color-text-gray-subtle;
   }
 }
 
@@ -92,7 +92,7 @@
   background: rgba(0, 0, 0, 0.6);
   border-radius: 10px;
   cursor: pointer;
-  color: $gray0;
+  color: $color-surface-base;
   padding: 4px;
   border: none;
 

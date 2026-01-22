@@ -18,33 +18,33 @@
   border: 1px solid $border-color;
 
   &.unselected {
-    background-color: $gray10;
-    color: $gray40;
+    background-color: $color-surface-gray-subtlest;
+    color: $color-text-gray-subtler;
   }
 }
 
 .filled-primary {
-  @include chip-styles($primary4, $gray0);
+  @include chip-styles($color-surface-primary-normal, $color-surface-base);
 }
 
 .filled-secondary {
-  @include chip-styles($secandary2, $secandary1);
+  @include chip-styles($color-surface-primary-subtlest, $color-status-positive);
 }
 
 .filled-assistive {
-  @include chip-styles($gray10, $gray60);
+  @include chip-styles($color-surface-gray-subtlest, $color-text-gray-normal);
 }
 
 .outlined-primary {
-  @include chip-styles($gray0, $primary4, $primary4);
+  @include chip-styles($color-surface-base, $color-text-primary-normal, $color-surface-primary-normal);
 }
 
 .outlined-secondary {
-  @include chip-styles($gray0, $secandary1, $secandary1);
+  @include chip-styles($color-surface-base, $color-status-positive, $color-status-positive);
 }
 
 .outlined-assistive {
-  @include chip-styles($gray0, $gray70, $gray30);
+  @include chip-styles($color-surface-base, $color-text-gray-bold, $color-border-gray-subtle);
 }
 
 .m {

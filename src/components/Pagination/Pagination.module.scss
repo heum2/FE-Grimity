@@ -14,16 +14,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: $gray0;
+    background-color: $color-surface-base;
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
     @include Body1;
     line-height: 0;
-    color: $gray70;
+    color: $color-text-gray-bold;
 
     &:hover {
-      background-color: $gray10;
+      background-color: $color-surface-gray-subtlest;
     }
   }
 
@@ -32,7 +32,7 @@
     border: none;
 
     &:hover {
-      background-color: $gray10;
+      background-color: $color-surface-gray-subtlest;
     }
 
     &:disabled {
@@ -41,6 +41,6 @@
   }
 
   .active {
-    background-color: $gray20;
+    background-color: $color-border-gray-subtler;
   }
 }

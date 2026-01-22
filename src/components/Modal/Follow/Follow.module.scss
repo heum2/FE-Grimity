@@ -25,12 +25,12 @@
 }
 
 .tab {
-  color: $gray50;
+  color: $color-text-gray-subtle;
   @include Title3;
   cursor: pointer;
 
   &.active {
-    color: $gray70;
+    color: $color-text-gray-bold;
   }
 
   @include Size("mobile") {
@@ -47,7 +47,7 @@
   left: 0;
   width: 62px;
   height: 2px;
-  background-color: $gray70;
+  background-color: $color-text-gray-bold;
   transition: transform 0.3s ease;
 
   @include Size("mobile") {
@@ -106,7 +106,7 @@
       gap: 16px;
       padding-bottom: 20px;
       margin-bottom: 20px;
-      border-bottom: 1px solid $gray30;
+      border-bottom: 1px solid $color-border-gray-subtle;
 
       &:last-child {
         border: none;
@@ -124,7 +124,7 @@
       width: 50px;
       height: 50px;
       border-radius: 50px;
-      border: 1px solid $gray30;
+      border: 1px solid $color-border-gray-subtle;
       cursor: pointer;
       flex-shrink: 0;
 
@@ -151,12 +151,12 @@
 
     .name {
       @include Sub4;
-      color: $gray80;
+      color: $color-surface-inverse;
     }
 
     .description {
       @include Label2;
-      color: $gray60;
+      color: $color-text-gray-normal;
     }
 
     .btn {
@@ -173,7 +173,7 @@
 
 .noData {
   @include Sub2;
-  color: $gray50;
+  color: $color-text-gray-subtle;
   @include Drag;
   margin-top: 50px;
   width: 100%;

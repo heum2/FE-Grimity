@@ -17,7 +17,7 @@
 }
 
 .backgroundDefaultImageContainer {
-  background-color: $primary4;
+  background-color: $color-surface-primary-normal;
   width: 100%;
   height: 200px;
   display: flex;
@@ -41,7 +41,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: $gray0;
+  color: $color-surface-base;
   background-color: rgba(255, 255, 255, 0.1);
   border: none;
   cursor: pointer;
@@ -52,7 +52,7 @@
   padding: 16px 24px;
 
   &:hover {
-    background-color: color.adjust($gray0, $alpha: -0.6);
+    background-color: color.adjust($color-surface-base, $alpha: -0.6);
   }
 }
 
@@ -66,9 +66,9 @@
   gap: 8px;
 
   .coverEditBtn {
-    border: 1px solid $gray30;
-    color: $gray70;
-    background-color: $gray0;
+    border: 1px solid $color-border-gray-subtle;
+    color: $color-text-gray-bold;
+    background-color: $color-surface-base;
     padding: 11px;
     border-radius: 50px;
     @include Btn2;
@@ -88,13 +88,13 @@
     }
 
     &:hover {
-      background-color: color.adjust($gray0, $lightness: 4%);
-      color: $gray50;
+      background-color: color.adjust($color-surface-base, $lightness: 4%);
+      color: $color-text-gray-subtle;
     }
 
     &:active {
-      background-color: color.adjust($gray0, $lightness: 8%);
-      color: $gray50;
+      background-color: color.adjust($color-surface-base, $lightness: 8%);
+      color: $color-text-gray-subtle;
     }
   }
 }

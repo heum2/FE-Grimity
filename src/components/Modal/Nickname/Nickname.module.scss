@@ -13,12 +13,12 @@
 
     .title {
       @include Title3;
-      color: $gray70;
+      color: $color-text-gray-bold;
     }
 
     .subtitle {
       @include Sub4;
-      color: $gray60;
+      color: $color-text-gray-normal;
     }
   }
 
@@ -45,12 +45,12 @@
   }
 
   .text {
-    color: $gray60;
+    color: $color-text-gray-normal;
     @include Cap1;
 
     .underline {
       text-decoration: underline;
-      color: $gray70;
+      color: $color-text-gray-bold;
     }
   }
 }

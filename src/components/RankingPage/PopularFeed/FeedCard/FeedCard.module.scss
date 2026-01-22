@@ -47,7 +47,7 @@
     gap: 4px;
 
     .title {
-      color: $gray80;
+      color: $color-surface-inverse;
       @include Sub4;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -64,7 +64,7 @@
 
       .author {
         @include Label1;
-        color: $gray60;
+        color: $color-text-gray-normal;
       }
 
       .countContainer {
@@ -77,7 +77,7 @@
           align-items: center;
           gap: 2px;
           @include Cap2;
-          color: $gray60;
+          color: $color-text-gray-normal;
         }
       }
     }

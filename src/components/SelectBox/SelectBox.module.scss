@@ -17,10 +17,10 @@
   min-width: 140px;
   height: 52px;
   padding: 16px 20px;
-  border: 1px solid $gray30;
+  border: 1px solid $color-border-gray-subtle;
   border-radius: 12px;
-  background-color: $gray0;
-  color: $gray80;
+  background-color: $color-surface-base;
+  color: $color-text-gray-bold;
   @include Label2;
   display: flex;
   align-items: center;
@@ -39,7 +39,7 @@
 }
 
 .selected:hover {
-  border: 1px solid $gray70;
+  border: 1px solid $color-text-gray-bold;
 }
 
 .options {
@@ -49,26 +49,26 @@
   width: 100%;
   overflow-y: auto;
   border-radius: 12px;
-  background-color: $gray0;
+  background-color: $color-surface-base;
   padding: 6px 0;
   margin-bottom: 4px;
   z-index: 10;
-  border: 1px solid $gray10;
+  border: 1px solid $color-surface-gray-subtlest;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .options li {
   padding: 10px 16px;
-  color: $gray80;
+  color: $color-text-gray-bold;
   cursor: pointer;
   @include Label2;
   transition: background 0.2s;
 }
 
 .options li:hover {
-  background-color: $gray20;
+  background-color: $color-surface-gray-subtler;
 }
 
 .options li.active {
-  color: $secandary1;
+  color: $color-status-positive;
 }

@@ -7,16 +7,16 @@
   justify-content: space-between;
   gap: 16px;
   padding: 16px 0;
-  border-bottom: 1px solid $gray30;
+  border-bottom: 1px solid $color-border-gray-subtle;
   transition: background-color 0.2s;
   cursor: pointer;
 
   &:hover {
-    background-color: $gray10;
+    background-color: $color-surface-gray-subtlest;
   }
 
   &:active {
-    background-color: $gray20;
+    background-color: $color-border-gray-subtler;
   }
 
   &.read {
@@ -48,7 +48,7 @@
       gap: 4px;
 
       .message {
-        color: $gray80;
+        color: $color-surface-inverse;
         @include Sub4;
 
         @include Size("tablet") {
@@ -58,7 +58,7 @@
 
       .date {
         @include Label1;
-        color: $gray50;
+        color: $color-text-gray-subtle;
 
         @include Size("tablet") {
           @include Cap1;

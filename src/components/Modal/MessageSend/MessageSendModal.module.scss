@@ -1,7 +1,7 @@
 @use "@/styles/globals.scss" as *;
 
 .modal {
-  background: $gray0;
+  background: $color-surface-base;
   border-radius: 12px;
   width: 500px;
   max-height: 760px;
@@ -28,7 +28,7 @@
 
 .title {
   @include Title3;
-  color: $gray70;
+  color: $color-text-gray-bold;
 }
 
 .closeButton {
@@ -39,10 +39,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: $gray70;
+  color: $color-text-gray-bold;
 
   &:hover {
-    color: $gray80;
+    color: $color-surface-inverse;
   }
 }
 
@@ -67,8 +67,8 @@
   height: 32px;
   opacity: 0;
   visibility: hidden;
-  background-color: $gray30;
-  color: $gray70;
+  background-color: $color-border-gray-subtle;
+  color: $color-text-gray-bold;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -111,7 +111,7 @@
 
 .nickname {
   @include Sub4;
-  color: $gray80;
+  color: $color-surface-inverse;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -125,7 +125,7 @@
 
 .url {
   @include Label2;
-  color: $gray60;
+  color: $color-text-gray-normal;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -139,7 +139,7 @@
 
   p {
     @include Sub4;
-    color: $gray50;
+    color: $color-text-gray-subtle;
   }
 
   svg {
@@ -156,7 +156,7 @@
 
   p {
     @include Sub4;
-    color: $gray50;
+    color: $color-text-gray-subtle;
   }
 }
 

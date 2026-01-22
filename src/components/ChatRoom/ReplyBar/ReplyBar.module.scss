@@ -25,18 +25,18 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  color: $gray60;
+  color: $color-text-gray-normal;
 }
 
 .replyTarget {
   @include Cap2;
-  color: $gray60;
+  color: $color-text-gray-normal;
   font-weight: 600;
 }
 
 .replyMessage {
   @include Label2;
-  color: $gray70;
+  color: $color-text-gray-bold;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -48,10 +48,10 @@
   background: none;
   cursor: pointer;
   border-radius: 4px;
-  color: $gray60;
+  color: $color-text-gray-normal;
 
   &:hover {
-    background-color: $gray20;
-    color: $gray80;
+    background-color: $color-border-gray-subtler;
+    color: $color-surface-inverse;
   }
 }

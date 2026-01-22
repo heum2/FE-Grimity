@@ -5,7 +5,7 @@
 
   .title {
     @include Sub2;
-    color: $gray60;
+    color: $color-text-gray-normal;
     @include Drag;
     display: flex;
     align-items: center;
@@ -13,7 +13,7 @@
     margin-bottom: 12px;
 
     .searchCount {
-      color: $gray70;
+      color: $color-text-gray-bold;
     }
 
     @include Size("mobile") {
@@ -39,8 +39,8 @@
     width: 100%;
     padding: 16px 24px;
     @include Btn1;
-    color: $primary4;
-    background-color: $gray0;
+    color: $color-text-primary-normal;
+    background-color: $color-surface-base;
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -76,7 +76,7 @@
   justify-content: center;
   align-items: center;
   @include Sub2;
-  color: $gray50;
+  color: $color-text-gray-subtle;
   margin-top: 50px;
   @include Drag;
 }

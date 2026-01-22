@@ -7,18 +7,18 @@
   width: 234px;
   height: 50px;
   padding: 0 16px;
-  color: $gray60;
+  color: $color-text-gray-normal;
   cursor: pointer;
   transition: background 0.3s, color 0.3s;
   border-radius: 8px;
 
   &:hover {
-    background-color: $gray20;
-    color: $gray70;
+    background-color: $color-border-gray-subtler;
+    color: $color-text-gray-bold;
   }
 
   &.active {
-    color: $secandary1;
+    color: $color-status-positive;
   }
 
   @include Size("tablet") {

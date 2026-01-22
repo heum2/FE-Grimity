@@ -102,18 +102,18 @@
           }
 
           &::-webkit-scrollbar-track {
-            background: $gray20;
+            background: $color-border-gray-subtler;
             border-radius: 10px;
           }
 
           &::-webkit-scrollbar-thumb {
-            background: $secandary1;
+            background: $color-status-positive;
             border-radius: 10px;
             cursor: pointer;
           }
 
           &::-webkit-scrollbar-thumb:hover {
-            background: color.adjust($secandary1, $lightness: 10%);
+            background: color.adjust($color-status-positive, $lightness: 10%);
           }
 
           @include Size("mobile") {
@@ -173,20 +173,20 @@
         border: none;
         cursor: pointer;
         @include Drag;
-        border: 1px solid $gray30;
-        color: $gray70;
-        background-color: $gray0;
+        border: 1px solid $color-border-gray-subtle;
+        color: $color-text-gray-bold;
+        background-color: $color-surface-base;
         width: 100%;
         padding: 11px 16px;
         border-radius: 12px;
         @include Btn2;
 
         &:hover {
-          background-color: color.adjust($gray0, $lightness: 4%);
+          background-color: color.adjust($color-surface-base, $lightness: 4%);
         }
 
         &:active {
-          background-color: color.adjust($gray0, $lightness: 8%);
+          background-color: color.adjust($color-surface-base, $lightness: 8%);
         }
       }
 
@@ -212,7 +212,7 @@
         .bar {
           width: 100%;
           height: 1px;
-          background-color: $gray30;
+          background-color: $color-border-gray-subtle;
           margin: 24px 0;
 
           @include Size("mobile") {
@@ -228,11 +228,11 @@
           .countTotal {
             display: flex;
             @include Body1;
-            color: $gray50;
+            color: $color-text-gray-subtle;
           }
 
           .count {
-            color: $gray70;
+            color: $color-text-gray-bold;
           }
 
           .inputContainer {
@@ -244,13 +244,13 @@
             .input {
               width: 100%;
               @include Title2;
-              color: $gray80;
+              color: $color-surface-inverse;
               border: none;
               outline: none;
               padding: 0;
 
               &::placeholder {
-                color: $gray50;
+                color: $color-text-gray-subtle;
               }
 
               @include Size("mobile") {
@@ -284,11 +284,11 @@
                 border: none;
                 outline: none;
                 @include Body1;
-                color: $gray70;
+                color: $color-text-gray-bold;
                 resize: none;
 
                 &::placeholder {
-                  color: $gray50;
+                  color: $color-text-gray-subtle;
                 }
 
                 &::-webkit-scrollbar {
@@ -296,13 +296,13 @@
                 }
 
                 &::-webkit-scrollbar-thumb {
-                  background: $gray30;
+                  background: $color-border-gray-subtle;
                   border-radius: 10px;
                   cursor: pointer;
                 }
 
                 &::-webkit-scrollbar-thumb:hover {
-                  background: $gray40;
+                  background: $color-text-gray-subtler;
                 }
               }
             }
@@ -310,7 +310,7 @@
 
           .label {
             @include Sub3;
-            color: $gray80;
+            color: $color-surface-inverse;
             flex-shrink: 0;
             @include Drag;
           }
@@ -341,16 +341,16 @@
                 }
 
                 .text {
-                  color: $gray50;
+                  color: $color-text-gray-subtle;
                   @include Body1;
 
                   &:selected {
-                    color: $gray70;
+                    color: $color-text-gray-bold;
                   }
                 }
 
                 .textSelected {
-                  color: $gray70;
+                  color: $color-text-gray-bold;
                   @include Body1;
                 }
               }
@@ -358,13 +358,13 @@
               .input {
                 width: 100%;
                 @include Body1;
-                color: $gray80;
+                color: $color-surface-inverse;
                 border: none;
                 outline: none;
                 padding: 0;
 
                 &::placeholder {
-                  color: $gray50;
+                  color: $color-text-gray-subtle;
                 }
               }
             }
@@ -407,7 +407,7 @@
           align-items: center;
           gap: 20px;
           @include Body1;
-          color: $gray70;
+          color: $color-text-gray-bold;
 
           .option {
             cursor: pointer;

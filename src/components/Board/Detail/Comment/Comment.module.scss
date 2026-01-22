@@ -38,7 +38,7 @@
     align-items: flex-start;
     justify-content: space-between;
     padding: 20px 0;
-    border-bottom: 1px solid $gray30;
+    border-bottom: 1px solid $color-border-gray-subtle;
   }
   .writerLeft {
     display: flex;
@@ -51,7 +51,7 @@
   }
   .writerName {
     @include Label1;
-    color: $gray60;
+    color: $color-text-gray-normal;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -59,14 +59,14 @@
 
   .createdAt {
     @include Cap2;
-    color: $gray50;
+    color: $color-text-gray-subtle;
     @include Drag;
   }
 
   .feedWriter {
     @include Cap3;
-    color: $secandary1;
-    background-color: $secandary2;
+    color: $color-status-positive;
+    background-color: $color-surface-primary-subtlest;
     border-radius: 50px;
     padding: 2px 8px;
     @include Drag;
@@ -74,13 +74,13 @@
 
   .commentText {
     @include Body1;
-    color: $gray80;
+    color: $color-surface-inverse;
     white-space: pre-line;
     margin-top: 6px;
     margin-bottom: 10px;
 
     .mentionedUser {
-      color: $secandary1;
+      color: $color-status-positive;
       @include Label1;
       margin-right: 4px;
     }
@@ -96,19 +96,19 @@
     align-items: center;
     gap: 2px;
     @include Cap1;
-    color: $gray60;
+    color: $color-text-gray-normal;
     cursor: pointer;
     @include Drag;
   }
   .likeOnButton {
     @extend .likeButton;
-    color: $secandary1;
+    color: $color-status-positive;
   }
 
   .replyBtn {
     @include Label1;
     line-height: 24px;
-    color: $gray60;
+    color: $color-text-gray-normal;
     cursor: pointer;
     @include Drag;
   }
@@ -119,7 +119,7 @@
 }
 
 .deleteComment {
-  color: $gray50;
+  color: $color-text-gray-subtle;
   @include Label1;
 }
 

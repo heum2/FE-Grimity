@@ -15,7 +15,7 @@
 
   .name {
     @include Title2;
-    color: $gray80;
+    color: $color-surface-inverse;
     margin-bottom: 2px;
 
     @include Size("mobile") {
@@ -36,7 +36,7 @@
 
   .description {
     @include Body1;
-    color: $gray70;
+    color: $color-text-gray-bold;
     margin-top: 12px;
     white-space: pre-line;
   }
@@ -53,7 +53,7 @@
   display: flex;
   gap: 8px;
   @include Sub4;
-  color: $gray60;
+  color: $color-text-gray-normal;
   @include Drag;
 
   @include Size("mobile") {
@@ -65,7 +65,7 @@
   display: flex;
   gap: 8px;
   @include Sub4;
-  color: $gray60;
+  color: $color-text-gray-normal;
   cursor: pointer;
 
   @include Size("mobile") {
@@ -75,7 +75,7 @@
 
 .followerColor {
   @include Sub4;
-  color: $gray70;
+  color: $color-text-gray-bold;
 
   @include Size("mobile") {
     @include Body1;
@@ -105,13 +105,13 @@
 
   .link {
     @include Label2;
-    color: $gray60;
+    color: $color-text-gray-normal;
     cursor: pointer;
   }
 
   .moreLinksText {
     @include Label2;
-    color: $secandary1;
+    color: $color-status-positive;
     cursor: pointer;
   }
 }

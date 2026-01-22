@@ -9,13 +9,13 @@
     border: none;
     background: none;
     @include Sub4;
-    color: $gray60;
+    color: $color-text-gray-normal;
     padding: 0;
     cursor: pointer;
   }
 
   .active {
     @extend .type;
-    color: $secandary1;
+    color: $color-status-positive;
   }
 }

@@ -209,31 +209,176 @@
   line-height: 12px;
 }
 
-// Color
-$gray0: #ffffff;
-$gray10: #f5f7fa;
-$gray20: #f0f0f5;
-$gray30: #e1e1e8;
-$gray40: #caccd8;
-$gray50: #adafbb;
-$gray60: #858898;
-$gray70: #35363f;
-$gray80: #23252b;
+// ============================================
+// Atomic Colors (from Figma Design System)
+// ============================================
 
-$primary1: #ededf9;
-$primary2: #8989a6;
-$primary3: #404054;
-$primary4: #232332;
-$primary5: #000000;
+// Base
+$white: #ffffff;
+$black: #000000;
 
-$secandary1: #2bc466;
-$secandary2: #eafff2;
+// Gray Scale (10단계)
+$gray-10: #f8f8f9;
+$gray-20: #edeef0;
+$gray-30: #d7d9e0;
+$gray-40: #c2c6d0;
+$gray-50: #a4a9b7;
+$gray-60: #9397a5;
+$gray-70: #70737e;
+$gray-80: #51545c;
+$gray-90: #35373c;
+$gray-100: #1a1b1e;
 
+// Brand Green (Primary - 10단계)
+$green-10: #f0fdf4;
+$green-20: #dcfce7;
+$green-30: #b9f8cf;
+$green-40: #7bf1a8;
+$green-50: #05df72;
+$green-60: #00c950;
+$green-70: #00a63e;
+$green-80: #008236;
+$green-90: #016630;
+$green-100: #004517;
+
+// System Blue (10단계)
+$blue-10: #f7fbff;
+$blue-20: #eaf2fe;
+$blue-30: #c9defe;
+$blue-40: #9ec5ff;
+$blue-50: #69a5ff;
+$blue-60: #3385ff;
+$blue-70: #0066ff;
+$blue-80: #0054d1;
+$blue-90: #003e9c;
+$blue-100: #002966;
+
+// System Red (10단계)
+$red-10: #fffafa;
+$red-20: #feecec;
+$red-30: #fed5d5;
+$red-40: #ffb5b5;
+$red-50: #ff8c8c;
+$red-60: #ff6363;
+$red-70: #ff4242;
+$red-80: #e52222;
+$red-90: #b00c0c;
+$red-100: #730303;
+
+// System Orange (10단계)
+$orange-10: #fffcf7;
+$orange-20: #fef4e6;
+$orange-30: #fee6c6;
+$orange-40: #ffd49c;
+$orange-50: #ffc06e;
+$orange-60: #ffa938;
+$orange-70: #ff9200;
+$orange-80: #d47800;
+$orange-90: #9c5800;
+$orange-100: #663a00;
+
+// ============================================
+// Semantic Colors (from Figma Design System)
+// Light 모드 기준
+// ============================================
+
+// ----- Background (4개) -----
+$color-bg-primary: $white;
+$color-bg-secondary: $gray-10;
+$color-bg-black: $black;
+$color-bg-overlay-black: rgba($black, 0.4);
+
+// ----- Surface (12개) -----
+$color-surface-base: $white;
+$color-surface-white: $white;
+$color-surface-black: $black;
+$color-surface-inverse: $gray-100;
+$color-surface-gray-bold: $gray-80;
+$color-surface-gray-normal: $gray-60;
+$color-surface-gray-subtle: $gray-40;
+$color-surface-gray-subtler: $gray-20;
+$color-surface-gray-subtlest: $gray-10;
+$color-surface-primary-normal: $green-60;
+$color-surface-primary-subtler: $green-30;
+$color-surface-primary-subtlest: $green-10;
+
+// ----- Text (9개) -----
+$color-text-white: $white;
+$color-text-black: $black;
+$color-text-inverse: $white;
+$color-text-gray-bold: $gray-90;
+$color-text-gray-normal: $gray-70;
+$color-text-gray-subtle: $gray-50;
+$color-text-gray-subtler: $gray-30;
+$color-text-primary-normal: $green-60;
+$color-text-primary-subtler: $green-30;
+
+// ----- Icon (9개) -----
+$color-icon-base: $black;
+$color-icon-inverse: $white;
+$color-icon-gray-bold: $gray-90;
+$color-icon-gray-normal: $gray-70;
+$color-icon-gray-subtle: $gray-50;
+$color-icon-gray-subtler: $gray-30;
+$color-icon-primary-normal: $green-60;
+$color-icon-primary-subtler: $green-30;
+$color-icon-primary-subtlest: $green-10;
+
+// ----- Border (7개) -----
+$color-border-gray-bold: $gray-40;
+$color-border-gray-normal: $gray-40;
+$color-border-gray-subtle: $gray-30;
+$color-border-gray-subtler: $gray-20;
+$color-border-primary-normal: $green-60;
+$color-border-primary-subtler: $green-30;
+$color-border-primary-subtlest: $green-10;
+
+// ----- Status (5개) -----
+$color-status-positive: $green-60;
+$color-status-info: $blue-60;
+$color-status-negative: $red-70;
+$color-status-cautionary: $orange-60;
+$color-status-notification: $red-60;
+
+// ----- Graphic (5개) -----
+$color-graphic-primary: $green-60;
+$color-graphic-bold: $gray-90;
+$color-graphic-normal: $gray-80;
+$color-graphic-subtle: $gray-60;
+$color-graphic-subtler: $gray-40;
+
+// ============================================
+// Legacy Variable Mappings (Deprecated)
+// TODO: 마이그레이션 완료 후 제거
+// ============================================
+
+$gray0: $white;
+$gray10: $gray-10;
+$gray20: $gray-20;
+$gray30: $gray-30;
+$gray40: $gray-40;
+$gray50: $gray-50;
+$gray60: $gray-60;
+$gray70: $gray-90;
+$gray80: $gray-100;
+
+// Primary → Green 매핑
+$primary1: $green-10;
+$primary2: $green-50;
+$primary3: $green-70;
+$primary4: $green-80;
+$primary5: $black;
+
+// Secondary → Green 배경
+$secandary1: $green-60;
+$secandary2: $green-10;
+
+// Legacy status colors
 $red: #f5506c;
 
-$positive: #00bf40;
-$cautionary: #ff9200;
-$negative: #ff4242;
+$positive: $color-status-positive;
+$cautionary: $color-status-cautionary;
+$negative: $color-status-negative;
 
 $max-breakpoints: (
   "mobile": 767px,

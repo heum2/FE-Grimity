@@ -51,7 +51,7 @@
     top: 64px;
     left: 0;
     z-index: 2;
-    background-color: $gray0;
+    background-color: $color-surface-base;
   }
 
   .underline {
@@ -59,7 +59,7 @@
     bottom: 0;
     left: 0;
     height: 2px;
-    background-color: $gray70;
+    background-color: $color-text-gray-bold;
     transition: all 0.3s ease;
   }
 
@@ -67,7 +67,7 @@
     padding: 0 12px 8px;
     background: none;
     border: none;
-    color: $gray60;
+    color: $color-text-gray-normal;
     @include Sub2;
     transition: all 0.3s;
     cursor: pointer;
@@ -78,18 +78,18 @@
     }
 
     &:hover {
-      color: $gray70;
+      color: $color-text-gray-bold;
     }
 
     &.selected {
-      color: $gray70;
+      color: $color-text-gray-bold;
     }
   }
 
   .bar {
     width: 1px;
     height: 20px;
-    background-color: $gray30;
+    background-color: $color-border-gray-subtle;
     padding: 0;
     margin-bottom: 8px;
   }

@@ -19,7 +19,7 @@
 
   &.unselected {
     .quantity {
-      color: $gray60;
+      color: $color-text-gray-normal;
       margin-left: 2px;
     }
   }
@@ -37,16 +37,16 @@
   border: 1px solid $border-color;
 
   &.unselected {
-    background-color: $gray0;
+    background-color: $color-surface-base;
   }
 }
 
 .select {
-  @include category-styles($secandary1, $gray0);
+  @include category-styles($color-status-positive, $color-surface-base);
 }
 
 .unselect {
-  @include category-styles($gray0, $gray70, $gray30);
+  @include category-styles($color-surface-base, $color-text-gray-bold, $color-border-gray-subtle);
 }
 
 .quantity {
@@ -54,6 +54,6 @@
   align-items: center;
   justify-content: center;
   line-height: normal;
-  color: $gray0;
+  color: $color-surface-base;
   margin-left: 2px;
 }

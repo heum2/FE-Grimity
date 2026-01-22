@@ -7,7 +7,7 @@
 
 .title {
   @include Title3;
-  color: $gray70;
+  color: $color-text-gray-bold;
   margin-bottom: 20px;
 }
 
@@ -28,13 +28,13 @@
 
 .rangeInput {
   width: 90%;
-  background: $gray30;
+  background: $color-border-gray-subtle;
   border-radius: 8px;
   outline: none;
   transition: background 450ms ease-in;
   -webkit-appearance: none;
   appearance: none;
-  accent-color: $primary4;
+  accent-color: $color-surface-primary-normal;
 }
 
 .zoomContainer {

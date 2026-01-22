@@ -44,7 +44,7 @@
 
       .message {
         @include Title3;
-        color: $gray70;
+        color: $color-text-gray-bold;
 
         @include Size("mobile") {
           @include Title4;
@@ -52,7 +52,7 @@
       }
       .submessage {
         @include Sub2;
-        color: $gray50;
+        color: $color-text-gray-subtle;
         word-break: keep-all;
 
         @include Size("mobile") {

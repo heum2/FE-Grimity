@@ -5,12 +5,12 @@
   display: flex;
   flex-direction: row;
   padding-bottom: 20px;
-  border-bottom: 1px solid $gray30;
+  border-bottom: 1px solid $color-border-gray-subtle;
 
   @include Size("mobile") {
     flex-direction: column;
     padding-bottom: 16px;
-    border-bottom: 1px solid $gray20;
+    border-bottom: 1px solid $color-border-gray-subtler;
   }
 
   .chipContainer {
@@ -69,7 +69,7 @@
 
       .title {
         @include Sub4;
-        color: $gray80;
+        color: $color-surface-inverse;
         display: inline-flex;
         align-items: center;
         white-space: nowrap;
@@ -85,7 +85,7 @@
       .comment {
         @include Label2;
         color: $red;
-        border: 1px solid $gray30;
+        border: 1px solid $color-border-gray-subtle;
         padding: 0 4px;
         display: flex;
         gap: 3px;
@@ -97,7 +97,7 @@
     .content {
       width: 100%;
       @include Label2;
-      color: $gray60;
+      color: $color-text-gray-normal;
       overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
@@ -109,7 +109,7 @@
 
   .myCount {
     @include Cap2;
-    color: $gray60;
+    color: $color-text-gray-normal;
     display: flex;
     align-items: center;
     gap: 2px;
@@ -130,7 +130,7 @@
 
     .author {
       @include Label2;
-      color: $gray60;
+      color: $color-text-gray-normal;
 
       @include Size("mobile") {
         @include Cap2;
@@ -146,7 +146,7 @@
 
       .createdAt {
         @include Label2;
-        color: $gray60;
+        color: $color-text-gray-normal;
 
         @include Size("mobile") {
           @include Cap2;
@@ -155,7 +155,7 @@
 
       .viewCount {
         @include Cap2;
-        color: $gray60;
+        color: $color-text-gray-normal;
         display: flex;
         gap: 2px;
         align-items: center;
@@ -164,7 +164,7 @@
       .comment {
         @include Label2;
         color: $red;
-        border: 1px solid $gray30;
+        border: 1px solid $color-border-gray-subtle;
         padding: 0 4px;
         display: flex;
         gap: 3px;
@@ -204,7 +204,7 @@
 
     .author {
       @include Label2;
-      color: $gray60;
+      color: $color-text-gray-normal;
       @include Drag;
 
       @include Size("mobile") {

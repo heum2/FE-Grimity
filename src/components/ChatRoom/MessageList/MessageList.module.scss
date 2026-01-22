@@ -15,7 +15,7 @@ $footer-height: 84px;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  background-color: $gray0;
+  background-color: $color-surface-base;
 
   @include Size("mobile") {
     padding: 10px 16px;
@@ -27,7 +27,7 @@ $footer-height: 84px;
     padding: 16px 0;
 
     .loadingText {
-      color: $gray60;
+      color: $color-text-gray-normal;
       @include Body2;
     }
   }

@@ -26,9 +26,9 @@
       border: none;
       cursor: pointer;
       @include Drag;
-      border: 1px solid $gray30;
-      color: $gray70;
-      background-color: $gray0;
+      border: 1px solid $color-border-gray-subtle;
+      color: $color-text-gray-bold;
+      background-color: $color-surface-base;
       padding: 10px 12px 10px 16px;
       border-radius: 12px;
       @include Label1;
@@ -36,19 +36,19 @@
       height: 40px;
 
       &:hover {
-        background-color: color.adjust($gray0, $lightness: 4%);
+        background-color: color.adjust($color-surface-base, $lightness: 4%);
       }
 
       &:active {
-        background-color: color.adjust($gray0, $lightness: 8%);
+        background-color: color.adjust($color-surface-base, $lightness: 8%);
       }
     }
   }
 
   .chevron {
     transition: transform 0.3s ease;
-    color: $gray60;
-    stroke: $gray60;
+    color: $color-text-gray-normal;
+    stroke: $color-text-gray-normal;
 
     &.rotate {
       transform: rotate(180deg);
@@ -65,8 +65,8 @@
     align-items: center;
     gap: 10px;
     border-radius: 12px;
-    border: 1px solid $gray30;
-    background-color: $gray10;
+    border: 1px solid $color-border-gray-subtle;
+    background-color: $color-surface-gray-subtlest;
 
     @include Size("mobile") {
       width: 100%;
@@ -74,14 +74,14 @@
 
     .input {
       width: 100%;
-      color: $gray70;
+      color: $color-text-gray-bold;
       @include Label2;
       background: none;
       border: none;
       outline: none;
 
       &::placeholder {
-        color: $gray50;
+        color: $color-text-gray-subtle;
       }
     }
 
@@ -94,7 +94,7 @@
     }
 
     .searchIcon {
-      color: $gray50;
+      color: $color-text-gray-subtle;
     }
   }
 }

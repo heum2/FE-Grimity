@@ -9,8 +9,8 @@
   flex-direction: column;
   align-items: flex-start;
   border-radius: 12px;
-  border: 1px solid $gray30;
-  background-color: $gray0;
+  border: 1px solid $color-border-gray-subtle;
+  background-color: $color-surface-base;
   position: relative;
   box-sizing: border-box;
 
@@ -76,7 +76,7 @@
 
       .image {
         border-radius: 50%;
-        border: 4px solid $gray0;
+        border: 4px solid $color-surface-base;
         object-fit: cover;
         @include Drag;
       }
@@ -102,7 +102,7 @@
 
         .name {
           @include Sub2;
-          color: $gray80;
+          color: $color-surface-inverse;
 
           @include Size("mobile") {
             @include Sub4;
@@ -110,28 +110,28 @@
 
           &::after {
             content: " • ";
-            color: $gray40;
+            color: $color-text-gray-subtler;
             margin: 0 4px;
           }
         }
 
         .follower {
           @include Label1;
-          color: $gray60;
+          color: $color-text-gray-normal;
           display: flex;
           align-items: center;
           gap: 8px;
           @include Drag;
 
           .count {
-            color: $gray70;
+            color: $color-text-gray-bold;
           }
         }
       }
 
       .description {
         @include Label2;
-        color: $gray60;
+        color: $color-text-gray-normal;
         @include Drag;
         overflow: hidden;
         text-overflow: ellipsis;

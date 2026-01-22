@@ -8,11 +8,11 @@
   padding: 8px 30px;
 
   &:hover {
-    background-color: $gray10;
+    background-color: $color-surface-gray-subtlest;
   }
 
   &:active {
-    background-color: $gray20;
+    background-color: $color-border-gray-subtler;
   }
 
   &.edit {
@@ -64,26 +64,26 @@
 
 .username {
   @include Label2;
-  color: $gray60;
+  color: $color-text-gray-normal;
 }
 
 .timestamp {
   @include Cap2;
-  color: $gray50;
+  color: $color-text-gray-subtle;
   flex-shrink: 0; // 너비가 줄어들지 않도록
 }
 
 .lastMessage {
   @include Label2;
-  color: $gray70;
+  color: $color-text-gray-bold;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .notificationBadge {
-  background-color: $red;
-  color: $gray0;
+  background-color: $color-status-negative;
+  color: $color-surface-base;
   @include Cap1;
   padding: 2px 6px;
   border-radius: 12px;
@@ -129,6 +129,6 @@
 }
 
 .highlighted {
-  color: $secandary1;
+  color: $color-status-positive;
   @include Label2;
 }

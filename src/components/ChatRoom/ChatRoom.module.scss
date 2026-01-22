@@ -17,9 +17,9 @@
 }
 
 .footer {
-  background-color: $gray10;
+  background-color: $color-surface-gray-subtlest;
   padding: 8px 16px;
-  border-top: 1px solid $gray30;
+  border-top: 1px solid $color-border-gray-subtle;
   
   .footerContent {
     display: flex;
@@ -30,7 +30,7 @@
       background-color: transparent;
       border: none;
       cursor: pointer;
-      color: $gray60;
+      color: $color-text-gray-normal;
       padding: 0;
       width: 28px;
       height: 40px;

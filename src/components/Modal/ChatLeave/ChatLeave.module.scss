@@ -1,7 +1,7 @@
 @use "@/styles/globals.scss" as *;
 
 .comfirmModal {
-  background: $gray0;
+  background: $color-surface-base;
   padding: 40px 32px 32px;
   border-radius: 12px;
   display: flex;
@@ -27,13 +27,13 @@
 
     .title {
       @include Title3;
-      color: $gray70;
+      color: $color-text-gray-bold;
       text-align: center;
     }
 
     .subtitle {
       @include Sub4;
-      color: $gray60;
+      color: $color-text-gray-normal;
       text-align: center;
     }
 

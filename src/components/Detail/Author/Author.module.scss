@@ -19,7 +19,7 @@
 
     .seeMore {
       @include Sub4;
-      color: $gray60;
+      color: $color-text-gray-normal;
       cursor: pointer;
       @include Drag;
     }
@@ -44,7 +44,7 @@
         height: 40px;
         object-fit: cover;
         border-radius: 50%;
-        border: 1px solid $gray30;
+        border: 1px solid $color-border-gray-subtle;
         @include Drag;
       }
 
@@ -56,7 +56,7 @@
 
         .authorName {
           @include Sub2;
-          color: $gray80;
+          color: $color-surface-inverse;
 
           @include Size("mobile") {
             @include Sub4;
@@ -65,13 +65,13 @@
 
         .follower {
           @include Sub4;
-          color: $gray60;
+          color: $color-text-gray-normal;
           display: flex;
           gap: 8px;
           @include Drag;
 
           .followerColor {
-            color: $gray70;
+            color: $color-text-gray-bold;
           }
 
           @include Size("mobile") {

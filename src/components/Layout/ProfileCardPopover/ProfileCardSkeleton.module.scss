@@ -4,7 +4,7 @@
   .skeletonCover {
     width: 100%;
     height: 120px;
-    background: $gray30;
+    background: $color-border-gray-subtle;
     animation: pulse 1.5s ease-in-out infinite;
   }
 
@@ -21,15 +21,15 @@
       width: 80px;
       height: 80px;
       border-radius: 50%;
-      background: $gray30;
-      border: 4px solid $gray0;
+      background: $color-border-gray-subtle;
+      border: 4px solid $color-surface-base;
       animation: pulse 1.5s ease-in-out infinite;
     }
 
     .skeletonButton {
       width: 70px;
       height: 32px;
-      background: $gray30;
+      background: $color-border-gray-subtle;
       border-radius: 8px;
       animation: pulse 1.5s ease-in-out infinite;
     }
@@ -47,7 +47,7 @@
       .skeletonName {
         width: 100px;
         height: 18px;
-        background: $gray30;
+        background: $color-border-gray-subtle;
         border-radius: 4px;
         animation: pulse 1.5s ease-in-out infinite;
       }
@@ -55,7 +55,7 @@
       .skeletonFollower {
         width: 60px;
         height: 14px;
-        background: $gray30;
+        background: $color-border-gray-subtle;
         border-radius: 4px;
         animation: pulse 1.5s ease-in-out infinite;
       }
@@ -64,7 +64,7 @@
     .skeletonDescription {
       width: 100%;
       height: 14px;
-      background: $gray30;
+      background: $color-border-gray-subtle;
       border-radius: 4px;
       animation: pulse 1.5s ease-in-out infinite;
       margin-bottom: 6px;

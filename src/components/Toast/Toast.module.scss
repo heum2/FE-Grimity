@@ -15,9 +15,9 @@
   width: max-content;
   max-width: 500px;
   min-width: 300px;
-  color: $gray70;
+  color: $color-text-gray-bold;
   @include Title5;
-  background: $gray0;
+  background: $color-surface-base;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -45,19 +45,19 @@
   }
 
   &.success {
-    border: 1px solid $secandary1;
+    border: 1px solid $color-status-positive;
   }
 
   &.error {
-    border: 1px solid $negative;
+    border: 1px solid $color-status-negative;
   }
 
   &.warning {
-    border: 1px solid $cautionary;
+    border: 1px solid $color-status-cautionary;
   }
 
   &.information {
-    border: 1px solid $primary4;
+    border: 1px solid $color-status-info;
   }
 }
 
@@ -84,7 +84,7 @@
 .closeButton {
   background: transparent;
   border: none;
-  color: $gray70;
+  color: $color-text-gray-bold;
   font-size: 24px;
   line-height: 1;
   cursor: pointer;
@@ -103,7 +103,7 @@
   }
 
   &:focus {
-    outline: 2px solid $primary4;
+    outline: 2px solid $color-status-info;
     outline-offset: 2px;
     border-radius: 4px;
   }

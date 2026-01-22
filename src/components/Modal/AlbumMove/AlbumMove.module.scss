@@ -21,16 +21,16 @@
 
     .title {
       @include Title3;
-      color: $gray70;
+      color: $color-text-gray-bold;
     }
 
     .subtitle {
       @include Sub4;
-      color: $gray60;
+      color: $color-text-gray-normal;
       text-align: center;
 
       .count {
-        color: $gray70;
+        color: $color-text-gray-bold;
       }
     }
   }
@@ -46,12 +46,12 @@
 
     .title {
       @include Title4;
-      color: $gray70;
+      color: $color-text-gray-bold;
     }
 
     .subtitle {
       @include Sub4;
-      color: $gray60;
+      color: $color-text-gray-normal;
       text-align: center;
       padding-bottom: 30px;
     }
@@ -99,8 +99,8 @@
       justify-content: space-between;
       align-items: center;
       border-radius: 12px;
-      border: 1px solid $gray30;
-      color: $gray80;
+      border: 1px solid $color-border-gray-subtle;
+      color: $color-surface-inverse;
       width: 100%;
       height: 52px;
       padding: 16px 20px;
@@ -109,16 +109,16 @@
       transition: all 0.3s;
 
       &.selected {
-        border-color: $secandary1;
-        background-color: $secandary2;
+        border-color: $color-status-positive;
+        background-color: $color-surface-primary-subtlest;
 
         &:hover {
-          background-color: $secandary2;
+          background-color: $color-surface-primary-subtlest;
         }
       }
 
       &:hover {
-        background-color: $gray10;
+        background-color: $color-surface-gray-subtlest;
       }
     }
   }
