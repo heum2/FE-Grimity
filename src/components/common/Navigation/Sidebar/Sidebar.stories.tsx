@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
-import type { Meta, StoryObj } from "@storybook/react";
+import { useEffect } from "react";
+import type { Decorator, Meta, StoryObj } from "@storybook/react";
 import Sidebar from "./Sidebar";
-import type { SidebarActiveItem, SidebarProps } from "./Sidebar.types";
+import type { SidebarProps } from "./Sidebar.types";
+import { useAuthStore } from "@/states/authStore";
 
 const meta = {
   title: "Common/Navigation/Sidebar",
@@ -10,19 +11,9 @@ const meta = {
     layout: "fullscreen",
   },
   tags: ["autodocs"],
-  argTypes: {
-    size: {
-      options: ["lg", "md"],
-      control: { type: "radio" },
-    },
-    activeItem: {
-      options: [undefined, "liked", "saved"],
-      control: { type: "radio" },
-    },
-  },
   decorators: [
     (Story) => (
-      <div style={{ height: "60vh", background: "gray", padding: 32, display: "flex", gap: 24 }}>
+      <div style={{ minHeight: "100vh", background: "##fff", display: "flex" }}>
         <Story />
       </div>
     ),
@@ -32,52 +23,75 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const defaultArgs = {
-  username: "체리마루",
-  handle: "CherryMaru",
-  followerCount: 123,
-  followingCount: 32,
+const loggedInDecorator: Decorator = (Story) => {
+  function Wrapper() {
+    useEffect(() => {
+      useAuthStore.getState().setIsLoggedIn(true);
+      return () => {
+        useAuthStore.getState().setIsLoggedIn(false);
+      };
+    }, []);
+    return <Story />;
+  }
+  return <Wrapper />;
+};
+
+const mobileProfileArgs = {
+  user: { username: "체리마루", avatarSrc: undefined },
+  profileActiveItem: undefined as SidebarProps["profileActiveItem"],
+  onProfileLikedClick: () => {},
+  onProfileSavedClick: () => {},
   onLogoutClick: () => {},
-  onTermsClick: () => {},
-  onPrivacyClick: () => {},
-  onBusinessClick: () => {},
+  onLoginClick: () => {},
+  onClose: () => {},
+} satisfies Partial<SidebarProps>;
+
+export const Desktop: Story = {
+  parameters: {
+    viewport: { defaultViewport: "responsive" },
+  },
 };
 
-type SidebarStoryProps = SidebarProps;
-
-function SidebarStory({ size = "lg", activeItem: initialActiveItem, ...rest }: SidebarStoryProps) {
-  const [activeItem, setActiveItem] = useState<SidebarActiveItem | undefined>(initialActiveItem);
-  useEffect(() => {
-    setActiveItem(initialActiveItem);
-  }, [initialActiveItem]);
-
-  return (
-    <Sidebar
-      {...rest}
-      size={size}
-      activeItem={activeItem}
-      onLikedClick={() => setActiveItem("liked")}
-      onSavedClick={() => setActiveItem("saved")}
-    />
-  );
-}
-
-export const Default: Story = {
-  args: { ...defaultArgs, size: "lg", activeItem: undefined },
-  render: (args) => <SidebarStory {...args} />,
+export const DesktopLoggedIn: Story = {
+  decorators: [loggedInDecorator],
+  parameters: {
+    viewport: { defaultViewport: "responsive" },
+  },
+  args: {
+    onClose: () => {},
+  },
 };
 
-export const Medium: Story = {
-  args: { ...defaultArgs, size: "md", activeItem: undefined },
-  render: (args) => <SidebarStory {...args} />,
+export const Tablet: Story = {
+  parameters: {
+    viewport: { defaultViewport: "tablet" },
+  },
 };
 
-export const LikedActive: Story = {
-  args: { ...defaultArgs, size: "lg", activeItem: "liked" },
-  render: (args) => <SidebarStory {...args} />,
+export const TabletLoggedIn: Story = {
+  decorators: [loggedInDecorator],
+  parameters: {
+    viewport: { defaultViewport: "tablet" },
+  },
+  args: {
+    onClose: () => {},
+  },
 };
 
-export const SavedActive: Story = {
-  args: { ...defaultArgs, size: "lg", activeItem: "saved" },
-  render: (args) => <SidebarStory {...args} />,
+export const MobileGuest: Story = {
+  parameters: {
+    viewport: { defaultViewport: "mobile1" },
+  },
+  args: {
+    onLoginClick: () => {},
+    onClose: () => {},
+  },
+};
+
+export const MobileLoggedIn: Story = {
+  args: mobileProfileArgs,
+  decorators: [loggedInDecorator],
+  parameters: {
+    viewport: { defaultViewport: "mobile1" },
+  },
 };

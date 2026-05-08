@@ -1,19 +1,10 @@
-export type SidebarSize = "lg" | "md";
-export type SidebarActiveItem = "liked" | "saved";
-
-export interface SidebarProps {
-  size?: SidebarSize;
-  username: string;
-  handle: string;
-  avatarSrc?: string;
-  followerCount: number;
-  followingCount: number;
-  activeItem?: SidebarActiveItem;
-  onLikedClick?: () => void;
-  onSavedClick?: () => void;
-  onLogoutClick?: () => void;
-  onTermsClick?: () => void;
-  onPrivacyClick?: () => void;
-  onBusinessClick?: () => void;
+ export interface SidebarProps {
   className?: string;
+  onClose?: () => void;
+  onLoginClick?: () => void;
+  onLogoutClick?: () => void;
+  user?: { username: string; avatarSrc?: string };
+  profileActiveItem?: "liked" | "saved";
+  onProfileLikedClick?: () => void;
+  onProfileSavedClick?: () => void;
 }

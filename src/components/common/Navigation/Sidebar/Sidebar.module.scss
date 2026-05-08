@@ -2,181 +2,510 @@
 @use "@/styles/tokens/typography/semantic" as typo;
 @use "@/styles/tokens/spacing" as spacing;
 @use "@/styles/tokens/radius" as radius;
+@use "@/styles/globals" as g;
 
 .sidebar {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  background-color: colors.$surface-base;
-  padding: spacing.$spacing-12 spacing.$spacing-16 spacing.$spacing-24;
-  gap: spacing.$spacing-20;
+  box-sizing: border-box;
   flex-shrink: 0;
+  height: 100vh;
+  min-height: 0;
+  overflow-y: auto;
+  width: 260px;
+  padding: spacing.$spacing-12 spacing.$spacing-16 spacing.$spacing-24;
+  gap: spacing.$spacing-16;
+  border-right: 1px solid colors.$border-gray-subtle;
 
-  &.lg { width: 300px; }
-  &.md { width: 220px; }
-}
-
-.profile {
-  display: flex;
-  flex-direction: column;
-  gap: spacing.$spacing-8;
-}
-
-.usernameContainer{
-  display: flex;
-  flex-direction: column;
-  gap: spacing.$spacing-2;
-  
-  .username {
-    @include typo.label-3;
-    color: colors.$text-gray-bold;
-    margin: 0;
+  @include g.Size("tablet") {
+    width: 72px;
+    align-items: center;
+    padding: 0;
   }
-  
-  .handle {
-    @include typo.label-6;
-    color: colors.$text-gray-subtle;
-    margin: 0;
+
+  @include g.Size("mobile") {
+    width: 220px;
+    align-items: stretch;
+    padding: spacing.$spacing-12 spacing.$spacing-16 spacing.$spacing-24;
+    border-right: none;
+  }
+
+  &.guest {
+    @include g.Size("mobile") {
+      background-color: colors.$surface-base;
+    }
   }
 }
 
-.stats {
-  display: flex;
-  gap: spacing.$spacing-8;
-  @include typo.label-6;
-  color: colors.$text-gray-normal;
-  margin: 0;
+.guest .nav {
+  @include g.Size("mobile") {
+    display: none;
+  }
 }
 
-.count {
-  @include typo.label-5;
+.guest .footerSection {
+  @include g.Size("mobile") {
+    margin-top: auto;
+    padding-top: spacing.$spacing-24;
+  }
+}
+
+.guest .mobileHeader {
+  @include g.Size("mobile") {
+    align-items: center;
+    text-align: center;
+    gap: spacing.$spacing-24;
+    padding: spacing.$spacing-20 0;
+  }
+}
+
+.loginButton {
+  width: 100%;
+  box-sizing: border-box;
+
+  @include g.Size("mobile") {
+    min-height: 42px;
+  }
+}
+
+.mobileHeader {
+  display: none;
+
+  @include g.Size("mobile") {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$spacing-16;
+    width: 100%;
+  }
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+}
+
+.brandMark {
+  display: block;
+  width: 100px;
+  height: 28px;
   color: colors.$text-gray-bold;
 }
 
-.menu {
-  flex: 1;
+.guest .brandMark {
+  @include g.Size("mobile") {
+    width: auto;
+    max-width: 140px;
+    height: 32px;
+  }
+}
+
+.profileRow {
+  display: flex;
+  align-items: center;
+  gap: spacing.$spacing-12;
+}
+
+.profileName {
+  @include typo.label-3;
+  color: colors.$text-gray-bold;
+  margin: 0;
+}
+
+.profileMenu {
   display: flex;
   flex-direction: column;
   gap: spacing.$spacing-8;
-  
-  .menuItem {
-    display: flex;
-    align-items: center;
-    gap: spacing.$spacing-8;
-    border-radius: radius.$radius-sm;
-    border: none;
-    background: none;
-    cursor: pointer;
-    width: 100%;
-    height: 40px;
-    text-align: left;
+  width: 100%;
+}
 
-    .menuLabel {
-      @include typo.label-1;
-      color: colors.$text-gray-normal;
-    }
+.profileMenuBtn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: spacing.$spacing-8;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 spacing.$spacing-8;
+  border: none;
+  border-radius: radius.$radius-sm;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.15s ease;
 
-    .menuItemIcon {
-      padding: spacing.$spacing-4;
-    }
-  
-    &:hover {
-      background-color: colors.$surface-gray-subtler;
-  
-      .menuLabel {
-        color: colors.$text-gray-bold;
-      }
-
-      .menuItemIcon {
-        color: colors.$icon-gray-bold;
-      }
-    }
-  
-    &:focus-visible {
-      outline: 2px solid colors.$border-gray-subtle;
-      outline-offset: 2px;
-    }
+  &:hover {
+    background-color: colors.$surface-gray-subtler;
   }
-  
-  .menuItemActive {
-    .menuLabel {
-      @include typo.body-1-sb;
-      color: colors.$text-primary-normal;
-    }
 
-    .menuItemIcon {
+  &:focus-visible {
+    outline: 2px solid colors.$border-gray-subtle;
+    outline-offset: 2px;
+  }
+}
+
+.profileMenuIcon {
+  display: flex;
+  flex-shrink: 0;
+  color: colors.$icon-gray-normal;
+}
+
+.profileMenuBtn:hover .profileMenuIcon {
+  color: colors.$icon-gray-bold;
+}
+
+.profileMenuLabel {
+  @include typo.label-2;
+  color: colors.$text-gray-normal;
+}
+
+.profileMenuBtn:hover .profileMenuLabel {
+  color: colors.$text-gray-bold;
+}
+
+.profileMenuBtnActive {
+  .profileMenuIcon {
+    color: colors.$icon-primary-normal;
+  }
+
+  .profileMenuLabel {
+    @include typo.body-2-sb;
+    color: colors.$text-primary-normal;
+  }
+
+  &:hover {
+    .profileMenuIcon {
       color: colors.$icon-primary-normal;
     }
 
-    &:hover {
-      .menuLabel {
-        color: colors.$text-primary-normal;
-      }
-
-      .menuItemIcon {
-        color: colors.$icon-primary-normal;
-      }
+    .profileMenuLabel {
+      color: colors.$text-primary-normal;
     }
   }
 }
 
-.footer {
+.nav {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: spacing.$spacing-4;
+  width: 100%;
+  min-height: 0;
 }
 
-.logout {
+.navItem {
   display: flex;
+  flex-direction: row;
   align-items: center;
-  gap: spacing.$spacing-4;
-  background: none;
+  justify-content: flex-start;
+  gap: spacing.$spacing-12;
+  width: 100%;
+  min-height: 50px;
+  padding: 0 spacing.$spacing-16;
   border: none;
+  background: none;
   cursor: pointer;
-  padding: 0;
-  margin-bottom: spacing.$spacing-8;
-  @include typo.label-6;
-  color: colors.$text-gray-subtle;
+  text-align: left;
+  border-radius: radius.$radius-xl;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+
+  .navLabel {
+    @include typo.subtitle-1;
+    color: colors.$text-gray-normal;
+  }
+
+  .navIconSlot {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    color: colors.$icon-gray-normal;
+  }
+
+  .navIcon {
+    flex-shrink: 0;
+  }
 
   &:hover {
-    color: colors.$text-gray-normal;
+    background-color: colors.$surface-gray-subtler;
 
-    .logoutIcon {
-      color: colors.$icon-gray-normal;
+    .navLabel {
+      color: colors.$text-gray-bold;
+    }
+
+    .navIconSlot {
+      color: colors.$icon-gray-bold;
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid colors.$border-gray-subtle;
+    outline-offset: 2px;
+  }
+
+  @include g.Size("tablet") {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 80px;
+    padding: 0 spacing.$spacing-12;
+    gap: spacing.$spacing-8;
+    text-align: center;
+    border-radius: radius.$radius-xl;
+
+    .navLabel {
+      @include typo.subtitle-3;
+      color: colors.$text-gray-normal;
+      white-space: nowrap;
+    }
+  }
+ 
+  @include g.Size("mobile") {
+    border-radius: radius.$radius-sm;
+
+    &:hover {
+      border-radius: radius.$radius-sm;
     }
   }
 }
 
-.footerLinks{
-  display: flex;
-  align-items: center;
-  gap: spacing.$spacing-6;
-   height: 17px;
+.navItemActive {
+  .navLabel {
+    color: colors.$text-primary-normal;
+  }
 
-  .footerSeparator {
-    width: 2px;
-    height: 2px;
-    background-color: colors.$surface-gray-subtle;
+  .navIconSlot {
+    color: colors.$icon-primary-normal;
+  }
+
+  &:hover {
+    background-color: colors.$surface-gray-subtler;
+
+    .navLabel {
+      color: colors.$text-primary-normal;
+    }
+
+    .navIconSlot {
+      color: colors.$icon-primary-normal;
+    }
+  }
+
+  @include g.Size("tablet") {
+    .navLabel {
+      @include typo.label-6;
+      color: colors.$text-primary-normal;
+    }
   }
 }
 
-.footerLink {
-  background: none;
-  border: none;
-  cursor: pointer;
+.navLabelBadge {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -10px;
+    width: 6px;
+    height: 6px;
+    border-radius: radius.$radius-full;
+    background-color: colors.$status-notification;
+  }
+}
+
+.footerSection {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$spacing-12;
+  width: 100%;
+  padding-top: spacing.$spacing-8;
+}
+
+.footerItems {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$spacing-6;
+  width: 100%;
+}
+
+.footerRow {
+  display: flex;
+  align-items: center;
+  width: 100%;
   padding: 0;
-  margin: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: colors.$text-gray-normal;
   text-align: left;
+
+  &:hover {
+    color: colors.$text-gray-bold;
+  }
+
+  &:focus-visible {
+    outline: 2px solid colors.$border-gray-subtle;
+    outline-offset: 2px;
+  }
+}
+
+.footerRowInner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: spacing.$spacing-8;
+  width: 100%;
+
+  @include g.Size("tablet") {
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    gap: spacing.$spacing-4;
+  }
+}
+
+.footerRowNotice {
+  @include g.Size("tablet") {
+    display: none;
+  }
+}
+
+.footerRowGuide {
+  display: none;
+
+  @include g.Size("tablet") {
+    display: flex;
+  }
+}
+
+.footerIcon {
+  flex-shrink: 0;
+  color: colors.$icon-gray-normal;
+}
+
+.footerLabel {
+  @include typo.label-2;
+  color: inherit;
+
+  @include g.Size("tablet") {
+    @include typo.label-6;
+    max-width: 56px;
+  }
+}
+
+.footerChevron {
+  margin-left: auto;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+  color: colors.$icon-gray-subtle;
+
+  @include g.Size("tablet") {
+    display: none;
+  }
+}
+
+.footerChevronOpen {
+  transform: rotate(180deg);
+}
+
+.dropdown {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  margin-bottom: spacing.$spacing-8;
+  z-index: 20;
+  min-width: 200px;
+  padding: spacing.$spacing-8 0;
+  background-color: colors.$surface-base;
+  border-radius: radius.$radius-md;
+  box-shadow: 0 4px 24px rgb(0 0 0 / 12%);
+
+  @include g.Size("tablet") {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+.dropdownItem {
+  display: block;
+  width: 100%;
+  padding: spacing.$spacing-12 spacing.$spacing-16;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  text-decoration: none;
+  @include typo.label-2;
+  color: colors.$text-gray-bold;
+
+  &:hover {
+    background-color: colors.$surface-gray-subtler;
+  }
+}
+
+.subLinks {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$spacing-4;
   @include typo.label-6;
   color: colors.$text-gray-subtle;
+
+  @include g.Size("tablet") {
+    display: none;
+  }
+}
+
+.subLinksRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: spacing.$spacing-2 spacing.$spacing-6;
+}
+
+.subLink {
+  color: inherit;
+  text-decoration: none;
 
   &:hover {
     color: colors.$text-gray-normal;
   }
 }
 
+.subLinksRow .subLink:not(:last-child)::after {
+  content: " · ";
+  color: colors.$text-gray-subtler;
+}
+
 .copyright {
+  margin: 0;
+  color: colors.$text-gray-subtle;
+}
+
+.logout {
+  display: none;
+  align-items: center;
+  gap: spacing.$spacing-4;
+  margin-top: spacing.$spacing-4;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
   @include typo.label-6;
   color: colors.$text-gray-subtle;
-  margin: 0;
+
+  &:hover {
+    color: colors.$text-gray-normal;
+  }
+
+  @include g.Size("mobile") {
+    display: inline-flex;
+  }
+}
+
+.logoutIcon {
+  flex-shrink: 0;
 }
