@@ -1,4 +1,4 @@
- export interface SidebarProps {
+export interface SidebarProps {
   className?: string;
   onClose?: () => void;
   onLoginClick?: () => void;
@@ -7,4 +7,6 @@
   profileActiveItem?: "liked" | "saved";
   onProfileLikedClick?: () => void;
   onProfileSavedClick?: () => void;
+  activeRoute?: string;
+  onNavigate?: (route: string) => void;
 }

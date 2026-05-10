@@ -10,23 +10,17 @@
   box-sizing: border-box;
   flex-shrink: 0;
   height: 100vh;
-  min-height: 0;
-  overflow-y: auto;
   width: 260px;
-  padding: spacing.$spacing-12 spacing.$spacing-16 spacing.$spacing-24;
-  gap: spacing.$spacing-16;
   border-right: 1px solid colors.$border-gray-subtle;
 
   @include g.Size("tablet") {
     width: 72px;
     align-items: center;
-    padding: 0;
   }
 
   @include g.Size("mobile") {
     width: 220px;
     align-items: stretch;
-    padding: spacing.$spacing-12 spacing.$spacing-16 spacing.$spacing-24;
     border-right: none;
   }
 
@@ -37,16 +31,31 @@
   }
 }
 
-.guest .nav {
+.sidebarBody {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$spacing-16;
+  padding: spacing.$spacing-12 spacing.$spacing-16 spacing.$spacing-24;
+  box-sizing: border-box;
+  width: 100%;
+
+  @include g.Size("tablet") {
+    padding: spacing.$spacing-12 0 0;
+    align-items: center;
+  }
+
   @include g.Size("mobile") {
-    display: none;
+    padding: spacing.$spacing-12 spacing.$spacing-16 spacing.$spacing-24;
+    align-items: stretch;
   }
 }
 
-.guest .footerSection {
+.guest .nav {
   @include g.Size("mobile") {
-    margin-top: auto;
-    padding-top: spacing.$spacing-24;
+    display: none;
   }
 }
 
@@ -59,6 +68,19 @@
   }
 }
 
+// ─── Mobile header ───────────────────────────────────────────────────────────
+
+.mobileHeader {
+  display: none;
+
+  @include g.Size("mobile") {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$spacing-8;
+    width: 100%;
+  }
+}
+
 .loginButton {
   width: 100%;
   box-sizing: border-box;
@@ -68,48 +90,30 @@
   }
 }
 
-.mobileHeader {
-  display: none;
-
-  @include g.Size("mobile") {
-    display: flex;
-    flex-direction: column;
-    gap: spacing.$spacing-16;
-    width: 100%;
-  }
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-}
-
-.brandMark {
-  display: block;
-  width: 100px;
-  height: 28px;
-  color: colors.$text-gray-bold;
-}
-
-.guest .brandMark {
-  @include g.Size("mobile") {
-    width: auto;
-    max-width: 140px;
-    height: 32px;
-  }
-}
-
 .profileRow {
   display: flex;
   align-items: center;
-  gap: spacing.$spacing-12;
+  gap: spacing.$spacing-8;
+}
+
+.profileAvatar {
+  display: flex;
+  padding: spacing.$spacing-4;
+  justify-content: center;
+  align-items: center;
 }
 
 .profileName {
-  @include typo.label-3;
+  @include typo.label-1;
   color: colors.$text-gray-bold;
   margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
 }
+
+// ─── Profile menu (mobile logged-in) ─────────────────────────────────────────
 
 .profileMenu {
   display: flex;
@@ -118,23 +122,49 @@
   width: 100%;
 }
 
+.mobileDivider {
+  display: none;
+
+  @include g.Size("mobile") {
+    display: block;
+    margin: 0;
+  }
+}
+
 .profileMenuBtn {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  gap: spacing.$spacing-8;
+  gap: spacing.$spacing-4;
   width: 100%;
-  min-height: 44px;
-  padding: 0 spacing.$spacing-8;
+  height: 40px;
+  padding: 0;
   border: none;
-  border-radius: radius.$radius-sm;
   background: transparent;
   cursor: pointer;
   text-align: left;
   transition: background-color 0.15s ease;
 
+  .profileMenuIcon {
+    display: flex;
+    flex-shrink: 0;
+    color: colors.$icon-gray-normal;
+    padding: spacing.$spacing-8;
+  }
+
+  .profileMenuLabel {
+    @include typo.label-1;
+    color: colors.$text-gray-normal;
+  }
+
   &:hover {
     background-color: colors.$surface-gray-subtler;
+
+    .profileMenuIcon {
+      color: colors.$icon-gray-bold;
+    }
+    .profileMenuLabel {
+      color: colors.$text-gray-bold;
+    }
   }
 
   &:focus-visible {
@@ -143,32 +173,12 @@
   }
 }
 
-.profileMenuIcon {
-  display: flex;
-  flex-shrink: 0;
-  color: colors.$icon-gray-normal;
-}
-
-.profileMenuBtn:hover .profileMenuIcon {
-  color: colors.$icon-gray-bold;
-}
-
-.profileMenuLabel {
-  @include typo.label-2;
-  color: colors.$text-gray-normal;
-}
-
-.profileMenuBtn:hover .profileMenuLabel {
-  color: colors.$text-gray-bold;
-}
-
 .profileMenuBtnActive {
   .profileMenuIcon {
     color: colors.$icon-primary-normal;
   }
 
   .profileMenuLabel {
-    @include typo.body-2-sb;
     color: colors.$text-primary-normal;
   }
 
@@ -176,17 +186,19 @@
     .profileMenuIcon {
       color: colors.$icon-primary-normal;
     }
-
     .profileMenuLabel {
       color: colors.$text-primary-normal;
     }
   }
 }
 
+// ─── Navigation ──────────────────────────────────────────────────────────────
+
 .nav {
   flex: 1;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: spacing.$spacing-4;
   width: 100%;
   min-height: 0;
@@ -194,7 +206,6 @@
 
 .navItem {
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: flex-start;
   gap: spacing.$spacing-12;
@@ -206,38 +217,41 @@
   cursor: pointer;
   text-align: left;
   border-radius: radius.$radius-xl;
-  transition:
-    background-color 0.15s ease,
-    color 0.15s ease;
-
-  .navLabel {
-    @include typo.subtitle-1;
-    color: colors.$text-gray-normal;
-  }
+  transition: background-color 0.15s ease;
 
   .navIconSlot {
     display: flex;
     flex-shrink: 0;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
     color: colors.$icon-gray-normal;
+
+    @include g.Size("mobile") {
+      padding: spacing.$spacing-8;
+    }
   }
 
-  .navIcon {
-    flex-shrink: 0;
+  .navLabel {
+    @include typo.subtitle-1;
+    color: colors.$text-gray-normal;
+
+    @include g.Size("tablet") {
+      @include typo.subtitle-3;
+    }
+
+    @include g.Size("mobile") {
+      @include typo.label-1;
+    }
   }
 
   &:hover {
     background-color: colors.$surface-gray-subtler;
 
-    .navLabel {
-      color: colors.$text-gray-bold;
-    }
-
     .navIconSlot {
       color: colors.$icon-gray-bold;
+    }
+    .navLabel {
+      color: colors.$text-gray-bold;
     }
   }
 
@@ -250,52 +264,42 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 64px;
     min-height: 80px;
     padding: 0 spacing.$spacing-12;
     gap: spacing.$spacing-8;
     text-align: center;
-    border-radius: radius.$radius-xl;
 
     .navLabel {
       @include typo.subtitle-3;
-      color: colors.$text-gray-normal;
       white-space: nowrap;
     }
   }
- 
-  @include g.Size("mobile") {
-    border-radius: radius.$radius-sm;
 
-    &:hover {
-      border-radius: radius.$radius-sm;
-    }
+  @include g.Size("mobile") {
+    padding: 0;
+    gap: spacing.$spacing-8;
+    border-radius: 0;
+    min-height: auto;
+    height: 40px;
   }
 }
 
 .navItemActive {
-  .navLabel {
-    color: colors.$text-primary-normal;
-  }
-
   .navIconSlot {
     color: colors.$icon-primary-normal;
+  }
+  .navLabel {
+    color: colors.$text-primary-normal;
   }
 
   &:hover {
     background-color: colors.$surface-gray-subtler;
 
-    .navLabel {
-      color: colors.$text-primary-normal;
-    }
-
     .navIconSlot {
       color: colors.$icon-primary-normal;
     }
-  }
-
-  @include g.Size("tablet") {
     .navLabel {
-      @include typo.label-6;
       color: colors.$text-primary-normal;
     }
   }
@@ -316,13 +320,25 @@
   }
 }
 
+// ─── Footer ──────────────────────────────────────────────────────────────────
+
 .footerSection {
-  position: relative;
   display: flex;
   flex-direction: column;
   gap: spacing.$spacing-12;
   width: 100%;
-  padding-top: spacing.$spacing-8;
+  flex-shrink: 0;
+  padding: 0 spacing.$spacing-16 spacing.$spacing-24;
+
+  @include g.Size("tablet") {
+    padding: spacing.$spacing-4 0 spacing.$spacing-16;
+    align-items: center;
+  }
+
+  @include g.Size("mobile") {
+    padding: 0 spacing.$spacing-16 spacing.$spacing-24;
+    gap: spacing.$spacing-20;
+  }
 }
 
 .footerItems {
@@ -335,13 +351,24 @@
 .footerRow {
   display: flex;
   align-items: center;
+  gap: spacing.$spacing-6;
   width: 100%;
-  padding: 0;
+  height: 32px;
+  padding: 0 spacing.$spacing-6 0 spacing.$spacing-4;
   border: none;
   background: none;
   cursor: pointer;
   color: colors.$text-gray-normal;
   text-align: left;
+
+  .footerIcon {
+    flex-shrink: 0;
+  }
+
+  .footerLabel {
+    @include typo.label-3;
+    color: inherit;
+  }
 
   &:hover {
     color: colors.$text-gray-bold;
@@ -351,20 +378,17 @@
     outline: 2px solid colors.$border-gray-subtle;
     outline-offset: 2px;
   }
-}
-
-.footerRowInner {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: spacing.$spacing-8;
-  width: 100%;
 
   @include g.Size("tablet") {
     flex-direction: column;
     justify-content: center;
     text-align: center;
     gap: spacing.$spacing-4;
+    height: 56px;
+
+    .footerLabel {
+      @include typo.body-2-sb;
+    }
   }
 }
 
@@ -382,34 +406,17 @@
   }
 }
 
-.footerIcon {
-  flex-shrink: 0;
-  color: colors.$icon-gray-normal;
+.footerBtnWrapper {
+  position: relative;
+  width: 100%;
 }
 
-.footerLabel {
-  @include typo.label-2;
-  color: inherit;
+.footerBtnWrapperGuide {
+  display: none;
 
   @include g.Size("tablet") {
-    @include typo.label-6;
-    max-width: 56px;
+    display: block;
   }
-}
-
-.footerChevron {
-  margin-left: auto;
-  flex-shrink: 0;
-  transition: transform 0.2s ease;
-  color: colors.$icon-gray-subtle;
-
-  @include g.Size("tablet") {
-    display: none;
-  }
-}
-
-.footerChevronOpen {
-  transform: rotate(180deg);
 }
 
 .dropdown {
@@ -418,34 +425,23 @@
   left: 0;
   margin-bottom: spacing.$spacing-8;
   z-index: 20;
-  min-width: 200px;
-  padding: spacing.$spacing-8 0;
-  background-color: colors.$surface-base;
-  border-radius: radius.$radius-md;
-  box-shadow: 0 4px 24px rgb(0 0 0 / 12%);
 
   @include g.Size("tablet") {
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 0;
+    left: 100%;
+    margin-bottom: 0;
+    margin-left: spacing.$spacing-8;
+  }
+
+  @include g.Size("mobile") {
+    bottom: 0;
+    left: 100%;
+    margin-bottom: 0;
+    margin-left: spacing.$spacing-8;
   }
 }
 
-.dropdownItem {
-  display: block;
-  width: 100%;
-  padding: spacing.$spacing-12 spacing.$spacing-16;
-  border: none;
-  background: none;
-  cursor: pointer;
-  text-align: left;
-  text-decoration: none;
-  @include typo.label-2;
-  color: colors.$text-gray-bold;
-
-  &:hover {
-    background-color: colors.$surface-gray-subtler;
-  }
-}
+// ─── Sub-links & copyright ───────────────────────────────────────────────────
 
 .subLinks {
   display: flex;
@@ -482,14 +478,14 @@
 
 .copyright {
   margin: 0;
-  color: colors.$text-gray-subtle;
 }
+
+// ─── Logout ──────────────────────────────────────────────────────────────────
 
 .logout {
   display: none;
   align-items: center;
   gap: spacing.$spacing-4;
-  margin-top: spacing.$spacing-4;
   padding: 0;
   border: none;
   background: none;
