@@ -433,12 +433,6 @@
     margin-left: spacing.$spacing-8;
   }
 
-  @include g.Size("mobile") {
-    bottom: 0;
-    left: 100%;
-    margin-bottom: 0;
-    margin-left: spacing.$spacing-8;
-  }
 }
 
 // ─── Sub-links & copyright ───────────────────────────────────────────────────
