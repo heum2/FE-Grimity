@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import Avatar from "@/components/common/Avatar/Avatar";
 import Divider from "@/components/common/Divider/Divider";
@@ -9,7 +9,6 @@ import Icon from "@/components/common/Icon/Icon";
 import type { IconName } from "@/components/common/Icon/Icon.types";
 import Menu from "@/components/common/Navigation/Menu/Menu";
 import SolidButton from "@/components/common/Button/SolidButton/SolidButton";
-import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
 import { PATH_ROUTES } from "@/constants/routes";
 import { EXTERNAL_URLS } from "@/constants/serviceurl";
 import { useToast } from "@/hooks/useToast";
@@ -75,17 +74,21 @@ export default function Sidebar({
   onNavigate,
 }: SidebarProps) {
   const router = useRouter();
-  const { isLoggedIn } = useAuthStore((s) => s);
-  const { hasUnreadMessages } = useChatStore();
-  const { isMobile } = useDeviceStore();
+  const isLoggedIn = useAuthStore((s) => s.isLoggedIn);
+  const hasUnreadMessages = useChatStore((s) => s.hasUnreadMessages);
+  const isMobile = useDeviceStore((s) => s.isMobile);
   const { showToast } = useToast();
 
   const footerIconSize = isMobile ? 16 : 20;
 
   const [activeDropdown, setActiveDropdown] = useState<ActiveDropdown>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const guideDropdownWrapperRef = useRef<HTMLDivElement>(null);
+  const askDropdownWrapperRef = useRef<HTMLDivElement>(null);
 
-  const visibleNav = NAV_ENTRIES.filter((entry) => !entry.isLogin || isLoggedIn);
+  const visibleNav = useMemo(
+    () => NAV_ENTRIES.filter((entry) => !entry.isLogin || isLoggedIn),
+    [isLoggedIn],
+  );
 
   const navigate = useCallback(
     (route: string) => {
@@ -107,7 +110,7 @@ export default function Sidebar({
       showToast("이메일이 복사되었습니다!", "success");
       onClose?.();
     } catch {
-      showToast("복사에 실패했습니다.", "success");
+      showToast("복사에 실패했습니다.", "error");
     }
   }, [showToast, onClose]);
 
@@ -119,28 +122,32 @@ export default function Sidebar({
 
   useEffect(() => {
     const onDocMouseDown = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-        setActiveDropdown(null);
-      }
+      const target = e.target as Node;
+      if (guideDropdownWrapperRef.current?.contains(target)) return;
+      if (askDropdownWrapperRef.current?.contains(target)) return;
+      setActiveDropdown(null);
     };
     document.addEventListener("mousedown", onDocMouseDown);
     return () => document.removeEventListener("mousedown", onDocMouseDown);
   }, []);
 
-  const profileMenuItems = [
-    {
-      icon: "heart-fill" as IconName,
-      label: "좋아요한 그림",
-      active: profileActiveItem === "liked",
-      onClick: onProfileLikedClick,
-    },
-    {
-      icon: "bookmark-fill" as IconName,
-      label: "저장한 글",
-      active: profileActiveItem === "saved",
-      onClick: onProfileSavedClick,
-    },
-  ];
+  const profileMenuItems = useMemo(
+    () => [
+      {
+        icon: "heart-fill" as IconName,
+        label: "좋아요한 그림",
+        active: profileActiveItem === "liked",
+        onClick: onProfileLikedClick,
+      },
+      {
+        icon: "bookmark-fill" as IconName,
+        label: "저장한 글",
+        active: profileActiveItem === "saved",
+        onClick: onProfileSavedClick,
+      },
+    ],
+    [profileActiveItem, onProfileLikedClick, onProfileSavedClick],
+  );
 
   const openExternal = useCallback(
     (url: string) => {
@@ -179,24 +186,30 @@ export default function Sidebar({
     )
   ) : (
     <>
-      <ResponsiveImage src="/image/logo.svg" alt="logo" desktopSize={100} mobileSize={100} />
+      <Icon name="logo" size={64} className={styles.logo}/>
       <SolidButton size="regular" onClick={onLoginClick} className={styles.loginButton}>
         로그인
       </SolidButton>
     </>
   );
 
-  const askMenuItems = [
-    { label: "오픈 카카오톡으로 이동", onClick: () => openExternal(EXTERNAL_URLS.KAKAO_INQUIRY) },
-    { label: "메일로 보내기", onClick: copyEmail },
-  ];
+  const askMenuItems = useMemo(
+    () => [
+      { label: "오픈 카카오톡으로 이동", onClick: () => openExternal(EXTERNAL_URLS.KAKAO_INQUIRY) },
+      { label: "메일로 보내기", onClick: copyEmail },
+    ],
+    [openExternal, copyEmail],
+  );
 
-  const guideMenuItems = [
-    { label: "공지사항", onClick: () => navigate(PATH_ROUTES.NOTICE) },
-    { label: "이용약관", onClick: () => openExternal(EXTERNAL_URLS.TERMS) },
-    { label: "개인정보취급방침", onClick: () => openExternal(EXTERNAL_URLS.PRIVACY) },
-    { label: "사업자 정보", onClick: () => navigate(PATH_ROUTES.BUSINESS_INFO) },
-  ];
+  const guideMenuItems = useMemo(
+    () => [
+      { label: "공지사항", onClick: () => navigate(PATH_ROUTES.NOTICE) },
+      { label: "이용약관", onClick: () => openExternal(EXTERNAL_URLS.TERMS) },
+      { label: "개인정보취급방침", onClick: () => openExternal(EXTERNAL_URLS.PRIVACY) },
+      { label: "사업자 정보", onClick: () => navigate(PATH_ROUTES.BUSINESS_INFO) },
+    ],
+    [navigate, openExternal],
+  );
 
   return (
     <aside
@@ -242,15 +255,21 @@ export default function Sidebar({
             <span className={styles.footerLabel}>공지사항</span>
           </button>
 
-          <div className={clsx(styles.footerBtnWrapper, styles.footerBtnWrapperGuide)}>
+          <div
+            ref={guideDropdownWrapperRef}
+            className={clsx(styles.footerBtnWrapper, styles.footerBtnWrapperGuide)}
+          >
             {activeDropdown === "guide" && (
-              <div className={styles.dropdown} ref={dropdownRef}>
+              <div id="guide-dropdown" className={styles.dropdown}>
                 <Menu items={guideMenuItems} />
               </div>
             )}
             <button
               type="button"
               className={clsx(styles.footerRow, styles.footerRowGuide)}
+              aria-expanded={activeDropdown === "guide"}
+              aria-controls={activeDropdown === "guide" ? "guide-dropdown" : undefined}
+              aria-haspopup="menu"
               onClick={() => setActiveDropdown((v) => (v === "guide" ? null : "guide"))}
             >
               <Icon name="info-circle" size={footerIconSize} className={styles.footerIcon} aria-hidden />
@@ -258,15 +277,18 @@ export default function Sidebar({
             </button>
           </div>
 
-          <div className={styles.footerBtnWrapper}>
+          <div ref={askDropdownWrapperRef} className={styles.footerBtnWrapper}>
             {activeDropdown === "ask" && (
-              <div className={styles.dropdown} ref={dropdownRef}>
+              <div id="ask-dropdown" className={styles.dropdown}>
                 <Menu items={askMenuItems} />
               </div>
             )}
             <button
               type="button"
               className={styles.footerRow}
+              aria-expanded={activeDropdown === "ask"}
+              aria-controls={activeDropdown === "ask" ? "ask-dropdown" : undefined}
+              aria-haspopup="menu"
               onClick={() => setActiveDropdown((v) => (v === "ask" ? null : "ask"))}
             >
               <Icon name="question-circle" size={footerIconSize} className={styles.footerIcon} aria-hidden />

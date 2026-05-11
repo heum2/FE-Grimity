@@ -1,21 +1,20 @@
-import { useState, useEffect } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import type { Decorator, Meta, StoryObj } from "@storybook/react";
 import Sidebar from "./Sidebar";
 import type { SidebarProps } from "./Sidebar.types";
 import { useAuthStore } from "@/states/authStore";
 
-const loggedInDecorator: Decorator = (Story) => {
-  function Wrapper() {
-    useEffect(() => {
-      useAuthStore.getState().setIsLoggedIn(true);
-      return () => {
-        useAuthStore.getState().setIsLoggedIn(false);
-      };
-    }, []);
-    return <Story />;
-  }
-  return <Wrapper />;
-};
+function LoggedInWrapper({ Story }: { Story: () => ReactElement }) {
+  useEffect(() => {
+    useAuthStore.getState().setIsLoggedIn(true);
+    return () => {
+      useAuthStore.getState().setIsLoggedIn(false);
+    };
+  }, []);
+  return <Story />;
+}
+
+const loggedInDecorator: Decorator = (Story) => <LoggedInWrapper Story={Story} />;
 
 function InteractiveSidebar(props: SidebarProps) {
   const [activeRoute, setActiveRoute] = useState("/");

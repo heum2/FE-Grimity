@@ -113,6 +113,13 @@
   max-width: 100%;
 }
 
+.logo {
+  width: 100px;
+  height: 28px;
+  object-fit: contain;
+  object-position: left center;
+}
+
 // ─── Profile menu (mobile logged-in) ─────────────────────────────────────────
 
 .profileMenu {
