@@ -45,6 +45,7 @@
   color: colors.$text-gray-bold;
   cursor: pointer;
   outline: none;
+  white-space: nowrap;
 
   &:hover,
   &:focus-visible {
