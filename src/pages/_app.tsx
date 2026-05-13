@@ -13,6 +13,7 @@ import ModalProvider from "@/components/Modal/Provider";
 import { useInitializeDevice } from "@/hooks/useInitializeDevice";
 import { useNavigationTracker } from "@/hooks/useNavigationTracker";
 
+import "@/styles/tokens/colors/_root.scss";
 import "@/styles/globals.scss";
 import "@/styles/reset.css";
 import "swiper/css";
