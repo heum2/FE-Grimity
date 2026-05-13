@@ -1,7 +1,7 @@
 import type { Preview } from "@storybook/react";
 
 import "@/styles/tokens/typography/fonts.scss";
-import "@/styles/tokens/colors/_semantic.scss";
+import "@/styles/tokens/colors/_root.scss";
 
 const style = document.createElement("style");
 style.textContent = `p { margin: 0; }`;
