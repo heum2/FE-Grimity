@@ -1,6 +1,26 @@
 @use "@/styles/globals.scss" as *;
 @use "sass:color";
 
+.notificationAnchor {
+  position: fixed;
+  top: $header-height;
+  right: 80px;
+  z-index: 1000;
+
+  @include Size("mobile") {
+    top: 0;
+    right: 0;
+    left: 0;
+  }
+}
+
+.profileAnchor {
+  position: fixed;
+  top: $header-height;
+  right: 32px;
+  z-index: 1000;
+}
+
 .layout {
   width: 100%;
   position: relative;

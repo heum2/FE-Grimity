@@ -12,7 +12,6 @@ import SolidButton from "@/components/common/Button/SolidButton/SolidButton";
 import { PATH_ROUTES } from "@/constants/routes";
 import { EXTERNAL_URLS } from "@/constants/serviceurl";
 import { useToast } from "@/hooks/useToast";
-import { useAuthStore } from "@/states/authStore";
 import { useChatStore } from "@/states/chatStore";
 import { useDeviceStore } from "@/states/deviceStore";
 
@@ -63,6 +62,8 @@ type ActiveDropdown = "ask" | "guide" | null;
 
 export default function Sidebar({
   className,
+  isLoggedIn = false,
+  isOpen = true,
   onClose,
   onLoginClick,
   onLogoutClick,
@@ -74,7 +75,6 @@ export default function Sidebar({
   onNavigate,
 }: SidebarProps) {
   const router = useRouter();
-  const isLoggedIn = useAuthStore((s) => s.isLoggedIn);
   const hasUnreadMessages = useChatStore((s) => s.hasUnreadMessages);
   const isMobile = useDeviceStore((s) => s.isMobile);
   const { showToast } = useToast();
@@ -212,10 +212,23 @@ export default function Sidebar({
   );
 
   return (
-    <aside
-      className={clsx(styles.sidebar, !isLoggedIn && styles.guest, className)}
-      aria-label="메뉴"
-    >
+    <>
+      {onClose && (
+        <div
+          className={clsx(styles.overlay, isOpen && styles.overlayOpen)}
+          aria-hidden
+          onClick={onClose}
+        />
+      )}
+      <aside
+        className={clsx(
+          styles.sidebar,
+          !isLoggedIn && styles.guest,
+          isOpen && styles.open,
+          className,
+        )}
+        aria-label="메뉴"
+      >
       <div className={styles.sidebarBody}>
         <div className={styles.mobileHeader}>{mobileHeaderContent}</div>
 
@@ -337,6 +350,7 @@ export default function Sidebar({
           <p className={styles.copyright}>© Grimity. All rights reserved.</p>
         </div>
       </div>
-    </aside>
+      </aside>
+    </>
   );
 }

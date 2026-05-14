@@ -1,17 +1,21 @@
-import { InitialPageMeta } from "@/components/MetaData/MetaData";
-import styles from "@/styles/pages/home.module.scss";
-import { serviceUrl } from "@/constants/serviceurl";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Ranking from "@/components/Layout/Ranking/Ranking";
-import NewFeed from "@/components/Layout/NewFeed/NewFeed";
-import MainBoard from "@/components/Layout/MainBoard/MainBoard";
-import { useScrollRestoration } from "@/hooks/useScrollRestoration";
+import { useRouter } from "next/router";
+import Link from "next/link";
+
 import { useDeviceStore } from "@/states/deviceStore";
 
+import { InitialPageMeta } from "@/components/MetaData/MetaData";
 import IconComponent from "@/components/Asset/Icon";
-import Link from "next/link";
 import Banner from "@/components/Layout/Banner/Banner";
+import Ranking from "@/components/Layout/Ranking/Ranking";
+import MainBoard from "@/components/Layout/MainBoard/MainBoard";
+import NewFeed from "@/components/Layout/NewFeed/NewFeed";
+
+import { useScrollRestoration } from "@/hooks/useScrollRestoration";
+
+import { serviceUrl } from "@/constants/serviceurl";
+
+import styles from "@/styles/pages/home.module.scss";
 
 export default function Home() {
   const router = useRouter();
@@ -35,24 +39,22 @@ export default function Home() {
     <>
       <InitialPageMeta title={OGTitle} url={OGUrl} />
       <div className={styles.container}>
-        <>
-          <section className={styles.FeedSection}>
-            <Banner />
-            <Ranking />
-            <section className={styles.BoardSection}>
-              <MainBoard type="ALL" />
-              {!isMobile && <MainBoard type="NOTICE" />}
-            </section>
-            <NewFeed />
+        <section className={styles.FeedSection}>
+          <Banner />
+          <Ranking />
+          <section className={styles.BoardSection}>
+            <MainBoard type="ALL" />
+            {!isMobile && <MainBoard type="NOTICE" />}
           </section>
-          {isMobile && (
-            <Link href="/write">
-              <div className={styles.uploadButton} role="button" tabIndex={0}>
-                <IconComponent name="mobileUpload" size={32} isBtn />
-              </div>
-            </Link>
-          )}
-        </>
+          <NewFeed />
+        </section>
+        {isMobile && (
+          <Link href="/write">
+            <div className={styles.uploadButton} role="button" tabIndex={0}>
+              <IconComponent name="mobileUpload" size={32} isBtn />
+            </div>
+          </Link>
+        )}
       </div>
     </>
   );
