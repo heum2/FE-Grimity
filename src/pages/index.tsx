@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Link from "next/link";
 
 import { useDeviceStore } from "@/states/deviceStore";
 
 import { InitialPageMeta } from "@/components/MetaData/MetaData";
-import IconComponent from "@/components/Asset/Icon";
 import Banner from "@/components/Layout/Banner/Banner";
 import Ranking from "@/components/Layout/Ranking/Ranking";
 import MainBoard from "@/components/Layout/MainBoard/MainBoard";
@@ -48,13 +46,6 @@ export default function Home() {
           </section>
           <NewFeed />
         </section>
-        {isMobile && (
-          <Link href="/write">
-            <div className={styles.uploadButton} role="button" tabIndex={0}>
-              <IconComponent name="mobileUpload" size={32} isBtn />
-            </div>
-          </Link>
-        )}
       </div>
     </>
   );

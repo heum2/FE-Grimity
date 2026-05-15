@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -133,7 +133,8 @@ export default function Layout({ children }: LayoutProps) {
   }, [router]);
 
   const toggleMobileSidebar = useCallback(() => {
-    setIsMobileSidebarOpen((prev) => (isMobile ? !prev : true));
+    if (!isMobile) return;
+    setIsMobileSidebarOpen((prev) => !prev);
   }, [isMobile]);
 
   const closeMobileSidebar = useCallback(() => setIsMobileSidebarOpen(false), []);
@@ -152,7 +153,11 @@ export default function Layout({ children }: LayoutProps) {
   const sidebarUser = useMemo(
     () =>
       myData
-        ? { username: myData.name, avatarSrc: myData.image ?? undefined }
+        ? {
+            username: myData.name,
+            avatarSrc: myData.image ?? undefined,
+            profileUrl: myData.url,
+          }
         : undefined,
     [myData],
   );
@@ -296,10 +301,20 @@ export default function Layout({ children }: LayoutProps) {
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
-  // 로그인 상태 변경 시 프로필 드롭다운 닫기
+  // 로그인 상태 변경 시 프로필 드롭다운·모바일 사이드바 닫기
   useEffect(() => {
     setIsProfileDropdownOpen(false);
+    if (isLoggedIn) {
+      setIsMobileSidebarOpen(false);
+    }
   }, [isLoggedIn]);
+
+  // PC→모바일 전환 시 드로어는 닫힌 상태로
+  useLayoutEffect(() => {
+    if (isMobile) {
+      setIsMobileSidebarOpen(false);
+    }
+  }, [isMobile]);
 
   // 알림 패널 열려있을 때 popstate로 닫기
   useEffect(() => {
@@ -350,8 +365,9 @@ export default function Layout({ children }: LayoutProps) {
       <div className={`${styles.container} ${shouldHideHeader ? styles.noHeader : ""}`}>
         <div className={styles.children}>
           <Sidebar
+            key={isMobile ? "sidebar-mobile" : "sidebar-desktop"}
             isLoggedIn={isLoggedIn}
-            isOpen={isMobileSidebarOpen}
+            isOpen={isMobile && isMobileSidebarOpen}
             onClose={isMobile ? closeMobileSidebar : undefined}
             user={sidebarUser}
             onLoginClick={openLoginModal}

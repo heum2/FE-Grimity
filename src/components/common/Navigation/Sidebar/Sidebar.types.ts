@@ -6,7 +6,7 @@ export interface SidebarProps {
   onClose?: () => void;
   onLoginClick?: () => void;
   onLogoutClick?: () => void;
-  user?: { username: string; avatarSrc?: string };
+  user?: { username: string; avatarSrc?: string; profileUrl?: string };
   profileActiveItem?: "liked" | "saved";
   onProfileLikedClick?: () => void;
   onProfileSavedClick?: () => void;
