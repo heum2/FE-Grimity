@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
+
 import { useRouter } from "next/router";
 
 import { usePostsLatest, usePostsNotices } from "@/api/posts/getPosts";
+import { useGlobalLoading } from "@/hooks/useGlobalLoading";
 
 import BoardCard from "../BoardCard/BoardCard";
 import Title from "@/components/Layout/Title/Title";
-import CircularLoading from "@/components/common/Loading/CircularLoading/CircularLoading";
 import Divider from "@/components/common/Divider/Divider";
 
 import { MainBoardProps } from "./MainBoard.types";
@@ -35,14 +36,13 @@ export default function MainBoard({ type }: MainBoardProps) {
   });
 
   const { pathname } = useRouter();
+  const isLoading = (type === "ALL" && isLatestLoading) || (type === "NOTICE" && isNoticeLoading);
 
   useEffect(() => {
     Promise.all([latestRefetch(), noticeRefetch()]);
   }, [pathname, latestRefetch, noticeRefetch]);
 
-  if ((type === "ALL" && isLatestLoading) || (type === "NOTICE" && isNoticeLoading)) {
-    return <CircularLoading />;
-  }
+  useGlobalLoading(isLoading);
 
   const posts = type === "NOTICE" ? noticePosts : latestPosts?.posts;
   const emptyMessage = type === "NOTICE" ? "공지사항이 없습니다" : "아직 올라온 글이 없어요";

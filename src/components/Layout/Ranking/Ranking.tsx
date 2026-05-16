@@ -11,8 +11,8 @@ import { useFeedsLikeMutation } from "@/queries/feeds/useFeedsLikeMutation";
 import Album from "@/components/common/Card/Album/Album";
 import IconButton from "@/components/common/Button/IconButton/IconButton";
 import Icon from "@/components/common/Icon/Icon";
-import CircularLoading from "@/components/common/Loading/CircularLoading/CircularLoading";
 import Title from "@/components/Layout/Title/Title";
+import { useGlobalLoading } from "@/hooks/useGlobalLoading";
 
 import { PATH_ROUTES } from "@/constants/routes";
 
@@ -40,7 +40,7 @@ export default function Ranking() {
     endDate: formattedDate(today, "yyyy-MM-dd"),
   });
 
-  if (isLoading) return <CircularLoading />;
+  useGlobalLoading(isLoading);
 
   const paginatedFeeds = data?.feeds || [];
   const isEmpty = paginatedFeeds.length === 0;
