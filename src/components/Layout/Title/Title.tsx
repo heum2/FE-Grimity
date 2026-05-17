@@ -1,4 +1,4 @@
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 import { TitleProps } from "@/components/Layout/Title/Title.types";
 
@@ -7,14 +7,11 @@ import TextButton from "@/components/common/Button/TextButton/TextButton";
 import clsx from "clsx";
 
 export default function Title({ children, link, gap = "lg" }: TitleProps) {
-  const router = useRouter();
 
   return (
     <div className={clsx(styles.container, styles[`gap-${gap}`])}>
       <h2 className={styles.title}>{children}</h2>
-      {link && (
-        <TextButton variant="assistive" size="large" onClick={() => router.push(link)}>더보기</TextButton>
-      )}
+      {link && <TextButton variant="assistive" size="large"><Link href={link}>더보기</Link></TextButton>}
     </div>
   );
 }

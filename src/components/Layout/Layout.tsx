@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -175,25 +175,31 @@ export default function Layout({ children }: LayoutProps) {
 
   const subRightActions = useMemo<GNBProps["rightActions"]>(() => {
     if (!isSubRoute) return undefined;
-    const actions = [
-      showSubSearch && (
-        <IconButton
-          key="search"
-          variant="sm"
-          icon={<Icon name="magnifer" size={24} color="gray-bold" />}
-          onClick={goToSearch}
-          aria-label="검색"
-        />
-      ),
+
+    const menuButton = (
       <IconButton
         key="menu"
         variant="sm"
         icon={<Icon name="hamburger" size={24} color="gray-bold" />}
         onClick={toggleMobileSidebar}
         aria-label="메뉴"
+      />
+    );
+
+    if (!showSubSearch) {
+      return [menuButton];
+    }
+
+    return [
+      <IconButton
+        key="search"
+        variant="sm"
+        icon={<Icon name="magnifer" size={24} color="gray-bold" />}
+        onClick={goToSearch}
+        aria-label="검색"
       />,
-    ].filter(Boolean);
-    return actions as GNBProps["rightActions"];
+      menuButton,
+    ];
   }, [isSubRoute, showSubSearch, goToSearch, toggleMobileSidebar]);
 
   const profileMenuItems = useMemo(() => {
@@ -310,7 +316,7 @@ export default function Layout({ children }: LayoutProps) {
   }, [isLoggedIn]);
 
   // PC→모바일 전환 시 드로어는 닫힌 상태로
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (isMobile) {
       setIsMobileSidebarOpen(false);
     }

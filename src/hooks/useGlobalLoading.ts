@@ -9,5 +9,5 @@ export function useGlobalLoading(isLoading: boolean) {
       show();
       return () => hide();
     }
-  }, [isLoading]);
+  }, [isLoading, show, hide]);
 }

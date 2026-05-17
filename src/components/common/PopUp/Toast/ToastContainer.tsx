@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import clsx from "clsx";
 
@@ -26,10 +26,15 @@ interface ToastContainerProps {
 export default function ToastContainer({ target }: ToastContainerProps = {}) {
   const { toasts, removeToast } = useToast();
   const router = useRouter();
+  const toastsRef = useRef(toasts);
+
+  useEffect(() => {
+    toastsRef.current = toasts;
+  }, [toasts]);
 
   useEffect(() => {
     const handleRouteChange = () => {
-      toasts.forEach((toast) => {
+      toastsRef.current.forEach((toast) => {
         removeToast(toast.id);
       });
     };
@@ -39,7 +44,7 @@ export default function ToastContainer({ target }: ToastContainerProps = {}) {
     return () => {
       router.events.off("routeChangeStart", handleRouteChange);
     };
-  }, [toasts, removeToast, router.events]);
+  }, [removeToast, router.events]);
 
   const filteredToasts = toasts.filter((t) => {
     if (target && t.container !== target) {
