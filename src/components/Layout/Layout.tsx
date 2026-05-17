@@ -9,7 +9,6 @@ import { useChatStore } from "@/states/chatStore";
 import { useDeviceStore } from "@/states/deviceStore";
 
 import { useSocket } from "@/hooks/useSocket";
-import { useModal } from "@/hooks/useModal";
 import { useOnClickOutside } from "@/hooks/useOnClickOutside";
 import { usePreventScroll } from "@/hooks/usePreventScroll";
 import useGoBack from "@/hooks/useGoBack";
@@ -25,7 +24,6 @@ import type {
 } from "@/components/common/Navigation/GNB/GNB.types";
 import Sidebar from "@/components/common/Navigation/Sidebar/Sidebar";
 import Notifications from "@/components/Notifications/Notifications";
-import Login from "@/components/Modal/Login/Login";
 
 import type { LayoutProps } from "@/components/Layout/Layout.types";
 import type { NewChatMessageEventResponse } from "@grimity/dto";
@@ -37,7 +35,7 @@ import axiosInstance from "@/constants/baseurl";
 
 import styles from "@/components/Layout/Layout.module.scss";
 
-const MAIN_ROUTES = ["/", "/ranking", "/board", "/following"];
+const MAIN_ROUTES = ["/", "/ranking", "/board", "/following", "/login"];
 const UPLOAD_HIDDEN_ROUTES = [
   "/write",
   "/feeds/[id]/edit",
@@ -59,7 +57,6 @@ const SUB_SEARCH_HIDDEN_ROUTES = [
 export default function Layout({ children }: LayoutProps) {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const { openModal } = useModal();
   const { goBack } = useGoBack();
 
   // ─── 전역 상태 ─────────────────────────────────────────────────────────
@@ -85,9 +82,9 @@ export default function Layout({ children }: LayoutProps) {
   useOnClickOutside(profileRef, () => setIsProfileDropdownOpen(false));
 
   // ─── 핸들러 ────────────────────────────────────────────────────────────
-  const openLoginModal = useCallback(() => {
-    openModal((close) => <Login close={close} />);
-  }, [openModal]);
+  const goToLogin = useCallback(() => {
+    router.push(`/login?redirect=${encodeURIComponent(router.asPath)}`);
+  }, [router]);
 
   const logout = useCallback(async () => {
     try {
@@ -330,6 +327,7 @@ export default function Layout({ children }: LayoutProps) {
   // ─── 렌더 ──────────────────────────────────────────────────────────────
   const showProfileDropdown =
     !isMobile && isLoggedIn && Boolean(myData) && isProfileDropdownOpen;
+  const shouldHideSidebar = router.pathname === "/login";
 
   return (
     <div className={styles.layout}>
@@ -343,7 +341,7 @@ export default function Layout({ children }: LayoutProps) {
             onBell={() => setShowNotifications((prev) => !prev)}
             onProfile={onProfileClick}
             onUpload={showUploadBtn ? goToUpload : undefined}
-            onLogin={openLoginModal}
+            onLogin={goToLogin}
             onMenu={toggleMobileSidebar}
             onClose={toggleMobileSidebar}
             onBack={isMobileSearchPage || isSubRoute ? goBack : undefined}
@@ -371,16 +369,18 @@ export default function Layout({ children }: LayoutProps) {
 
       <div className={`${styles.container} ${shouldHideHeader ? styles.noHeader : ""}`}>
         <div className={styles.children}>
-          <Sidebar
-            key={isMobile ? "sidebar-mobile" : "sidebar-desktop"}
-            isLoggedIn={isLoggedIn}
-            isOpen={isMobile && isMobileSidebarOpen}
-            onClose={isMobile ? closeMobileSidebar : undefined}
-            user={sidebarUser}
-            onLoginClick={openLoginModal}
-            onLogoutClick={logout}
-            onNavigate={isMobile ? closeMobileSidebar : undefined}
-          />
+          {!shouldHideSidebar && (
+            <Sidebar
+              key={isMobile ? "sidebar-mobile" : "sidebar-desktop"}
+              isLoggedIn={isLoggedIn}
+              isOpen={isMobile && isMobileSidebarOpen}
+              onClose={isMobile ? closeMobileSidebar : undefined}
+              user={sidebarUser}
+              onLoginClick={goToLogin}
+              onLogoutClick={logout}
+              onNavigate={isMobile ? closeMobileSidebar : undefined}
+            />
+          )}
           {children}
         </div>
       </div>
