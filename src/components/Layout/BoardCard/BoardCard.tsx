@@ -11,8 +11,10 @@ import styles from "./BoardCard.module.scss";
 
 function plainPreviewFromContent(html: string | null | undefined): string | undefined {
   if (!html?.trim()) return undefined;
-  const plain = html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
-  return plain || undefined;
+  const stripped = html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+  if (!stripped) return undefined;
+  if (typeof window === "undefined") return stripped;
+  return new DOMParser().parseFromString(stripped, "text/html").documentElement.textContent ?? stripped;
 }
 
 export default function BoardCard({

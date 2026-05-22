@@ -3,7 +3,7 @@ export type ToastType = "Positive" | "Negative" | "Cautionary" | "Info" | "Defau
 export interface ToastProps {
   type?: ToastType;
   text: string;
-  duration?: number;
+  duration?: number | null;
   onClose?: () => void;
   className?: string;
 }

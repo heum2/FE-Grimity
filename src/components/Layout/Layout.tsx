@@ -66,15 +66,10 @@ export default function Layout({ children }: LayoutProps) {
 
   // ─── 전역 상태 ─────────────────────────────────────────────────────────
   const { isMobile, isTablet } = useDeviceStore();
-  const {
-    isLoggedIn,
-    isAuthReady,
-    setIsLoggedIn,
-    setAccessToken,
-    setUserId,
-    setIsAuthReady,
-    user_id,
-  } = useAuthStore();
+  const isLoggedIn = useAuthStore((s) => s.isLoggedIn);
+  const isAuthReady = useAuthStore((s) => s.isAuthReady);
+  const user_id = useAuthStore((s) => s.user_id);
+  const { setIsLoggedIn, setAccessToken, setUserId, setIsAuthReady } = useAuthStore.getState();
   const { data: myData, refetch: fetchMyData } = useMyData();
   const { currentChatId, setHasUnreadMessages, reset: resetChat } = useChatStore();
   const { socket, isConnected } = useSocket();

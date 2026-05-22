@@ -175,6 +175,15 @@ export default function Sidebar({
     return () => document.removeEventListener("mousedown", onDocMouseDown);
   }, []);
 
+  useEffect(() => {
+    if (!activeDropdown) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setActiveDropdown(null);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [activeDropdown]);
+
   const profileMenuItems = useMemo(
     () => [
       {

@@ -8,4 +8,5 @@ export interface TextButtonProps extends ButtonBaseProps {
   children: React.ReactNode;
   iconLeft?: React.ReactNode;
   iconRight?: React.ReactNode;
+  href?: string;
 }
