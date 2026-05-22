@@ -1,34 +1,25 @@
-@use "@/styles/globals.scss" as *;
+@use "@/styles/tokens/spacing" as spacing;
+@use "@/styles/breakpoint" as bp;
 
-.cardContainer {
-  margin-top: 20px;
+.grid {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  row-gap: 40px;
-  column-gap: 16px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: spacing.$spacing-16;
+  margin-top: spacing.$spacing-20;
 
-  @include Size("mobile") {
-    grid-template-columns: repeat(2, 1fr);
-    row-gap: 20px;
-    column-gap: 12px;
-    margin-top: 68px;
+  @include bp.breakpoint-down("sm") {
+    grid-template-columns: repeat(4, 1fr);
   }
 
-  @include Size("tablet") {
-    grid-template-columns: repeat(3, 1fr);
-    row-gap: 20px;
-    column-gap: 16px;
+  @include bp.breakpoint-down("xs") {
+    grid-template-columns: repeat(2, 1fr);
+    margin-top: spacing.$spacing-16;
   }
 }
 
-.noResult {
-  @include Sub2;
-  color: $gray50;
+.emptyWrap {
   width: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 100px 0;
-  gap: 24px;
+  justify-content: center;
 }

@@ -1,9 +1,11 @@
+@use "@/styles/breakpoint" as *;
 @use "@/styles/tokens/colors/semantic" as colors;
 @use "@/styles/tokens/typography/semantic" as typo;
 @use "@/styles/tokens/spacing" as spacing;
 @use "@/styles/tokens/radius" as radius;
 
 .album {
+  width: 100%;
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -11,10 +13,16 @@
   overflow: hidden;
 }
 
+.linkPart {
+  display: block;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
 .imageWrap {
   position: relative;
   width: 100%;
-  min-width: 160px;
   aspect-ratio: 1;
   border-radius: radius.$radius-md;
   overflow: hidden;
