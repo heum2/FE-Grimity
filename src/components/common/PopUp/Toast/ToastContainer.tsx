@@ -17,8 +17,6 @@ const LEGACY_TO_POPUP_TYPE: Record<LegacyToastType, PopUpToastType> = {
   information: "Info",
 };
 
-const PERSISTENT_DURATION_MS = 24 * 60 * 60 * 1000;
-
 interface ToastContainerProps {
   target?: "global" | "local";
 }
@@ -69,9 +67,7 @@ export default function ToastContainer({ target }: ToastContainerProps = {}) {
           key={toast.id}
           type={LEGACY_TO_POPUP_TYPE[toast.type]}
           text={toast.message}
-          duration={
-            toast.duration === null ? PERSISTENT_DURATION_MS : toast.duration
-          }
+          duration={toast.duration}
           onClose={() => removeToast(toast.id)}
           className={styles.toastItem}
         />
