@@ -27,7 +27,8 @@ export default function Toast({
   const [phase, setPhase] = useState<"enter" | "visible" | "exit">("enter");
 
   useEffect(() => {
-    const delay = phase === "visible" ? duration : ANIMATION_MS;
+    if (phase === "visible" && duration === null) return;
+    const delay = phase === "visible" ? (duration as number) : ANIMATION_MS;
     const timer = setTimeout(() => {
       if (phase === "enter") setPhase("visible");
       else if (phase === "visible") setPhase("exit");
