@@ -118,39 +118,24 @@ export default function Album({
           </button>
         )}
 
-        {isMainOrRank && (
-          <span
-            className={clsx(styles.iconBottomRight, onLikeClick && styles.iconBottomRightClickable)}
-            role={onLikeClick ? "button" : undefined}
-            tabIndex={onLikeClick ? 0 : undefined}
-            aria-pressed={onLikeClick ? isLiked : undefined}
-            aria-label={onLikeClick ? (isLiked ? "좋아요 취소" : "좋아요") : undefined}
-            onClick={
-              onLikeClick
-                ? (e) => {
-                    e.stopPropagation();
-                    handleLikeClick();
-                  }
-                : undefined
-            }
-            onKeyDown={
-              onLikeClick
-                ? (e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      handleLikeClick();
-                    }
-                  }
-                : undefined
-            }
+        {isMainOrRank && onLikeClick && (
+          <button
+            type="button"
+            className={clsx(styles.iconBottomRight, styles.iconBottomRightClickable)}
+            aria-pressed={isLiked}
+            aria-label={isLiked ? "좋아요 취소" : "좋아요"}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              handleLikeClick();
+            }}
           >
             <Icon
               name={isLiked ? "heart-fill" : "heart"}
               size={24}
               color={isLiked ? "primary-normal" : "gray-subtle"}
             />
-          </span>
+          </button>
         )}
       </div>
 
