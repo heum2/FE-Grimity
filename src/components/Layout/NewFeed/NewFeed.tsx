@@ -67,9 +67,11 @@ export default function NewFeed({ isDetail = false }: NewFeedProps) {
                   nickname={feed.author?.name ?? ""}
                   likeCount={feed.likeCount}
                   viewCount={feed.viewCount}
-                  isLiked={isLiked}
+                  isLiked={isLoggedIn ? isLiked : undefined}
                   onLikeClick={
-                    isLoggedIn ? () => toggleLike({ id: feed.id, isLiked }) : undefined
+                    isLoggedIn
+                      ? () => toggleLike({ id: feed.id, isLiked })
+                      : undefined
                   }
                 />
               </Link>

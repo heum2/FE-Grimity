@@ -94,6 +94,9 @@
 
   &.iconBottomRightClickable {
     pointer-events: auto;
+    border: none;
+    background: transparent;
+    padding: 0;
     cursor: pointer;
   }
 }
