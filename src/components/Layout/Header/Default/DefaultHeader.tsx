@@ -146,7 +146,7 @@ export default function DefaultHeader() {
         <div className={styles.wrapper}>
           {isMobile ? (
             <>
-              {isAuthReady && !isLoggedIn && router.pathname !== "/login" && (
+              {isAuthReady && !isLoggedIn && (
                 <div className={styles.loginBtn} onClick={handleLoginNavigation}>
                   <Button size="s" type="filled-primary">
                     로그인
@@ -257,13 +257,11 @@ export default function DefaultHeader() {
                     </div>
                   </div>
                 ) : (
-                  router.pathname !== "/login" && (
-                    <div className={styles.loginBtn} onClick={handleLoginNavigation}>
-                      <Button size="m" type="filled-primary">
-                        로그인
-                      </Button>
-                    </div>
-                  )
+                  <div className={styles.loginBtn} onClick={handleLoginNavigation}>
+                    <Button size="m" type="filled-primary">
+                      로그인
+                    </Button>
+                  </div>
                 ))}
             </>
           )}

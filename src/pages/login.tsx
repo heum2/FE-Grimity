@@ -17,6 +17,7 @@ import { useChatStore } from "@/states/chatStore";
 
 import Icon from "@/components/Asset/IconTemp";
 import IconComponent from "@/components/Asset/Icon";
+import DSIcon from "@/components/common/Icon/Icon";
 import Loader from "@/components/Layout/Loader/Loader";
 
 import { useToast } from "@/hooks/useToast";
@@ -45,10 +46,7 @@ function getRedirectTo(v?: string | string[]): string {
 }
 
 export default function LoginPage() {
-  const { isLoggedIn, isAuthReady } = useAuthStore();
-  const setAccessToken = useAuthStore((state) => state.setAccessToken);
-  const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
-  const setUserId = useAuthStore((state) => state.setUserId);
+  const { isLoggedIn, isAuthReady, setAccessToken, setIsLoggedIn, setUserId } = useAuthStore();
   const openModal = useModalStore((state) => state.openModal);
   const { setHasUnreadMessages } = useChatStore();
   const { showToast } = useToast();
@@ -56,11 +54,12 @@ export default function LoginPage() {
   const router = useRouter();
   const redirectTo = getRedirectTo(router.query.redirect as string | string[] | undefined);
 
+  const { replace: routerReplace } = router;
   useEffect(() => {
     if (isAuthReady && isLoggedIn) {
-      router.replace(redirectTo);
+      routerReplace(redirectTo);
     }
-  }, [isAuthReady, isLoggedIn, redirectTo, router]);
+  }, [isAuthReady, isLoggedIn, redirectTo, routerReplace]);
 
   const { mutateAsync: login, isPending } = useMutation({
     mutationFn: postLogin,
@@ -227,6 +226,7 @@ export default function LoginPage() {
               href="/posts/048ae290-4b1e-4292-9845-e4b2ca68ea6a"
               className={styles.footerBtn}
             >
+              <DSIcon name="info-circle" size={20} aria-hidden />
               공지사항
             </Link>
             <Link
@@ -235,6 +235,7 @@ export default function LoginPage() {
               rel="noopener noreferrer"
               className={styles.footerBtn}
             >
+              <DSIcon name="question-circle" size={20} aria-hidden />
               문의
             </Link>
           </div>
