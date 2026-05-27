@@ -116,12 +116,15 @@
   width: 100%;
   padding: spacing.$spacing-16 0;
   border-radius: radius.$radius-md;
+  border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: spacing.$spacing-8;
   @include typo.label-1;
+  line-height: 1;
+  letter-spacing: normal;
   transition: transform 0.2s ease;
 
   &:hover {
@@ -142,13 +145,11 @@
 .kakao {
   background: #fee500;
   color: #000000;
-  border: 1px solid #fee500;
 }
 
 .google {
   background: colors.$surface-gray-subtlest;
   color: colors.$text-gray-bold;
-  border: 1px solid colors.$border-gray-subtle;
 }
 
 .apple {
@@ -171,8 +172,9 @@
 .footerBtn {
   display: flex;
   align-items: center;
+  gap: spacing.$spacing-6;
   height: 32px;
-  padding: 0 spacing.$spacing-6;
+  padding: 0 spacing.$spacing-6 0 spacing.$spacing-4;
   border-radius: radius.$radius-xs;
   @include typo.label-1;
   color: colors.$text-gray-subtle;
@@ -185,9 +187,9 @@
 
 .footerRight {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 2px;
+  flex-direction: row;
+  align-items: center;
+  gap: spacing.$spacing-4;
 }
 
 .footerLinks {
@@ -197,7 +199,6 @@
 
   a {
     @include typo.body-2-r;
-    font-size: 14px;
     color: colors.$text-gray-subtler;
     text-decoration: none;
 
@@ -216,7 +217,6 @@
 
 .copyright {
   @include typo.body-2-r;
-  font-size: 14px;
   color: colors.$text-gray-subtler;
   margin: 0;
 }
