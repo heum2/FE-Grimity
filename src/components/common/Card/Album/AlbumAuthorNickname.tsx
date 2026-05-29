@@ -24,8 +24,10 @@ interface AlbumAuthorNicknameProps {
 
 type Position = {
   left: number;
-  /** 화면 위쪽에 띄울 때는 top, 아래쪽에 띄울 때는 top 으로 동일 처리 (위쪽일 땐 wrap top - gap - estimate). */
-  top: number;
+  /** 위쪽 배치: 카드 하단이 닉네임 위 10px 에 닿도록 viewport 하단 기준 bottom 으로 앵커 */
+  bottom?: number;
+  /** 아래쪽 배치: 카드 상단이 닉네임 아래 10px */
+  top?: number;
   placement: "top" | "bottom";
 };
 
@@ -78,11 +80,18 @@ export default function AlbumAuthorNickname({
     const rect = wrapRef.current?.getBoundingClientRect();
     if (!rect) return null;
     const placement: "top" | "bottom" = rect.top >= HOVER_CARD_HEIGHT ? "top" : "bottom";
-    const top =
-      placement === "top"
-        ? rect.top - HOVER_GAP - HOVER_CARD_HEIGHT
-        : rect.bottom + HOVER_GAP;
-    return { left: rect.left, top, placement };
+    if (placement === "top") {
+      return {
+        left: rect.left,
+        bottom: window.innerHeight - rect.top + HOVER_GAP,
+        placement,
+      };
+    }
+    return {
+      left: rect.left,
+      top: rect.bottom + HOVER_GAP,
+      placement,
+    };
   };
 
   const handleMouseEnter = () => {
@@ -156,7 +165,11 @@ export default function AlbumAuthorNickname({
         createPortal(
           <div
             className={styles.hoverPopup}
-            style={{ top: position.top, left: position.left }}
+            style={{
+              left: position.left,
+              top: position.top,
+              bottom: position.bottom,
+            }}
             onMouseEnter={cancelClose}
             onMouseLeave={handleMouseLeave}
           >
