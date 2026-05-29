@@ -26,21 +26,21 @@
   gap: spacing.$spacing-16;
 }
 
-.logo {
+.logoSection .logo {
   width: 150px;
   height: 42px;
-  object-fit: contain;
 }
 
 .tagline {
+  margin: 0;
   display: flex;
   flex-direction: column;
   gap: 6px;
+  @include typo.title-2;
+  color: colors.$text-gray-bold;
 
-  p {
-    @include typo.title-2;
-    color: colors.$text-gray-bold;
-    margin: 0;
+  span {
+    display: block;
   }
 }
 
@@ -78,18 +78,18 @@
     gap: spacing.$spacing-24;
   }
 
-  .logo {
+  .logoSection .logo {
     width: 200px;
     height: 56px;
   }
 
   .tagline {
-    flex-direction: row;
-    gap: 0.25em;
-    justify-content: center;
+    display: block;
+    text-align: center;
+    @include typo.title-1;
 
-    p {
-      @include typo.title-1;
+    span {
+      display: inline;
     }
   }
 
@@ -105,64 +105,44 @@
     align-items: center;
     position: absolute;
     bottom: 0;
-    left: 0;
-    right: 0;
-    padding: spacing.$spacing-16 spacing.$spacing-32;
+    left: spacing.$spacing-20;
+    right: spacing.$spacing-20;
+    height: 60px;
+    padding: 0 spacing.$spacing-32;
   }
 }
 
-// ── 버튼 공통 ──────────────────────────────────────────────
-.btn {
+// ── OAuth 버튼 (SolidButton/OutlinedButton 오버라이드) ──────
+.oauthBtn {
   width: 100%;
-  padding: spacing.$spacing-16 0;
   border-radius: radius.$radius-md;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: spacing.$spacing-8;
-  @include typo.label-1;
-  line-height: 1;
-  letter-spacing: normal;
-  transition: transform 0.2s ease;
-
-  &:hover {
-    transform: scale(1.02);
-  }
-
-  &:active {
-    transform: scale(0.98);
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-  }
 }
 
 .kakao {
-  background: #fee500;
+  background-color: #fee500;
   color: #000000;
+
+  &:hover:not(:disabled) {
+    background-color: #fee500;
+    opacity: 0.85;
+  }
 }
 
 .google {
-  background: colors.$surface-gray-subtlest;
-  color: colors.$text-gray-bold;
+  background-color: colors.$surface-gray-subtlest;
+  color: #1a1b1e;
+
+  &:hover:not(:disabled) {
+    background-color: colors.$surface-gray-subtlest;
+    opacity: 0.85;
+  }
 }
 
 .apple {
-  background: colors.$surface-base;
-  color: colors.$text-gray-bold;
-  border: 1px solid colors.$border-gray-subtle;
+  color: #1a1b1e;
 }
 
-.appleIcon {
-  color: colors.$icon-base;
-}
-
-// ── 푸터 (sm/lg) ──────────────────────────────────────────
+// ── 푸터 (TextButton 오버라이드 + 기타) ──────────────────────
 .footerLeft {
   display: flex;
   align-items: center;
@@ -170,19 +150,8 @@
 }
 
 .footerBtn {
-  display: flex;
-  align-items: center;
-  gap: spacing.$spacing-6;
-  height: 32px;
   padding: 0 spacing.$spacing-6 0 spacing.$spacing-4;
-  border-radius: radius.$radius-xs;
-  @include typo.label-1;
-  color: colors.$text-gray-subtle;
-  text-decoration: none;
-
-  &:hover {
-    background: colors.$surface-gray-subtlest;
-  }
+  color: colors.$text-gray-normal;
 }
 
 .footerRight {
@@ -199,7 +168,8 @@
 
   a {
     @include typo.body-2-r;
-    color: colors.$text-gray-subtler;
+    line-height: 1.4;
+    color: colors.$text-gray-subtle;
     text-decoration: none;
 
     &:hover {
@@ -212,11 +182,12 @@
   width: 2px;
   height: 2px;
   border-radius: 50%;
-  background: colors.$icon-gray-subtler;
+  background: colors.$graphic-subtler;
 }
 
 .copyright {
   @include typo.body-2-r;
-  color: colors.$text-gray-subtler;
+  line-height: 1.4;
+  color: colors.$text-gray-subtle;
   margin: 0;
 }
