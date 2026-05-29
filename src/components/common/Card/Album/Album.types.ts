@@ -13,6 +13,9 @@ export interface AlbumProps {
   likeCount: number;
   viewCount: number;
   isLiked?: boolean;
+  feedHref?: string;
+  profileHref?: string;
+  authorUrl?: string;
   onClick?: () => void;
   onCheckClick?: () => void;
   onLikeClick?: () => void;

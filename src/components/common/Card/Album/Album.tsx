@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Link from "next/link";
 import clsx from "clsx";
 import Icon from "@/components/common/Icon/Icon";
 import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
@@ -11,6 +12,7 @@ import styles from "./Album.module.scss";
 import type { AlbumProps, AlbumRank } from "./Album.types";
 import { THUMBNAIL_PATH } from "@/constants/imageUrl";
 import UserInfo from "@/components/common/Cell/UserInfo/UserInfo";
+import AlbumAuthorNickname from "./AlbumAuthorNickname";
 
 const RANK_ICON_MAP: Record<AlbumRank, "rank-1" | "rank-2" | "rank-3" | "rank-4"> = {
   1: "rank-1",
@@ -29,11 +31,15 @@ export default function Album({
   likeCount,
   viewCount,
   isLiked: isLikedProp,
+  feedHref,
+  profileHref,
+  authorUrl,
   onClick,
   onCheckClick,
   onLikeClick,
   className,
 }: AlbumProps) {
+  const useFeedLink = !!feedHref;
   const isControlledChecked = checkedProp !== undefined;
   const [internalChecked, setInternalChecked] = useState(false);
   const checked = isControlledChecked ? checkedProp : internalChecked;
@@ -57,34 +63,27 @@ export default function Album({
   const isRank = variant === "rank" && rank != null && rank in RANK_ICON_MAP;
   const isMainOrRank = variant === "mainTitle" || variant === "rank";
 
-  return (
-    <article
-      className={clsx(styles.album, className)}
-      role={onClick ? "button" : undefined}
-      tabIndex={onClick ? 0 : undefined}
-      onClick={onClick}
-      onKeyDown={keyDownOnArticle}
+  const imageWrapNode = (
+    <div
+      className={clsx(
+        styles.imageWrap,
+        isMainOrRank && styles.mainTitleRankOverlay,
+        isCheck && !checked && styles.checkDefault,
+        isCheck && checked && styles.checked,
+        isCheck && onCheckClick && styles.imageWrapClickable,
+      )}
+      role={isCheck && onCheckClick ? "button" : undefined}
+      tabIndex={isCheck && onCheckClick ? 0 : undefined}
+      onClick={
+        isCheck && onCheckClick
+          ? (e) => {
+              e.stopPropagation();
+              handleCheckClick();
+            }
+          : undefined
+      }
+      onKeyDown={isCheck && onCheckClick ? keyDownOnCheckWrap : undefined}
     >
-      <div
-        className={clsx(
-          styles.imageWrap,
-          isMainOrRank && styles.mainTitleRankOverlay,
-          isCheck && !checked && styles.checkDefault,
-          isCheck && checked && styles.checked,
-          isCheck && onCheckClick && styles.imageWrapClickable,
-        )}
-        role={isCheck && onCheckClick ? "button" : undefined}
-        tabIndex={isCheck && onCheckClick ? 0 : undefined}
-        onClick={
-          isCheck && onCheckClick
-            ? (e) => {
-                e.stopPropagation();
-                handleCheckClick();
-              }
-            : undefined
-        }
-        onKeyDown={isCheck && onCheckClick ? keyDownOnCheckWrap : undefined}
-      >
         <ResponsiveImage
           src={imageUrl ?? THUMBNAIL_PATH}
           alt=""
@@ -167,13 +166,44 @@ export default function Album({
             </span>
           </span>
         )}
-      </div>
+    </div>
+  );
+
+  const titleNode = <p className={styles.title}>{title}</p>;
+
+  return (
+    <article
+      className={clsx(styles.album, className)}
+      role={!useFeedLink && onClick ? "button" : undefined}
+      tabIndex={!useFeedLink && onClick ? 0 : undefined}
+      onClick={!useFeedLink ? onClick : undefined}
+      onKeyDown={!useFeedLink ? keyDownOnArticle : undefined}
+    >
+      {useFeedLink ? (
+        <Link href={feedHref!} className={styles.feedLink}>
+          {imageWrapNode}
+        </Link>
+      ) : (
+        imageWrapNode
+      )}
 
       <div className={styles.body}>
-        <p className={styles.title}>{title}</p>
+        {useFeedLink ? (
+          <Link href={feedHref!} className={styles.titleLink}>
+            {titleNode}
+          </Link>
+        ) : (
+          titleNode
+        )}
         <UserInfo
           type="default"
-          nickname={nickname}
+          nickname={
+            <AlbumAuthorNickname
+              nickname={nickname}
+              profileHref={profileHref}
+              authorUrl={authorUrl}
+            />
+          }
           showHeart={true}
           heartCount={likeCount.toString()}
           showView={true}
