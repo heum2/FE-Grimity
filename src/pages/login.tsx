@@ -12,7 +12,6 @@ import postLogin, { AuthProvider } from "@/api/auth/postLogin";
 import { useMyData } from "@/api/users/getMe";
 
 import { useAuthStore } from "@/states/authStore";
-import { useModalStore } from "@/states/modalStore";
 import { useChatStore } from "@/states/chatStore";
 
 import Icon from "@/components/common/Icon/Icon";
@@ -46,14 +45,23 @@ function getRedirectTo(v?: string | string[]): string {
   return raw?.startsWith("/") && !raw.startsWith("//") ? raw : "/";
 }
 
+const SIGNUP_OAUTH_KEY = "signup_oauth_data";
+
 export default function LoginPage() {
   const { isLoggedIn, isAuthReady, setAccessToken, setIsLoggedIn, setUserId } = useAuthStore();
-  const openModal = useModalStore((state) => state.openModal);
   const { setHasUnreadMessages } = useChatStore();
   const { showToast } = useToast();
   const { refetch: fetchMyData } = useMyData();
   const router = useRouter();
   const redirectTo = getRedirectTo(router.query.redirect as string | string[] | undefined);
+
+  const goToSignup = (accessToken: string, provider: AuthProvider) => {
+    sessionStorage.setItem(
+      SIGNUP_OAUTH_KEY,
+      JSON.stringify({ accessToken, provider }),
+    );
+    router.push("/signup/nickname");
+  };
 
   const { replace: routerReplace } = router;
   useEffect(() => {
@@ -99,10 +107,7 @@ export default function LoginPage() {
           });
         } catch (error) {
           if (error instanceof AxiosError && error.response?.status === 404) {
-            openModal({
-              type: "NICKNAME",
-              data: { accessToken: authObj.access_token, provider: AuthProvider.KAKAO },
-            });
+            goToSignup(authObj.access_token, AuthProvider.KAKAO);
           } else {
             showToast("로그인에 실패했습니다. 다시 시도해주세요.", "error");
           }
@@ -124,10 +129,7 @@ export default function LoginPage() {
         });
       } catch (error) {
         if (error instanceof AxiosError && error.response?.status === 404) {
-          openModal({
-            type: "NICKNAME",
-            data: { accessToken: tokenResponse.access_token, provider: AuthProvider.GOOGLE },
-          });
+          goToSignup(tokenResponse.access_token, AuthProvider.GOOGLE);
         } else {
           showToast("로그인에 실패했습니다. 다시 시도해주세요.", "error");
         }
@@ -148,10 +150,7 @@ export default function LoginPage() {
     } catch (error) {
       if (error instanceof AxiosError && error.response?.status === 404) {
         const data = error.config?.data ? JSON.parse(error.config.data) : {};
-        openModal({
-          type: "NICKNAME",
-          data: { accessToken: data.providerAccessToken, provider: AuthProvider.APPLE },
-        });
+        goToSignup(data.providerAccessToken, AuthProvider.APPLE);
       } else {
         showToast("로그인에 실패했습니다. 다시 시도해주세요.", "error");
       }
