@@ -4,6 +4,7 @@ import Icon from "@/components/common/Icon/Icon";
 import SolidButton from "@/components/common/Button/SolidButton/SolidButton";
 import OutlinedButton from "@/components/common/Button/OutlinedButton/OutlinedButton";
 import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
+import Thumbnail from "@/components/common/Thumbnail/Thumbnail";
 import UserAvatar from "@/components/common/Avatar/UserAvatar/UserAvatar";
 import {
   useKeyDownActivate,
@@ -29,6 +30,7 @@ function UserCardImage({ image }: { image: UserCardImageItem }) {
   const toggleLike = useToggleWithCallback(isControlled, setInternalLiked, image.onLikeClick);
 
   const handleLikeClick = (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     toggleLike();
   };
@@ -43,16 +45,26 @@ function UserCardImage({ image }: { image: UserCardImageItem }) {
         desktopSize={640}
       />
       <button
-        className={styles.likeBtn}
+        className={clsx(styles.likeBtn, isLiked && styles.likeBtnActive)}
         onClick={handleLikeClick}
         aria-pressed={isLiked}
         aria-label={isLiked ? "좋아요 취소" : "좋아요"}
       >
-        <Icon
-          name={isLiked ? "heart-fill" : "heart"}
-          size={20}
-          color={isLiked ? "primary-normal" : "gray-subtle"}
-        />
+        <span className={styles.heartStack}>
+          {!isLiked && (
+            <Icon
+              name="heart-fill"
+              size={20}
+              color="white"
+              className={styles.heartStackBg}
+            />
+          )}
+          <Icon
+            name={isLiked ? "heart-fill" : "heart"}
+            size={20}
+            className={styles.heartStackFg}
+          />
+        </span>
       </button>
     </div>
   );
@@ -60,6 +72,7 @@ function UserCardImage({ image }: { image: UserCardImageItem }) {
 
 function TagViewCard({ bannerUrl, tagText, onClick, className }: TagViewUserCardProps) {
   const keyDownOnArticle = useKeyDownActivate(onClick);
+  const resolvedBannerUrl = bannerUrl?.trim() || undefined;
 
   return (
     <article
@@ -70,13 +83,17 @@ function TagViewCard({ bannerUrl, tagText, onClick, className }: TagViewUserCard
       onKeyDown={keyDownOnArticle}
     >
       <div className={styles.tagViewBg}>
-        <ResponsiveImage
-          src={bannerUrl ?? THUMBNAIL_PATH}
-          alt=""
-          className={styles.tagViewBgImage}
-          mobileSize={360}
-          desktopSize={720}
-        />
+        {resolvedBannerUrl ? (
+          <ResponsiveImage
+            src={resolvedBannerUrl}
+            alt=""
+            className={styles.tagViewBgImage}
+            mobileSize={360}
+            desktopSize={720}
+          />
+        ) : (
+          <Thumbnail alt="" ratio="3/4" className={styles.tagViewBgThumbnail} />
+        )}
         <div className={styles.tagViewOverlay} aria-hidden />
       </div>
       <div className={styles.tagViewBody}>
@@ -103,6 +120,8 @@ function SearchCard({
   );
 
   const keyDownOnArticle = useKeyDownActivate(onClick);
+  const nicknameText = typeof nickname === "string" ? nickname : "";
+  const resolvedBannerUrl = bannerUrl?.trim() || undefined;
 
   return (
     <article
@@ -113,12 +132,11 @@ function SearchCard({
       onKeyDown={keyDownOnArticle}
     >
       <div className={styles.searchBanner}>
-        <ResponsiveImage
-          src={bannerUrl ?? THUMBNAIL_PATH}
+        <Thumbnail
+          src={resolvedBannerUrl}
           alt=""
-          className={styles.searchBannerImage}
-          mobileSize={720}
-          desktopSize={1200}
+          ratio="4/1"
+          className={styles.searchBannerThumbnail}
         />
       </div>
       <div className={styles.searchBody}>
@@ -126,7 +144,7 @@ function SearchCard({
           <div className={styles.searchAvatar}>
             <UserAvatar
               avatarUrl={avatarUrl}
-              nickname={nickname}
+              nickname={nicknameText}
               imageClassName={styles.searchAvatarImage}
               mobileSize={80}
               desktopSize={160}
@@ -151,7 +169,7 @@ function SearchCard({
                 </SolidButton>
               )}
             </div>
-            {content && <p className={styles.searchContent}>{content}</p>}
+            <p className={styles.searchContent}>{content ?? ''}</p>
           </div>
         </div>
       </div>

@@ -120,7 +120,11 @@ export default function Album({
 
         {isMainOrRank && (
           <span
-            className={clsx(styles.iconBottomRight, onLikeClick && styles.iconBottomRightClickable)}
+            className={clsx(
+              styles.iconBottomRight,
+              onLikeClick && styles.iconBottomRightClickable,
+              isLiked && styles.iconBottomRightActive,
+            )}
             role={onLikeClick ? "button" : undefined}
             tabIndex={onLikeClick ? 0 : undefined}
             aria-pressed={onLikeClick ? isLiked : undefined}
@@ -128,6 +132,7 @@ export default function Album({
             onClick={
               onLikeClick
                 ? (e) => {
+                    e.preventDefault();
                     e.stopPropagation();
                     handleLikeClick();
                   }
@@ -145,11 +150,21 @@ export default function Album({
                 : undefined
             }
           >
-            <Icon
-              name={isLiked ? "heart-fill" : "heart"}
-              size={24}
-              color={isLiked ? "primary-normal" : "gray-subtle"}
-            />
+            <span className={styles.heartStack}>
+              {!isLiked && (
+                <Icon
+                  name="heart-fill"
+                  size={24}
+                  color="white"
+                  className={styles.heartStackBg}
+                />
+              )}
+              <Icon
+                name={isLiked ? "heart-fill" : "heart"}
+                size={24}
+                className={styles.heartStackFg}
+              />
+            </span>
           </span>
         )}
       </div>

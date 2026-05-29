@@ -91,11 +91,32 @@
 .iconBottomRight {
   bottom: spacing.$spacing-8;
   right: spacing.$spacing-8;
+  color: colors.$icon-gray-subtle;
 
   &.iconBottomRightClickable {
     pointer-events: auto;
     cursor: pointer;
   }
+
+  &.iconBottomRightActive {
+    color: colors.$status-negative;
+  }
+}
+
+.heartStack {
+  position: relative;
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+}
+
+.heartStackBg {
+  position: absolute;
+  inset: 0;
+}
+
+.heartStackFg {
+  position: relative;
 }
 
 .body {
