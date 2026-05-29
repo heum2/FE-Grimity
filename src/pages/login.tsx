@@ -15,9 +15,10 @@ import { useAuthStore } from "@/states/authStore";
 import { useModalStore } from "@/states/modalStore";
 import { useChatStore } from "@/states/chatStore";
 
-import Icon from "@/components/Asset/IconTemp";
-import IconComponent from "@/components/Asset/Icon";
-import DSIcon from "@/components/common/Icon/Icon";
+import Icon from "@/components/common/Icon/Icon";
+import SolidButton from "@/components/common/Button/SolidButton/SolidButton";
+import OutlinedButton from "@/components/common/Button/OutlinedButton/OutlinedButton";
+import TextButton from "@/components/common/Button/TextButton/TextButton";
 import Loader from "@/components/Layout/Loader/Loader";
 
 import { useToast } from "@/hooks/useToast";
@@ -178,66 +179,64 @@ export default function LoginPage() {
       <main className={styles.page}>
         <div className={styles.content}>
           <div className={styles.logoSection}>
-            <img
-              src="/image/logo.svg"
-              className={styles.logo}
-              alt="Grimity"
-            />
-            <div className={styles.tagline}>
-              <p>그리미티에서</p>
-              <p>내 그림을 뽐내보세요!</p>
-            </div>
+            <Icon name="logo" color="gray-bold" className={styles.logo} aria-label="Grimity" />
+            <p className={styles.tagline}>
+              <span>그리미티에서</span>{" "}
+              <span>내 그림을 뽐내보세요!</span>
+            </p>
           </div>
 
           <div className={styles.buttons}>
-            <button
-              type="button"
-              className={`${styles.btn} ${styles.kakao}`}
+            <SolidButton
+              size="large"
+              iconLeft={<Icon name="kakao" size={24} />}
               onClick={handleKaKaoLogin}
               disabled={isPending}
+              className={`${styles.oauthBtn} ${styles.kakao}`}
             >
-              <IconComponent name="kakao" size={24} />
               {isPending ? "로그인 중..." : "카카오로 계속하기"}
-            </button>
-            <button
-              type="button"
-              className={`${styles.btn} ${styles.google}`}
+            </SolidButton>
+            <SolidButton
+              size="large"
+              iconLeft={<Icon name="google" size={24} />}
               onClick={() => googleLogin()}
               disabled={isPending}
+              className={`${styles.oauthBtn} ${styles.google}`}
             >
-              <IconComponent name="google" size={20} />
               {isPending ? "로그인 중..." : "구글로 계속하기"}
-            </button>
-            <button
-              type="button"
-              className={`${styles.btn} ${styles.apple}`}
+            </SolidButton>
+            <OutlinedButton
+              size="large"
+              iconLeft={<Icon name="apple" size={24} />}
               onClick={handleAppleLogin}
               disabled={isPending}
+              className={`${styles.oauthBtn} ${styles.apple}`}
             >
-              <Icon icon="apple" className={styles.appleIcon} size="2xl" />
               {isPending ? "로그인 중..." : "애플로 계속하기"}
-            </button>
+            </OutlinedButton>
           </div>
         </div>
 
         <footer className={styles.footer}>
           <div className={styles.footerLeft}>
-            <Link
-              href="/posts/048ae290-4b1e-4292-9845-e4b2ca68ea6a"
+            <TextButton
+              variant="assistive"
+              size="large"
+              iconLeft={<Icon name="info-circle" size={20} />}
+              onClick={() => router.push("/posts/048ae290-4b1e-4292-9845-e4b2ca68ea6a")}
               className={styles.footerBtn}
             >
-              <DSIcon name="info-circle" size={20} aria-hidden />
               공지사항
-            </Link>
-            <Link
-              href="https://open.kakao.com/o/sKYFewgh"
-              target="_blank"
-              rel="noopener noreferrer"
+            </TextButton>
+            <TextButton
+              variant="assistive"
+              size="large"
+              iconLeft={<Icon name="question-circle" size={20} />}
+              onClick={() => window.open("https://open.kakao.com/o/sKYFewgh", "_blank", "noopener,noreferrer")}
               className={styles.footerBtn}
             >
-              <DSIcon name="question-circle" size={20} aria-hidden />
               문의
-            </Link>
+            </TextButton>
           </div>
           <div className={styles.footerRight}>
             <div className={styles.footerLinks}>
