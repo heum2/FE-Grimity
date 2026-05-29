@@ -3,7 +3,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { SearchedFeedsResponse } from "@grimity/dto";
 
 export interface FeedSearchRequest {
-  sort?: "latest" | "popular" | "accuracy";
+  sort?: "latest" | "popular";
   size?: number;
   cursor?: string;
   keyword: string;

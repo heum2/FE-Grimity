@@ -1,10 +1,14 @@
+import { useEffect, useState, createContext, useMemo } from "react";
+import { useRouter } from "next/router";
+
 import { InitialPageMeta } from "@/components/MetaData/MetaData";
 import SearchPage from "@/components/SearchPage/SearchPage";
-import { serviceUrl } from "@/constants/serviceurl";
+import highlightStyles from "@/components/SearchPage/SearchHighlightText/SearchHighlightText.module.scss";
+import { highlightSearchText } from "@/utils/highlightSearchText";
+
 import { useScrollRestoration } from "@/hooks/useScrollRestoration";
-import { useRouter } from "next/router";
-import React, { useEffect, useState, createContext } from "react";
-import Highlighter from "react-highlight-words";
+
+import { serviceUrl } from "@/constants/serviceurl";
 import { event as gtagEvent } from "@/constants/gtag";
 
 interface SearchHighlightContextType {
@@ -23,15 +27,21 @@ export default function Search() {
   const [OGUrl, setOGUrl] = useState(serviceUrl);
   const { restoreScrollPosition } = useScrollRestoration("search-scroll");
 
-  // URL에서 쿼리 파라미터로 검색어 받아오기
   const keyword =
     typeof router.query.keyword === "string" ? decodeURIComponent(router.query.keyword) : "";
+
+  const highlightContextValue = useMemo(
+    () => ({
+      keyword,
+      highlight: (text: string) => highlightSearchText(text, keyword, highlightStyles.highlight),
+    }),
+    [keyword],
+  );
 
   useEffect(() => {
     setOGUrl(`${serviceUrl}/${router.asPath}`);
   }, [router.asPath]);
 
-  // GA 검색 이벤트 추적
   useEffect(() => {
     if (keyword) {
       gtagEvent({
@@ -49,27 +59,10 @@ export default function Search() {
     }
   }, [restoreScrollPosition]);
 
-  const highlight = (text: string): React.ReactNode => {
-    if (!text || !keyword) return text;
-
-    return (
-      <Highlighter
-        highlightClassName="highlighted-keyword"
-        searchWords={[keyword]}
-        autoEscape={true}
-        textToHighlight={text}
-        highlightStyle={{
-          color: "#2bc466",
-          backgroundColor: "transparent",
-        }}
-      />
-    );
-  };
-
   return (
     <>
       <InitialPageMeta title={OGTitle} url={OGUrl} />
-      <SearchHighlightContext.Provider value={{ highlight, keyword }}>
+      <SearchHighlightContext.Provider value={highlightContextValue}>
         <SearchPage />
       </SearchHighlightContext.Provider>
     </>

@@ -78,6 +78,8 @@ export default function GNB({
   searchValue = "",
   searchPlaceholder = "검색어를 입력하세요",
   onSearchChange,
+  onSearchKeyDown,
+  onSearchClear,
   rightActions = [],
   rightLabel,
   onRightLabelClick,
@@ -245,6 +247,8 @@ export default function GNB({
             className={styles.searchInput}
             value={searchValue}
             onChange={(e) => onSearchChange?.(e.target.value)}
+            onKeyDown={onSearchKeyDown}
+            onClear={onSearchClear}
             placeholder={searchPlaceholder}
           />
         </nav>

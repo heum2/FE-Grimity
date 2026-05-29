@@ -1,117 +1,96 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useRouter } from "next/router";
-import styles from "./SearchFeed.module.scss";
-import Loader from "@/components/Layout/Loader/Loader";
-import SearchCard from "../SearchCard/SearchCard";
-import Dropdown from "@/components/Dropdown/Dropdown";
-import Button from "@/components/Button/Button";
-import IconComponent from "@/components/Asset/Icon";
+import Link from "next/link";
+
 import { useFeedSearch } from "@/api/feeds/getFeedsSearch";
+import { useAuthStore } from "@/states/authStore";
+import { useDeviceStore } from "@/states/deviceStore";
+import { useFeedsLikeMutation } from "@/queries/feeds/useFeedsLikeMutation";
+import { useGlobalLoading } from "@/hooks/useGlobalLoading";
 
-type SortOption = "latest" | "popular" | "accuracy";
+import Album from "@/components/common/Card/Album/Album";
+import Empty from "@/components/common/Empty/Empty";
+import SearchHighlightText from "@/components/SearchPage/SearchHighlightText/SearchHighlightText";
+import { resolveSortOption } from "@/components/SearchPage/searchPage.constants";
 
-const sortOptions: { value: SortOption; label: string }[] = [
-  { value: "latest", label: "최신순" },
-  { value: "popular", label: "인기순" },
-  { value: "accuracy", label: "정확도순" },
-];
+import styles from "./SearchFeed.module.scss";
 
 export default function SearchFeed() {
-  const [sortBy, setSortBy] = useState<SortOption>("accuracy");
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [searchKeyword, setSearchKeyword] = useState<string>("");
   const router = useRouter();
+  const keyword = typeof router.query.keyword === "string" ? router.query.keyword : "";
+  const sort = resolveSortOption("feed", router.query.sort);
 
-  useEffect(() => {
-    const keyword = router.query.keyword as string | undefined;
-    if (keyword) {
-      setSearchKeyword(keyword);
-    }
-  }, [router.query]);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const isMobile = useDeviceStore((state) => state.isMobile);
+  const { mutate: toggleLike } = useFeedsLikeMutation();
 
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useFeedSearch({
-    keyword: searchKeyword,
-    sort: sortBy,
+    keyword,
+    sort,
     size: 10,
   });
 
-  const loadMoreRef = useRef(null);
+  useGlobalLoading(isLoading);
+
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    const target = loadMoreRef.current;
+    if (!target) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
           fetchNextPage();
         }
       },
-      {
-        rootMargin: "100px",
-      },
+      { rootMargin: "100px" },
     );
 
-    if (loadMoreRef.current) {
-      observer.observe(loadMoreRef.current);
-    }
-
-    return () => {
-      if (loadMoreRef.current) {
-        observer.unobserve(loadMoreRef.current);
-      }
-    };
+    observer.observe(target);
+    return () => observer.unobserve(target);
   }, [hasNextPage, isFetchingNextPage, fetchNextPage, data?.pages.length]);
 
-  const handleDropdownToggle = (isOpen: boolean) => {
-    setIsDropdownOpen(isOpen);
-  };
+  const hasResults = data?.pages.some((page) => page.feeds.length > 0) ?? false;
 
-  const handleSortChange = (option: SortOption) => {
-    setSortBy(option);
-  };
-
-  if (isLoading) return <Loader />;
+  if (isLoading) return null;
 
   return (
     <section className={styles.results}>
-      <div className={styles.sortWrapper}>
-        <h2 className={styles.title}>
-          검색결과 <span className={styles.searchCount}>{data?.pages?.[0]?.totalCount || 0}</span>건
-        </h2>
-        <div className={styles.sort}>
-          <Dropdown
-            menuItems={sortOptions.map((option) => ({
-              label: option.label,
-              value: option.value,
-              onClick: () => handleSortChange(option.value),
-            }))}
-            onOpenChange={handleDropdownToggle}
-            trigger={
-              <Button
-                type="text-assistive"
-                size="l"
-                rightIcon={
-                  isDropdownOpen ? (
-                    <IconComponent name="arrowUp" size={20} isBtn />
-                  ) : (
-                    <IconComponent name="arrowDown" size={20} isBtn />
-                  )
-                }
-              >
-                {sortOptions.find((option) => option.value === sortBy)?.label || "정확도순"}
-              </Button>
-            }
-          />
-        </div>
-      </div>
-      {data?.pages.length === 0 || !data?.pages.some((page) => page.feeds.length > 0) ? (
-        <p className={styles.noResult}>검색 결과가 없어요</p>
+      {!hasResults ? (
+        <Empty
+          iconName="illust-result-null"
+          size={isMobile ? "md" : "xl"}
+          title="검색한 결과를 찾을 수 없어요"
+          content="검색어의 단어 수를 줄이거나 다른 검색어로 검색해보세요."
+        />
       ) : (
-        <div className={styles.feedContainer}>
-          {data.pages.map((page) =>
-            page.feeds.map((feed) => <SearchCard key={feed.id} {...feed} />),
+        <div className={styles.grid}>
+          {data?.pages.map((page) =>
+            page.feeds.map((feed) => {
+              const isLiked = feed.isLike ?? false;
+              return (
+                <Link key={feed.id} href={`/feeds/${feed.id}`} className={styles.cardLink}>
+                  <Album
+                    variant="mainTitle"
+                    imageUrl={feed.thumbnail}
+                    title={<SearchHighlightText text={feed.title} keyword={keyword} />}
+                    nickname={feed.author?.name ?? ""}
+                    likeCount={feed.likeCount}
+                    viewCount={feed.viewCount}
+                    isLiked={isLiked}
+                    onLikeClick={
+                      isLoggedIn ? () => toggleLike({ id: feed.id, isLiked }) : undefined
+                    }
+                  />
+                </Link>
+              );
+            }),
           )}
         </div>
       )}
-      {hasNextPage && <div ref={loadMoreRef} />}
+
+      {hasNextPage && <div ref={loadMoreRef} className={styles.loader} />}
     </section>
   );
 }

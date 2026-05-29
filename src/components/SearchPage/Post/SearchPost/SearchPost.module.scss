@@ -1,100 +1,54 @@
-@use "@/styles/globals.scss" as *;
+@use "@/styles/tokens/colors/semantic" as colors;
+@use "@/styles/tokens/typography/semantic" as typo;
+@use "@/styles/tokens/spacing" as spacing;
+@use "@/styles/breakpoint" as bp;
 
 .results {
   width: 100%;
-
-  .sortWrapper {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
-  }
-
-  .title {
-    @include Sub2;
-    color: $gray60;
-    @include Drag;
-
-    .searchCount {
-      color: $gray70;
-    }
-
-    @include Size("mobile") {
-      @include Label2;
-    }
-  }
-
-  .sort {
-    position: relative;
-  }
-}
-.cards {
-  width: 100%;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  margin-top: 20px;
-  margin-bottom: 40px;
+  align-items: center;
 }
 
-.noResult {
+.list {
   width: 100%;
+  min-width: 0;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  @include Sub2;
-  color: $gray50;
-  margin-top: 50px;
-  @include Drag;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.listItem {
+  min-width: 0;
+}
+
+.cardLink {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+.userItem {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+
+  @include bp.breakpoint-down("xs") {
+    padding-inline: 0;
+  }
 }
 
 .pagination {
-  margin-top: 8px;
   display: flex;
   justify-content: center;
-  align-items: center;
-  gap: 8px;
-  @include Drag;
-
-  @include Size("mobile") {
-    margin-top: 28px;
-    margin-bottom: 80px;
-    gap: 4px;
-  }
-
-  button {
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: $gray0;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    @include Label2;
-    color: $gray70;
-
-    &:hover {
-      background-color: $gray10;
-    }
-  }
-
-  .paginationArrow {
-    background-color: transparent;
-    border: none;
-
-    &:hover {
-      background-color: $gray10;
-    }
-
-    &:disabled {
-      display: none;
-    }
-  }
-
-  .active {
-    background-color: $gray20;
-  }
+  width: 100%;
+  min-width: 0;
+  margin-top: spacing.$spacing-32;
+  overflow-x: auto;
 }

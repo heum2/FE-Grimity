@@ -96,7 +96,7 @@ const TextField = forwardRef<TextFieldHandle, TextFieldProps>(
       <div className={wrapperClass}>
         {isSearch && (
           <span className={styles.iconLeft}>
-            <Icon name="magnifer" size={20} />
+            <Icon name="magnifer" size={20} color="gray-normal"/>
           </span>
         )}
         <input

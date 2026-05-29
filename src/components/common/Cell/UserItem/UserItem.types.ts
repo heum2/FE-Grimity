@@ -50,8 +50,8 @@ export interface UserItemProps {
   /** Post content */
   tag?: string;
   showTag?: boolean;
-  postTitle?: string;
-  body?: string;
+  postTitle?: ReactNode;
+  body?: ReactNode;
   commentCount?: number;
   thumbnailUrl?: string;
   showBookmark?: boolean;
