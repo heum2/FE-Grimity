@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { usePostsLatest, usePostsNotices } from "@/api/posts/getPosts";
 import { useGlobalLoading } from "@/hooks/useGlobalLoading";
 
-import BoardCard from "../BoardCard/BoardCard";
+import BoardCard from "@/components/Layout/BoardCard/BoardCard";
 import Title from "@/components/Layout/Title/Title";
 import Divider from "@/components/common/Divider/Divider";
 
