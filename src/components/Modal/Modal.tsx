@@ -6,7 +6,6 @@ import { usePreventScroll } from "@/hooks/usePreventScroll";
 import IconComponent from "../Asset/Icon";
 import Button from "../Button/Button";
 import Login from "./Login/Login";
-import Nickname from "./Nickname/Nickname";
 import ProfileId from "./ProfileId/ProfileId";
 import Join from "./Join/Join";
 import ProfileEdit from "./ProfileEdit/ProfileEdit";
@@ -91,8 +90,6 @@ export default function Modal() {
 
   const renderModalContent = () => {
     switch (type) {
-      case "NICKNAME":
-        return <Nickname />;
       case "PROFILE-ID":
         return <ProfileId />;
       case "JOIN":

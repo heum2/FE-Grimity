@@ -35,7 +35,7 @@ import axiosInstance from "@/constants/baseurl";
 
 import styles from "@/components/Layout/Layout.module.scss";
 
-const MAIN_ROUTES = ["/", "/ranking", "/board", "/following", "/login"];
+const MAIN_ROUTES = ["/", "/ranking", "/board", "/following", "/login", "/signup/nickname"];
 const UPLOAD_HIDDEN_ROUTES = [
   "/write",
   "/feeds/[id]/edit",
@@ -327,7 +327,8 @@ export default function Layout({ children }: LayoutProps) {
   // ─── 렌더 ──────────────────────────────────────────────────────────────
   const showProfileDropdown =
     !isMobile && isLoggedIn && Boolean(myData) && isProfileDropdownOpen;
-  const shouldHideSidebar = router.pathname === "/login";
+  const shouldHideSidebar =
+    router.pathname === "/login" || router.pathname.startsWith("/signup");
 
   return (
     <div className={styles.layout}>
