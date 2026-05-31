@@ -56,10 +56,7 @@ export default function LoginPage() {
   const redirectTo = getRedirectTo(router.query.redirect as string | string[] | undefined);
 
   const goToSignup = (accessToken: string, provider: AuthProvider) => {
-    sessionStorage.setItem(
-      SIGNUP_OAUTH_KEY,
-      JSON.stringify({ accessToken, provider }),
-    );
+    sessionStorage.setItem(SIGNUP_OAUTH_KEY, JSON.stringify({ accessToken, provider }));
     router.push("/signup/nickname");
   };
 
@@ -180,15 +177,14 @@ export default function LoginPage() {
           <div className={styles.logoSection}>
             <Icon name="logo" color="gray-bold" className={styles.logo} aria-label="Grimity" />
             <p className={styles.tagline}>
-              <span>그리미티에서</span>{" "}
-              <span>내 그림을 뽐내보세요!</span>
+              <span>그리미티에서</span> <span>내 그림을 뽐내보세요!</span>
             </p>
           </div>
 
           <div className={styles.buttons}>
             <SolidButton
               size="large"
-              iconLeft={<Icon name="kakao" size={24} />}
+              iconLeft={<Icon name="kakaotalk" size={24} />}
               onClick={handleKaKaoLogin}
               disabled={isPending}
               className={`${styles.oauthBtn} ${styles.kakao}`}
@@ -206,7 +202,7 @@ export default function LoginPage() {
             </SolidButton>
             <OutlinedButton
               size="large"
-              iconLeft={<Icon name="apple" size={24} />}
+              iconLeft={<Icon name="apple" size={24} color="base" />}
               onClick={handleAppleLogin}
               disabled={isPending}
               className={`${styles.oauthBtn} ${styles.apple}`}
@@ -231,7 +227,9 @@ export default function LoginPage() {
               variant="assistive"
               size="large"
               iconLeft={<Icon name="question-circle" size={20} />}
-              onClick={() => window.open("https://open.kakao.com/o/sKYFewgh", "_blank", "noopener,noreferrer")}
+              onClick={() =>
+                window.open("https://open.kakao.com/o/sKYFewgh", "_blank", "noopener,noreferrer")
+              }
               className={styles.footerBtn}
             >
               문의
@@ -239,11 +237,7 @@ export default function LoginPage() {
           </div>
           <div className={styles.footerRight}>
             <div className={styles.footerLinks}>
-              <Link
-                href="https://term.grimity.com/term"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <Link href="https://term.grimity.com/term" target="_blank" rel="noopener noreferrer">
                 이용약관
               </Link>
               <span className={styles.dot} />
