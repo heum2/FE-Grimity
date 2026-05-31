@@ -130,7 +130,7 @@
 
 .google {
   background-color: colors.$surface-gray-subtlest;
-  color: #1a1b1e;
+  color: colors.$surface-inverse;
 
   &:hover:not(:disabled) {
     background-color: colors.$surface-gray-subtlest;
@@ -139,7 +139,7 @@
 }
 
 .apple {
-  color: #1a1b1e;
+  color: colors.$surface-inverse;
 }
 
 // ── 푸터 (TextButton 오버라이드 + 기타) ──────────────────────
