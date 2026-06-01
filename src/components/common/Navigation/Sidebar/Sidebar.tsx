@@ -174,7 +174,7 @@ export default function Sidebar({
     document.addEventListener("mousedown", onDocMouseDown);
     return () => document.removeEventListener("mousedown", onDocMouseDown);
   }, []);
-
+  
   useEffect(() => {
     if (!activeDropdown) return;
     const onKeyDown = (e: KeyboardEvent) => {
@@ -184,22 +184,30 @@ export default function Sidebar({
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [activeDropdown]);
 
+  const resolvedProfileActiveItem = useMemo<"liked" | "saved" | undefined>(() => {
+    if (profileActiveItem) return profileActiveItem;
+    if (router.pathname !== "/mypage") return undefined;
+    if (router.query.tab === "liked-feeds") return "liked";
+    if (router.query.tab === "saved-posts") return "saved";
+    return undefined;
+  }, [profileActiveItem, router.pathname, router.query.tab]);
+
   const profileMenuItems = useMemo(
     () => [
       {
         icon: "heart-fill" as IconName,
         label: "좋아요한 그림",
-        active: profileActiveItem === "liked",
-        onClick: onProfileLikedClick,
+        active: resolvedProfileActiveItem === "liked",
+        onClick: onProfileLikedClick ?? (() => navigate("/mypage?tab=liked-feeds")),
       },
       {
         icon: "bookmark-fill" as IconName,
         label: "저장한 글",
-        active: profileActiveItem === "saved",
-        onClick: onProfileSavedClick,
+        active: resolvedProfileActiveItem === "saved",
+        onClick: onProfileSavedClick ?? (() => navigate("/mypage?tab=saved-posts")),
       },
     ],
-    [profileActiveItem, onProfileLikedClick, onProfileSavedClick],
+    [resolvedProfileActiveItem, onProfileLikedClick, onProfileSavedClick, navigate],
   );
 
   const openExternal = useCallback(

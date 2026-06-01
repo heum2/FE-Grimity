@@ -13,6 +13,8 @@ export interface AlbumProps {
   likeCount: number;
   viewCount: number;
   isLiked?: boolean;
+  /** 이미지와 타이틀에만 링크를 거는 옵션. 설정 시 onClick은 무시됨 */
+  linkHref?: string;
   onClick?: () => void;
   onCheckClick?: () => void;
   onLikeClick?: () => void;

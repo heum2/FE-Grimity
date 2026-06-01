@@ -15,7 +15,6 @@ import { usePreventScroll } from "@/hooks/usePreventScroll";
 import useGoBack from "@/hooks/useGoBack";
 import { useMobileSearchHeader } from "@/hooks/useMobileSearchHeader";
 
-import IconComponent from "@/components/Asset/Icon";
 import IconButton from "@/components/common/Button/IconButton/IconButton";
 import Icon from "@/components/common/Icon/Icon";
 import Menu from "@/components/common/Navigation/Menu/Menu";
@@ -57,8 +56,6 @@ const SUB_SEARCH_HIDDEN_ROUTES = [
   "/posts/[id]",
   "/direct",
 ];
-const SCROLL_TOP_THRESHOLD = 300;
-
 export default function Layout({ children }: LayoutProps) {
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -66,7 +63,7 @@ export default function Layout({ children }: LayoutProps) {
   const { goBack } = useGoBack();
 
   // ─── 전역 상태 ─────────────────────────────────────────────────────────
-  const { isMobile, isTablet } = useDeviceStore();
+  const { isMobile } = useDeviceStore();
   const isLoggedIn = useAuthStore((s) => s.isLoggedIn);
   const isAuthReady = useAuthStore((s) => s.isAuthReady);
   const user_id = useAuthStore((s) => s.user_id);
@@ -76,7 +73,6 @@ export default function Layout({ children }: LayoutProps) {
   const { socket, isConnected } = useSocket();
 
   // ─── 로컬 상태 ─────────────────────────────────────────────────────────
-  const [isScrollAbove, setIsScrollAbove] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
@@ -168,7 +164,14 @@ export default function Layout({ children }: LayoutProps) {
 
   const gnbVariant: GNBVariant = useMemo(() => {
     if (isMobileSearchPage) return "search";
-    if (isSubRoute) return "three-button";
+    if (isSubRoute) {
+      switch (router.pathname) {
+        case "/mypage":
+          return "depth-2";
+        default:
+          return "three-button";
+      }
+    }
     if (isMobile) {
       if (!isAuthReady || !isLoggedIn) {
         return isMobileSidebarOpen ? "guest-menu" : "guest";
@@ -176,7 +179,7 @@ export default function Layout({ children }: LayoutProps) {
       return "main";
     }
     return isLoggedIn ? "pc-main" : "pc-guest";
-  }, [isMobileSearchPage, isSubRoute, isMobile, isAuthReady, isLoggedIn, isMobileSidebarOpen]);
+  }, [isMobileSearchPage, isSubRoute, isMobile, isAuthReady, isLoggedIn, isMobileSidebarOpen, router.pathname]);
 
   const subRightActions = useMemo<GNBProps["rightActions"]>(() => {
     if (!isSubRoute) return undefined;
@@ -220,11 +223,6 @@ export default function Layout({ children }: LayoutProps) {
         borderBottom: true,
       },
       { label: "좋아요한 그림", onClick: () => navigate("/mypage?tab=liked-feeds") },
-      {
-        label: "저장한 그림",
-        onClick: () => navigate("/mypage?tab=saved-feeds"),
-        borderBottom: true,
-      },
       {
         label: "저장한 글",
         onClick: () => navigate("/mypage?tab=saved-posts"),
@@ -304,13 +302,6 @@ export default function Layout({ children }: LayoutProps) {
       socket.off("newChatMessage", handleNewChatMessage);
     };
   }, [isConnected, currentChatId, setHasUnreadMessages, queryClient, user_id]);
-
-  // 스크롤 위치 감지
-  useEffect(() => {
-    const handler = () => setIsScrollAbove(window.scrollY > SCROLL_TOP_THRESHOLD);
-    window.addEventListener("scroll", handler);
-    return () => window.removeEventListener("scroll", handler);
-  }, []);
 
   // 로그인 상태 변경 시 프로필 드롭다운·모바일 사이드바 닫기
   useEffect(() => {
@@ -393,17 +384,6 @@ export default function Layout({ children }: LayoutProps) {
           {children}
         </div>
       </div>
-
-      {!isMobile && !isTablet && (
-        <div
-          className={`${styles.topButton} ${isScrollAbove && styles.show}`}
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          role="button"
-          tabIndex={0}
-        >
-          <IconComponent name="up" size={28} isBtn />
-        </div>
-      )}
     </div>
   );
 }

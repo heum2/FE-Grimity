@@ -1,22 +1,32 @@
-import { useState } from "react";
+import { useState, type MouseEvent, type ReactNode } from "react";
+import Link from "next/link";
 import clsx from "clsx";
+
 import Icon from "@/components/common/Icon/Icon";
 import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
+import UserInfo from "@/components/common/Cell/UserInfo/UserInfo";
 import {
   useKeyDownActivate,
   useKeyDownActivateStopPropagation,
   useToggleWithCallback,
 } from "@/hooks/useCardInteraction";
+
+import { THUMBNAIL_PATH } from "@/constants/imageUrl";
+
 import styles from "./Album.module.scss";
 import type { AlbumProps, AlbumRank } from "./Album.types";
-import { THUMBNAIL_PATH } from "@/constants/imageUrl";
-import UserInfo from "@/components/common/Cell/UserInfo/UserInfo";
 
 const RANK_ICON_MAP: Record<AlbumRank, "rank-1" | "rank-2" | "rank-3" | "rank-4"> = {
   1: "rank-1",
   2: "rank-2",
   3: "rank-3",
   4: "rank-4",
+};
+
+const blockBubble = (handler: () => void) => (e: MouseEvent) => {
+  e.preventDefault();
+  e.stopPropagation();
+  handler();
 };
 
 export default function Album({
@@ -29,6 +39,7 @@ export default function Album({
   likeCount,
   viewCount,
   isLiked: isLikedProp,
+  linkHref,
   onClick,
   onCheckClick,
   onLikeClick,
@@ -50,133 +61,128 @@ export default function Album({
   const handleLikeClick = useToggleWithCallback(isControlledLiked, setInternalLiked, onLikeClick);
 
   const isCheck = variant === "check";
-  const keyDownOnArticle = useKeyDownActivate(onClick);
-  const keyDownOnCheckWrap = useKeyDownActivateStopPropagation(
-    isCheck && onCheckClick ? handleCheckClick : undefined,
-  );
-  const isRank = variant === "rank" && rank != null && rank in RANK_ICON_MAP;
   const isMainOrRank = variant === "mainTitle" || variant === "rank";
+  const isRank = variant === "rank" && rank != null && rank in RANK_ICON_MAP;
+  const canCheck = isCheck && Boolean(onCheckClick);
+  const canLike = isMainOrRank && Boolean(onLikeClick);
+  const articleOnClick = linkHref ? undefined : onClick;
+
+  const keyDownOnArticle = useKeyDownActivate(articleOnClick);
+  const keyDownOnCheckWrap = useKeyDownActivateStopPropagation(
+    canCheck ? handleCheckClick : undefined,
+  );
+  const keyDownOnLike = useKeyDownActivateStopPropagation(
+    canLike ? handleLikeClick : undefined,
+  );
+
+  const imageNode = (
+    <div
+      className={clsx(
+        styles.imageWrap,
+        isMainOrRank && styles.mainTitleRankOverlay,
+        isCheck && !checked && styles.checkDefault,
+        isCheck && checked && styles.checked,
+        canCheck && styles.imageWrapClickable,
+      )}
+      role={canCheck ? "button" : undefined}
+      tabIndex={canCheck ? 0 : undefined}
+      onClick={canCheck ? blockBubble(handleCheckClick) : undefined}
+      onKeyDown={keyDownOnCheckWrap}
+    >
+      <ResponsiveImage
+        src={imageUrl ?? THUMBNAIL_PATH}
+        alt=""
+        className={styles.image}
+        mobileSize={400}
+        desktopSize={800}
+      />
+
+      {isRank && (
+        <span className={styles.iconTopLeft} aria-hidden>
+          <Icon name={RANK_ICON_MAP[rank!]} size={24} />
+        </span>
+      )}
+
+      {isCheck && (
+        <button
+          type="button"
+          className={styles.iconTopRight}
+          aria-pressed={checked}
+          aria-label={checked ? "선택 해제" : "선택"}
+          onClick={blockBubble(handleCheckClick)}
+        >
+          <Icon
+            name={checked ? "check-square-fill" : "check-square"}
+            size={24}
+            color={checked ? "primary-normal" : "gray-subtler"}
+          />
+        </button>
+      )}
+
+      {isMainOrRank && (
+        <button
+          type="button"
+          className={clsx(
+            styles.iconBottomRight,
+            canLike && styles.iconBottomRightClickable,
+            isLiked && styles.iconBottomRightActive,
+          )}
+          disabled={!canLike}
+          aria-pressed={canLike ? isLiked : undefined}
+          aria-label={canLike ? (isLiked ? "좋아요 취소" : "좋아요") : undefined}
+          onClick={canLike ? blockBubble(handleLikeClick) : undefined}
+          onKeyDown={keyDownOnLike}
+        >
+          <span className={styles.heartStack}>
+            {!isLiked && (
+              <Icon
+                name="heart-fill"
+                size={24}
+                color="white"
+                className={styles.heartStackBg}
+              />
+            )}
+            <Icon
+              name={isLiked ? "heart-fill" : "heart"}
+              size={24}
+              className={styles.heartStackFg}
+              color={isLiked ? "primary-normal" : "gray-subtle"}
+            />
+          </span>
+        </button>
+      )}
+    </div>
+  );
+
+  const titleNode = <p className={styles.title}>{title}</p>;
+
+  const withLink = (node: ReactNode) =>
+    linkHref ? (
+      <Link href={linkHref} className={styles.linkPart}>
+        {node}
+      </Link>
+    ) : (
+      node
+    );
 
   return (
     <article
       className={clsx(styles.album, className)}
-      role={onClick ? "button" : undefined}
-      tabIndex={onClick ? 0 : undefined}
-      onClick={onClick}
+      role={articleOnClick ? "button" : undefined}
+      tabIndex={articleOnClick ? 0 : undefined}
+      onClick={articleOnClick}
       onKeyDown={keyDownOnArticle}
     >
-      <div
-        className={clsx(
-          styles.imageWrap,
-          isMainOrRank && styles.mainTitleRankOverlay,
-          isCheck && !checked && styles.checkDefault,
-          isCheck && checked && styles.checked,
-          isCheck && onCheckClick && styles.imageWrapClickable,
-        )}
-        role={isCheck && onCheckClick ? "button" : undefined}
-        tabIndex={isCheck && onCheckClick ? 0 : undefined}
-        onClick={
-          isCheck && onCheckClick
-            ? (e) => {
-                e.stopPropagation();
-                handleCheckClick();
-              }
-            : undefined
-        }
-        onKeyDown={isCheck && onCheckClick ? keyDownOnCheckWrap : undefined}
-      >
-        <ResponsiveImage
-          src={imageUrl ?? THUMBNAIL_PATH}
-          alt=""
-          className={styles.image}
-          mobileSize={400}
-          desktopSize={800}
-        />
-
-        {isRank && (
-          <span className={styles.iconTopLeft} aria-hidden>
-            <Icon name={RANK_ICON_MAP[rank!]} size={24} />
-          </span>
-        )}
-
-        {isCheck && (
-          <button
-            type="button"
-            className={styles.iconTopRight}
-            aria-pressed={checked}
-            aria-label={checked ? "선택 해제" : "선택"}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleCheckClick();
-            }}
-          >
-            <Icon
-              name={checked ? "check-square-fill" : "check-square"}
-              size={24}
-              color={checked ? "primary-normal" : "gray-subtler"}
-            />
-          </button>
-        )}
-
-        {isMainOrRank && (
-          <span
-            className={clsx(
-              styles.iconBottomRight,
-              onLikeClick && styles.iconBottomRightClickable,
-              isLiked && styles.iconBottomRightActive,
-            )}
-            role={onLikeClick ? "button" : undefined}
-            tabIndex={onLikeClick ? 0 : undefined}
-            aria-pressed={onLikeClick ? isLiked : undefined}
-            aria-label={onLikeClick ? (isLiked ? "좋아요 취소" : "좋아요") : undefined}
-            onClick={
-              onLikeClick
-                ? (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    handleLikeClick();
-                  }
-                : undefined
-            }
-            onKeyDown={
-              onLikeClick
-                ? (e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      handleLikeClick();
-                    }
-                  }
-                : undefined
-            }
-          >
-            <span className={styles.heartStack}>
-              {!isLiked && (
-                <Icon
-                  name="heart-fill"
-                  size={24}
-                  color="white"
-                  className={styles.heartStackBg}
-                />
-              )}
-              <Icon
-                name={isLiked ? "heart-fill" : "heart"}
-                size={24}
-                className={styles.heartStackFg}
-              />
-            </span>
-          </span>
-        )}
-      </div>
+      {withLink(imageNode)}
 
       <div className={styles.body}>
-        <p className={styles.title}>{title}</p>
+        {withLink(titleNode)}
         <UserInfo
           type="default"
           nickname={nickname}
-          showHeart={true}
+          showHeart
           heartCount={likeCount.toString()}
-          showView={true}
+          showView
           viewCount={viewCount.toString()}
         />
       </div>
