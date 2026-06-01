@@ -69,37 +69,3 @@
 .label {
   white-space: nowrap;
 }
-
-.dropdown {
-  position: absolute;
-  top: calc(100% + spacing.$spacing-8);
-  left: 0;
-  z-index: 10;
-  min-width: 100%;
-  margin: 0;
-  padding: spacing.$spacing-8 0;
-  list-style: none;
-  background-color: colors.$surface-base;
-  border-radius: radius.$radius-lg;
-  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.12);
-}
-
-.option {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: spacing.$spacing-12;
-  padding: spacing.$spacing-12 spacing.$spacing-20;
-  cursor: pointer;
-  @include typo.label-3;
-  color: colors.$text-gray-bold;
-  white-space: nowrap;
-
-  &:hover {
-    background-color: colors.$surface-gray-subtlest;
-  }
-
-  &.selected {
-    color: colors.$text-primary-normal;
-  }
-}

@@ -8,6 +8,11 @@
   display: inline-block;
 }
 
+.triggerWrap {
+  display: inline-flex;
+  cursor: pointer;
+}
+
 .menuContainer {
   position: absolute;
   top: calc(100% + spacing.$spacing-8);

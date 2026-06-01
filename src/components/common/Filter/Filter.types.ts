@@ -12,4 +12,5 @@ export interface FilterProps {
   onChange: (value: string) => void;
   disabled?: boolean;
   className?: string;
+  align?: "left" | "right";
 }

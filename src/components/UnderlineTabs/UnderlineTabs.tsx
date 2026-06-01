@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import styles from "./UnderlineTabs.module.scss";
 import React from "react";
 
@@ -12,12 +12,16 @@ interface UnderlineTabsProps<T extends string> {
   tabs: TabItem<T>[];
   activeTab: T;
   onTabChange: (tabKey: T) => void;
+  rightSlot?: ReactNode;
+  ariaLabel?: string;
 }
 
 export default function UnderlineTabs<T extends string>({
   tabs,
   activeTab,
   onTabChange,
+  rightSlot,
+  ariaLabel,
 }: UnderlineTabsProps<T>) {
   const tabsRef = useRef<(HTMLButtonElement | null)[]>([]);
   const [underlineStyle, setUnderlineStyle] = useState({});
@@ -46,11 +50,14 @@ export default function UnderlineTabs<T extends string>({
     };
   }, [activeTab, tabs]);
 
-  return (
-    <div className={styles.navContainer}>
+  const nav = (
+    <div className={styles.navContainer} role="tablist" aria-label={ariaLabel}>
       {tabs.map((tab, index) => (
         <React.Fragment key={tab.key}>
           <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === tab.key}
             ref={(el) => {
               tabsRef.current[index] = el;
             }}
@@ -63,6 +70,15 @@ export default function UnderlineTabs<T extends string>({
         </React.Fragment>
       ))}
       <div className={styles.underline} style={underlineStyle} />
+    </div>
+  );
+
+  if (!rightSlot) return nav;
+
+  return (
+    <div className={styles.barContainer}>
+      {nav}
+      <div className={styles.rightSlot}>{rightSlot}</div>
     </div>
   );
 }
