@@ -1,55 +1,53 @@
 @use "@/styles/globals.scss" as *;
+@use "@/styles/breakpoint" as *;
+@use "@/styles/tokens/typography/semantic" as typo;
+@use "@/styles/tokens/colors/semantic" as colors;
+@use "@/styles/tokens/spacing" as spacing;
+@use "@/styles/tokens/radius" as radius;
 
 .navContainer {
   display: flex;
   align-items: center;
-  gap: 20px;
-  border-bottom: 1px solid $gray30;
-  background-color: $gray0;
+  border-bottom: 1px solid colors.$border-gray-subtle;
   position: relative;
-
-  @include Size("mobile") {
-    gap: 16px;
-    padding: 0 16px;
-  }
 
   .underline {
     position: absolute;
     bottom: -1px;
     left: 0;
     height: 2px;
-    background-color: $gray70;
+    background-color: colors.$border-gray-bold;
     transition: all 0.3s ease;
   }
 
   .button {
-    padding: 0 12px 8px;
+    padding: spacing.$spacing-12 spacing.$spacing-12 spacing.$spacing-16;
     background: none;
     border: none;
-    color: $gray60;
-    @include Sub2;
+    color: colors.$text-gray-subtle;
+    @include typo.subtitle-1;
     transition: all 0.3s;
     cursor: pointer;
 
-    @include Size("mobile") {
-      @include Sub4;
-      padding: 0 0 8px;
+    @include breakpoint-down("xs") {
+      @include typo.label-3;
+      padding: spacing.$spacing-12 spacing.$spacing-8 spacing.$spacing-16;
     }
 
     &:hover {
-      color: $gray70;
+      color: colors.$text-gray-normal;
     }
 
     &.selected {
-      color: $gray70;
+      color: colors.$text-gray-bold;
     }
   }
 
   .bar {
     width: 1px;
-    height: 20px;
-    background-color: $gray30;
+    height: spacing.$spacing-20;
+    background-color: colors.$border-gray-bold;
     padding: 0;
-    margin-bottom: 8px;
+    margin-bottom: spacing.$spacing-8;
   }
 }
