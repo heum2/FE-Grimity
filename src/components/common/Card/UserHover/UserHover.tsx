@@ -3,9 +3,9 @@ import SolidButton from "@/components/common/Button/SolidButton/SolidButton";
 import OutlinedButton from "@/components/common/Button/OutlinedButton/OutlinedButton";
 import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
 import UserAvatar from "@/components/common/Avatar/UserAvatar/UserAvatar";
+import Thumbnail from "@/components/common/Thumbnail/Thumbnail";
 import styles from "./UserHover.module.scss";
 import type { UserHoverProps } from "./UserHover.types";
-import { THUMBNAIL_PATH } from "@/constants/imageUrl";
 
 export default function UserHover({
   isFollowing = false,
@@ -20,13 +20,13 @@ export default function UserHover({
   return (
     <div className={clsx(styles.userHover, className)}>
       <div className={styles.banner}>
-        <ResponsiveImage
-          src={bannerUrl ?? THUMBNAIL_PATH}
+        {bannerUrl ? <ResponsiveImage
+          src={bannerUrl}
           alt=""
           className={styles.bannerImage}
           mobileSize={560}
           desktopSize={1120}
-        />
+        /> : <Thumbnail alt="" ratio="2/1" />}
       </div>
 
       <div className={styles.body}>

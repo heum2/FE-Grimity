@@ -75,6 +75,7 @@ export function useUserCardFollow(
 
   const handleFollowClick = useCallback(
     (e: MouseEvent) => {
+      e.preventDefault();
       e.stopPropagation();
       toggleFollow();
     },

@@ -13,6 +13,7 @@ import { useModal } from "@/hooks/useModal";
 import { useOnClickOutside } from "@/hooks/useOnClickOutside";
 import { usePreventScroll } from "@/hooks/usePreventScroll";
 import useGoBack from "@/hooks/useGoBack";
+import { useMobileSearchHeader } from "@/hooks/useMobileSearchHeader";
 
 import IconButton from "@/components/common/Button/IconButton/IconButton";
 import Icon from "@/components/common/Icon/Icon";
@@ -140,6 +141,14 @@ export default function Layout({ children }: LayoutProps) {
   const showUploadBtn = !UPLOAD_HIDDEN_ROUTES.includes(router.pathname);
   const showSubSearch = !SUB_SEARCH_HIDDEN_ROUTES.includes(router.pathname);
   const shouldHideHeader = router.pathname === "/direct/[chatId]" && isMobile;
+  const isMobileSearchPage = isMobile && router.pathname === "/search";
+
+  const {
+    value: mobileSearchValue,
+    setValue: setMobileSearchValue,
+    onKeyDown: handleMobileSearchKeyDown,
+    onClear: handleMobileSearchClear,
+  } = useMobileSearchHeader(isMobileSearchPage);
 
   const sidebarUser = useMemo(
     () =>
@@ -154,6 +163,7 @@ export default function Layout({ children }: LayoutProps) {
   );
 
   const gnbVariant: GNBVariant = useMemo(() => {
+    if (isMobileSearchPage) return "search";
     if (isSubRoute) {
       switch (router.pathname) {
         case "/mypage":
@@ -169,7 +179,7 @@ export default function Layout({ children }: LayoutProps) {
       return "main";
     }
     return isLoggedIn ? "pc-main" : "pc-guest";
-  }, [isSubRoute, isMobile, isAuthReady, isLoggedIn, isMobileSidebarOpen, router.pathname]);
+  }, [isMobileSearchPage, isSubRoute, isMobile, isAuthReady, isLoggedIn, isMobileSidebarOpen, router.pathname]);
 
   const subRightActions = useMemo<GNBProps["rightActions"]>(() => {
     if (!isSubRoute) return undefined;
@@ -336,8 +346,13 @@ export default function Layout({ children }: LayoutProps) {
             onLogin={openLoginModal}
             onMenu={toggleMobileSidebar}
             onClose={toggleMobileSidebar}
-            onBack={isSubRoute ? goBack : undefined}
+            onBack={isMobileSearchPage || isSubRoute ? goBack : undefined}
             rightActions={subRightActions}
+            searchValue={isMobileSearchPage ? mobileSearchValue : undefined}
+            searchPlaceholder="그림, 작가, 글을 검색해보세요."
+            onSearchChange={isMobileSearchPage ? setMobileSearchValue : undefined}
+            onSearchKeyDown={isMobileSearchPage ? handleMobileSearchKeyDown : undefined}
+            onSearchClear={isMobileSearchPage ? handleMobileSearchClear : undefined}
           />
 
           {showNotifications && (

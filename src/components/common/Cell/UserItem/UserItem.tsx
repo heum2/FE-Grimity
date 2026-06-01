@@ -265,7 +265,14 @@ export default function UserItem({
             timeCount={timeCount}
           />
         </div>
-        <Bookmark active={bookmarkActive} onClick={onBookmarkClick} />
+        <Bookmark
+          active={bookmarkActive}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onBookmarkClick?.();
+          }}
+        />
         <div className={styles.bookMarkDivider}>
           <Divider />
         </div>
@@ -296,6 +303,7 @@ export default function UserItem({
         </div>
         <UserInfo
           type="default"
+          className={styles.communityTitleUserInfo}
           nickname={nickname}
           showHeart={!!heartCount}
           heartCount={heartCount}

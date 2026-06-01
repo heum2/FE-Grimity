@@ -1,71 +1,69 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useRouter } from "next/router";
-import styles from "./SearchAuthor.module.scss";
-import Loader from "@/components/Layout/Loader/Loader";
-import SearchProfile from "../SearchProfile/SearchProfile";
+
 import { useUserSearch } from "@/api/users/getUsersSearch";
+import { useDeviceStore } from "@/states/deviceStore";
+import { useGlobalLoading } from "@/hooks/useGlobalLoading";
+
+import Empty from "@/components/common/Empty/Empty";
+
+import SearchProfile from "../SearchProfile/SearchProfile";
+
+import styles from "./SearchAuthor.module.scss";
 
 export default function SearchAuthor() {
-  const [searchKeyword, setSearchKeyword] = useState<string>("");
   const router = useRouter();
+  const keyword = typeof router.query.keyword === "string" ? router.query.keyword : "";
+  const isMobile = useDeviceStore((state) => state.isMobile);
 
-  useEffect(() => {
-    const keyword = router.query.keyword as string | undefined;
-    if (keyword) {
-      setSearchKeyword(keyword);
-    }
-  }, [router.query]);
-
-  const { data, isLoading, fetchNextPage, hasNextPage } = useUserSearch({
-    keyword: searchKeyword,
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useUserSearch({
+    keyword,
     size: 10,
   });
 
-  const loadMoreRef = useRef(null);
-  const observer = useRef<IntersectionObserver | null>(null);
+  useGlobalLoading(isLoading);
+
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const element = loadMoreRef.current;
-    if (!element) return;
+    const target = loadMoreRef.current;
+    if (!target) return;
 
-    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
-      const entry = entries[0];
-      if (entry.isIntersecting && hasNextPage) {
-        fetchNextPage();
-      }
-    };
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      { rootMargin: "200px" },
+    );
 
-    observer.current = new IntersectionObserver(handleIntersection, {
-      rootMargin: "200px",
-    });
+    observer.observe(target);
+    return () => observer.unobserve(target);
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage, data?.pages.length]);
 
-    observer.current.observe(element);
+  const hasResults = data?.pages.some((page) => page.users.length > 0) ?? false;
 
-    return () => {
-      if (observer.current && element) {
-        observer.current.unobserve(element);
-      }
-    };
-  }, [hasNextPage, fetchNextPage]);
-
-  if (isLoading) return <Loader />;
+  if (isLoading) return null;
 
   return (
     <section className={styles.results}>
-      <h2 className={styles.title}>
-        검색결과&nbsp;
-        <span className={styles.searchCount}>{data?.pages?.[0]?.totalCount || 0}</span>건
-      </h2>
-      {data?.pages.length === 0 || !data?.pages.some((page) => page.users.length > 0) ? (
-        <p className={styles.noResult}>검색 결과가 없어요</p>
+      {!hasResults ? (
+        <Empty
+          iconName="illust-result-null"
+          title="검색한 결과를 찾을 수 없어요"
+          size={isMobile ? "md" : "xl"}
+          content="검색어의 단어 수를 줄이거나 다른 검색어로 검색해보세요."
+        />
       ) : (
-        <div className={styles.feedContainer}>
-          {data.pages.map((page) =>
+        <div className={styles.grid}>
+          {data?.pages.map((page) =>
             page.users.map((user) => <SearchProfile key={user.id} {...user} />),
           )}
         </div>
       )}
-      <div ref={loadMoreRef} />
+
+      {hasNextPage && <div ref={loadMoreRef} className={styles.loader} />}
     </section>
   );
 }

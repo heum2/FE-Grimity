@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import clsx from "clsx";
 import Divider from "@/components/common/Divider/Divider";
+import Icon from "@/components/common/Icon/Icon";
 import styles from "./Menu.module.scss";
 import { MenuProps } from "./Menu.types";
 
@@ -33,19 +34,23 @@ export default function Menu({ items, trigger, align = "right", className }: Men
           <li
             role="menuitem"
             tabIndex={0}
-            className={styles.item}
+            className={clsx(styles.item, item.selected && styles.itemSelected)}
             onClick={() => {
               item.onClick?.();
               if (trigger) setOpen(false);
             }}
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
                 item.onClick?.();
                 if (trigger) setOpen(false);
               }
             }}
           >
-            {item.label}
+            <span>{item.label}</span>
+            {item.selected ? (
+              <Icon name="check" size={20} color="primary-normal" aria-hidden />
+            ) : null}
           </li>
           {item.borderBottom && (
             <li role="separator" className={styles.divider}>

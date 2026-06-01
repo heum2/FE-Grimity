@@ -52,12 +52,33 @@
       align-items: center;
       justify-content: center;
       z-index: 1;
+      color: colors.$icon-gray-subtle;
+
+      &.likeBtnActive {
+        color: colors.$status-negative;
+      }
+    }
+
+    .heartStack {
+      position: relative;
+      display: inline-flex;
+      width: 20px;
+      height: 20px;
+    }
+
+    .heartStackBg {
+      position: absolute;
+      inset: 0;
+    }
+
+    .heartStackFg {
+      position: relative;
     }
   }
 }
 
 .search {
-  width: 360px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   border-radius: radius.$radius-md;
@@ -67,17 +88,13 @@
 
   .searchBanner {
     width: 100%;
-    height: 90px;
     flex-shrink: 0;
     overflow: hidden;
-    background-color: colors.$surface-gray-subtler;
+  }
 
-    .searchBannerImage {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
+  .searchBannerThumbnail {
+    width: 100%;
+    border-radius: 0;
   }
 
   .searchBody {
@@ -174,6 +191,7 @@
   }
 
   .searchContent {
+    height: 44px;
     margin: 0;
     @include typo.body-2-r;
     color: colors.$text-gray-normal;
@@ -207,6 +225,15 @@
       height: 100%;
       object-fit: cover;
       display: block;
+    }
+
+    .tagViewBgThumbnail {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      aspect-ratio: unset;
+      border-radius: 0;
     }
   }
 

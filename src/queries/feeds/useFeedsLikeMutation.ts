@@ -1,11 +1,16 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { putFeedsLike } from "@/api/feeds/putFeedsLike";
 import { deleteFeedsLike } from "@/api/feeds/deleteFeedsLike";
-import type { FeedDetailResponse } from "@grimity/dto";
+import type { FeedDetailResponse, SearchedFeedsResponse } from "@grimity/dto";
 
 interface LikeMutationParams {
   id: string;
   isLiked: boolean;
+}
+
+interface FeedSearchInfiniteData {
+  pages: SearchedFeedsResponse[];
+  pageParams: unknown[];
 }
 
 export const useFeedsLikeMutation = () => {
@@ -17,7 +22,12 @@ export const useFeedsLikeMutation = () => {
 
     onMutate: async ({ id, isLiked }) => {
       await queryClient.cancelQueries({ queryKey: ["details", id] });
+      await queryClient.cancelQueries({ queryKey: ["FeedSearch"] });
+
       const previousDetail = queryClient.getQueryData<FeedDetailResponse>(["details", id]);
+      const previousSearches = queryClient.getQueriesData<FeedSearchInfiniteData>({
+        queryKey: ["FeedSearch"],
+      });
 
       queryClient.setQueryData<FeedDetailResponse>(["details", id], (old) => {
         if (!old) return old;
@@ -28,13 +38,35 @@ export const useFeedsLikeMutation = () => {
         };
       });
 
-      return { previousDetail };
+      queryClient.setQueriesData<FeedSearchInfiniteData>({ queryKey: ["FeedSearch"] }, (old) => {
+        if (!old) return old;
+        return {
+          ...old,
+          pages: old.pages.map((page) => ({
+            ...page,
+            feeds: page.feeds.map((feed) =>
+              feed.id === id
+                ? {
+                    ...feed,
+                    isLike: !isLiked,
+                    likeCount: isLiked ? feed.likeCount - 1 : feed.likeCount + 1,
+                  }
+                : feed,
+            ),
+          })),
+        };
+      });
+
+      return { previousDetail, previousSearches };
     },
 
     onError: (_err, { id }, context) => {
       if (context?.previousDetail) {
         queryClient.setQueryData(["details", id], context.previousDetail);
       }
+      context?.previousSearches?.forEach(([queryKey, data]) => {
+        queryClient.setQueryData(queryKey, data);
+      });
     },
 
     onSettled: (_data, _error, { id }) => {
@@ -43,6 +75,7 @@ export const useFeedsLikeMutation = () => {
       queryClient.invalidateQueries({ queryKey: ["FollowingFeeds"] });
       queryClient.invalidateQueries({ queryKey: ["MyLikeList"] });
       queryClient.invalidateQueries({ queryKey: ["Rankings"] });
+      queryClient.invalidateQueries({ queryKey: ["FeedSearch"] });
     },
   });
 };

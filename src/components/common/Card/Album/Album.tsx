@@ -15,6 +15,7 @@ import { THUMBNAIL_PATH } from "@/constants/imageUrl";
 
 import styles from "./Album.module.scss";
 import type { AlbumProps, AlbumRank } from "./Album.types";
+import AlbumAuthorNickname from "./AlbumAuthorNickname";
 
 const RANK_ICON_MAP: Record<AlbumRank, "rank-1" | "rank-2" | "rank-3" | "rank-4"> = {
   1: "rank-1",
@@ -39,12 +40,17 @@ export default function Album({
   likeCount,
   viewCount,
   isLiked: isLikedProp,
+  feedHref,
+  profileHref,
+  authorUrl,
   linkHref,
   onClick,
   onCheckClick,
   onLikeClick,
   className,
 }: AlbumProps) {
+  const useFeedLink = !!feedHref;
+  const useSimpleLink = !!linkHref;
   const isControlledChecked = checkedProp !== undefined;
   const [internalChecked, setInternalChecked] = useState(false);
   const checked = isControlledChecked ? checkedProp : internalChecked;
@@ -65,7 +71,7 @@ export default function Album({
   const isRank = variant === "rank" && rank != null && rank in RANK_ICON_MAP;
   const canCheck = isCheck && Boolean(onCheckClick);
   const canLike = isMainOrRank && Boolean(onLikeClick);
-  const articleOnClick = linkHref ? undefined : onClick;
+  const articleOnClick = useFeedLink || useSimpleLink ? undefined : onClick;
 
   const keyDownOnArticle = useKeyDownActivate(articleOnClick);
   const keyDownOnCheckWrap = useKeyDownActivateStopPropagation(
@@ -122,18 +128,33 @@ export default function Album({
       {isMainOrRank && (
         <button
           type="button"
-          className={clsx(styles.iconBottomRight, canLike && styles.iconBottomRightClickable)}
+          className={clsx(
+            styles.iconBottomRight,
+            canLike && styles.iconBottomRightClickable,
+            isLiked && styles.iconBottomRightActive,
+          )}
           disabled={!canLike}
           aria-pressed={canLike ? isLiked : undefined}
-          aria-label={canLike ? (isLiked ? '좋아요 취소' : '좋아요') : undefined}
+          aria-label={canLike ? (isLiked ? "좋아요 취소" : "좋아요") : undefined}
           onClick={canLike ? blockBubble(handleLikeClick) : undefined}
           onKeyDown={keyDownOnLike}
         >
-          <Icon
-            name={isLiked ? "heart-fill" : "heart"}
-            size={24}
-            color={isLiked ? "primary-normal" : "gray-subtle"}
-          />
+          <span className={styles.heartStack}>
+            {!isLiked && (
+              <Icon
+                name="heart-fill"
+                size={24}
+                color="white"
+                className={styles.heartStackBg}
+              />
+            )}
+            <Icon
+              name={isLiked ? "heart-fill" : "heart"}
+              size={24}
+              className={styles.heartStackFg}
+              color={isLiked ? "primary-normal" : "gray-subtle"}
+            />
+          </span>
         </button>
       )}
     </div>
@@ -150,6 +171,17 @@ export default function Album({
       node
     );
 
+  const nicknameNode =
+    profileHref || authorUrl ? (
+      <AlbumAuthorNickname
+        nickname={nickname}
+        profileHref={profileHref}
+        authorUrl={authorUrl}
+      />
+    ) : (
+      nickname
+    );
+
   return (
     <article
       className={clsx(styles.album, className)}
@@ -158,13 +190,25 @@ export default function Album({
       onClick={articleOnClick}
       onKeyDown={keyDownOnArticle}
     >
-      {withLink(imageNode)}
+      {useFeedLink ? (
+        <Link href={feedHref} className={styles.feedLink}>
+          {imageNode}
+        </Link>
+      ) : (
+        withLink(imageNode)
+      )}
 
       <div className={styles.body}>
-        {withLink(titleNode)}
+        {useFeedLink ? (
+          <Link href={feedHref} className={styles.titleLink}>
+            {titleNode}
+          </Link>
+        ) : (
+          withLink(titleNode)
+        )}
         <UserInfo
           type="default"
-          nickname={nickname}
+          nickname={nicknameNode}
           showHeart
           heartCount={likeCount.toString()}
           showView

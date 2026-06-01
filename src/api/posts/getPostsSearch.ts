@@ -1,6 +1,9 @@
 import axiosInstance from "@/constants/baseurl";
 import { useQuery } from "@tanstack/react-query";
 import { PostsResponse } from "@grimity/dto";
+import { useShallow } from "zustand/react/shallow";
+
+import { useAuthStore } from "@/states/authStore";
 
 export interface PostSearchRequest {
   searchBy: "combined" | "name";
@@ -33,13 +36,20 @@ export async function getPostSearch({
 }
 
 export function usePostSearch(params: PostSearchRequest | null) {
+  const { isAuthReady, isLoggedIn } = useAuthStore(
+    useShallow((state) => ({
+      isAuthReady: state.isAuthReady,
+      isLoggedIn: state.isLoggedIn,
+    })),
+  );
+
   return useQuery<PostsResponse>({
     queryKey: params
-      ? ["PostSearch", params.searchBy, params.size, params.page, params.keyword]
+      ? ["PostSearch", params.searchBy, params.size, params.page, params.keyword, isLoggedIn]
       : [],
     queryFn: () => (params ? getPostSearch(params) : Promise.reject(undefined)),
 
-    enabled: !!params,
+    enabled: !!params && isAuthReady,
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,

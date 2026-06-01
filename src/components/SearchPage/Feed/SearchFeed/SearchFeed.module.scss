@@ -1,66 +1,34 @@
-@use "@/styles/globals.scss" as *;
+@use "@/styles/tokens/colors/semantic" as colors;
+@use "@/styles/tokens/typography/semantic" as typo;
+@use "@/styles/tokens/spacing" as spacing;
+@use "@/styles/breakpoint" as bp;
 
 .results {
   width: 100%;
+  margin-top: spacing.$spacing-20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  .sortWrapper {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
+.grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  column-gap: spacing.$spacing-16;
+  row-gap: spacing.$spacing-24;
 
-    @include Size("mobile") {
-      margin-bottom: 8px;
-    }
-  }
-
-  .title {
-    @include Sub2;
-    color: $gray60;
-    @include Drag;
-
-    .searchCount {
-      color: $gray70;
-    }
-
-    @include Size("mobile") {
-      @include Label2;
-    }
-  }
-
-  .sort {
-    position: relative;
-  }
-
-  .feedContainer {
-    width: 100%;
-    display: grid;
+  @include bp.breakpoint-down("sm") {
     grid-template-columns: repeat(4, 1fr);
-    grid-column-gap: 16px;
-    grid-row-gap: 40px;
+  }
 
-    @include Size("mobile") {
-      grid-template-columns: repeat(2, 1fr);
-      grid-column-gap: 12px;
-      grid-row-gap: 20px;
-    }
-
-    @include Size("tablet") {
-      grid-template-columns: repeat(3, 1fr);
-      grid-column-gap: 16px;
-      grid-row-gap: 30px;
-    }
+  @include bp.breakpoint-down("xs") {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: spacing.$spacing-16;
   }
 }
 
-.noResult {
+.loader {
   width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  @include Sub2;
-  color: $gray50;
-  margin-top: 50px;
-  @include Drag;
+  height: 1px;
 }

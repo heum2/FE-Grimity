@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/router";
-import Link from "next/link";
 
 import { useFeedsLatest } from "@/api/feeds/getFeedsLatest";
 import { useAuthStore } from "@/states/authStore";
@@ -57,24 +56,27 @@ export default function NewFeed({ isDetail = false }: NewFeedProps) {
         {data?.pages.map((page) =>
           page.feeds.map((feed) => {
             const isLiked = feed.isLike ?? false;
+            const authorUrl = feed.author?.url;
 
             return (
-              <Link key={feed.id} href={`/feeds/${feed.id}`} className={styles.cardLink}>
-                <Album
-                  variant="mainTitle"
-                  imageUrl={feed.thumbnail}
-                  title={feed.title}
-                  nickname={feed.author?.name ?? ""}
-                  likeCount={feed.likeCount}
-                  viewCount={feed.viewCount}
-                  isLiked={isLoggedIn ? isLiked : undefined}
-                  onLikeClick={
-                    isLoggedIn
-                      ? () => toggleLike({ id: feed.id, isLiked })
-                      : undefined
-                  }
-                />
-              </Link>
+              <Album
+                key={feed.id}
+                variant="mainTitle"
+                imageUrl={feed.thumbnail}
+                title={feed.title}
+                nickname={feed.author?.name ?? ""}
+                likeCount={feed.likeCount}
+                viewCount={feed.viewCount}
+                isLiked={isLoggedIn ? isLiked : undefined}
+                feedHref={`/feeds/${feed.id}`}
+                profileHref={authorUrl ? `/${authorUrl}` : undefined}
+                authorUrl={authorUrl ?? undefined}
+                onLikeClick={
+                  isLoggedIn
+                    ? () => toggleLike({ id: feed.id, isLiked })
+                    : undefined
+                }
+              />
             );
           }),
         )}
