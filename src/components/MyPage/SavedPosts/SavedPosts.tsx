@@ -38,13 +38,14 @@ export default function SavedPosts() {
 
   // page 쿼리 없으면 page=1로 보정
   useEffect(() => {
+    if (!router.isReady) return;
     if (router.query.page) return;
     router.replace(
       { pathname: router.pathname, query: { ...router.query, page: 1 } },
       undefined,
       { shallow: true },
     );
-  }, [router]);
+  }, [router.isReady, router.pathname, router.query.page]);
 
   const posts = data?.posts ?? [];
   const totalPages = Math.ceil((data?.totalCount ?? 0) / PAGE_SIZE);

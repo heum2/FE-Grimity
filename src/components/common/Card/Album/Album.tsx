@@ -120,12 +120,12 @@ export default function Album({
       )}
 
       {isMainOrRank && (
-        <span
+        <button
+          type="button"
           className={clsx(styles.iconBottomRight, canLike && styles.iconBottomRightClickable)}
-          role={canLike ? "button" : undefined}
-          tabIndex={canLike ? 0 : undefined}
+          disabled={!canLike}
           aria-pressed={canLike ? isLiked : undefined}
-          aria-label={canLike ? (isLiked ? "좋아요 취소" : "좋아요") : undefined}
+          aria-label={canLike ? (isLiked ? '좋아요 취소' : '좋아요') : undefined}
           onClick={canLike ? blockBubble(handleLikeClick) : undefined}
           onKeyDown={keyDownOnLike}
         >
@@ -134,7 +134,7 @@ export default function Album({
             size={24}
             color={isLiked ? "primary-normal" : "gray-subtle"}
           />
-        </span>
+        </button>
       )}
     </div>
   );
