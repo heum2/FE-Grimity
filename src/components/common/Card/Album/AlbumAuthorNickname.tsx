@@ -76,7 +76,7 @@ export default function AlbumAuthorNickname({
 
   useEffect(() => clearTimers, [clearTimers]);
 
-  const computePosition = (): Position | null => {
+  const computePosition = useCallback((): Position | null => {
     const rect = wrapRef.current?.getBoundingClientRect();
     if (!rect) return null;
     const placement: "top" | "bottom" = rect.top >= HOVER_CARD_HEIGHT ? "top" : "bottom";
@@ -92,9 +92,9 @@ export default function AlbumAuthorNickname({
       top: rect.bottom + HOVER_GAP,
       placement,
     };
-  };
+  }, []);
 
-  const handleMouseEnter = () => {
+  const handleMouseEnter = useCallback(() => {
     if (!authorUrl) return;
     if (closeTimerRef.current) {
       clearTimeout(closeTimerRef.current);
@@ -107,22 +107,22 @@ export default function AlbumAuthorNickname({
       setIsHoverEnabled(true);
       setIsOpen(true);
     }, HOVER_OPEN_DELAY);
-  };
+  }, [authorUrl, computePosition]);
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     if (openTimerRef.current) {
       clearTimeout(openTimerRef.current);
       openTimerRef.current = null;
     }
     closeTimerRef.current = setTimeout(() => setIsOpen(false), HOVER_CLOSE_DELAY);
-  };
+  }, []);
 
-  const cancelClose = () => {
+  const cancelClose = useCallback(() => {
     if (closeTimerRef.current) {
       clearTimeout(closeTimerRef.current);
       closeTimerRef.current = null;
     }
-  };
+  }, []);
 
   const handleFollowClick = () => {
     if (!profile) return;

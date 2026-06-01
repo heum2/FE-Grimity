@@ -1,16 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { SearchedUsersResponse } from "@grimity/dto";
 
 import axiosInstance from "@/constants/baseurl";
+import { UserSearchInfiniteData } from "./putIdFollow";
 
 interface DeleteFollowParams {
   id: string;
 }
 
-interface UserSearchInfiniteData {
-  pages: SearchedUsersResponse[];
-  pageParams: unknown[];
-}
+
 
 export async function deleteFollow({ id }: DeleteFollowParams): Promise<void> {
   await axiosInstance.delete(`/users/${id}/follow`);

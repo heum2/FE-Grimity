@@ -56,6 +56,7 @@ export const usePostsSaveMutation = () => {
 
     onSettled: (_data, _error, { id }) => {
       queryClient.invalidateQueries({ queryKey: ["Postsdetails", id] });
+      queryClient.invalidateQueries({ queryKey: ["PostSearch"] });
       queryClient.invalidateQueries({ queryKey: ["MySavePost"] });
     },
   });
