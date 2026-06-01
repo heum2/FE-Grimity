@@ -1,96 +1,37 @@
 @use "@/styles/globals.scss" as *;
+@use "@/styles/breakpoint" as *;
+@use "@/styles/tokens/colors/semantic" as colors;
+@use "@/styles/tokens/typography/semantic" as typo;
+@use "@/styles/tokens/spacing" as spacing;
 
 .container {
   width: 100%;
-  height: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 60px;
+  justify-content: center;
+  padding: spacing.$spacing-48 spacing.$spacing-20 spacing.$spacing-20;
 
-  @include Size("mobile") {
-    padding-top: 0px;
-  }
-
-  @include Size("tablet") {
-    padding-top: 32px;
-  }
-
-  .wrapper {
-    padding-left: 32px;
-    padding-right: 32px;
-    padding-bottom: 80px;
-
-    @include Size("mobile") {
-      padding-left: 16px;
-      padding-right: 16px;
-      padding-top: 90px;
-    }
-
-    @include Size("tablet") {
-      padding-left: 16px;
-      padding-right: 16px;
-    }
-  }
-
-  .center {
-    max-width: $max-width-container;
-    margin: 0 auto;
+  @include breakpoint-down("xs") {
+    padding: spacing.$spacing-16 spacing.$spacing-16 spacing.$spacing-20;
   }
 }
 
-.navContainer {
-  max-width: $max-width-container;
-  margin: 0 auto;
+.center {
   width: 100%;
-  margin-bottom: 12px;
+  max-width: $max-width-container;
+}
 
-  @include Size("mobile") {
-    padding: 16px 0 0;
-    position: fixed;
-    top: 64px;
-    left: 0;
-    z-index: 2;
-    background-color: $gray0;
+.title {
+  margin: 0 0 spacing.$spacing-24;
+  color: colors.$text-gray-bold;
+  @include typo.title-1;
+
+  @include breakpoint-down("xs") {
+    margin-bottom: spacing.$spacing-12;
+    @include typo.title-2;
   }
+}
 
-  .underline {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 2px;
-    background-color: $gray70;
-    transition: all 0.3s ease;
-  }
 
-  .button {
-    padding: 0 12px 8px;
-    background: none;
-    border: none;
-    color: $gray60;
-    @include Sub2;
-    transition: all 0.3s;
-    cursor: pointer;
-
-    @include Size("mobile") {
-      @include Sub4;
-      padding: 0 0 8px;
-    }
-
-    &:hover {
-      color: $gray70;
-    }
-
-    &.selected {
-      color: $gray70;
-    }
-  }
-
-  .bar {
-    width: 1px;
-    height: 20px;
-    background-color: $gray30;
-    padding: 0;
-    margin-bottom: 8px;
-  }
+.content {
+  width: 100%;
 }
