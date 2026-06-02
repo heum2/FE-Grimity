@@ -6,7 +6,7 @@ import { useDeviceStore } from "@/states/deviceStore";
 
 import Empty from "@/components/common/Empty/Empty";
 import Icon from "@/components/common/Icon/Icon";
-import Menu from "@/components/common/Navigation/Menu/Menu";
+import Filter from "@/components/common/Filter/Filter";
 import BottomSheet from "@/components/common/PopUp/BottomSheet/BottomSheet";
 import TextField from "@/components/common/Input/TextField/TextField";
 import { useToast } from "@/hooks/useToast";
@@ -15,6 +15,7 @@ import SearchFeed from "./Feed/SearchFeed/SearchFeed";
 import SearchAuthor from "./User/SearchAuthor/SearchAuthor";
 import SearchPost from "./Post/SearchPost/SearchPost";
 import RecommendTagsSlider from "./RecommendTagsSlider/RecommendTagsSlider";
+import UnderlineTabs from "@/components/UnderlineTabs/UnderlineTabs";
 import {
   type Tab,
   SORT_OPTIONS_BY_TAB,
@@ -28,10 +29,10 @@ import clsx from "clsx";
 
 const POPULAR_TAG_LIMIT = 10;
 
-const TABS: { value: Tab; label: string }[] = [
-  { value: "feed", label: "그림" },
-  { value: "author", label: "작가" },
-  { value: "board", label: "자유게시판" },
+const TABS: { key: Tab; label: string }[] = [
+  { key: "feed", label: "그림" },
+  { key: "author", label: "작가" },
+  { key: "board", label: "자유게시판" },
 ];
 
 export default function SearchPage() {
@@ -127,23 +128,36 @@ export default function SearchPage() {
     }
   };
 
-  const sortTriggerButton = (
-    <button
-      type="button"
-      className={clsx(styles.sortTrigger, !queryKeyword && styles.disabled)}
-      disabled={!queryKeyword}
-      aria-haspopup={isMobile ? "dialog" : "menu"}
-      aria-label="정렬 기준 선택"
-      onClick={isMobile ? () => setIsSortSheetOpen(true) : undefined}
-    >
-      <span>{selectedSortLabel}</span>
-      <Icon
-        name="chevron-down"
-        size={16}
-        color={!queryKeyword ? "gray-subtler" : "gray-bold"}
-      />
-    </button>
-  );
+  const sortMenu =
+    tab !== "author" ? (
+      <div className={styles.sortMenu}>
+        {isMobile ? (
+          <button
+            type="button"
+            className={clsx(styles.sortTrigger, !queryKeyword && styles.disabled)}
+            disabled={!queryKeyword}
+            aria-haspopup="dialog"
+            aria-label="정렬 기준 선택"
+            onClick={() => setIsSortSheetOpen(true)}
+          >
+            <span>{selectedSortLabel}</span>
+            <Icon
+              name="chevron-down"
+              size={16}
+              color={!queryKeyword ? "gray-subtler" : "gray-bold"}
+            />
+          </button>
+        ) : (
+          <Filter
+            variant="text"
+            options={sortOptions}
+            value={sort}
+            onChange={handleSortChange}
+            disabled={!queryKeyword}
+          />
+        )}
+      </div>
+    ) : undefined;
 
   return (
     <div className={styles.container}>
@@ -161,7 +175,7 @@ export default function SearchPage() {
         </div>
         {popularData &&
           popularData.length > 0 &&
-          !(isMobile && queryKeyword) && (
+          !(isMobile && !!queryKeyword) && (
             <div className={styles.recommend}>
               <div className={styles.recommendInner}>
                 <p className={styles.recommendLabel}>추천 태그</p>
@@ -172,42 +186,17 @@ export default function SearchPage() {
       </section>
 
       <div className={styles.tabPanel}>
-        {(!isMobile || queryKeyword) && <div className={styles.tabBar}>
-          <nav className={styles.tabs} aria-label="검색 카테고리">
-            {TABS.map((t) => {
-              const isActive = tab === t.value;
-              return (
-                <button
-                  key={t.value}
-                  type="button"
-                  className={`${styles.tab} ${isActive ? styles.tabActive : ""}`}
-                  onClick={() => navigateSearch(queryKeyword, t.value)}
-                  aria-pressed={isActive}
-                >
-                  {t.label}
-                </button>
-              );
-            })}
-          </nav>
-
-          {tab !== "author" && (
-            <div className={styles.sortMenu}>
-              {isMobile ? (
-                sortTriggerButton
-              ) : (
-                <Menu
-                  align="right"
-                  trigger={sortTriggerButton}
-                  items={sortOptions.map((option) => ({
-                    label: option.label,
-                    selected: option.value === sort,
-                    onClick: () => handleSortChange(option.value),
-                  }))}
-                />
-              )}
-            </div>
-          )}
-        </div>}
+        {(!isMobile || !!queryKeyword) && (
+          <div className={styles.tabBar}>
+            <UnderlineTabs
+              tabs={TABS}
+              activeTab={tab}
+              onTabChange={(key) => navigateSearch(queryKeyword, key)}
+              ariaLabel="검색 카테고리"
+              rightSlot={sortMenu}
+            />
+          </div>
+        )}
 
         <div className={styles.tabContent}>{renderTab()}</div>
       </div>

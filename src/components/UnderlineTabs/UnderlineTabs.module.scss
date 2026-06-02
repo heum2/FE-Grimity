@@ -5,6 +5,26 @@
 @use "@/styles/tokens/spacing" as spacing;
 @use "@/styles/tokens/radius" as radius;
 
+.barContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: spacing.$spacing-16;
+  width: 100%;
+  min-width: 0;
+  border-bottom: 1px solid colors.$border-gray-subtle;
+
+  .navContainer {
+    flex: 1;
+    min-width: 0;
+    border-bottom: none;
+  }
+}
+
+.rightSlot {
+  flex-shrink: 0;
+}
+
 .navContainer {
   display: flex;
   align-items: center;

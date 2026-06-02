@@ -36,12 +36,14 @@ const POST_TYPE_LABEL: Record<PostType, string> = {
 const PAGE_SIZE = 10;
 const SAVED_POSTS_LOOKUP_SIZE = 100;
 
+const domParser = typeof window !== "undefined" ? new DOMParser() : null;
+
 function plainPreviewFromContent(html: string | null | undefined): string | undefined {
   if (!html?.trim()) return undefined;
   const stripped = html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
   if (!stripped) return undefined;
-  if (typeof window === "undefined") return stripped;
-  return new DOMParser().parseFromString(stripped, "text/html").documentElement.textContent ?? stripped;
+  if (!domParser) return stripped;
+  return domParser.parseFromString(stripped, "text/html").documentElement.textContent ?? stripped;
 }
 
 type SearchPostItemProps = {

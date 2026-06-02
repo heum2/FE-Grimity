@@ -5,9 +5,27 @@ import Icon from "@/components/common/Icon/Icon";
 import styles from "./Menu.module.scss";
 import { MenuProps } from "./Menu.types";
 
-export default function Menu({ items, trigger, align = "right", className }: MenuProps) {
-  const [open, setOpen] = useState(false);
+export default function Menu({
+  items,
+  trigger,
+  align = "right",
+  className,
+  wrapperClassName,
+  open: openProp,
+  onOpenChange,
+  disabled = false,
+}: MenuProps) {
+  const [internalOpen, setInternalOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const isControlled = openProp !== undefined;
+  const open = isControlled ? openProp : internalOpen;
+
+  const setOpen = (next: boolean) => {
+    if (!isControlled) {
+      setInternalOpen(next);
+    }
+    onOpenChange?.(next);
+  };
 
   useEffect(() => {
     if (!open) return;
@@ -27,6 +45,10 @@ export default function Menu({ items, trigger, align = "right", className }: Men
     };
   }, [open]);
 
+  const closeMenu = () => {
+    if (trigger) setOpen(false);
+  };
+
   const list = (
     <ul className={clsx(styles.menu, className)} role="menu">
       {items.map((item, i) => (
@@ -37,13 +59,13 @@ export default function Menu({ items, trigger, align = "right", className }: Men
             className={clsx(styles.item, item.selected && styles.itemSelected)}
             onClick={() => {
               item.onClick?.();
-              if (trigger) setOpen(false);
+              closeMenu();
             }}
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === " ") {
                 e.preventDefault();
                 item.onClick?.();
-                if (trigger) setOpen(false);
+                closeMenu();
               }
             }}
           >
@@ -64,12 +86,16 @@ export default function Menu({ items, trigger, align = "right", className }: Men
 
   if (!trigger) return list;
 
+  if (disabled) {
+    return <div className={clsx(styles.wrapper, wrapperClassName)}>{trigger}</div>;
+  }
+
   return (
-    <div ref={wrapperRef} className={styles.wrapper}>
-      <div onClick={() => setOpen((prev) => !prev)}>{trigger}</div>
-      {open && (
-        <div className={clsx(styles.menuContainer, styles[align])}>{list}</div>
-      )}
+    <div ref={wrapperRef} className={clsx(styles.wrapper, wrapperClassName)}>
+      <div className={styles.triggerWrap} onClick={() => setOpen(!open)}>
+        {trigger}
+      </div>
+      {open && <div className={clsx(styles.menuContainer, styles[align])}>{list}</div>}
     </div>
   );
 }

@@ -11,5 +11,11 @@ export interface MenuProps {
   items: MenuItem[];
   trigger?: React.ReactNode;
   align?: "left" | "right";
+  /** Menu 패널(`ul`)에 적용 */
   className?: string;
+  /** wrapper div에 적용 */
+  wrapperClassName?: string;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  disabled?: boolean;
 }

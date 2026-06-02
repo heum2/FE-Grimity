@@ -82,18 +82,6 @@
   width: 100%;
   max-width: 900px;
   min-width: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: spacing.$spacing-16;
-  border-bottom: 1px solid colors.$border-gray-subtle;
-}
-
-.tabs {
-  display: flex;
-  align-items: center;
-  gap: spacing.$spacing-8;
-  min-width: 0;
 }
 
 .sortMenu {
@@ -131,41 +119,6 @@
   width: 100%;
   max-width: 900px;
   min-width: 0;
-}
-
-.tab {
-  padding: spacing.$spacing-12 spacing.$spacing-12 spacing.$spacing-16 spacing.$spacing-12;
-  background: none;
-  border: none;
-  cursor: pointer;
-  @include typo.subtitle-1;
-  color: colors.$text-gray-subtle;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-  transition: color 0.15s ease, border-color 0.15s ease;
-
-  &:hover {
-    color: colors.$text-gray-normal;
-  }
-
-  @include bp.breakpoint-down("sm") {
-    padding: spacing.$spacing-12 spacing.$spacing-10 spacing.$spacing-16 spacing.$spacing-10;
-    @include typo.label-1;
-  }
-
-  @include bp.breakpoint-down("xs") {
-    padding: spacing.$spacing-12 spacing.$spacing-8 spacing.$spacing-16 spacing.$spacing-8;
-    @include typo.label-3;
-  }
-}
-
-.tabActive {
-  color: colors.$text-gray-bold;
-  border-bottom-color: colors.$border-gray-bold;
-
-  &:hover {
-    color: colors.$text-gray-bold;
-  }
 }
 
 .emptyContainer{
