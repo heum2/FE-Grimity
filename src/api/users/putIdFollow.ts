@@ -7,7 +7,7 @@ interface PutFollowParams {
   id: string;
 }
 
-interface UserSearchInfiniteData {
+export interface UserSearchInfiniteData {
   pages: SearchedUsersResponse[];
   pageParams: unknown[];
 }

@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { MySavePostsResponse } from "@grimity/dto";
 
 import { useAuthStore } from "@/states/authStore";
+import { useShallow } from "zustand/react/shallow";
 
 export interface MySavePostRequest {
   size?: number;
@@ -24,8 +25,12 @@ export async function getMySavePost({
 }
 
 export function useMySavePost({ size, page }: MySavePostRequest, options?: { enabled?: boolean }) {
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const isAuthReady = useAuthStore((state) => state.isAuthReady);
+  const { isAuthReady, isLoggedIn } = useAuthStore(
+    useShallow((state) => ({
+      isAuthReady: state.isAuthReady,
+      isLoggedIn: state.isLoggedIn,
+    })),
+  );
   const enabled = options?.enabled ?? (isAuthReady && isLoggedIn);
 
   return useQuery<MySavePostsResponse>({

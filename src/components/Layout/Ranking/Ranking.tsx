@@ -1,5 +1,4 @@
 import { useRef, useState } from "react";
-import Link from "next/link";
 
 import { subWeeks } from "date-fns";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
@@ -78,29 +77,31 @@ export default function Ranking() {
             {paginatedFeeds.map((feed, idx) => {
               const rank = idx < RANK_BADGE_COUNT ? ((idx + 1) as AlbumRank) : undefined;
               const isLiked = feed.isLike ?? false;
+              const authorUrl = feed.author?.url;
 
               return (
                 <SwiperSlide key={feed.id}>
-                  <Link href={`/feeds/${feed.id}`} className={styles.cardLink}>
-                    <Album
-                      variant={rank ? "rank" : "mainTitle"}
-                      rank={rank}
-                      imageUrl={feed.thumbnail}
-                      title={feed.title}
-                      nickname={feed.author?.name ?? ""}
-                      likeCount={feed.likeCount}
-                      viewCount={feed.viewCount}
-                      isLiked={isLoggedIn ? isLiked : undefined}
-                      onLikeClick={
-                        isLoggedIn
-                          ? () => toggleLike({ id: feed.id, isLiked })
-                          : undefined
-                      }
-                    />
-                  </Link>
+                  <Album
+                    variant={rank ? "rank" : "mainTitle"}
+                    rank={rank}
+                    imageUrl={feed.thumbnail}
+                    title={feed.title}
+                    nickname={feed.author?.name ?? ""}
+                    likeCount={feed.likeCount}
+                    viewCount={feed.viewCount}
+                    isLiked={isLoggedIn ? isLiked : undefined}
+                    feedHref={`/feeds/${feed.id}`}
+                    profileHref={authorUrl ? `/${authorUrl}` : undefined}
+                    authorUrl={authorUrl ?? undefined}
+                    onLikeClick={
+                      isLoggedIn
+                        ? () => toggleLike({ id: feed.id, isLiked })
+                        : undefined
+                    }
+                  />
                 </SwiperSlide>
               );
-            })} 
+            })}
           </Swiper>
 
           <div className={`${styles.navButton} ${styles.right}`} aria-hidden={isEnd}>

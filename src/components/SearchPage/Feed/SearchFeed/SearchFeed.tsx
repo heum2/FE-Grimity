@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/router";
-import Link from "next/link";
 
 import { useFeedSearch } from "@/api/feeds/getFeedsSearch";
 import { useAuthStore } from "@/states/authStore";
@@ -13,37 +12,7 @@ import Empty from "@/components/common/Empty/Empty";
 import SearchHighlightText from "@/components/SearchPage/SearchHighlightText/SearchHighlightText";
 import { resolveSortOption } from "@/components/SearchPage/searchPage.constants";
 
-import type { SearchedFeedsResponse } from "@grimity/dto";
-
 import styles from "./SearchFeed.module.scss";
-
-type SearchFeedItemData = SearchedFeedsResponse["feeds"][number];
-
-type SearchFeedItemProps = {
-  feed: SearchFeedItemData;
-  keyword: string;
-  isLoggedIn: boolean;
-  onLikeClick: (id: string, isLiked: boolean) => void;
-};
-
-function SearchFeedItem({ feed, keyword, isLoggedIn, onLikeClick }: SearchFeedItemProps) {
-  const isLiked = feed.isLike ?? false;
-
-  return (
-    <Link href={`/feeds/${feed.id}`} className={styles.cardLink}>
-      <Album
-        variant="mainTitle"
-        imageUrl={feed.thumbnail}
-        title={<SearchHighlightText text={feed.title} keyword={keyword} />}
-        nickname={feed.author?.name ?? ""}
-        likeCount={feed.likeCount}
-        viewCount={feed.viewCount}
-        isLiked={isLiked}
-        onLikeClick={isLoggedIn ? () => onLikeClick(feed.id, isLiked) : undefined}
-      />
-    </Link>
-  );
-}
 
 export default function SearchFeed() {
   const router = useRouter();
@@ -83,10 +52,6 @@ export default function SearchFeed() {
 
   const hasResults = data?.pages.some((page) => page.feeds.length > 0) ?? false;
 
-  const handleLikeClick = (id: string, isLiked: boolean) => {
-    toggleLike({ id, isLiked });
-  };
-
   if (isLoading) return null;
 
   return (
@@ -101,15 +66,28 @@ export default function SearchFeed() {
       ) : (
         <div className={styles.grid}>
           {data?.pages.map((page) =>
-            page.feeds.map((feed) => (
-              <SearchFeedItem
-                key={feed.id}
-                feed={feed}
-                keyword={keyword}
-                isLoggedIn={isLoggedIn}
-                onLikeClick={handleLikeClick}
-              />
-            )),
+            page.feeds.map((feed) => {
+              const isLiked = feed.isLike ?? false;
+              const authorUrl = feed.author?.url;
+              return (
+                <Album
+                  key={feed.id}
+                  variant="mainTitle"
+                  imageUrl={feed.thumbnail}
+                  title={<SearchHighlightText text={feed.title} keyword={keyword} />}
+                  nickname={feed.author?.name ?? ""}
+                  likeCount={feed.likeCount}
+                  viewCount={feed.viewCount}
+                  isLiked={isLiked}
+                  feedHref={`/feeds/${feed.id}`}
+                  profileHref={authorUrl ? `/${authorUrl}` : undefined}
+                  authorUrl={authorUrl ?? undefined}
+                  onLikeClick={
+                    isLoggedIn ? () => toggleLike({ id: feed.id, isLiked }) : undefined
+                  }
+                />
+              );
+            }),
           )}
         </div>
       )}
