@@ -152,7 +152,6 @@ export default function Album({
               name={isLiked ? "heart-fill" : "heart"}
               size={24}
               className={styles.heartStackFg}
-              color={isLiked ? "primary-normal" : "gray-subtle"}
             />
           </span>
         </button>
