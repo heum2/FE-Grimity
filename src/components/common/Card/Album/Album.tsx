@@ -125,7 +125,7 @@ export default function Album({
         </button>
       )}
 
-      {isMainOrRank && (
+      {canLike && (
         <button
           type="button"
           className={clsx(
