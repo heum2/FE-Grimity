@@ -1,156 +1,161 @@
-@use "@/styles/globals.scss" as *;
+@use "@/styles/tokens/colors/semantic" as colors;
+@use "@/styles/tokens/typography/semantic" as typo;
+@use "@/styles/tokens/spacing" as spacing;
+@use "@/styles/tokens/radius" as radius;
+@use "@/styles/breakpoint" as bp;
 
 .container {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: spacing.$spacing-32;
+  padding: spacing.$spacing-48 spacing.$spacing-20 spacing.$spacing-72;
+  box-sizing: border-box;
+
+  @include bp.breakpoint-down("xs") {
+    padding: spacing.$spacing-16 spacing.$spacing-16 spacing.$spacing-72;
+    gap: 0;
+  }
+}
+
+.searchBarSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: spacing.$spacing-16;
+  width: 100%;
+}
+
+.searchBarWrap {
+  width: 100%;
+  max-width: 780px;
+
+  @include bp.breakpoint-down("xs") {
+    display: none;
+  }
+}
+
+.recommend {
+  width: 100%;
+  max-width: 780px;
+}
+
+.recommendInner {
+  display: flex;
+  align-items: center;
+  gap: spacing.$spacing-20;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+
+  @include bp.breakpoint-down("xs") {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: spacing.$spacing-6;
+  }
+}
+
+.recommendLabel {
+  flex-shrink: 0;
+  margin: 0;
+  @include typo.subtitle-1;
+  color: colors.$text-gray-bold;
+
+  @include bp.breakpoint-down("xs") {
+    @include typo.label-5;
+  }
+}
+
+.tabPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  align-self: stretch;
+}
+
+.tabBar {
+  width: 100%;
+  max-width: 900px;
+  min-width: 0;
+}
+
+.sortMenu {
+  flex-shrink: 0;
+}
+
+.sortTrigger {
+  display: inline-flex;
+  align-items: center;
+  gap: spacing.$spacing-8;
+  height: 32px;
+  padding: 0 spacing.$spacing-10 0 spacing.$spacing-12;
+  border: none;
+  background: none;
+  cursor: pointer;
+  @include typo.label-3;
+  color: colors.$text-gray-bold;
+
+  &:hover {
+    background-color: colors.$surface-gray-subtlest;
+  }
+
+  &:focus-visible {
+    outline: 2px solid colors.$border-gray-normal;
+    outline-offset: -2px;
+  }
+
+  &.disabled {
+    color: colors.$text-gray-subtler;
+    cursor: not-allowed;
+  }
+}
+
+.tabContent {
+  width: 100%;
+  max-width: 900px;
+  min-width: 0;
+}
+
+.emptyContainer{
+  width: 100%;
+  max-width: 780px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.sortSheetList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$spacing-8;
+}
+
+.sortSheetItem {
   width: 100%;
   display: flex;
   align-items: center;
-  flex-direction: column;
-  padding-top: 60px;
-  padding-left: 32px;
-  padding-right: 32px;
-  padding-bottom: 80px;
+  justify-content: space-between;
+  gap: spacing.$spacing-8;
+  padding: spacing.$spacing-16 spacing.$spacing-20;
+  border: 1px solid colors.$border-gray-subtle;
+  border-radius: radius.$radius-md;
+  background-color: colors.$surface-base;
+  cursor: pointer;
+  @include typo.label-1;
+  color: colors.$text-gray-bold;
 
-  @include Size("tablet") {
-    padding-top: 24px;
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-
-  @include Size("mobile") {
-    padding-top: 24px;
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-
-  .center {
-    width: 100%;
-    max-width: $max-width-container;
-    margin: 0 auto;
-
-    .searchBarSection {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 24px;
-      margin-bottom: 60px;
-
-      @include Size("mobile") {
-        margin-bottom: 30px;
-      }
-
-      @include Size("tablet") {
-        margin-bottom: 40px;
-      }
-
-      .searchBarContainer {
-        width: 100%;
-        max-width: 780px;
-      }
-
-      .recommend {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-
-        @include Size("mobile") {
-          width: 100%;
-          flex-direction: column;
-          align-items: flex-start;
-        }
-
-        .recommendMessage {
-          @include Sub2;
-          color: $gray70;
-          flex-shrink: 0;
-          @include Drag;
-        }
-
-        .swiperContainer {
-          width: 100%;
-        }
-
-        .swiperSlide {
-          width: auto !important;
-          height: auto !important;
-        }
-
-        .chips {
-          display: flex;
-          gap: 8px;
-          align-items: center;
-          width: 100%;
-          flex-wrap: wrap;
-        }
-
-        .chipLink {
-          text-decoration: none;
-          -webkit-tap-highlight-color: transparent;
-        }
-
-        .chip {
-          display: flex;
-          padding: 10px 16px;
-          justify-content: center;
-          align-items: center;
-          border-radius: 50px;
-          background-color: $gray10;
-          @include Label1;
-          color: $gray60;
-          white-space: nowrap;
-          @include Drag;
-
-          &:active {
-            background-color: $gray20;
-          }
-        }
-      }
-    }
-  }
-
-  .navContainer {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    width: 100%;
-    margin-bottom: 12px;
-    @include Drag;
-
-    .button {
-      padding: 0 12px 8px;
-      background: none;
-      border: none;
-      color: $gray60;
-      @include Title4;
-      cursor: pointer;
-
-      &:hover {
-        color: $gray70;
-      }
-
-      &.selected {
-        border-bottom: 2px solid $gray70;
-        color: $gray70;
-        padding: 0 12px 6px;
-        transition: transform 0.3s ease, width 0.3s ease;
-
-        @include Size("mobile") {
-          padding: 0 0 6px;
-        }
-      }
-
-      @include Size("mobile") {
-        @include Sub4;
-        padding: 0 0 8px;
-      }
-    }
-
-    .bar {
-      width: 1px;
-      height: 20px;
-      background-color: $gray30;
-      padding: 0;
-      margin-bottom: 8px;
-    }
+  &.sortSheetItemSelected {
+    border-color: colors.$border-primary-normal;
+    background-color: colors.$surface-primary-subtlest;
+    color: colors.$text-primary-normal;
   }
 }

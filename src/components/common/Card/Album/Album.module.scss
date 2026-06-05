@@ -1,9 +1,11 @@
+@use "@/styles/breakpoint" as *;
 @use "@/styles/tokens/colors/semantic" as colors;
 @use "@/styles/tokens/typography/semantic" as typo;
 @use "@/styles/tokens/spacing" as spacing;
 @use "@/styles/tokens/radius" as radius;
 
 .album {
+  width: 100%;
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -11,10 +13,16 @@
   overflow: hidden;
 }
 
+.linkPart {
+  display: block;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
 .imageWrap {
   position: relative;
   width: 100%;
-  min-width: 160px;
   aspect-ratio: 1;
   border-radius: radius.$radius-md;
   overflow: hidden;
@@ -91,6 +99,7 @@
 .iconBottomRight {
   bottom: spacing.$spacing-8;
   right: spacing.$spacing-8;
+  color: colors.$icon-gray-subtle;
 
   &.iconBottomRightClickable {
     pointer-events: auto;
@@ -99,6 +108,26 @@
     padding: 0;
     cursor: pointer;
   }
+
+  &.iconBottomRightActive {
+    color: colors.$status-negative;
+  }
+}
+
+.heartStack {
+  position: relative;
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+}
+
+.heartStackBg {
+  position: absolute;
+  inset: 0;
+}
+
+.heartStackFg {
+  position: relative;
 }
 
 .body {
@@ -118,4 +147,43 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+}
+
+.feedLink {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.titleLink {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  min-width: 0;
+}
+
+.nicknameWrap {
+  position: relative;
+  display: inline-flex;
+  min-width: 0;
+}
+
+.nicknameLink,
+.nicknameText {
+  display: inline-block;
+  text-decoration: none;
+  color: inherit;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nicknameLink {
+  cursor: pointer;
+}
+
+.hoverPopup {
+  position: fixed;
+  z-index: 1000;
 }

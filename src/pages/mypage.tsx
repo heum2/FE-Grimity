@@ -17,14 +17,10 @@ export default function Mypage() {
     switch (tab) {
       case "liked-feeds":
         return "좋아요한 그림";
-      case "saved-feeds":
-        return "저장한 그림";
-      case "liked-posts":
-        return "좋아요한 글";
-      case "my-comments":
-        return "내가 쓴 댓글";
+      case "saved-posts":
+        return "저장한 글";
       default:
-        return "마이페이지";
+        return "내 보관함";
     }
   };
 

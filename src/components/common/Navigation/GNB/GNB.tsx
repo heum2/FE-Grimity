@@ -78,6 +78,8 @@ export default function GNB({
   searchValue = "",
   searchPlaceholder = "검색어를 입력하세요",
   onSearchChange,
+  onSearchKeyDown,
+  onSearchClear,
   rightActions = [],
   rightLabel,
   onRightLabelClick,
@@ -213,7 +215,7 @@ export default function GNB({
         >
           <div className={clsx(styles.flexRow, styles.gap8)}>
             <BackButton onClick={onBack} />
-            <span className={styles.title}>{title}</span>
+            {title && <span className={styles.title}>{title}</span>}
           </div>
           <div className={clsx(styles.flexRow, styles.flexPushEnd, styles.gap8)}>
             <SearchButton onClick={onSearch} />
@@ -228,7 +230,7 @@ export default function GNB({
         <nav className={clsx(styles.gnb, styles.gnbTopNav, styles.navGap8, className)}>
           <div className={clsx(styles.flexRow, styles.gap8)}>
             <BackButton onClick={onBack} />
-            <span className={styles.title}>{title}</span>
+            {title && <span className={styles.title}>{title}</span>}
           </div>
           <div className={clsx(styles.flexRow, styles.flexPushEnd, styles.gap8)}>
             {rightActions}
@@ -245,6 +247,8 @@ export default function GNB({
             className={styles.searchInput}
             value={searchValue}
             onChange={(e) => onSearchChange?.(e.target.value)}
+            onKeyDown={onSearchKeyDown}
+            onClear={onSearchClear}
             placeholder={searchPlaceholder}
           />
         </nav>

@@ -6,20 +6,27 @@
 .wrapper {
   position: relative;
   display: inline-block;
-  
-  .right {
-    right: 0;
-  }
+}
 
-  .left {
-    left: 0;
-  }
+.triggerWrap {
+  display: inline-flex;
+  cursor: pointer;
 }
 
 .menuContainer {
   position: absolute;
   top: calc(100% + spacing.$spacing-8);
   z-index: 100;
+
+  &.right {
+    right: 0;
+    left: auto;
+  }
+
+  &.left {
+    left: 0;
+    right: auto;
+  }
 }
 
 .menu {
@@ -39,6 +46,8 @@
 .item {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: spacing.$spacing-12;
   height: 40px;
   padding: 0 spacing.$spacing-16;
   @include typo.label-2;
@@ -55,6 +64,10 @@
   &:active {
     background-color: colors.$surface-gray-subtler;
   }
+}
+
+.itemSelected {
+  color: colors.$text-primary-normal;
 }
 
 .divider {

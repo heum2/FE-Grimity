@@ -33,6 +33,8 @@ export interface GNBProps {
   searchValue?: string;
   searchPlaceholder?: string;
   onSearchChange?: (value: string) => void;
+  onSearchKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  onSearchClear?: () => void;
   /** icon-button 변형의 우측 아이콘 슬롯 (최대 3개) */
   rightActions?:
     | []

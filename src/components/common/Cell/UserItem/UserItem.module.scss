@@ -354,7 +354,9 @@
   gap: spacing.$spacing-16;
   padding: spacing.$spacing-20 0;
   width: 100%;
+  min-width: 0;
   position: relative;
+  cursor: pointer;
 }
 
 .bookMarkLeft {
@@ -390,7 +392,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  flex: 1;
   min-width: 0;
 }
 
@@ -422,15 +423,20 @@
   gap: spacing.$spacing-8;
   padding: spacing.$spacing-20 0;
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
   position: relative;
+  box-sizing: border-box;
 }
 
 .communityTitlePost {
   display: flex;
   flex-direction: column;
   gap: spacing.$spacing-4;
-  height: 48px;
+  min-height: 48px;
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
   overflow: hidden;
 }
 
@@ -454,9 +460,19 @@
 .communityTitleBody {
   @include typo.body-2-r;
   color: colors.$text-gray-bold;
+  width: 100%;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.communityTitleUserInfo {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  flex-wrap: wrap;
+  row-gap: spacing.$spacing-2;
 }
 
 .communityTitleDivider {

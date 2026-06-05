@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 export interface UserCardImageItem {
   url?: string;
   isLiked?: boolean;
@@ -29,11 +31,11 @@ export interface SearchUserCardProps extends BaseUserCardProps {
   variant: "search";
   avatarUrl?: string;
   bannerUrl?: string;
-  nickname: string;
+  nickname: ReactNode;
   followerCount?: number;
   isFollowing?: boolean;
   onFollowClick?: () => void;
-  content?: string;
+  content?: ReactNode;
 }
 
 export interface TagViewUserCardProps extends BaseUserCardProps {

@@ -1,8 +1,10 @@
+import type { ReactNode } from "react";
+
 export type UserInfoType = "default" | "community" | "comment" | "follow";
 
 export interface UserInfoProps {
   type?: UserInfoType;
-  nickname?: string;
+  nickname?: ReactNode;
   /** default & community */
   showHeart?: boolean;
   heartCount?: string;

@@ -1,141 +1,242 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import SearchBar from "../SearchBar/SearchBar";
-import styles from "./SearchPage.module.scss";
+
 import { useTagsPopular } from "@/api/tags/getTagsPopular";
-import Link from "next/link";
+import { useDeviceStore } from "@/states/deviceStore";
+
+import Empty from "@/components/common/Empty/Empty";
+import Icon from "@/components/common/Icon/Icon";
+import Filter from "@/components/common/Filter/Filter";
+import BottomSheet from "@/components/common/PopUp/BottomSheet/BottomSheet";
+import TextField from "@/components/common/Input/TextField/TextField";
+import { useToast } from "@/hooks/useToast";
+
 import SearchFeed from "./Feed/SearchFeed/SearchFeed";
 import SearchAuthor from "./User/SearchAuthor/SearchAuthor";
 import SearchPost from "./Post/SearchPost/SearchPost";
-import { useDeviceStore } from "@/states/deviceStore";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { FreeMode } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/free-mode";
+import RecommendTagsSlider from "./RecommendTagsSlider/RecommendTagsSlider";
+import UnderlineTabs from "@/components/UnderlineTabs/UnderlineTabs";
+import {
+  type Tab,
+  SORT_OPTIONS_BY_TAB,
+  MIN_KEYWORD_LENGTH,
+  resolveSortOption,
+  resolveTab,
+} from "./searchPage.constants";
+
+import styles from "./SearchPage.module.scss";
+import clsx from "clsx";
+
+const POPULAR_TAG_LIMIT = 10;
+
+const TABS: { key: Tab; label: string }[] = [
+  { key: "feed", label: "그림" },
+  { key: "author", label: "작가" },
+  { key: "board", label: "자유게시판" },
+];
 
 export default function SearchPage() {
-  const [searchValue, setSearchValue] = useState<string>("");
-  const [searchKeyword, setSearchKeyword] = useState<string>("");
-  const { data: popularData } = useTagsPopular();
   const router = useRouter();
-  const { tab } = router.query;
-  const { isMobile } = useDeviceStore();
+  const { showToast } = useToast();
+  const { data: popularData } = useTagsPopular();
+  const isMobile = useDeviceStore((state) => state.isMobile);
+
+  const queryKeyword = typeof router.query.keyword === "string" ? router.query.keyword : "";
+  const tab = resolveTab(router.query.tab);
+  const sort = resolveSortOption(tab, router.query.sort);
+  const sortOptions = SORT_OPTIONS_BY_TAB[tab];
+  const selectedSortLabel =
+    sortOptions.find((option) => option.value === sort)?.label ?? "최신순";
+
+  const [searchValue, setSearchValue] = useState(queryKeyword);
+  const [isSortSheetOpen, setIsSortSheetOpen] = useState(false);
 
   useEffect(() => {
-    const keyword = router.query.keyword as string | undefined;
-    if (keyword) {
-      setSearchValue(keyword);
-      setSearchKeyword(keyword);
-    }
-  }, [router.query.keyword]);
+    setSearchValue(queryKeyword);
+  }, [queryKeyword]);
 
-  const getTabComponent = () => {
+  const navigateSearch = (keyword: string, nextTab: Tab = tab) => {
+    const nextSort = resolveSortOption(nextTab, router.query.sort);
+    router.push(
+      {
+        pathname: "/search",
+        query: {
+          tab: nextTab,
+          keyword,
+          sort: nextSort,
+        },
+      },
+      undefined,
+      { shallow: true },
+    );
+  };
+
+  const handleSortChange = (value: string) => {
+    router.push(
+      {
+        pathname: "/search",
+        query: {
+          tab,
+          keyword: queryKeyword,
+          sort: value,
+          ...(tab === "board" ? { page: 1 } : {}),
+        },
+      },
+      undefined,
+      { shallow: true },
+    );
+  };
+
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.nativeEvent.isComposing) return;
+    if (e.key !== "Enter") return;
+
+    const trimmed = searchValue.trim();
+    if (trimmed.length < MIN_KEYWORD_LENGTH) {
+      showToast("두 글자 이상 입력해주세요.", "warning");
+      return;
+    }
+    navigateSearch(trimmed);
+  };
+
+  const handleClear = () => {
+    setSearchValue("");
+    router.push("/search", undefined, { shallow: true });
+  };
+
+  const renderTab = () => {
+    if (!queryKeyword) {
+      return (
+        <div className={styles.emptyContainer}>
+          <Empty
+            size="xl"
+            iconName="illust"
+            title="그리미티에서 찾아보세요!"
+          />
+        </div>
+      );
+    }
+
     switch (tab) {
-      case "feed":
-        return <SearchFeed />;
       case "author":
         return <SearchAuthor />;
       case "board":
         return <SearchPost />;
+      case "feed":
       default:
-        return null;
+        return <SearchFeed />;
     }
   };
 
-  const getTabClass = (tabName: string) => {
-    return tab === tabName ? styles.selected : "";
-  };
-
-  const handleSearch = (value?: string) => {
-    const currentTab = tab === "author" ? "author" : tab === "board" ? "board" : "feed";
-    setSearchKeyword(value || "");
-    router.push(`?tab=${currentTab}&keyword=${value}`, undefined, { shallow: true });
-  };
-
-  const handleClear = () => {
-    setSearchKeyword("");
-    router.push("", undefined, { shallow: true });
-  };
-
-  const renderChips = () => {
-    if (!popularData?.length) return null;
-
-    if (isMobile) {
-      return (
-        <Swiper
-          modules={[FreeMode]}
-          spaceBetween={8}
-          slidesPerView="auto"
-          freeMode={true}
-          className={styles.swiperContainer}
-        >
-          {popularData.slice(0, 8).map((tag, index) => (
-            <SwiperSlide key={index} className={styles.swiperSlide}>
-              <Link href={`/search?tab=feed&keyword=${tag.tagName}`} className={styles.chipLink}>
-                <div className={styles.chip}>{tag.tagName}</div>
-              </Link>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      );
-    }
-
-    return (
-      <div className={styles.chips}>
-        {popularData.slice(0, 8).map((tag, index) => (
-          <Link
-            href={`/search?tab=feed&keyword=${tag.tagName}`}
-            key={index}
-            className={styles.chipLink}
+  const sortMenu =
+    tab !== "author" ? (
+      <div className={styles.sortMenu}>
+        {isMobile ? (
+          <button
+            type="button"
+            className={clsx(styles.sortTrigger, !queryKeyword && styles.disabled)}
+            disabled={!queryKeyword}
+            aria-haspopup="dialog"
+            aria-label="정렬 기준 선택"
+            onClick={() => setIsSortSheetOpen(true)}
           >
-            <div className={styles.chip}>{tag.tagName}</div>
-          </Link>
-        ))}
+            <span>{selectedSortLabel}</span>
+            <Icon
+              name="chevron-down"
+              size={16}
+              color={!queryKeyword ? "gray-subtler" : "gray-bold"}
+            />
+          </button>
+        ) : (
+          <Filter
+            variant="text"
+            options={sortOptions}
+            value={sort}
+            onChange={handleSortChange}
+            disabled={!queryKeyword}
+          />
+        )}
       </div>
-    );
-  };
+    ) : undefined;
 
   return (
     <div className={styles.container}>
-      <div className={styles.center}>
-        <section className={styles.searchBarSection}>
-          <div className={styles.searchBarContainer}>
-            <SearchBar
-              searchValue={searchValue}
-              placeholder="그림, 작가, 관련 작품을 검색해보세요"
-              setSearchValue={setSearchValue}
-              onSearch={handleSearch}
-              onClear={handleClear}
+      <section className={styles.searchBarSection}>
+        <div className={styles.searchBarWrap}>
+          <TextField
+            variant="search"
+            size="md"
+            placeholder="그림, 작가, 글을 검색해보세요."
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            onKeyDown={handleSearchKeyDown}
+            onClear={handleClear}
+          />
+        </div>
+        {popularData &&
+          popularData.length > 0 &&
+          !(isMobile && !!queryKeyword) && (
+            <div className={styles.recommend}>
+              <div className={styles.recommendInner}>
+                <p className={styles.recommendLabel}>추천 태그</p>
+                <RecommendTagsSlider tags={popularData.slice(0, POPULAR_TAG_LIMIT)} />
+              </div>
+            </div>
+          )}
+      </section>
+
+      <div className={styles.tabPanel}>
+        {(!isMobile || !!queryKeyword) && (
+          <div className={styles.tabBar}>
+            <UnderlineTabs
+              tabs={TABS}
+              activeTab={tab}
+              onTabChange={(key) => navigateSearch(queryKeyword, key)}
+              ariaLabel="검색 카테고리"
+              rightSlot={sortMenu}
             />
           </div>
-          <div className={styles.recommend}>
-            <p className={styles.recommendMessage}>추천 태그</p>
-            {renderChips()}
-          </div>
-        </section>
-        <section className={styles.navContainer}>
-          <button
-            className={`${styles.button} ${getTabClass("feed")}`}
-            onClick={() => router.push(`?tab=feed&keyword=${searchKeyword}`)}
-          >
-            그림
-          </button>
-          <button
-            className={`${styles.button} ${getTabClass("author")}`}
-            onClick={() => router.push(`?tab=author&keyword=${searchKeyword}`)}
-          >
-            유저
-          </button>
-          <div className={styles.bar} />
-          <button
-            className={`${styles.button} ${getTabClass("board")}`}
-            onClick={() => router.push(`?tab=board&keyword=${searchKeyword}`)}
-          >
-            자유게시판
-          </button>
-        </section>
-        {getTabComponent()}
+        )}
+
+        <div className={styles.tabContent}>{renderTab()}</div>
       </div>
+
+      {tab !== "author" && (
+        <BottomSheet
+          isOpen={isSortSheetOpen}
+          onClose={() => setIsSortSheetOpen(false)}
+          title="정렬"
+          showCloseIcon
+        >
+          <ul className={styles.sortSheetList}>
+            {sortOptions.map((option) => {
+              const isSelected = option.value === sort;
+              return (
+                <li key={option.value}>
+                  <button
+                    type="button"
+                    className={clsx(
+                      styles.sortSheetItem,
+                      isSelected && styles.sortSheetItemSelected,
+                    )}
+                    onClick={() => {
+                      handleSortChange(option.value);
+                      setIsSortSheetOpen(false);
+                    }}
+                    aria-pressed={isSelected}
+                  >
+                    <span>{option.label}</span>
+                    {isSelected && (
+                      <Icon name="check" size={20} color="primary-normal" />
+                    )}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </BottomSheet>
+      )}
     </div>
   );
 }
+ 

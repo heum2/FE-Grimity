@@ -2,6 +2,9 @@ import axiosInstance from "@/constants/baseurl";
 import { useQuery } from "@tanstack/react-query";
 import { MySavePostsResponse } from "@grimity/dto";
 
+import { useAuthStore } from "@/states/authStore";
+import { useShallow } from "zustand/react/shallow";
+
 export interface MySavePostRequest {
   size?: number;
   page?: number;
@@ -21,13 +24,19 @@ export async function getMySavePost({
   }
 }
 
-export function useMySavePost({ size, page }: MySavePostRequest) {
-  const accessToken = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
+export function useMySavePost({ size, page }: MySavePostRequest, options?: { enabled?: boolean }) {
+  const { isAuthReady, isLoggedIn } = useAuthStore(
+    useShallow((state) => ({
+      isAuthReady: state.isAuthReady,
+      isLoggedIn: state.isLoggedIn,
+    })),
+  );
+  const enabled = options?.enabled ?? (isAuthReady && isLoggedIn);
 
   return useQuery<MySavePostsResponse>({
     queryKey: ["MySavePost", size, page],
     queryFn: () => getMySavePost({ size, page }),
-    enabled: Boolean(accessToken),
+    enabled,
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
