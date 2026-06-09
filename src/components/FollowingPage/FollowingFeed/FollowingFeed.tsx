@@ -14,6 +14,7 @@ import { timeAgo } from "@/utils/timeAgo";
 
 const Zoom = dynamic(() => import("react-medium-image-zoom"), { ssr: false });
 import { useModalStore } from "@/states/modalStore";
+import { useReportModal } from "@/hooks/useReportModal";
 import { deleteSave, putSave } from "@/api/feeds/putDeleteFeedsIdSave";
 import IconComponent from "@/components/Asset/Icon";
 import Dropdown from "@/components/Dropdown/Dropdown";
@@ -24,7 +25,6 @@ import CommentInput from "@/components/Detail/Comment/CommentInput/CommentInput"
 import Comment from "@/components/Detail/Comment/Comment";
 import { useGetFeedsComments } from "@/api/feeds-comments/getFeedComments";
 import { useMyData } from "@/api/users/getMe";
-import { useDeviceStore } from "@/states/deviceStore";
 import { FollowingFeedsResponse } from "@/api/feeds/getFeedsFollowing";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 import { useProfileCardHover } from "@/hooks/useProfileCardHover";
@@ -52,12 +52,12 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
   const [overlayImage, setOverlayImage] = useState<string | null>(null);
   const router = useRouter();
   const openModal = useModalStore((state) => state.openModal);
+  const openReportModal = useReportModal();
   const { refetch: refetchComments } = useGetFeedsComments({
     feedId: id,
   });
   const [isContentTooLong, setIsContentTooLong] = useState(false);
   const contentRef = useRef<HTMLParagraphElement | null>(null);
-  const { isMobile } = useDeviceStore();
   const imgRef = usePreventRightClick<HTMLImageElement>();
   const divRef = usePreventRightClick<HTMLDivElement>();
   const sectionRef = usePreventRightClick<HTMLElement>();
@@ -195,18 +195,8 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
   };
 
   const handleOpenReportModal = () => {
-    if (isMobile) {
-      openModal({
-        type: "REPORT",
-        data: { refType: "FEED", refId: details?.author.id },
-        isFill: true,
-      });
-    } else {
-      openModal({
-        type: "REPORT",
-        data: { refType: "FEED", refId: details?.author.id },
-      });
-    }
+    if (!details?.author.id) return;
+    openReportModal({ refType: "FEED", refId: details.author.id });
   };
 
   return (

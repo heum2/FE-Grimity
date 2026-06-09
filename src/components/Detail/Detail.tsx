@@ -25,10 +25,10 @@ import ShareBtn from "./ShareBtn/ShareBtn";
 import { timeAgo } from "@/utils/timeAgo";
 import Chip from "../Chip/Chip";
 import { useModalStore } from "@/states/modalStore";
+import { useReportModal } from "@/hooks/useReportModal";
 import { deleteSave, putSave } from "@/api/feeds/putDeleteFeedsIdSave";
 import Comment from "./Comment/Comment";
 import NewFeed from "../Layout/NewFeed/NewFeed";
-import { useDeviceStore } from "@/states/deviceStore";
 import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 import { useAuthRefresh } from "@/hooks/useAuthRefresh";
 import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
@@ -53,7 +53,7 @@ export default function Detail({ id }: DetailProps) {
   const sectionRef = usePreventRightClick<HTMLElement>();
   const router = useRouter();
   const openModal = useModalStore((state) => state.openModal);
-  const { isMobile } = useDeviceStore();
+  const openReportModal = useReportModal();
   usePreventScroll(!!overlayImage);
   const { triggerProps, popoverProps, isOpen, targetRef } = useProfileCardHover(
     details?.author.url,
@@ -138,18 +138,8 @@ export default function Detail({ id }: DetailProps) {
   };
 
   const handleOpenReportModal = () => {
-    if (isMobile) {
-      openModal({
-        type: "REPORT",
-        data: { refType: "FEED", refId: details?.author.id },
-        isFill: true,
-      });
-    } else {
-      openModal({
-        type: "REPORT",
-        data: { refType: "FEED", refId: details?.author.id },
-      });
-    }
+    if (!details?.author.id) return;
+    openReportModal({ refType: "FEED", refId: details.author.id });
   };
 
   const actionBarConfig: ActionBarConfig = useMemo(

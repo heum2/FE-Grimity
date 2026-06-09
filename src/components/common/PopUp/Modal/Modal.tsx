@@ -55,12 +55,20 @@ export default function Modal(props: ModalProps) {
             {props.buttonType === "double" && (
               <>
                 <div className={styles.buttonWrap}>
-                  <OutlinedButton size="large" onClick={props.onSecondary}>
+                  <OutlinedButton
+                    size="large"
+                    onClick={props.onSecondary}
+                    disabled={props.secondaryDisabled}
+                  >
                     {props.secondaryLabel}
                   </OutlinedButton>
                 </div>
                 <div className={styles.buttonWrap}>
-                  <SolidButton size="large" onClick={props.onPrimary}>
+                  <SolidButton
+                    size="large"
+                    onClick={props.onPrimary}
+                    disabled={props.primaryDisabled}
+                  >
                     {props.primaryLabel}
                   </SolidButton>
                 </div>
@@ -68,14 +76,22 @@ export default function Modal(props: ModalProps) {
             )}
             {props.buttonType === "primary" && (
               <div className={styles.buttonWrap}>
-                <SolidButton size="large" onClick={props.onPrimary}>
+                <SolidButton
+                  size="large"
+                  onClick={props.onPrimary}
+                  disabled={props.primaryDisabled}
+                >
                   {props.primaryLabel}
                 </SolidButton>
               </div>
             )}
             {props.buttonType === "secondary" && (
               <div className={styles.buttonWrap}>
-                <OutlinedButton size="large" onClick={props.onSecondary}>
+                <OutlinedButton
+                  size="large"
+                  onClick={props.onSecondary}
+                  disabled={props.secondaryDisabled}
+                >
                   {props.secondaryLabel}
                 </OutlinedButton>
               </div>
