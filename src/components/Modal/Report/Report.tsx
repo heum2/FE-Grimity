@@ -141,16 +141,21 @@ export default function Report({ refType, refId, onClose }: ReportProps) {
         <div className={styles.mobileContent}>{formFields}</div>
 
         <div className={styles.mobileActions}>
-          <span className={styles.mobileActionButton}>
-            <OutlinedButton size="large" onClick={onClose}>
-              닫기
-            </OutlinedButton>
-          </span>
-          <span className={styles.mobileActionButton}>
-            <SolidButton size="large" onClick={handleRequestSubmit} disabled={!canSubmit}>
-              신고하기
-            </SolidButton>
-          </span>
+          <OutlinedButton
+            size="large"
+            onClick={onClose}
+            className={styles.mobileActionButton}
+          >
+            닫기
+          </OutlinedButton>
+          <SolidButton
+            size="large"
+            onClick={handleRequestSubmit}
+            disabled={!canSubmit}
+            className={styles.mobileActionButton}
+          >
+            신고하기
+          </SolidButton>
         </div>
       </div>
     );
