@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useToast } from "@/hooks/useToast";
 import { useDeviceStore } from "@/states/deviceStore";
 import Modal from "@/components/common/PopUp/Modal/Modal";
+import Backdrop from "@/components/common/PopUp/Backdrop/Backdrop";
 import Alert from "@/components/common/PopUp/Alert/Alert";
 import GNB from "@/components/common/Navigation/GNB/GNB";
 import ListItem from "@/components/common/Cell/ListItem/ListItem";
@@ -28,6 +29,7 @@ const MAX_DETAIL_LENGTH = 500;
 export default function Report({ refType, refId, onClose }: ReportProps) {
   const { showToast } = useToast();
   const { isMobile } = useDeviceStore();
+  const alertSize = isMobile ? "md" : "xl";
 
   const [step, setStep] = useState<ReportStep>("form");
   const [reason, setReason] = useState<ReportType | null>(null);
@@ -64,10 +66,10 @@ export default function Report({ refType, refId, onClose }: ReportProps) {
 
   if (step === "confirm") {
     return (
-      <div className={styles.alertOverlay}>
+      <Backdrop>
         <Alert
           variant="content"
-          size={isMobile ? "md" : "xl"}
+          size={alertSize}
           title="신고하시겠어요?"
           contentText={"신고 접수 후에는 취소가 어려워요.\n허위 신고 시 서비스 이용이 제한될 수 있어요."}
           secondaryLabel="아니요"
@@ -75,22 +77,22 @@ export default function Report({ refType, refId, onClose }: ReportProps) {
           primaryLabel="신고하기"
           onPrimary={handleConfirmSubmit}
         />
-      </div>
+      </Backdrop>
     );
   }
 
   if (step === "complete") {
     return (
-      <div className={styles.alertOverlay}>
+      <Backdrop>
         <Alert
           variant="normal"
-          size={isMobile ? "md" : "xl"}
+          size={alertSize}
           title="신고가 접수되었어요"
           contentText={"관리자의 검토 후\n적절한 조치가 이루어질 예정이에요"}
           primaryLabel="확인"
           onPrimary={onClose}
         />
-      </div>
+      </Backdrop>
     );
   }
 
@@ -135,11 +137,19 @@ export default function Report({ refType, refId, onClose }: ReportProps) {
 
   if (isMobile) {
     return (
-      <div className={styles.mobileFill}>
+      <div
+        className={styles.mobileFill}
+        role="dialog"
+        aria-modal="true"
+        aria-label="신고하기"
+      >
         <GNB variant="three-button" title="신고하기" onBack={onClose} />
 
         <div className={styles.mobileContent}>{formFields}</div>
 
+        {/*
+         * TODO: 공통 Modal에 fullscreen/mobile variant가 추가되면 이 푸터를 그쪽으로 통합한다.
+         */}
         <div className={styles.mobileActions}>
           <OutlinedButton
             size="large"

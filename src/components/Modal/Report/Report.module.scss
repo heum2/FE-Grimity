@@ -2,17 +2,6 @@
 @use "@/styles/tokens/typography/semantic" as typo;
 @use "@/styles/tokens/spacing" as spacing;
 
-.alertOverlay {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: spacing.$spacing-24;
-  background-color: colors.$bg-overlay-black;
-}
-
 .form {
   display: flex;
   flex-direction: column;

@@ -1,8 +1,8 @@
 "use client";
 
-import clsx from "clsx";
 import SolidButton from "@/components/common/Button/SolidButton/SolidButton";
 import OutlinedButton from "@/components/common/Button/OutlinedButton/OutlinedButton";
+import Backdrop from "@/components/common/PopUp/Backdrop/Backdrop";
 import styles from "./Modal.module.scss";
 import type { ModalProps } from "./Modal.types";
 import Icon from "@/components/common/Icon/Icon";
@@ -15,8 +15,8 @@ export default function Modal(props: ModalProps) {
     props.buttonType === "double";
 
   return (
-    <div
-      className={clsx(styles.overlay, className)}
+    <Backdrop
+      className={className}
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
@@ -99,6 +99,6 @@ export default function Modal(props: ModalProps) {
           </footer>
         )}
       </div>
-    </div>
+    </Backdrop>
   );
 }
