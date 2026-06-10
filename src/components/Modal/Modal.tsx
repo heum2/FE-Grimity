@@ -5,7 +5,6 @@ import { useModalStore } from "@/states/modalStore";
 import { usePreventScroll } from "@/hooks/usePreventScroll";
 import IconComponent from "../Asset/Icon";
 import Button from "../Button/Button";
-import Login from "./Login/Login";
 import Nickname from "./Nickname/Nickname";
 import ProfileId from "./ProfileId/ProfileId";
 import Join from "./Join/Join";
@@ -16,7 +15,6 @@ import Share from "./Share/Share";
 import UploadModal from "./Upload/Upload";
 import SharePost from "./SharePost/SharePost";
 import Like from "./Like/Like";
-import Report from "./Report/Report";
 import AlbumEdit from "./AlbumEdit/AlbumEdit";
 import AlbumSelect from "./AlbumSelect/AlbumSelect";
 import AlbumMove from "./AlbumMove/AlbumMove";
@@ -123,8 +121,6 @@ export default function Modal() {
         return <UploadModal {...data} />;
       case "LIKE":
         return <Like />;
-      case "REPORT":
-        return <Report {...data} closeModal={handleCloseModal} />;
       case "ALBUM-EDIT":
         return <AlbumEdit {...data} />;
       case "ALBUM-SELECT":

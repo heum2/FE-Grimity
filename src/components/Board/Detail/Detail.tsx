@@ -21,6 +21,7 @@ import { ActionBarConfig } from "@/components/ActionBar/ActionBar.types";
 import { useToast } from "@/hooks/useToast";
 import { useDeviceStore } from "@/states/deviceStore";
 import { useProfileCardHover } from "@/hooks/useProfileCardHover";
+import { useReportModal } from "@/hooks/useReportModal";
 
 import { useModalStore } from "@/states/modalStore";
 import { useAuthStore } from "@/states/authStore";
@@ -46,6 +47,7 @@ export default function PostDetail({ id }: PostDetailProps) {
 
   const { isLoggedIn, user_id } = useAuthStore();
   const { openModal } = useModalStore();
+  const openReportModal = useReportModal();
 
   const { showToast } = useToast();
   const { isMobile } = useDeviceStore();
@@ -81,11 +83,9 @@ export default function PostDetail({ id }: PostDetailProps) {
   }, [posts, openModal, id]);
 
   const handleOpenReportModal = useCallback(() => {
-    openModal({
-      type: "REPORT",
-      data: { refType: "POST", refId: posts?.author.id },
-    });
-  }, [openModal, posts?.author.id]);
+    if (!posts?.author.id) return;
+    openReportModal({ refType: "POST", refId: posts.author.id });
+  }, [openReportModal, posts?.author.id]);
 
   const handleLikeClick = useCallback(() => {
     if (!isLoggedIn) {

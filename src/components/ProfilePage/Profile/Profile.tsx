@@ -3,6 +3,7 @@ import router, { useRouter } from "next/router";
 
 import { useAuthStore } from "@/states/authStore";
 import { useModalStore } from "@/states/modalStore";
+import { useReportModal } from "@/hooks/useReportModal";
 
 import { useMyData } from "@/api/users/getMe";
 import { useUserDataByUrl } from "@/api/users/getId";
@@ -35,6 +36,7 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
   const setUserId = useAuthStore((state) => state.setUserId);
   const openModal = useModalStore((state) => state.openModal);
+  const openReportModal = useReportModal();
 
   const { data: myData } = useMyData();
   const { data: userData, refetch: refetchUserData } = useUserDataByUrl(url);
@@ -101,7 +103,8 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
       showToast("로그인 후 가능합니다.", "warning");
       return;
     }
-    openModal({ type: "REPORT", data: { refType: "USER", refId: userData?.id }, isFill: isMobile });
+    if (!userData?.id) return;
+    openReportModal({ refType: "USER", refId: userData.id });
   };
 
   const handleWithdrawal = async () => {
