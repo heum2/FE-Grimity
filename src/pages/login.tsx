@@ -170,6 +170,7 @@ export default function LoginPage() {
         }}
       />
       <Head>
+        <title>로그인 | 그리미티</title>
         <meta name="robots" content="noindex" />
       </Head>
       <main className={styles.page}>
