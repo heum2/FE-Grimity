@@ -35,7 +35,16 @@ import axiosInstance from "@/constants/baseurl";
 
 import styles from "@/components/Layout/Layout.module.scss";
 
-const MAIN_ROUTES = ["/", "/ranking", "/board", "/following", "/login", "/signup/nickname"];
+const MAIN_ROUTES = [
+  "/",
+  "/ranking",
+  "/board",
+  "/following",
+  "/login",
+  "/signup/nickname",
+  "/signup/profile-url",
+  "/signup/complete",
+];
 const UPLOAD_HIDDEN_ROUTES = [
   "/write",
   "/feeds/[id]/edit",
