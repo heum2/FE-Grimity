@@ -8,6 +8,7 @@ import Banner from "@/components/Layout/Banner/Banner";
 import Ranking from "@/components/Layout/Ranking/Ranking";
 import MainBoard from "@/components/Layout/MainBoard/MainBoard";
 import NewFeed from "@/components/Layout/NewFeed/NewFeed";
+import FloatingButton from "@/components/common/Button/FloatingButton/FloatingButton";
 
 import { useScrollRestoration } from "@/hooks/useScrollRestoration";
 
@@ -42,11 +43,18 @@ export default function Home() {
           <Ranking />
           <section className={styles.BoardSection}>
             <MainBoard type="ALL" />
-            {!isMobile && <MainBoard type="NOTICE" />}
+            <MainBoard type="NOTICE" />
           </section>
           <NewFeed />
         </section>
       </div>
+      {isMobile && (
+        <FloatingButton
+          className={styles.uploadFab}
+          aria-label="그림 올리기"
+          onClick={() => router.push("/write")}
+        />
+      )}
     </>
   );
 }
