@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import { useDeviceStore } from "@/states/deviceStore";
+import { useAuthStore } from "@/states/authStore";
 
 import { InitialPageMeta } from "@/components/MetaData/MetaData";
 import Banner from "@/components/Layout/Banner/Banner";
@@ -22,6 +23,7 @@ export default function Home() {
   const [OGUrl, setOGUrl] = useState(serviceUrl);
   const { restoreScrollPosition } = useScrollRestoration("home-scroll");
   const { isMobile } = useDeviceStore();
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   useEffect(() => {
     setOGUrl(`${serviceUrl}/${router.asPath}`);
@@ -48,7 +50,7 @@ export default function Home() {
           <NewFeed />
         </section>
       </div>
-      {isMobile && (
+      {isMobile && isLoggedIn && (
         <FloatingButton
           className={styles.uploadFab}
           aria-label="그림 올리기"
