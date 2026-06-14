@@ -2,7 +2,6 @@ import { ReactNode } from "react";
 import { create } from "zustand";
 
 export type ModalType =
-  | "NICKNAME"
   | "JOIN"
   | "PROFILE-ID"
   | "PROFILE-EDIT"

@@ -117,6 +117,7 @@ export type IconName =
   | "facebook"
   | "facebook-fill"
   | "kakao"
+  | "kakaotalk"
   | "kakao-fill"
   | "instagram"
   | "instagram-fill"

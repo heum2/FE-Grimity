@@ -44,3 +44,10 @@
     }
   }
 }
+
+.uploadFab {
+  position: fixed;
+  right: spacing.$spacing-16;
+  bottom: spacing.$spacing-16;
+  z-index: 100;
+}
