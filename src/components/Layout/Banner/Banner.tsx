@@ -10,20 +10,20 @@ function Banner() {
       <picture>
         <source
           width={358}
-          height={100}
+          height={250}
           media="(max-width: 767px)"
           srcSet="/image/main-banner-m.webp"
         />
         <source
           width={880}
-          height={120}
+          height={250}
           media="(max-width: 1023px)"
           srcSet="/image/main-banner-t.webp"
         />
         <img
           src="/image/main-banner.webp"
           width={1462}
-          height={120}
+          height={250}
           className={styles.banner}
           alt="메인 배너"
         />
