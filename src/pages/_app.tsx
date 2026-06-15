@@ -18,6 +18,9 @@ import { useTheme } from "@/hooks/useTheme";
 import "@/styles/tokens/colors/_root.scss";
 import "@/styles/globals.scss";
 import "@/styles/reset.css";
+
+import "swiper/css";
+import "swiper/css/thumbs";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";

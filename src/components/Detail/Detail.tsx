@@ -12,13 +12,9 @@ import Link from "next/link";
 import { putView } from "@/api/feeds/putIdView";
 import { deleteFeeds } from "@/api/feeds/deleteFeedsId";
 import { useRouter } from "next/router";
-import { usePreventScroll } from "@/hooks/usePreventScroll";
-import dynamic from "next/dynamic";
-import "react-medium-image-zoom/dist/styles.css";
 import Loader from "../Layout/Loader/Loader";
-
-const Zoom = dynamic(() => import("react-medium-image-zoom"), { ssr: false });
 import Author from "./Author/Author";
+import ImageViewer from "@/components/ImageViewer/ImageViewer";
 import { useProfileCardHover } from "@/hooks/useProfileCardHover";
 import ProfileCardPopover from "@/components/Layout/ProfileCardPopover/ProfileCardPopover";
 import ShareBtn from "./ShareBtn/ShareBtn";
@@ -47,14 +43,13 @@ export default function Detail({ id }: DetailProps) {
   const [isSaved, setIsSaved] = useState(false);
   const { mutate: toggleLike } = useFeedsLikeMutation();
   const [viewCounted, setViewCounted] = useState(false);
-  const [overlayImage, setOverlayImage] = useState<string | null>(null);
+  const [viewerIndex, setViewerIndex] = useState<number | null>(null);
   const imgRef = usePreventRightClick<HTMLImageElement>();
   const divRef = usePreventRightClick<HTMLDivElement>();
   const sectionRef = usePreventRightClick<HTMLElement>();
   const router = useRouter();
   const openModal = useModalStore((state) => state.openModal);
   const openReportModal = useReportModal();
-  usePreventScroll(!!overlayImage);
   const { triggerProps, popoverProps, isOpen, targetRef } = useProfileCardHover(
     details?.author.url,
   );
@@ -124,8 +119,8 @@ export default function Detail({ id }: DetailProps) {
     setIsSaved(!isSaved);
   };
 
-  const handleImageClick = (image: string) => {
-    setOverlayImage(image);
+  const handleImageClick = (index: number) => {
+    setViewerIndex(index);
   };
 
   const handleOpenShareModal = () => {
@@ -209,19 +204,6 @@ export default function Detail({ id }: DetailProps) {
 
     incrementViewCount();
   }, [id, viewCounted]);
-
-  useEffect(() => {
-    if (overlayImage) {
-      history.pushState(null, "", location.href);
-      const handlePopstate = () => {
-        setOverlayImage(null);
-      };
-      window.addEventListener("popstate", handlePopstate);
-      return () => {
-        window.removeEventListener("popstate", handlePopstate);
-      };
-    }
-  }, [overlayImage]);
 
   const urlRegex = /(https?:\/\/[^\s]+)/g;
   const formattedContent = (details?.content ?? "").replace(
@@ -332,7 +314,7 @@ export default function Detail({ id }: DetailProps) {
                     height={0}
                     loading={index ? "lazy" : "eager"}
                     className={styles.cardImage}
-                    onClick={() => handleImageClick(card)}
+                    onClick={() => handleImageClick(index)}
                     ref={imgRef}
                     mobileSize={1200}
                     onContextMenu={(e: React.MouseEvent<HTMLImageElement>) => e.preventDefault()}
@@ -361,31 +343,19 @@ export default function Detail({ id }: DetailProps) {
                       height={0}
                       loading="lazy"
                       className={styles.cardImage}
-                      onClick={() => handleImageClick(card)}
+                      onClick={() => handleImageClick(index + 2)}
                       ref={imgRef}
                       onContextMenu={(e: React.MouseEvent<HTMLImageElement>) => e.preventDefault()}
                     />
                   </div>
                 ))}
             </section>
-            {overlayImage && (
-              <div className={styles.overlay} onClick={() => setOverlayImage(null)}>
-                <div className={styles.overlayContent} ref={divRef}>
-                  <Zoom>
-                    <img
-                      src={overlayImage}
-                      alt="Zoomed Image"
-                      style={{
-                        height: "90vh",
-                        objectFit: "cover",
-                      }}
-                      loading="lazy"
-                      onClick={(event) => event.stopPropagation()}
-                      ref={imgRef}
-                    />
-                  </Zoom>
-                </div>
-              </div>
+            {viewerIndex !== null && (
+              <ImageViewer
+                images={details.cards}
+                initialIndex={viewerIndex}
+                onClose={() => setViewerIndex(null)}
+              />
             )}
 
             <section className={styles.contentContainer}>
