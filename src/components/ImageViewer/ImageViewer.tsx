@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Thumbs, Keyboard } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
 
 import Icon from "@/components/common/Icon/Icon";
 import { usePreventScroll } from "@/hooks/usePreventScroll";
+import { downloadImage } from "@/utils/downloadImage";
 
 import { ImageViewerProps } from "./ImageViewer.types";
 import { useImageZoom } from "./useImageZoom";
@@ -19,6 +20,7 @@ export default function ImageViewer({ images, initialIndex = 0, onClose }: Image
   const [mainSwiper, setMainSwiper] = useState<SwiperType | null>(null);
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
   const [activeIndex, setActiveIndex] = useState(initialIndex);
+  const [downloading, setDownloading] = useState(false);
 
   const { isZoomed, canZoomIn, canZoomOut, zoomIn, zoomOut, reset, imageStyle, panHandlers } =
     useImageZoom({ max: MAX_SCALE });
@@ -33,6 +35,17 @@ export default function ImageViewer({ images, initialIndex = 0, onClose }: Image
     if (!mainSwiper || mainSwiper.destroyed) return;
     mainSwiper.allowTouchMove = !isZoomed;
   }, [mainSwiper, isZoomed]);
+
+  const handleDownload = useCallback(async () => {
+    const src = images[activeIndex];
+    if (!src || downloading) return;
+    setDownloading(true);
+    try {
+      await downloadImage(src);
+    } finally {
+      setDownloading(false);
+    }
+  }, [images, activeIndex, downloading]);
 
   if (images.length === 0) return null;
 
@@ -91,16 +104,15 @@ export default function ImageViewer({ images, initialIndex = 0, onClose }: Image
         >
           <Icon name="minus" size={24} color="white" />
         </button>
-        {/*
-          <button
-            type="button"
-            className={styles.toolbarButton}
-            onClick={handleDownload}
-            aria-label="다운로드"
-          >
-            <Icon name="down" size={24} color="white" />
-          </button>
-        */}
+        <button
+          type="button"
+          className={styles.toolbarButton}
+          onClick={handleDownload}
+          disabled={downloading}
+          aria-label="다운로드"
+        >
+          <Icon name="down" size={24} color="white" />
+        </button>
       </div>
 
       {hasMultiple && (
