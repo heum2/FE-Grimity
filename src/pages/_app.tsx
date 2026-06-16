@@ -20,6 +20,7 @@ import "@/styles/globals.scss";
 import "@/styles/reset.css";
 
 import "swiper/css";
+import "swiper/css/zoom";
 import "swiper/css/thumbs";
 import "swiper/css";
 import "swiper/css/pagination";
