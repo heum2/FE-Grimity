@@ -11,16 +11,13 @@ import Join from "./Join/Join";
 import ProfileEdit from "./ProfileEdit/ProfileEdit";
 import Background from "./Background/Background";
 import Follow from "./Follow/Follow";
-import Share from "./Share/Share";
 import UploadModal from "./Upload/Upload";
-import SharePost from "./SharePost/SharePost";
 import Like from "./Like/Like";
 import AlbumEdit from "./AlbumEdit/AlbumEdit";
 import AlbumSelect from "./AlbumSelect/AlbumSelect";
 import AlbumMove from "./AlbumMove/AlbumMove";
 import AlbumDelete from "./AlbumDelete/AlbumDelete";
 import ProfileLink from "./ProfileLink/ProfileLink";
-import ShareProfile from "./ShareProfile/ShareProfile";
 
 export default function Modal() {
   const router = useRouter();
@@ -97,8 +94,6 @@ export default function Modal() {
         return <ProfileEdit />;
       case "PROFILE-LINK":
         return <ProfileLink />;
-      case "SHARE-PROFILE":
-        return <ShareProfile {...data} />;
       case "BACKGROUND":
         return (
           <Background
@@ -111,10 +106,6 @@ export default function Modal() {
         return <Follow initialTab="follower" />;
       case "FOLLOWING":
         return <Follow initialTab="following" />;
-      case "SHARE":
-        return <Share {...data} />;
-      case "SHAREPOST":
-        return <SharePost {...data} />;
       case "UPLOAD":
         return <UploadModal {...data} />;
       case "LIKE":

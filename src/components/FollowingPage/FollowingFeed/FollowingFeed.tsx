@@ -13,7 +13,7 @@ import "react-medium-image-zoom/dist/styles.css";
 import { timeAgo } from "@/utils/timeAgo";
 
 const Zoom = dynamic(() => import("react-medium-image-zoom"), { ssr: false });
-import { useModalStore } from "@/states/modalStore";
+import { useShareModal } from "@/hooks/useShareModal";
 import { useReportModal } from "@/hooks/useReportModal";
 import { deleteSave, putSave } from "@/api/feeds/putDeleteFeedsIdSave";
 import IconComponent from "@/components/Asset/Icon";
@@ -51,7 +51,7 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
   const [viewCounted, setViewCounted] = useState(false);
   const [overlayImage, setOverlayImage] = useState<string | null>(null);
   const router = useRouter();
-  const openModal = useModalStore((state) => state.openModal);
+  const { shareFeed } = useShareModal();
   const openReportModal = useReportModal();
   const { refetch: refetchComments } = useGetFeedsComments({
     feedId: id,
@@ -187,10 +187,7 @@ export default function FollowingFeed({ id, commentCount, details }: FollowingFe
 
   const handleOpenShareModal = () => {
     if (details) {
-      openModal({
-        type: "SHARE",
-        data: { id, details },
-      });
+      shareFeed({ feedId: id, title: details.title, image: details.thumbnail });
     }
   };
 
