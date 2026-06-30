@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 function LogoArea({ onClick }: { onClick: () => void }) {
   return (
     <button type="button" className={styles.logoBtn} onClick={onClick} aria-label="홈">
-      <img src="/image/logo.svg" width={100} height={29} alt="Grimity" />
+      <Icon name="logo" className={styles.logo} />
     </button>
   );
 }
@@ -26,7 +26,13 @@ function ProfileArea({ imageUrl, onClick }: { imageUrl?: string; onClick?: () =>
   );
 }
 
-function BellButton({ hasNotification, onClick }: { hasNotification?: boolean; onClick?: () => void }) {
+function BellButton({
+  hasNotification,
+  onClick,
+}: {
+  hasNotification?: boolean;
+  onClick?: () => void;
+}) {
   return (
     <IconButton
       variant="sm"
