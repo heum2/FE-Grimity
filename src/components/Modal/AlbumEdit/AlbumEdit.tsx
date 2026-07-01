@@ -153,7 +153,7 @@ export default function AlbumEdit() {
     }
   };
 
-  if (isLoading) return <Loader dimmed={false} />;
+  if (isLoading) return <Loader />;
 
   return (
     <div className={styles.container}>

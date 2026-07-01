@@ -24,29 +24,10 @@ $origin-y: 0.4167; // (12 - 2) / 24
   transform-origin: 50% calc(var(--loader-size, 24px) * #{$origin-y});
 }
 
-.spoke:nth-child(1) {
-  transform: rotate(0deg);
-}
-.spoke:nth-child(2) {
-  transform: rotate(45deg);
-}
-.spoke:nth-child(3) {
-  transform: rotate(90deg);
-}
-.spoke:nth-child(4) {
-  transform: rotate(135deg);
-}
-.spoke:nth-child(5) {
-  transform: rotate(180deg);
-}
-.spoke:nth-child(6) {
-  transform: rotate(225deg);
-}
-.spoke:nth-child(7) {
-  transform: rotate(270deg);
-}
-.spoke:nth-child(8) {
-  transform: rotate(315deg);
+@for $i from 1 through 8 {
+  .spoke:nth-child(#{$i}) {
+    transform: rotate(#{($i - 1) * 45}deg);
+  }
 }
 
 // 그라데이션 그레이 (어두운 head → 밝은 tail)

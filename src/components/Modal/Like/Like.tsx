@@ -18,7 +18,7 @@ export default function Like() {
   };
 
   if (isLoading) {
-    return <Loader dimmed={false} />;
+    return <Loader />;
   }
 
   return (
