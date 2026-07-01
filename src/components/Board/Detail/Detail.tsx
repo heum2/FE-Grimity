@@ -24,6 +24,7 @@ import { useProfileCardHover } from "@/hooks/useProfileCardHover";
 import { useReportModal } from "@/hooks/useReportModal";
 
 import { useModalStore } from "@/states/modalStore";
+import { useShareModal } from "@/hooks/useShareModal";
 import { useAuthStore } from "@/states/authStore";
 
 import { usePostsDetails } from "@/api/posts/getPostsId";
@@ -49,6 +50,7 @@ export default function PostDetail({ id }: PostDetailProps) {
 
   const { isLoggedIn, user_id } = useAuthStore();
   const { openModal } = useModalStore();
+  const { sharePost } = useShareModal();
   const openReportModal = useReportModal();
 
   const { showToast } = useToast();
@@ -91,12 +93,9 @@ export default function PostDetail({ id }: PostDetailProps) {
 
   const handleOpenShareModal = useCallback(() => {
     if (posts) {
-      openModal({
-        type: "SHAREPOST",
-        data: { postId: id, title: posts.title },
-      });
+      sharePost({ postId: id, title: posts.title, thumbnail: posts.thumbnail });
     }
-  }, [posts, openModal, id]);
+  }, [posts, sharePost, id]);
 
   const handleOpenReportModal = useCallback(() => {
     if (!posts?.author.id) return;
