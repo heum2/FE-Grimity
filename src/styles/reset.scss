@@ -1,6 +1,7 @@
-/* Eric Meyer's Reset CSS v2.0 - http://meyerweb.com/eric/tools/css/reset/ 
+/* Eric Meyer's Reset CSS v2.0 - http://meyerweb.com/eric/tools/css/reset/
    License: none (public domain)
 */
+@use "@/styles/tokens/colors/semantic" as colors;
 
 :root {
   --vh: 100%;
@@ -191,4 +192,8 @@ a {
 html,
 body {
   touch-action: manipulation;
+}
+
+body {
+  background-color: colors.$surface-base;
 }

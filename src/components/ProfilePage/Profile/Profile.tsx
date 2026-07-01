@@ -3,6 +3,7 @@ import router, { useRouter } from "next/router";
 
 import { useAuthStore } from "@/states/authStore";
 import { useModalStore } from "@/states/modalStore";
+import { useShareModal } from "@/hooks/useShareModal";
 import { useReportModal } from "@/hooks/useReportModal";
 
 import { useMyData } from "@/api/users/getMe";
@@ -36,6 +37,7 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
   const setUserId = useAuthStore((state) => state.setUserId);
   const openModal = useModalStore((state) => state.openModal);
+  const { shareProfile } = useShareModal();
   const openReportModal = useReportModal();
 
   const { data: myData } = useMyData();
@@ -132,10 +134,8 @@ export default function Profile({ isMyProfile, id, url }: ProfileProps) {
   };
 
   const handleShareProfile = () => {
-    openModal({
-      type: "SHARE-PROFILE",
-      data: { id: userData?.url, name: userData?.name, image: userData?.image },
-    });
+    if (!userData) return;
+    shareProfile({ id: userData.url, name: userData.name, image: userData.image });
   };
 
   const handleBlockClick = () => {

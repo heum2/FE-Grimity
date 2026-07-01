@@ -167,7 +167,12 @@ export type IconColor =
   | "gray-subtler"
   | "gray-subtlest"
   | "primary-normal"
-  | "primary-subtle";
+  | "primary-subtle"
+  | "graphic-primary"
+  | "graphic-bold"
+  | "graphic-normal"
+  | "graphic-subtle"
+  | "graphic-subtler";
 
 export interface IconProps {
   name: IconName;

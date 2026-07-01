@@ -21,6 +21,7 @@ import ShareBtn from "./ShareBtn/ShareBtn";
 import { timeAgo } from "@/utils/timeAgo";
 import Chip from "../Chip/Chip";
 import { useModalStore } from "@/states/modalStore";
+import { useShareModal } from "@/hooks/useShareModal";
 import { useReportModal } from "@/hooks/useReportModal";
 import { deleteSave, putSave } from "@/api/feeds/putDeleteFeedsIdSave";
 import Comment from "./Comment/Comment";
@@ -49,6 +50,7 @@ export default function Detail({ id }: DetailProps) {
   const sectionRef = usePreventRightClick<HTMLElement>();
   const router = useRouter();
   const openModal = useModalStore((state) => state.openModal);
+  const { shareFeed } = useShareModal();
   const openReportModal = useReportModal();
   const { triggerProps, popoverProps, isOpen, targetRef } = useProfileCardHover(
     details?.author.url,
@@ -125,10 +127,7 @@ export default function Detail({ id }: DetailProps) {
 
   const handleOpenShareModal = () => {
     if (details) {
-      openModal({
-        type: "SHARE",
-        data: { feedId: id, title: details.title, image: details.thumbnail },
-      });
+      shareFeed({ feedId: id, title: details.title, image: details.thumbnail });
     }
   };
 
