@@ -152,7 +152,7 @@ export default function ProfileEdit() {
     setLinks(newLinks);
   };
 
-  if (isLoading) return <Loader />;
+  if (isLoading) return <Loader dimmed={false} />;
 
   return (
     <div className={styles.container}>
