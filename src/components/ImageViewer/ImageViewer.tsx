@@ -8,6 +8,7 @@ import type { Swiper as SwiperType } from "swiper";
 
 import Icon from "@/components/common/Icon/Icon";
 import GNB from "@/components/common/Navigation/GNB/GNB";
+import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
 import { useDeviceStore } from "@/states/deviceStore";
 import { usePreventScroll } from "@/hooks/usePreventScroll";
 import { downloadImage } from "@/utils/downloadImage";
@@ -32,7 +33,7 @@ export default function ImageViewer({ images, initialIndex = 0, onClose }: Image
   const hasMultiple = images.length > 1;
 
   usePreventScroll(true);
-  useEscapeAndBackClose(onClose);
+  const close = useEscapeAndBackClose(onClose);
 
   // PC: 확대 중 Swiper 슬라이드 스와이프 잠금
   useEffect(() => {
@@ -68,7 +69,14 @@ export default function ImageViewer({ images, initialIndex = 0, onClose }: Image
       >
         {images.map((image, i) => (
           <SwiperSlide key={`thumb-${image}-${i}`} className={slideClassName}>
-            <img src={image} alt="" className={styles.thumbImage} draggable={false} />
+            <ResponsiveImage
+              src={image}
+              alt=""
+              className={styles.thumbImage}
+              mobileSize={128}
+              desktopSize={128}
+              draggable={false}
+            />
           </SwiperSlide>
         ))}
       </Swiper>
@@ -84,7 +92,7 @@ export default function ImageViewer({ images, initialIndex = 0, onClose }: Image
         <GNB
           variant="image-viewer"
           className={styles.mobileGnb}
-          onClose={onClose}
+          onClose={close}
           onDownload={handleDownload}
         />
         <div className={styles.mobileBody}>
@@ -124,7 +132,7 @@ export default function ImageViewer({ images, initialIndex = 0, onClose }: Image
   return (
     <div
       className={styles.overlay}
-      onClick={onClose}
+      onClick={close}
       role="dialog"
       aria-modal="true"
       aria-label="이미지 뷰어"
