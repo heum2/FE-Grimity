@@ -1,49 +1,68 @@
 import { useEffect, useState } from "react";
 
 type Theme = "light" | "dark";
+export type ThemeMode = "system" | "light" | "dark";
 
 const THEME_KEY = "theme";
 
+function getSystemTheme(): Theme {
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
 export function useTheme() {
+  const [mode, setModeState] = useState<ThemeMode>("system");
   const [theme, setTheme] = useState<Theme>("light");
 
+  const applyTheme = (next: Theme) => {
+    setTheme(next);
+    document.documentElement.setAttribute("data-theme", next);
+  };
+
   useEffect(() => {
-    let stored: Theme | null = null;
+    let stored: string | null = null;
     try {
-      stored = localStorage.getItem(THEME_KEY) as Theme | null;
+      stored = localStorage.getItem(THEME_KEY);
     } catch {}
 
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const initial: Theme = stored ?? (prefersDark ? "dark" : "light");
-
-    setTheme(initial);
-    document.documentElement.setAttribute("data-theme", initial);
+    const initialMode: ThemeMode = stored === "light" || stored === "dark" ? stored : "system";
+    setModeState(initialMode);
+    applyTheme(initialMode === "system" ? getSystemTheme() : initialMode);
 
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     const handleChange = (e: MediaQueryListEvent) => {
       let hasManualOverride = false;
       try {
-        hasManualOverride = !!localStorage.getItem(THEME_KEY);
+        const s = localStorage.getItem(THEME_KEY);
+        hasManualOverride = s === "light" || s === "dark";
       } catch {}
       if (!hasManualOverride) {
-        const next: Theme = e.matches ? "dark" : "light";
-        setTheme(next);
-        document.documentElement.setAttribute("data-theme", next);
+        applyTheme(e.matches ? "dark" : "light");
       }
     };
 
     mediaQuery.addEventListener("change", handleChange);
     return () => mediaQuery.removeEventListener("change", handleChange);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const toggleTheme = () => {
-    const next: Theme = theme === "light" ? "dark" : "light";
-    setTheme(next);
-    document.documentElement.setAttribute("data-theme", next);
-    try {
-      localStorage.setItem(THEME_KEY, next);
-    } catch {}
+  const setMode = (next: ThemeMode) => {
+    setModeState(next);
+    if (next === "system") {
+      try {
+        localStorage.removeItem(THEME_KEY);
+      } catch {}
+      applyTheme(getSystemTheme());
+    } else {
+      try {
+        localStorage.setItem(THEME_KEY, next);
+      } catch {}
+      applyTheme(next);
+    }
   };
 
-  return { theme, toggleTheme };
+  const toggleTheme = () => {
+    setMode(theme === "light" ? "dark" : "light");
+  };
+
+  return { theme, mode, setMode, toggleTheme };
 }
