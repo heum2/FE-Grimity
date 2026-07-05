@@ -1,0 +1,13 @@
+@use "@/styles/tokens/colors/semantic" as colors;
+@use "@/styles/tokens/spacing" as spacing;
+
+.group {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid colors.$border-gray-subtle;
+
+  > button {
+    padding-left: spacing.$spacing-12;
+    padding-right: spacing.$spacing-12;
+  }
+}
