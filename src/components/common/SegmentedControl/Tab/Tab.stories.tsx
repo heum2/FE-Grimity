@@ -81,5 +81,8 @@ export const Inactive: Story = {
 };
 
 export const Group: Story = {
+  args: {
+    title: "Text",
+  },
   render: () => <TabGroupDemo />,
 };
