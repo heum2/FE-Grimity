@@ -1,28 +1,22 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 
-import Tab from "./Tab";
-import styles from "./Tab.stories.module.scss";
+import CommissionTab from "./CommissionTab";
+import styles from "./CommissionTab.stories.module.scss";
 
-const GROUP_TABS = [
-  { title: "전체", number: 128 },
-  { title: "일러스트", number: 52 },
-  { title: "만화", number: 34 },
-  { title: "사진", number: 12 },
-];
+const GROUP_TABS = ["정보", "포트폴리오", "후기"];
 
-function TabGroupDemo() {
+function CommissionTabGroupDemo() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
     <div className={styles.group}>
-      {GROUP_TABS.map((tab, index) => (
-        <Tab
-          key={tab.title}
+      {GROUP_TABS.map((title, index) => (
+        <CommissionTab
+          key={title}
           size="lg"
           active={activeIndex === index}
-          title={tab.title}
-          number={tab.number}
+          title={title}
           onClick={() => setActiveIndex(index)}
         />
       ))}
@@ -31,8 +25,8 @@ function TabGroupDemo() {
 }
 
 const meta = {
-  title: "Common/SegmentedControl/Tab",
-  component: Tab,
+  title: "Common/SegmentedControl/CommissionTab",
+  component: CommissionTab,
   parameters: {
     layout: "centered",
   },
@@ -48,14 +42,8 @@ const meta = {
     title: {
       control: { type: "text" },
     },
-    showNumber: {
-      control: { type: "boolean" },
-    },
-    number: {
-      control: { type: "text" },
-    },
   },
-} satisfies Meta<typeof Tab>;
+} satisfies Meta<typeof CommissionTab>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -65,8 +53,6 @@ export const Active: Story = {
     size: "lg",
     active: true,
     title: "Text",
-    showNumber: true,
-    number: "NN",
   },
 };
 
@@ -75,8 +61,6 @@ export const Inactive: Story = {
     size: "lg",
     active: false,
     title: "Text",
-    showNumber: true,
-    number: "NN",
   },
 };
 
@@ -84,5 +68,5 @@ export const Group: Story = {
   args: {
     title: "Text",
   },
-  render: () => <TabGroupDemo />,
+  render: () => <CommissionTabGroupDemo />,
 };
