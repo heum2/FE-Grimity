@@ -13,6 +13,7 @@ import { useOnClickOutside } from "@/hooks/useOnClickOutside";
 import { usePreventScroll } from "@/hooks/usePreventScroll";
 import useGoBack from "@/hooks/useGoBack";
 import { useMobileSearchHeader } from "@/hooks/useMobileSearchHeader";
+import { useLogout } from "@/hooks/useLogout";
 
 import IconButton from "@/components/common/Button/IconButton/IconButton";
 import Icon from "@/components/common/Icon/Icon";
@@ -24,14 +25,13 @@ import type {
 } from "@/components/common/Navigation/GNB/GNB.types";
 import Sidebar from "@/components/common/Navigation/Sidebar/Sidebar";
 import Notifications from "@/components/Notifications/Notifications";
+import { SETTINGS_NAV_ITEMS } from "@/components/Settings/SettingsNav/SettingsNav";
 
 import type { LayoutProps } from "@/components/Layout/Layout.types";
 import type { NewChatMessageEventResponse } from "@grimity/dto";
 
 import { setDocumentViewportHeight } from "@/utils/viewport";
 import { updateChatListWithNewMessage, type ChatQueryData } from "@/utils/chatListUpdater";
-
-import axiosInstance from "@/constants/baseurl";
 
 import styles from "@/components/Layout/Layout.module.scss";
 
@@ -63,20 +63,25 @@ const SUB_SEARCH_HIDDEN_ROUTES = [
   "/posts/[id]",
   "/direct",
 ];
+const SETTINGS_GNB_TITLES: Record<string, string> = {
+  "/settings": "설정",
+  ...Object.fromEntries(SETTINGS_NAV_ITEMS.map((i) => [i.path, i.label])),
+};
 export default function Layout({ children }: LayoutProps) {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { goBack } = useGoBack();
 
   // ─── 전역 상태 ─────────────────────────────────────────────────────────
-  const { isMobile } = useDeviceStore();
+  const { isMobile, isTablet } = useDeviceStore();
   const isLoggedIn = useAuthStore((s) => s.isLoggedIn);
   const isAuthReady = useAuthStore((s) => s.isAuthReady);
   const user_id = useAuthStore((s) => s.user_id);
   const { setIsLoggedIn, setAccessToken, setUserId, setIsAuthReady } = useAuthStore.getState();
   const { data: myData, refetch: fetchMyData } = useMyData();
-  const { currentChatId, setHasUnreadMessages, reset: resetChat } = useChatStore();
+  const { currentChatId, setHasUnreadMessages } = useChatStore();
   const { socket, isConnected } = useSocket();
+  const logout = useLogout();
 
   // ─── 로컬 상태 ─────────────────────────────────────────────────────────
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
@@ -94,34 +99,6 @@ export default function Layout({ children }: LayoutProps) {
   const goToLogin = useCallback(() => {
     router.push(`/login?redirect=${encodeURIComponent(router.asPath)}`);
   }, [router]);
-
-  const logout = useCallback(async () => {
-    try {
-      const refreshToken = localStorage.getItem("refresh_token");
-      if (refreshToken) {
-        await axiosInstance.post(
-          "/auth/logout",
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${refreshToken}`,
-              "exclude-access-token": true,
-            },
-          },
-        );
-      }
-    } catch (error) {
-      console.error("Logout failed", error);
-    } finally {
-      localStorage.clear();
-      setIsLoggedIn(false);
-      setAccessToken("");
-      setUserId("");
-      resetChat();
-      router.push("/");
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  }, [resetChat, router, setAccessToken, setIsLoggedIn, setUserId]);
 
   const goToSearch = useCallback(() => router.push("/search"), [router]);
 
@@ -171,12 +148,8 @@ export default function Layout({ children }: LayoutProps) {
   const gnbVariant: GNBVariant = useMemo(() => {
     if (isMobileSearchPage) return "search";
     if (isSubRoute) {
-      switch (router.pathname) {
-        case "/mypage":
-          return "depth-2";
-        default:
-          return "three-button";
-      }
+      if (router.pathname === "/mypage") return "depth-2";
+      return "three-button";
     }
     if (isMobile) {
       if (!isAuthReady || !isLoggedIn) {
@@ -187,8 +160,23 @@ export default function Layout({ children }: LayoutProps) {
     return isLoggedIn ? "pc-main" : "pc-guest";
   }, [isMobileSearchPage, isSubRoute, isMobile, isAuthReady, isLoggedIn, isMobileSidebarOpen, router.pathname]);
 
+  const isMyProfilePage =
+    router.pathname === "/[url]" && !!myData?.url && router.query.url === myData.url;
+
   const subRightActions = useMemo<GNBProps["rightActions"]>(() => {
     if (!isSubRoute) return undefined;
+
+    if (router.pathname.startsWith("/settings")) return [];
+
+    const searchButton = (
+      <IconButton
+        key="search"
+        variant="sm"
+        icon={<Icon name="magnifer" size={24} color="gray-bold" />}
+        onClick={goToSearch}
+        aria-label="검색"
+      />
+    );
 
     const menuButton = (
       <IconButton
@@ -200,21 +188,32 @@ export default function Layout({ children }: LayoutProps) {
       />
     );
 
+    if (isMyProfilePage) {
+      return [
+        searchButton,
+        <IconButton
+          key="inbox"
+          variant="sm"
+          icon={<Icon name="inbox" size={24} color="gray-bold" />}
+          onClick={() => router.push("/mypage")}
+          aria-label="보관함"
+        />,
+        <IconButton
+          key="settings"
+          variant="sm"
+          icon={<Icon name="settings" size={24} color="gray-bold" />}
+          onClick={() => router.push("/settings")}
+          aria-label="설정"
+        />,
+      ];
+    }
+
     if (!showSubSearch) {
       return [menuButton];
     }
 
-    return [
-      <IconButton
-        key="search"
-        variant="sm"
-        icon={<Icon name="magnifer" size={24} color="gray-bold" />}
-        onClick={goToSearch}
-        aria-label="검색"
-      />,
-      menuButton,
-    ];
-  }, [isSubRoute, showSubSearch, goToSearch, toggleMobileSidebar]);
+    return [searchButton, menuButton];
+  }, [isSubRoute, isMyProfilePage, showSubSearch, goToSearch, toggleMobileSidebar, router]);
 
   const profileMenuItems = useMemo(() => {
     if (!myData) return [];
@@ -232,6 +231,11 @@ export default function Layout({ children }: LayoutProps) {
       {
         label: "저장한 글",
         onClick: () => navigate("/mypage?tab=saved-posts"),
+        borderBottom: true,
+      },
+      {
+        label: "설정",
+        onClick: () => navigate("/settings"),
         borderBottom: true,
       },
       { label: "로그아웃", onClick: logout },
@@ -337,7 +341,9 @@ export default function Layout({ children }: LayoutProps) {
   const showProfileDropdown =
     !isMobile && isLoggedIn && Boolean(myData) && isProfileDropdownOpen;
   const shouldHideSidebar =
-    router.pathname === "/login" || router.pathname.startsWith("/signup");
+    router.pathname === "/login" ||
+    router.pathname.startsWith("/signup") ||
+    (router.pathname.startsWith("/settings") && isTablet);
 
   return (
     <div className={styles.layout}>
@@ -345,6 +351,7 @@ export default function Layout({ children }: LayoutProps) {
         <>
           <GNB
             variant={gnbVariant}
+            title={SETTINGS_GNB_TITLES[router.pathname]}
             hasNotification={Boolean(myData?.hasNotification)}
             profileImageUrl={myData?.image ?? undefined}
             onSearch={goToSearch}

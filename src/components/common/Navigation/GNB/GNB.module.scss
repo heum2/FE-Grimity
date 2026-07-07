@@ -2,6 +2,7 @@
 @use "@/styles/tokens/typography/semantic" as typo;
 @use "@/styles/tokens/spacing" as spacing;
 @use "@/styles/tokens/radius" as radius;
+@use "@/styles/globals.scss" as g;
 
 .gnb {
   position: fixed;
@@ -22,7 +23,7 @@
 }
 
 .gnbPc {
-  height: 64px;
+  height: g.$header-height;
   padding: 0 spacing.$spacing-24;
   justify-content: space-between;
   border-bottom: 1px solid colors.$border-gray-subtle;

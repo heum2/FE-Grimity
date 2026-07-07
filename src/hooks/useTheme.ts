@@ -1,49 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-type Theme = "light" | "dark";
+import { useThemeStore, ThemeMode } from "@/states/themeStore";
 
-const THEME_KEY = "theme";
+export type { ThemeMode };
 
+/**
+ * 앱 마운트 시 한 번만 호출하여 테마 스토어를 초기화한다. (_app.tsx)
+ */
+export function useThemeInit() {
+  useEffect(() => useThemeStore.getState().initialize(), []);
+}
+
+/**
+ * 테마 모드를 읽고 변경하는 셀렉터 훅. (ThemeSettings 등 소비자)
+ */
 export function useTheme() {
-  const [theme, setTheme] = useState<Theme>("light");
-
-  useEffect(() => {
-    let stored: Theme | null = null;
-    try {
-      stored = localStorage.getItem(THEME_KEY) as Theme | null;
-    } catch {}
-
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const initial: Theme = stored ?? (prefersDark ? "dark" : "light");
-
-    setTheme(initial);
-    document.documentElement.setAttribute("data-theme", initial);
-
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    const handleChange = (e: MediaQueryListEvent) => {
-      let hasManualOverride = false;
-      try {
-        hasManualOverride = !!localStorage.getItem(THEME_KEY);
-      } catch {}
-      if (!hasManualOverride) {
-        const next: Theme = e.matches ? "dark" : "light";
-        setTheme(next);
-        document.documentElement.setAttribute("data-theme", next);
-      }
-    };
-
-    mediaQuery.addEventListener("change", handleChange);
-    return () => mediaQuery.removeEventListener("change", handleChange);
-  }, []);
-
-  const toggleTheme = () => {
-    const next: Theme = theme === "light" ? "dark" : "light";
-    setTheme(next);
-    document.documentElement.setAttribute("data-theme", next);
-    try {
-      localStorage.setItem(THEME_KEY, next);
-    } catch {}
-  };
-
-  return { theme, toggleTheme };
+  const mode = useThemeStore((s) => s.mode);
+  const setMode = useThemeStore((s) => s.setMode);
+  return { mode, setMode };
 }

@@ -131,6 +131,7 @@ export type IconName =
   // Navigation
   | "home"
   | "paint"
+  | "palette"
   | "following"
   | "board"
   | "message"

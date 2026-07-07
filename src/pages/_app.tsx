@@ -13,7 +13,7 @@ import ModalProvider from "@/components/Modal/Provider";
 
 import { useInitializeDevice } from "@/hooks/useInitializeDevice";
 import { useNavigationTracker } from "@/hooks/useNavigationTracker";
-import { useTheme } from "@/hooks/useTheme";
+import { useThemeInit } from "@/hooks/useTheme";
 
 import "@/styles/tokens/colors/_root.scss";
 import "@/styles/globals.scss";
@@ -29,7 +29,7 @@ const queryClient = new QueryClient();
 export default function App({ Component, pageProps }: AppProps) {
   useInitializeDevice();
   useNavigationTracker();
-  useTheme();
+  useThemeInit();
 
   return (
     <>
