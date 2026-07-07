@@ -1,68 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-type Theme = "light" | "dark";
-export type ThemeMode = "system" | "light" | "dark";
+import { useThemeStore, ThemeMode } from "@/states/themeStore";
 
-const THEME_KEY = "theme";
+export type { ThemeMode };
 
-function getSystemTheme(): Theme {
-  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+/**
+ * 앱 마운트 시 한 번만 호출하여 테마 스토어를 초기화한다. (_app.tsx)
+ */
+export function useThemeInit() {
+  useEffect(() => useThemeStore.getState().initialize(), []);
 }
 
+/**
+ * 테마 모드를 읽고 변경하는 셀렉터 훅. (ThemeSettings 등 소비자)
+ */
 export function useTheme() {
-  const [mode, setModeState] = useState<ThemeMode>("system");
-  const [theme, setTheme] = useState<Theme>("light");
-
-  const applyTheme = (next: Theme) => {
-    setTheme(next);
-    document.documentElement.setAttribute("data-theme", next);
-  };
-
-  useEffect(() => {
-    let stored: string | null = null;
-    try {
-      stored = localStorage.getItem(THEME_KEY);
-    } catch {}
-
-    const initialMode: ThemeMode = stored === "light" || stored === "dark" ? stored : "system";
-    setModeState(initialMode);
-    applyTheme(initialMode === "system" ? getSystemTheme() : initialMode);
-
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    const handleChange = (e: MediaQueryListEvent) => {
-      let hasManualOverride = false;
-      try {
-        const s = localStorage.getItem(THEME_KEY);
-        hasManualOverride = s === "light" || s === "dark";
-      } catch {}
-      if (!hasManualOverride) {
-        applyTheme(e.matches ? "dark" : "light");
-      }
-    };
-
-    mediaQuery.addEventListener("change", handleChange);
-    return () => mediaQuery.removeEventListener("change", handleChange);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const setMode = (next: ThemeMode) => {
-    setModeState(next);
-    if (next === "system") {
-      try {
-        localStorage.removeItem(THEME_KEY);
-      } catch {}
-      applyTheme(getSystemTheme());
-    } else {
-      try {
-        localStorage.setItem(THEME_KEY, next);
-      } catch {}
-      applyTheme(next);
-    }
-  };
-
-  const toggleTheme = () => {
-    setMode(theme === "light" ? "dark" : "light");
-  };
-
-  return { theme, mode, setMode, toggleTheme };
+  const mode = useThemeStore((s) => s.mode);
+  const setMode = useThemeStore((s) => s.setMode);
+  return { mode, setMode };
 }

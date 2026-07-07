@@ -1,30 +1,26 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 
 import AuthLayout from "@/components/Layout/AuthLayout/AuthLayout";
 import { InitialPageMeta } from "@/components/MetaData/MetaData";
 import SettingsNav from "@/components/Settings/SettingsNav/SettingsNav";
 import { serviceUrl } from "@/constants/serviceurl";
-
-const TABLET_MIN_WIDTH = 768;
+import { useDeviceStore } from "@/states/deviceStore";
 
 export default function SettingsIndexPage() {
   const router = useRouter();
-  const [showMobileNav, setShowMobileNav] = useState(false);
+  const isMobile = useDeviceStore((s) => s.isMobile);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (window.innerWidth >= TABLET_MIN_WIDTH) {
+    if (!isMobile) {
       router.replace("/settings/account");
-    } else {
-      setShowMobileNav(true);
     }
-  }, [router]);
+  }, [isMobile, router]);
 
   return (
     <AuthLayout>
       <InitialPageMeta title="설정 - 그리미티" url={`${serviceUrl}/settings`} />
-      {showMobileNav && <SettingsNav />}
+      {isMobile && <SettingsNav />}
     </AuthLayout>
   );
 }

@@ -1,5 +1,6 @@
 @use "@/styles/tokens/colors/semantic" as colors;
 @use "@/styles/tokens/typography/semantic" as typo;
+@use "@/styles/tokens/spacing" as spacing;
 
 .fill {
   position: fixed;
@@ -11,6 +12,8 @@
 }
 
 .fillGnb {
+  // GNB 는 자체적으로 position: fixed 를 지정하므로, fill 레이아웃 안에서
+  // 일반 흐름(static)으로 배치되도록 강제로 덮어쓴다.
   position: static !important;
 }
 
@@ -18,18 +21,18 @@
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding: 40px 16px 20px;
+  padding: spacing.$spacing-40 spacing.$spacing-16 spacing.$spacing-20;
 }
 
 .title {
   @include typo.title-2;
   color: colors.$text-gray-bold;
-  margin-bottom: 24px;
+  margin-bottom: spacing.$spacing-24;
 }
 
 .footer {
   flex-shrink: 0;
-  padding: 16px 16px max(24px, env(safe-area-inset-bottom));
+  padding: spacing.$spacing-16 spacing.$spacing-16 max(spacing.$spacing-24, env(safe-area-inset-bottom));
 }
 
 .saveButton {

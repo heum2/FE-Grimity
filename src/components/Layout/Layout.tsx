@@ -25,6 +25,7 @@ import type {
 } from "@/components/common/Navigation/GNB/GNB.types";
 import Sidebar from "@/components/common/Navigation/Sidebar/Sidebar";
 import Notifications from "@/components/Notifications/Notifications";
+import { SETTINGS_NAV_ITEMS } from "@/components/Settings/SettingsNav/SettingsNav";
 
 import type { LayoutProps } from "@/components/Layout/Layout.types";
 import type { NewChatMessageEventResponse } from "@grimity/dto";
@@ -64,11 +65,7 @@ const SUB_SEARCH_HIDDEN_ROUTES = [
 ];
 const SETTINGS_GNB_TITLES: Record<string, string> = {
   "/settings": "설정",
-  "/settings/account": "내 계정",
-  "/settings/theme": "화면 테마",
-  "/settings/notifications": "알림",
-  "/settings/guide": "이용 안내",
-  "/settings/inquiry": "문의하기",
+  ...Object.fromEntries(SETTINGS_NAV_ITEMS.map((i) => [i.path, i.label])),
 };
 export default function Layout({ children }: LayoutProps) {
   const router = useRouter();

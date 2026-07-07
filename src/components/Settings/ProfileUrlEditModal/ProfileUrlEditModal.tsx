@@ -11,9 +11,11 @@ import { isValidProfileIdFormat, isForbiddenProfileId } from "@/utils/isValidPro
 import Input from "@/components/common/Input/Input/Input";
 import SettingsEditModal from "@/components/Settings/SettingsEditModal/SettingsEditModal";
 
+import { serviceUrl } from "@/constants/serviceurl";
+
 import styles from "./ProfileUrlEditModal.module.scss";
 
-const URL_PREFIX = "www.grimity.com/";
+const URL_PREFIX = `${(serviceUrl ?? "www.grimity.com").replace(/^https?:\/\//, "")}/`;
 
 interface ProfileUrlEditModalProps {
   onClose: () => void;

@@ -7,6 +7,7 @@ import { deleteMe } from "@/api/users/deleteMe";
 
 import { useModalStore, useNewModalStore } from "@/states/modalStore";
 import { useAuthStore } from "@/states/authStore";
+import { useChatStore } from "@/states/chatStore";
 
 import { useLogout } from "@/hooks/useLogout";
 import { useToast } from "@/hooks/useToast";
@@ -26,6 +27,7 @@ export default function AccountSettings() {
   const logout = useLogout();
   const { showToast } = useToast();
   const { setAccessToken, setIsLoggedIn, setUserId } = useAuthStore.getState();
+  const resetChat = useChatStore((s) => s.reset);
 
   const openBareModal = (render: (close: () => void) => ReactNode) => {
     openNewModal(uuidv4(), render, undefined, false, undefined, true);
@@ -44,9 +46,11 @@ export default function AccountSettings() {
         onClick: async () => {
           try {
             await deleteMe();
+            localStorage.clear();
             setAccessToken("");
             setIsLoggedIn(false);
             setUserId("");
+            resetChat();
             showToast("회원 탈퇴 되었습니다.", "success");
             router.push("/");
           } catch {
