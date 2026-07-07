@@ -91,7 +91,7 @@ export default function Layout({ children }: LayoutProps) {
   const notificationRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
 
-  usePreventScroll(isMobile && showNotifications);
+  usePreventScroll(isMobile && (showNotifications || isMobileSidebarOpen));
   useOnClickOutside(notificationRef, () => setShowNotifications(false));
   useOnClickOutside(profileRef, () => setIsProfileDropdownOpen(false));
 
@@ -100,7 +100,10 @@ export default function Layout({ children }: LayoutProps) {
     router.push(`/login?redirect=${encodeURIComponent(router.asPath)}`);
   }, [router]);
 
-  const goToSearch = useCallback(() => router.push("/search"), [router]);
+  const goToSearch = useCallback(() => {
+    setIsMobileSidebarOpen(false);
+    router.push("/search");
+  }, [router]);
 
   const goToUpload = useCallback(() => {
     const isBoardPage = BOARD_WRITE_ROUTES.includes(router.pathname);
@@ -123,7 +126,8 @@ export default function Layout({ children }: LayoutProps) {
   const isSubRoute = isMobile && !MAIN_ROUTES.includes(router.pathname);
   const showUploadBtn = !UPLOAD_HIDDEN_ROUTES.includes(router.pathname);
   const showSubSearch = !SUB_SEARCH_HIDDEN_ROUTES.includes(router.pathname);
-  const shouldHideHeader = router.pathname === "/direct/[chatId]" && isMobile;
+  const shouldHideHeader =
+    (router.pathname === "/direct/[chatId]" && isMobile) || router.pathname === "/login";
   const isMobileSearchPage = isMobile && router.pathname === "/search";
 
   const {
@@ -355,7 +359,10 @@ export default function Layout({ children }: LayoutProps) {
             hasNotification={Boolean(myData?.hasNotification)}
             profileImageUrl={myData?.image ?? undefined}
             onSearch={goToSearch}
-            onBell={() => setShowNotifications((prev) => !prev)}
+            onBell={() => {
+              setIsMobileSidebarOpen(false);
+              setShowNotifications((prev) => !prev);
+            }}
             onProfile={onProfileClick}
             onUpload={showUploadBtn ? goToUpload : undefined}
             onLogin={goToLogin}
