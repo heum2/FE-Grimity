@@ -18,7 +18,8 @@ interface SettingsNavItem {
 
 export const SETTINGS_NAV_ITEMS: SettingsNavItem[] = [
   { key: "account", label: "내 계정", icon: "person", path: "/settings/account" },
-  { key: "theme", label: "화면 테마", icon: "palette", path: "/settings/theme" },
+  // 다크 토큰이 전 페이지에 적용될 때까지 화면 테마 메뉴 비노출
+  // { key: "theme", label: "화면 테마", icon: "palette", path: "/settings/theme" },
   { key: "notifications", label: "알림", icon: "bell", path: "/settings/notifications" },
   { key: "guide", label: "이용 안내", icon: "info-circle", path: "/settings/guide" },
   { key: "inquiry", label: "문의하기", icon: "question-circle", path: "/settings/inquiry" },

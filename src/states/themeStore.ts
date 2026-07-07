@@ -5,6 +5,10 @@ export type ThemeMode = "system" | "light" | "dark";
 
 const THEME_KEY = "theme";
 
+// HOTFIX: 다크 토큰이 전 페이지에 적용될 때까지 다크모드를 잠근다.
+// 준비되면 true 로 바꾸면 저장된 사용자 설정/시스템 테마가 그대로 복원된다.
+const DARK_MODE_ENABLED = false;
+
 function getSystemTheme(): Theme {
   if (typeof window === "undefined") return "light";
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
@@ -48,6 +52,12 @@ export const useThemeStore = create<ThemeStore>((set) => ({
   },
 
   initialize: () => {
+    if (!DARK_MODE_ENABLED) {
+      applyDataTheme("light");
+      set({ mode: "light", theme: "light" });
+      return () => {};
+    }
+
     let stored: string | null = null;
     try {
       stored = localStorage.getItem(THEME_KEY);
