@@ -5,6 +5,8 @@ export interface MenuItem {
   borderBottom?: boolean;
   /** 선택된 항목 (체크 표시) */
   selected?: boolean;
+  /** 삭제/신고 등 위험한 동작 (텍스트 강조 색상) */
+  danger?: boolean;
 }
 
 export interface MenuProps {

@@ -69,6 +69,7 @@ export default function UserItem({
   commentText,
   mentionName,
   likeCount,
+  isLiked = false,
   isAuthor,
   onLikeClick,
   onReplyClick,
@@ -423,10 +424,10 @@ export default function UserItem({
         <div className={clsx(styles.commentActions, styles.commentActionsMd)}>
           <button
             type="button"
-            className={styles.commentActionBtn}
+            className={clsx(styles.commentActionBtn, isLiked && styles.commentActionBtnActive)}
             onClick={onLikeClick}
           >
-            <Icon name="heart" size={16} color="gray-subtle" />
+            <Icon name={isLiked ? "heart-fill" : "heart"} size={16} color={isLiked ? undefined : "gray-subtle"} />
             {likeCount}
           </button>
           <button
@@ -476,10 +477,10 @@ export default function UserItem({
         <div className={clsx(styles.commentActions, styles.commentActionsXs)}>
           <button
             type="button"
-            className={styles.commentActionBtn}
+            className={clsx(styles.commentActionBtn, isLiked && styles.commentActionBtnActive)}
             onClick={onLikeClick}
           >
-            <Icon name="heart" size={16} color="gray-subtle" />
+            <Icon name={isLiked ? "heart-fill" : "heart"} size={16} color={isLiked ? undefined : "gray-subtle"} />
             {likeCount}
           </button>
           <button
@@ -539,10 +540,10 @@ export default function UserItem({
         <div className={styles.commentPlusActions}>
           <button
             type="button"
-            className={styles.commentActionBtn}
+            className={clsx(styles.commentActionBtn, isLiked && styles.commentActionBtnActive)}
             onClick={onLikeClick}
           >
-            <Icon name="heart" size={16} color="gray-subtle" />
+            <Icon name={isLiked ? "heart-fill" : "heart"} size={16} color={isLiked ? undefined : "gray-subtle"} />
             {likeCount}
           </button>
           <button
@@ -602,10 +603,10 @@ export default function UserItem({
         <div className={styles.commentPlusActions}>
           <button
             type="button"
-            className={styles.commentActionBtn}
+            className={clsx(styles.commentActionBtn, isLiked && styles.commentActionBtnActive)}
             onClick={onLikeClick}
           >
-            <Icon name="heart" size={16} color="gray-subtle" />
+            <Icon name={isLiked ? "heart-fill" : "heart"} size={16} color={isLiked ? undefined : "gray-subtle"} />
             {likeCount}
           </button>
           <button

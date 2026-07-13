@@ -677,6 +677,14 @@
   }
 }
 
+.commentActionBtnActive {
+  color: colors.$status-negative;
+
+  &:hover {
+    color: colors.$status-negative;
+  }
+}
+
 // ============================================
 // Type: commentPlus / commentPlusxs
 // ============================================
