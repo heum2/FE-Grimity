@@ -81,7 +81,7 @@ export default function BoardWrite() {
 
   return (
     <PostForm
-      formTitle="글쓰기"
+      formTitle="글 작성"
       title={title}
       onTitleChange={handleTitleChange}
       content={content}

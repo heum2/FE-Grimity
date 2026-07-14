@@ -1,7 +1,11 @@
 @use "@/styles/globals.scss" as *;
+@use "@/styles/tokens/colors/semantic" as colors;
+@use "@/styles/tokens/typography/semantic" as typo;
+@use "@/styles/tokens/spacing" as spacing;
+@use "@/styles/tokens/radius" as radius;
 
 .container {
-  padding: 40px 16px;
+  padding: spacing.$spacing-48 spacing.$spacing-20 spacing.$spacing-72;
   width: 100%;
   height: 100%;
   display: flex;
@@ -9,13 +13,7 @@
   align-items: center;
 
   @include Size("mobile") {
-    padding-top: 16px;
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-
-  @include Size("tablet") {
-    padding-top: 32px;
+    padding: spacing.$spacing-16 spacing.$spacing-16 spacing.$spacing-40;
   }
 
   .center {
@@ -24,6 +22,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    gap: spacing.$spacing-20;
 
     .header {
       width: 100%;
@@ -32,37 +31,79 @@
       justify-content: space-between;
 
       .title {
-        @include Title2;
+        @include typo.title-1;
         @include Drag;
+        color: colors.$text-gray-bold;
 
         @include Size("mobile") {
-          @include Title3;
+          @include typo.title-3;
         }
       }
     }
 
-    .categorys {
+    .formSection {
+      width: 100%;
       display: flex;
-      gap: 8px;
-      margin-top: 32px;
-      margin-bottom: 12px;
+      flex-direction: column;
+      align-items: center;
+      gap: spacing.$spacing-32;
+    }
+
+    .fieldsGroup {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: spacing.$spacing-12;
+    }
+
+    .searchRow {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: spacing.$spacing-8;
 
       @include Size("mobile") {
-        margin-top: 20px;
+        flex-direction: column;
+        align-items: stretch;
       }
     }
 
-    .editor {
-      width: 100%;
-      min-height: 600px;
-      margin-top: 20px;
+    .categoryFilter {
+      flex-shrink: 0;
+    }
 
-      @include Size("mobile") {
-        min-height: 500px;
+    .titleField {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .editorWrapper {
+      width: 100%;
+
+      :global(.tox-tinymce) {
+        border: 1px solid colors.$border-gray-subtle !important;
+        border-radius: radius.$radius-sm !important;
       }
 
-      @include Size("tablet") {
-        min-height: 700px;
+      :global(.tox-toolbar__primary) {
+        background: transparent !important;
+        border-bottom: 1px solid colors.$border-gray-subtler !important;
+      }
+    }
+
+    .charCount {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      margin-top: spacing.$spacing-4;
+      @include typo.label-5;
+
+      .charCountCurrent {
+        color: colors.$text-gray-normal;
+      }
+
+      .charCountMax {
+        color: colors.$text-gray-subtle;
       }
     }
 
@@ -75,11 +116,14 @@
 .buttonContainer {
   display: flex;
   justify-content: center;
-  margin-top: 40px;
-  max-height: 200px;
+  width: 100%;
 
   .button {
     width: 100%;
-    max-width: 200px;
+    max-width: 240px;
+
+    @include Size("mobile") {
+      max-width: none;
+    }
   }
 }
