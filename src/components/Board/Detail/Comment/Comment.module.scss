@@ -1,4 +1,5 @@
 @use "@/styles/tokens/colors/semantic" as colors;
+@use "@/styles/tokens/typography/semantic" as typo;
 @use "@/styles/tokens/spacing" as spacing;
 @use "@/styles/breakpoint" as bp;
 
@@ -7,17 +8,35 @@
   padding-bottom: spacing.$spacing-24;
 }
 
-.inputContainer {
+.header {
   width: 100%;
   margin-top: spacing.$spacing-56;
-  margin-bottom: spacing.$spacing-2;
   display: flex;
-  align-items: flex-start;
-  gap: spacing.$spacing-16;
+  align-items: center;
+  gap: spacing.$spacing-4;
 
   @include bp.breakpoint-down("xs") {
     margin-top: spacing.$spacing-20;
   }
+}
+
+.headerLabel {
+  @include typo.label-1;
+  color: colors.$text-gray-bold;
+}
+
+.headerCount {
+  @include typo.label-1;
+  color: colors.$text-primary-normal;
+}
+
+.inputContainer {
+  width: 100%;
+  margin-top: spacing.$spacing-20;
+  margin-bottom: spacing.$spacing-2;
+  display: flex;
+  align-items: flex-start;
+  gap: spacing.$spacing-16;
 }
 
 .submitBtn {

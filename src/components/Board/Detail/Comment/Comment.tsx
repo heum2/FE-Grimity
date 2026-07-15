@@ -426,8 +426,14 @@ export default function PostComment({ postId, postWriterId }: PostCommentProps) 
     );
   };
 
+  const commentCount = commentsData?.commentCount ?? 0;
+
   return (
     <div className={styles.container}>
+      <div className={styles.header}>
+        <span className={styles.headerLabel}>댓글</span>
+        <span className={styles.headerCount}>{commentCount}</span>
+      </div>
       <section className={styles.inputContainer}>
         <TextArea
           placeholder={isLoggedIn ? "댓글 달기" : "회원만 댓글 달 수 있어요!"}
