@@ -8,7 +8,7 @@ import { useModalStore } from "@/states/modalStore";
 import { useAuthStore } from "@/states/authStore";
 
 import Button from "@/components/Button/Button";
-import TextField from "@/components/TextField/TextField";
+import TextField from "@/components/common/Input/TextField/TextField";
 
 import { useToast } from "@/hooks/useToast";
 
@@ -95,14 +95,16 @@ export default function ProfileId() {
       <div className={styles.textBtnContainer}>
         <div className={styles.textContainer}>
           <h6 className={styles.h6}>www.grimity.com/</h6>
-          <TextField
-            placeholder="숫자, 영문(소문자), 언더바(_)"
-            value={profileId}
-            onChange={(e) => setProfileId(e.target.value)}
-            onKeyDown={handleEnterKeyDown}
-            isError={!!errorMessage}
-            errorMessage={errorMessage}
-          />
+          <div className={styles.inputWrap}>
+            <TextField
+              placeholder="숫자, 영문(소문자), 언더바(_)"
+              value={profileId}
+              onChange={(e) => setProfileId(e.target.value)}
+              onKeyDown={handleEnterKeyDown}
+              status={errorMessage ? "error" : "default"}
+            />
+            {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
+          </div>
           <Button size="l" type="filled-primary" disabled={!profileId} onClick={handleSubmit}>
             다음
           </Button>

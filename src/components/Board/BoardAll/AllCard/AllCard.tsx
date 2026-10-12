@@ -15,7 +15,7 @@ import Dropdown from "@/components/Dropdown/Dropdown";
 import IconComponent from "@/components/Asset/Icon";
 import Icon from "@/components/Asset/IconTemp";
 import ProfileCardPopover from "@/components/Layout/ProfileCardPopover/ProfileCardPopover";
-import Chip from "@/components/Chip/Chip";
+import Chip from "@/components/common/Chip/Chip";
 
 import { AllCardProps } from "./AllCard.types";
 
@@ -94,11 +94,11 @@ export default function AllCard({ post, case: cardCase, hasChip = false }: AllCa
     <div className={styles.container}>
       <div className={styles.chipContainer}>
         {post.type === "NOTICE" ? (
-          <Chip size="s" type="filled-secondary">
+          <Chip size="md" variant="primary">
             {getTypeLabel(post.type)}
           </Chip>
         ) : (
-          <Chip size="s" type="filled-assistive">
+          <Chip size="md" variant="assistive">
             {getTypeLabel(post.type)}
           </Chip>
         )}

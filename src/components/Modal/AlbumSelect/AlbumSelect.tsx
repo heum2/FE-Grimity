@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useMyAlbums } from "@/api/me/getMyAlbums";
+import { useMeGetMyAlbums } from "@/api/generated/me/me";
 import { useModalStore } from "@/states/modalStore";
 import styles from "./AlbumSelect.module.scss";
 import Button from "@/components/Button/Button";
@@ -7,7 +7,7 @@ import IconComponent from "@/components/Asset/Icon";
 import { useDeviceStore } from "@/states/deviceStore";
 
 export default function AlbumSelect() {
-  const { data: albums = [] } = useMyAlbums();
+  const { data: albums = [] } = useMeGetMyAlbums();
   const modalData = useModalStore((state) => state.data);
   const [selectedId, setSelectedId] = useState<string | null>(modalData?.selectedAlbumId ?? null);
   const closeModal = useModalStore((state) => state.closeModal);
