@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
 
 export default function Contact({ onClose }: ContactProps) {
   const { showToast } = useToast();
-  const email = "grimity.official@gmail.com";
+  const email = "support@grimity.com";
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

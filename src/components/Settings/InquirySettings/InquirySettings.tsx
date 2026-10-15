@@ -3,7 +3,7 @@ import { EXTERNAL_URLS } from "@/constants/serviceurl";
 
 import styles from "./InquirySettings.module.scss";
 
-const SUPPORT_EMAIL = "grimity.official@gmail.com";
+const SUPPORT_EMAIL = "support@grimity.com";
 
 export default function InquirySettings() {
   const openKakao = () => {
