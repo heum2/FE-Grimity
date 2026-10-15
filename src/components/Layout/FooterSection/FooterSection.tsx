@@ -23,7 +23,7 @@ function FooterSection({ onClose }: FooterSectionProps) {
   const guideDropdownRef = useRef<HTMLDivElement>(null);
   const { showToast } = useToast();
   const router = useRouter();
-  const email = "grimity.official@gmail.com";
+  const email = "support@grimity.com";
 
   const handleFooterClick = (itemLabel: string, route?: string) => {
     if (itemLabel === "안내") {
@@ -62,10 +62,7 @@ function FooterSection({ onClose }: FooterSectionProps) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsAskDropdownOpen(false);
       }
-      if (
-        guideDropdownRef.current &&
-        !guideDropdownRef.current.contains(event.target as Node)
-      ) {
+      if (guideDropdownRef.current && !guideDropdownRef.current.contains(event.target as Node)) {
         setIsGuideDropdownOpen(false);
       }
     };
@@ -162,11 +159,7 @@ function FooterSection({ onClose }: FooterSectionProps) {
           >
             개인정보취급방침
           </Link>
-          <Link
-            href="/business-info"
-            className={styles.dropdownItem}
-            onClick={onClose}
-          >
+          <Link href="/business-info" className={styles.dropdownItem} onClick={onClose}>
             사업자 정보
           </Link>
         </div>
