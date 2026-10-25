@@ -37,6 +37,7 @@ import { useAuthRefresh } from "@/hooks/useAuthRefresh";
 import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
 import useUserBlock from "@/hooks/useUserBlock";
 import { DetailLayout } from "@/components/Layout/DetailLayout";
+import LatestPosts from "@/components/Board/Detail/LatestPosts/LatestPosts";
 import { CONFIG } from "@/config";
 
 export default function Detail({ id }: DetailProps) {
@@ -301,6 +302,7 @@ export default function Detail({ id }: DetailProps) {
 
       <DetailLayout.Sidebar>
         <DetailLayout.VerticalAd adSlot={CONFIG.MARKETING.AD_SLOTS.FEED_DETAIL_VERTICAL} />
+        <LatestPosts />
       </DetailLayout.Sidebar>
     </DetailLayout>
   );
