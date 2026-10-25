@@ -36,6 +36,13 @@
   @include bp.breakpoint-down("xs") {
     margin-top: spacing.$spacing-20;
   }
+
+  // 모바일 탭은 Label 3 (Tab 기본 lg는 Subtitle 1)
+  button[role="tab"] {
+    @include bp.breakpoint-down("xs") {
+      @include typo.label-3;
+    }
+  }
 }
 
 .datePickerContainer {

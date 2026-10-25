@@ -18,6 +18,15 @@
     display: flex;
     align-items: center;
     gap: spacing.$spacing-8;
+
+    // 닉네임 Label 2, 팔로우 버튼 Label 3 (UserItem/버튼 기본값보다 우선)
+    .nickname {
+      @include typo.label-2;
+    }
+
+    .followButton {
+      @include typo.label-3;
+    }
   }
 
   .imageGrid {

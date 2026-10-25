@@ -21,6 +21,7 @@ export default function UserItem({
   children,
   profileImage,
   nickname,
+  nicknameClassName,
   userId,
   followerCount,
   followingCount,
@@ -197,7 +198,7 @@ export default function UserItem({
         <div className={styles.followLeft}>
           <Avatar size="md" src={profileImage} alt="profile" />
           <div className={styles.followInfo}>
-            <span className={styles.followNickname}>{nickname}</span>
+            <span className={clsx(styles.followNickname, nicknameClassName)}>{nickname}</span>
             <UserInfo
               type="follow"
               followerCount={followerCount}

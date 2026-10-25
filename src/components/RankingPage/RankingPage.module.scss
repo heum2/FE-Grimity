@@ -4,7 +4,7 @@
 
 .container {
   width: 100%;
-  padding-left: spacing.$spacing-32;
+  padding-left: spacing.$spacing-20;
   padding-right: spacing.$spacing-32;
   padding-bottom: spacing.$spacing-72;
 
@@ -20,7 +20,7 @@
 
   .center {
     max-width: $max-width-container;
-    width: calc(100vw - $sidebar-width - spacing.$spacing-64);
+    width: calc(100vw - $sidebar-width - #{spacing.$spacing-20 + spacing.$spacing-32});
     margin: 0 auto;
     padding-top: spacing.$spacing-56;
 
