@@ -10,7 +10,6 @@ import {
 } from "@/api/generated/me/me";
 import { useUserFollow, useUserUnfollow } from "@/api/generated/users/users";
 import type { MyFollowersResponse, MyFollowingsResponse } from "@/api/generated/model";
-import { useModalStore } from "@/states/modalStore";
 import { useAuthStore } from "@/states/authStore";
 import { useDeviceStore } from "@/states/deviceStore";
 import { useToast } from "@/hooks/useToast";
@@ -59,10 +58,9 @@ function FollowToggleButton({
   );
 }
 
-export default function Follow({ initialTab, title }: FollowProps) {
+export default function Follow({ initialTab, title, onClose }: FollowProps) {
   const [activeTab, setActiveTab] = useState<"follower" | "following">(initialTab);
   const observerRef = useRef<HTMLDivElement | null>(null);
-  const closeModal = useModalStore((state) => state.closeModal);
   const [isFetchingData, setIsFetchingData] = useState(false);
   const route = useRouter();
   const queryClient = useQueryClient();
@@ -176,9 +174,17 @@ export default function Follow({ initialTab, title }: FollowProps) {
     handleFetchMoreFollowings,
   ]);
 
+  // 모바일(isFill)은 Provider가 쌓은 모달 history 엔트리를 replace로 대체해야 뒤로가기 한 번에 복귀한다
+  const navigate = (path: string) => {
+    if (isMobile) {
+      route.replace(path);
+    } else {
+      route.push(path);
+    }
+  };
+
   const handleClickUser = (url: string) => {
-    route.push(`/${url}`);
-    closeModal();
+    navigate(`/${url}`);
   };
 
   const handleToggleFollow = (userId: string, isFollowing: boolean) => {
@@ -239,7 +245,7 @@ export default function Follow({ initialTab, title }: FollowProps) {
             variant="sm"
             className={styles.closeButton}
             icon={<Icon name="x" size={24} />}
-            onClick={closeModal}
+            onClick={onClose}
             aria-label="닫기"
           />
         </div>
@@ -277,8 +283,7 @@ export default function Follow({ initialTab, title }: FollowProps) {
               }
               buttonLabel={activeTab === "follower" ? "그림 올리기" : "인기 그림 둘러보기"}
               onButtonClick={() => {
-                route.push(activeTab === "follower" ? "/write" : PATH_ROUTES.RANKING);
-                closeModal();
+                navigate(activeTab === "follower" ? "/write" : PATH_ROUTES.RANKING);
               }}
             />
           ) : (

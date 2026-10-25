@@ -15,6 +15,7 @@ function ModalProvider({ children }: PropsWithChildren) {
   const { modals, closeModal } = useNewModalStore();
   const historyPushedRef = useRef<Set<string>>(new Set());
   const closedByPopStateRef = useRef<Set<string>>(new Set());
+  const mouseDownOnOverlayRef = useRef(false);
 
   usePreventScroll(modals.length > 0);
 
@@ -88,21 +89,25 @@ function ModalProvider({ children }: PropsWithChildren) {
             const isBack = mobileHeader === "back";
             return (
               <React.Fragment key={id}>
-                {/* 모바일 헤더 */}
-                <div
-                  className={`${styles.mobileHeader} ${isBack ? styles.mobileHeaderBack : ""}`}
-                >
-                  <button onClick={handleClose} aria-label={isBack ? "뒤로가기" : "닫기"}>
-                    {isBack ? (
-                      <Icon name="chevron-left" size={24} />
-                    ) : (
-                      <IconComponent name="x" size={24} isBtn />
-                    )}
-                  </button>
-                  <h2>{title}</h2>
-                </div>
+                {mobileHeader !== "none" && (
+                  <div
+                    className={`${styles.mobileHeader} ${isBack ? styles.mobileHeaderBack : ""}`}
+                  >
+                    <button onClick={handleClose} aria-label={isBack ? "뒤로가기" : "닫기"}>
+                      {isBack ? (
+                        <Icon name="chevron-left" size={24} />
+                      ) : (
+                        <IconComponent name="x" size={24} isBtn />
+                      )}
+                    </button>
+                    <h2>{title}</h2>
+                  </div>
+                )}
                 {/* 전체 화면 콘텐츠 */}
-                <div className={styles.fill} onClick={(e) => e.stopPropagation()}>
+                <div
+                  className={mobileHeader === "none" ? styles.fillNoHeader : styles.fill}
+                  onClick={(e) => e.stopPropagation()}
+                >
                   {node}
                 </div>
               </React.Fragment>
@@ -110,10 +115,20 @@ function ModalProvider({ children }: PropsWithChildren) {
           }
 
           return (
-            <div key={id} className={styles.overlay} onClick={handleClose}>
-              <div onClick={(e) => e.stopPropagation()} {...props}>
-                {node}
-              </div>
+            <div
+              key={id}
+              className={styles.overlay}
+              onMouseDown={(e) => {
+                mouseDownOnOverlayRef.current = e.target === e.currentTarget;
+              }}
+              onMouseUp={(e) => {
+                if (mouseDownOnOverlayRef.current && e.target === e.currentTarget) {
+                  handleClose();
+                }
+                mouseDownOnOverlayRef.current = false;
+              }}
+            >
+              <div {...props}>{node}</div>
             </div>
           );
         })}
