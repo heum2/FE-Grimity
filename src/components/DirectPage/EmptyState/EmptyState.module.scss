@@ -1,8 +1,17 @@
+@use "@/styles/tokens/typography/semantic" as typo;
 @use "@/styles/tokens/spacing" as spacing;
+@use "@/styles/breakpoint" as bp;
 
 .empty {
   display: flex;
   justify-content: center;
   width: 100%;
   padding: spacing.$spacing-72 0;
+}
+
+// Figma DM 모바일은 md 사이즈지만 제목만 Title 3 유지
+.empty h2 {
+  @include bp.breakpoint-down("xs") {
+    @include typo.title-3;
+  }
 }

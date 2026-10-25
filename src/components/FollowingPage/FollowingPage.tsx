@@ -46,6 +46,7 @@ export default function FollowingPage() {
         <div className={styles.emptyContent}>
           <Empty
             size="xl"
+            mobileSize="md"
             iconName="illust-user"
             title={hasFollowing ? "아직 올라온 그림이 없어요" : "팔로우한 작가가 없어요"}
             content="관심 있는 작가를 팔로우하고 새로운 작품 소식을 받아보세요"

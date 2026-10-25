@@ -11,6 +11,7 @@ const EmptyState = ({ onNewMessage }: EmptyStateProps) => {
     <div className={styles.empty}>
       <Empty
         size="xl"
+        mobileSize="md"
         iconName="illust-replay"
         title="아직 주고 받은 메시지가 없어요"
         content="다른 작가에게 사진과 메시지를 보낼 수 있어요"

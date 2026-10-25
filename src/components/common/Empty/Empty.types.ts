@@ -7,6 +7,8 @@ export type EmptyButtonVariant = "solid" | "outline";
 
 export interface EmptyProps {
   size?: EmptySize;
+  // 모바일(767px 이하)에서 적용할 size. 없으면 size를 그대로 사용
+  mobileSize?: EmptySize;
   icon?: ReactNode;
   iconName?: IconName;
   title: string;

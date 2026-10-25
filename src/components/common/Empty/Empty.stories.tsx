@@ -9,6 +9,7 @@ const meta = {
   tags: ["autodocs"],
   argTypes: {
     size: { options: ["xl", "md"], control: { type: "radio" } },
+    mobileSize: { options: ["xl", "md"], control: { type: "radio" } },
     buttonVariant: { options: ["solid", "outline"], control: { type: "radio" } },
   },
 } satisfies Meta<typeof Empty>;
