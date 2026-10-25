@@ -17,6 +17,7 @@
   left: calc(50% + $sidebar-width / 2);
   transform: translateX(-50%);
 
+  // 태블릿 사이드바(80px) 구간. bp 토큰(sm 768–991)과 경계가 달라 Size("tablet") 범위(768–1024)를 유지
   @media (min-width: 768px) and (max-width: 1024px) {
     left: calc(50% + $sidebar-width-tablet / 2);
   }

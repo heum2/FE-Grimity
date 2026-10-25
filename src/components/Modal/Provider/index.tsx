@@ -15,6 +15,7 @@ function ModalProvider({ children }: PropsWithChildren) {
   const { modals, closeModal } = useNewModalStore();
   const historyPushedRef = useRef<Set<string>>(new Set());
   const closedByPopStateRef = useRef<Set<string>>(new Set());
+  const mouseDownOnOverlayRef = useRef(false);
 
   usePreventScroll(modals.length > 0);
 
@@ -114,10 +115,20 @@ function ModalProvider({ children }: PropsWithChildren) {
           }
 
           return (
-            <div key={id} className={styles.overlay} onClick={handleClose}>
-              <div onClick={(e) => e.stopPropagation()} {...props}>
-                {node}
-              </div>
+            <div
+              key={id}
+              className={styles.overlay}
+              onMouseDown={(e) => {
+                mouseDownOnOverlayRef.current = e.target === e.currentTarget;
+              }}
+              onMouseUp={(e) => {
+                if (mouseDownOnOverlayRef.current && e.target === e.currentTarget) {
+                  handleClose();
+                }
+                mouseDownOnOverlayRef.current = false;
+              }}
+            >
+              <div {...props}>{node}</div>
             </div>
           );
         })}

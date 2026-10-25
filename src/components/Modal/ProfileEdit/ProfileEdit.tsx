@@ -157,8 +157,6 @@ export default function ProfileEdit({ onClose }: { onClose: () => void }) {
     mutation: {
       onSuccess: () => {
         showToast("프로필 정보가 변경되었습니다!", "success");
-        onClose();
-        refetch();
         router.reload();
       },
       onError: (error) => {

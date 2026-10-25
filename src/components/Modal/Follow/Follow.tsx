@@ -174,8 +174,17 @@ export default function Follow({ initialTab, title, onClose }: FollowProps) {
     handleFetchMoreFollowings,
   ]);
 
+  // 모바일(isFill)은 Provider가 쌓은 모달 history 엔트리를 replace로 대체해야 뒤로가기 한 번에 복귀한다
+  const navigate = (path: string) => {
+    if (isMobile) {
+      route.replace(path);
+    } else {
+      route.push(path);
+    }
+  };
+
   const handleClickUser = (url: string) => {
-    route.push(`/${url}`);
+    navigate(`/${url}`);
   };
 
   const handleToggleFollow = (userId: string, isFollowing: boolean) => {
@@ -274,7 +283,7 @@ export default function Follow({ initialTab, title, onClose }: FollowProps) {
               }
               buttonLabel={activeTab === "follower" ? "그림 올리기" : "인기 그림 둘러보기"}
               onButtonClick={() => {
-                route.push(activeTab === "follower" ? "/write" : PATH_ROUTES.RANKING);
+                navigate(activeTab === "follower" ? "/write" : PATH_ROUTES.RANKING);
               }}
             />
           ) : (
