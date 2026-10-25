@@ -15,14 +15,14 @@
 
 > 상태: ⏳ 대기 · 🔄 진행 중 · ✅ 완료 · ⏸ 보류
 
-### Step 1. 타이포그래피 letter-spacing 단위 ⏳
+### Step 1. 타이포그래피 letter-spacing 단위 ✅
 
 - 파일: `src/styles/tokens/typography/_atomic.scss`
 - 현재: `$letterspacing-tight: 0.2px`, `$letterspacing-tighter: 0.8px`
 - Figma: Text Style letter-spacing이 **퍼센트** — `0.2%`, `0.8%` (폰트 크기 대비)
 - 기대값: `0.2%` → `0.002em`, `0.8%` → `0.008em` (12px 기준 0.096px). Caption 1 / Label 5·6이 과하게 벌어지는 문제 해소
 
-### Step 2. 사이드바 하단 영역 (전 페이지 웹) ⏳
+### Step 2. 사이드바 하단 영역 (전 페이지 웹) ✅
 
 - 파일: `src/components/common/Navigation/Sidebar/Sidebar.module.scss`
 - 공지사항 / 문의: `label-3`(14px) → **Label 1** (16px SemiBold)
@@ -30,7 +30,7 @@
 - 좌측 여백: 16px → **22px** (Figma 텍스트 x=22, 아이콘 행 텍스트 x=46)
 - 태블릿(아이콘형 사이드바)의 "안내/문의" Body 2 SB는 이미 일치 — 변경 금지
 
-### Step 3. 랭킹 페이지 ⏳
+### Step 3. 랭킹 페이지 ✅
 
 - 파일: `src/components/RankingPage/**`
 - 안내 문구: "랭킹 40위까지 노출됩니다." → **"인기 그림은 40위까지 노출됩니다"**
@@ -38,18 +38,18 @@
 - 모바일 주간/월간 탭: 18px Bold → **Label 3** (14px SemiBold)
 - 모바일 "인기 작가" 제목: 20px → **Title 2** (24px)
 
-### Step 4. 인기 작가 카드 (랭킹 · 팔로잉 공통) ⏳
+### Step 4. 인기 작가 카드 (랭킹 · 팔로잉 공통) ✅
 
 - 파일: `src/components/RankingPage/PopularUser/**`, `src/components/FollowingPage/PopularUsers/**`
 - 닉네임: 14px SemiBold → **Label 2** (16px Medium)
 - 팔로우 버튼 텍스트: 12px → **Label 3** (14px SemiBold)
 
-### Step 5. 헤더 · 홈 모바일 ⏳
+### Step 5. 헤더 · 홈 모바일 ✅
 
 - 모바일 헤더 "회원가입" 버튼: 12px → **Label 3** (14px) — `src/components/common/Navigation/GNB/**`
 - 모바일 홈 섹션 "더보기": 16px → **Label 3** (14px) — 홈 섹션 헤더 컴포넌트 (웹은 Label 1 16px 유지)
 
-### Step 6. 빈 상태(Empty) 반응형 · DM 헤더 ⏳
+### Step 6. 빈 상태(Empty) 반응형 · DM 헤더 ✅
 
 웹/모바일 스타일이 뒤바뀌거나 한쪽만 적용됨.
 
@@ -68,11 +68,11 @@
 - DM 목록 헤더 "새 메시지" / "편집" 버튼: 12px → **Label 3** (14px SemiBold)
 - 파일: `src/components/common/Empty/**`, `src/components/MyPage/LikedFeeds/**`, `src/components/FollowingPage/FollowingPage.*`, `src/components/DirectPage/**`
 
-### Step 7. 설정 ⏳
+### Step 7. 설정 ✅
 
 - "탈퇴하기" 색상: gray-bold → **text/gray-subtle** — `src/components/Settings/AccountSettings/**`
 
-### Step 8. 그림 업로드 ⏳
+### Step 8. 그림 업로드 ✅
 
 - 파일: `src/components/Upload/**`
 - 웹 페이지 제목 "그림 업로드": 24px → **Title 1** (28px)
@@ -81,14 +81,14 @@
 - 글자 수 카운터 `0 / 32`: 12px Regular → **Label 5** (12px SemiBold)
 - 모바일 헤더 "업로드" 버튼: 14px → **Label 1** (16px)
 
-### Step 9. 자유게시판 글쓰기 ⏳
+### Step 9. 자유게시판 글쓰기 ✅
 
 - 파일: `src/components/Board/BoardWrite/**`
 - 웹 콘텐츠 시작 x: 310 → **350** (Figma 콘텐츠 폭 기준 정렬)
 - 글자 수 카운터: Step 8과 동일하게 **Label 5**
 - 모바일 헤더 "업로드" 버튼: 14px → **Label 1** (16px)
 
-### Step 10. 토큰 미사용 하드코딩 ⏳
+### Step 10. 토큰 미사용 하드코딩 ✅
 
 - `/business-info`: `#23252b` 하드코딩, letter-spacing `normal` → 시맨틱 토큰 + 타이포 믹스인 — `src/pages/business-info.tsx`, `src/styles/pages/BusinessInfo.module.scss`
 - 그림 상세 본문 링크: 브라우저 기본 `#0000ee` → 시맨틱 토큰 (`text/primary-normal` 등) — `src/components/Detail/**`
