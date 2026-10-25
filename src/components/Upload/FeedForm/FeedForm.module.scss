@@ -120,11 +120,6 @@
   @include typo.label-1;
 }
 
-// 공용 TextField 카운터(caption-1)를 Figma의 Label 5로 맞춘다
-.writeSection [class*="TextField_count"] {
-  @include typo.label-5;
-}
-
 .submitRow {
   display: flex;
   justify-content: center;

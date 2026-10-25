@@ -71,11 +71,6 @@
   flex: 1;
   min-width: 0;
 
-  // 공용 TextField 카운터(caption-1)를 Figma의 Label 5로 맞춘다
-  [class*="TextField_count"] {
-    @include typo.label-5;
-  }
-
   @include bp.breakpoint-down("xs") {
     flex: auto;
   }
