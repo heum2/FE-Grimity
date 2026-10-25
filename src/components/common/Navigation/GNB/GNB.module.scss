@@ -71,6 +71,11 @@
   flex-shrink: 0;
 }
 
+// 업로드/글쓰기 헤더의 우측 텍스트 버튼은 Figma의 Label 1
+.gnb .trailingText {
+  @include typo.label-1;
+}
+
 .logoBtn {
   display: flex;
   align-items: center;

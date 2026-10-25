@@ -34,7 +34,7 @@
   max-width: 800px;
   margin: 0 auto;
   padding: 0 spacing.$spacing-12;
-  @include typo.title-2;
+  @include typo.title-1;
   color: colors.$text-gray-bold;
 }
 
@@ -103,7 +103,7 @@
 .label {
   flex-shrink: 0;
   width: 40px;
-  @include typo.subtitle-3;
+  @include typo.subtitle-2;
   color: colors.$text-gray-bold;
 }
 
@@ -114,6 +114,15 @@
 
 .albumButton {
   padding-left: 0;
+}
+
+.field .albumButton {
+  @include typo.label-1;
+}
+
+// 공용 TextField 카운터(caption-1)를 Figma의 Label 5로 맞춘다
+.writeSection [class*="TextField_count"] {
+  @include typo.label-5;
 }
 
 .submitRow {
