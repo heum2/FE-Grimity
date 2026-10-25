@@ -11,7 +11,7 @@ const BUSINESS_INFO = [
   { label: "대표자명", value: "임종훈" },
   { label: "전화번호", value: "070-8098-7916" },
   { label: "개업일", value: "2025-10-11" },
-  { label: "전자우편", value: "grimity.official@gmail.com" },
+  { label: "전자우편", value: "support@grimity.com" },
   {
     label: "사업장소재지(도로명)",
     value: "부산광역시 사상구 가야대로255번길 5, 107동 104호",
