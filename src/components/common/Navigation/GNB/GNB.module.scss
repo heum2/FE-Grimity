@@ -39,6 +39,10 @@
   border-bottom: 1px solid colors.$border-gray-subtler;
 }
 
+.gnbTopNav .signupButton {
+  @include typo.label-3;
+}
+
 .gnbTopNav.navGap8 {
   gap: spacing.$spacing-8;
 }

@@ -157,7 +157,7 @@ export default function GNB({
         >
           <LogoArea onClick={handleLogoClick} />
           <div className={clsx(styles.flexRow, styles.flexPushEnd, styles.gap12)}>
-            <OutlinedButton size="small" onClick={onLogin}>
+            <OutlinedButton size="small" className={styles.signupButton} onClick={onLogin}>
               회원가입
             </OutlinedButton>
             <div className={clsx(styles.flexRow, styles.flexPushEnd, styles.gap8)}>
@@ -186,7 +186,7 @@ export default function GNB({
         >
           <LogoArea onClick={handleLogoClick} />
           <div className={clsx(styles.flexRow, styles.flexPushEnd, styles.gap12)}>
-            <OutlinedButton size="small" onClick={onLogin}>
+            <OutlinedButton size="small" className={styles.signupButton} onClick={onLogin}>
               회원가입
             </OutlinedButton>
             <div className={clsx(styles.flexRow, styles.flexPushEnd, styles.gap8)}>

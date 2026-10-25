@@ -11,7 +11,7 @@ export default function Title({ children, link, gap = "lg" }: TitleProps) {
     <div className={clsx(styles.container, styles[`gap-${gap}`])}>
       <h2 className={styles.title}>{children}</h2>
       {link && (
-        <TextButton variant="assistive" size="large" href={link}>
+        <TextButton variant="assistive" size="large" className={styles.moreButton} href={link}>
           더보기
         </TextButton>
       )}

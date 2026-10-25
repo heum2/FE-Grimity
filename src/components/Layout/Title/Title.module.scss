@@ -27,6 +27,12 @@
     }
   }
 
+  .moreButton {
+    @include bp.breakpoint-down("xs") {
+      @include typo.label-3;
+    }
+  }
+
   .title {
     color: colors.$text-gray-bold;
     @include typo.title-2;
