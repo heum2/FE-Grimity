@@ -30,6 +30,7 @@ export interface UserItemProps {
   /** Profile */
   profileImage?: string;
   nickname?: string;
+  nicknameClassName?: string;
   userId?: string;
 
   /** Follow info */

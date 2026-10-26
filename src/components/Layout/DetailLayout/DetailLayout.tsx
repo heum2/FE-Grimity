@@ -21,7 +21,7 @@ function Sidebar({ children }: DetailLayoutProps) {
 }
 
 function VerticalAd({ adSlot }: AdSlotProps) {
-  return <DisplayAd adSlot={adSlot} />;
+  return <DisplayAd adSlot={adSlot} className={styles.verticalAd} />;
 }
 
 export const DetailLayout = DetailLayoutRoot as DetailLayoutComposition;

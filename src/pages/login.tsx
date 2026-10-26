@@ -178,7 +178,10 @@ export default function LoginPage() {
           <div className={styles.logoSection}>
             <Icon name="logo" color="gray-bold" className={styles.logo} aria-label="Grimity" />
             <p className={styles.tagline}>
-              <span>그리미티에서</span> <span>내 그림을 뽐내보세요!</span>
+              <span className={styles.taglineMobile}>
+                <span>그리미티에서</span> <span>내 그림을 뽐내보세요!</span>
+              </span>
+              <span className={styles.taglineWide}>내 그림의 모든 기록, 취향을 잇는 공간</span>
             </p>
           </div>
 

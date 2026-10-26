@@ -5,13 +5,15 @@ import Icon from "@/components/common/Icon/Icon";
 import { IconSize } from "@/components/common/Icon/Icon.types";
 import SolidButton from "@/components/common/Button/SolidButton/SolidButton";
 import OutlinedButton from "@/components/common/Button/OutlinedButton/OutlinedButton";
+import { useDeviceStore } from "@/states/deviceStore";
 import styles from "./Empty.module.scss";
 import type { EmptyProps } from "./Empty.types";
 
 const DEFAULT_ICON_NAME = "illust-upload-success";
 
 export default function Empty({
-  size = "md",
+  size: baseSize = "md",
+  mobileSize,
   icon,
   iconName = DEFAULT_ICON_NAME,
   title,
@@ -21,6 +23,8 @@ export default function Empty({
   buttonVariant = "solid",
   className,
 }: EmptyProps) {
+  const isMobile = useDeviceStore((state) => state.isMobile);
+  const size = isMobile && mobileSize ? mobileSize : baseSize;
   const buttonSize = size === "xl" ? "large" : "regular";
 
   return (

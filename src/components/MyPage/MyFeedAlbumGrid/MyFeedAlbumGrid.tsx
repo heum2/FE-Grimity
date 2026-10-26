@@ -51,6 +51,8 @@ export default function MyFeedAlbumGrid({
     return (
       <div className={styles.emptyWrap}>
         <Empty
+          size="xl"
+          mobileSize="md"
           iconName="illust-result-null"
           title={emptyTitle}
           buttonLabel="인기 그림 둘러보기"

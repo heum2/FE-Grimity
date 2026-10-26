@@ -210,15 +210,16 @@ function DefaultCard({
           type="follow"
           profileImage={avatarUrl}
           nickname={nickname}
+          nicknameClassName={styles.nickname}
           followerCount={followerCount.toString()}
           followingCount={followingCount != null ? followingCount.toString() : undefined}
         >
           {isFollowing ? (
-            <OutlinedButton size="small" onClick={handleFollowClick}>
+            <OutlinedButton size="small" className={styles.followButton} onClick={handleFollowClick}>
               팔로잉
             </OutlinedButton>
           ) : (
-            <SolidButton size="small" onClick={handleFollowClick}>
+            <SolidButton size="small" className={styles.followButton} onClick={handleFollowClick}>
               팔로우
             </SolidButton>
           )}

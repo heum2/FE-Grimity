@@ -35,6 +35,11 @@
   align-items: center;
   gap: spacing.$spacing-8;
   flex-shrink: 0;
+
+  // small 버튼 높이는 유지하고 텍스트만 Label 3
+  > button {
+    @include typo.label-3;
+  }
 }
 
 .search {

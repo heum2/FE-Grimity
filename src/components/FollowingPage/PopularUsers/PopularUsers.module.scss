@@ -16,6 +16,10 @@
   margin: 0;
   color: colors.$text-gray-bold;
   @include typo.title-1;
+
+  @include bp.breakpoint-down("xs") {
+    @include typo.title-2;
+  }
 }
 
 .grid {

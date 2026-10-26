@@ -8,7 +8,6 @@ import { usePreventRightClick } from "@/hooks/usePreventRightClick";
 import { useGlobalLoading } from "@/hooks/useGlobalLoading";
 import { useAuthStore } from "@/states/authStore";
 
-import Title from "@/components/Layout/Title/Title";
 import User from "@/components/RankingPage/PopularUser/User/User";
 
 import styles from "@/components/RankingPage/PopularUser/PopularUser.module.scss";
@@ -32,7 +31,7 @@ export default function PopularUser() {
 
   return (
     <div className={styles.container} ref={divRef}>
-      <Title>인기 작가</Title>
+      <h2 className={styles.title}>인기 작가</h2>
       <Swiper spaceBetween={16} slidesPerView="auto" className={styles.swiper}>
         {randomUsers?.map((user) => (
           <SwiperSlide key={user.id} className={styles.slide}>

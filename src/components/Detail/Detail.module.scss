@@ -92,6 +92,11 @@
     white-space: pre-line;
     word-break: break-word;
     overflow-wrap: break-word;
+
+    // 본문 링크는 HTML 문자열로 주입되어 클래스가 없으므로 태그 셀렉터로 지정
+    a {
+      color: colors.$text-primary-normal;
+    }
   }
 }
 

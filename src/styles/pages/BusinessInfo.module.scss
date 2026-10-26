@@ -1,4 +1,5 @@
-@use "@/styles/globals.scss" as *;
+@use "@/styles/tokens/colors" as colors;
+@use "@/styles/tokens/typography" as typo;
 
 .container {
   display: flex;
@@ -7,8 +8,8 @@
   gap: 24px;
 
   .title {
-    @include Title2;
-    color: $gray80;
+    @include typo.title-1;
+    color: colors.$text-gray-bold;
   }
 
   .infoList {
@@ -24,20 +25,18 @@
   }
 
   .label {
-    @include Sub3;
-    color: $gray80;
+    @include typo.subtitle-2;
+    color: colors.$text-gray-bold;
   }
 
   .value {
-    @include Label3;
-    color: $gray80;
-    line-height: 1.6;
+    @include typo.body-2-r;
+    color: colors.$text-gray-bold;
     word-break: keep-all;
   }
 
   .link {
-    @include Label3;
-    color: $gray80;
-    line-height: 1.6;
+    @include typo.body-2-r;
+    color: colors.$text-gray-bold;
   }
 }

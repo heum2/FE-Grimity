@@ -439,8 +439,12 @@
   }
 
   .footerLabel {
-    @include typo.label-3;
+    @include typo.label-1;
     color: inherit;
+
+    @include g.Size("mobile") {
+      @include typo.label-3;
+    }
   }
 
   &:hover {
@@ -553,11 +557,18 @@
   display: flex;
   flex-direction: column;
   gap: spacing.$spacing-4;
-  @include typo.label-6;
+  padding-left: spacing.$spacing-6;
+  @include typo.label-4;
   color: colors.$text-gray-subtle;
 
   @include g.Size("tablet") {
     display: none;
+  }
+
+  @include g.Size("mobile") {
+    display: flex;
+    padding-left: 0;
+    @include typo.label-6;
   }
 }
 

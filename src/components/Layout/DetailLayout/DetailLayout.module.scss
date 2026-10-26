@@ -17,9 +17,12 @@
   max-width: 1180px;
   margin: 0 auto;
 
-  @media (min-width: 1440px) {
+  // Figma 1200: 본문(580) + 간격(40) + 우측 컬럼(280)
+  @include bp.breakpoint-up("lg") {
     flex-direction: row;
     align-items: flex-start;
+    justify-content: center;
+    gap: spacing.$spacing-40;
   }
 
   @include bp.breakpoint-down("xs") {
@@ -32,15 +35,27 @@
 .center {
   width: 100%;
   max-width: $max-width-content;
+
+  @include bp.breakpoint-up("lg") {
+    flex: 1;
+    min-width: 0;
+  }
 }
 
 .right {
-  position: fixed;
-  right: spacing.$spacing-40;
-  top: calc($header-height + 60px);
   display: none;
 
-  @include bp.breakpoint-up("xl") {
+  @include bp.breakpoint-up("lg") {
+    position: sticky;
+    top: $header-height;
+    flex-shrink: 0;
     display: block;
+    width: 280px;
+    padding-top: spacing.$spacing-24;
   }
+}
+
+// AdSense 기본 min-width(300px)를 우측 컬럼 폭에 맞춤
+.right .verticalAd {
+  min-width: 0;
 }

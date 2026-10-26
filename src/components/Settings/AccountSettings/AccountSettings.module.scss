@@ -1,3 +1,4 @@
+@use "@/styles/tokens/colors/semantic" as colors;
 @use "@/styles/tokens/spacing" as spacing;
 
 .panel {
@@ -17,4 +18,8 @@
   display: flex;
   justify-content: center;
   padding-bottom: spacing.$spacing-40;
+
+  button {
+    color: colors.$text-gray-subtle;
+  }
 }

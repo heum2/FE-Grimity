@@ -72,6 +72,8 @@ export default function SavedPosts() {
     return (
       <div className={styles.emptyWrap}>
         <Empty
+          size="xl"
+          mobileSize="md"
           iconName="illust-result-null"
           title="저장한 글이 없어요"
           buttonLabel="자유게시판 둘러보기"
