@@ -61,6 +61,11 @@
   gap: spacing.$spacing-8;
 }
 
+.link {
+  display: flex;
+  color: inherit;
+}
+
 .moreLinksText {
   @include typo.label-5;
   color: colors.$text-primary-normal;
