@@ -85,7 +85,7 @@ export default function Author({ authorId, authorUrl }: AuthorProps) {
             followerCount={formatCurrency(followerCount)}
             onClick={() => router.push(profileHref)}
           >
-            <div className={styles.actions} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.actions}>
               <OutlinedButton size="regular" onClick={() => router.push(profileHref)}>
                 작품 보기
               </OutlinedButton>

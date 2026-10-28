@@ -220,6 +220,23 @@
   min-width: 0;
 }
 
+.followProfile {
+  display: inline-flex;
+  align-items: center;
+  gap: spacing.$spacing-8;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.followProfileClickable {
+  cursor: pointer;
+
+  // UserInfo(follow)의 팔로워 영역이 cursor: default라 클릭 영역 안에서는 덮어쓴다
+  * {
+    cursor: pointer;
+  }
+}
+
 .followInfo {
   display: flex;
   flex-direction: column;
