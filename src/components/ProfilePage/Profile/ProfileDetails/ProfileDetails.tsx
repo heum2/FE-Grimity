@@ -10,7 +10,7 @@ import type { UserProfileResponse as UserData } from "@grimity/dto";
 
 import { formatCurrency } from "@/utils/formatCurrency";
 import { useClipboard } from "@/utils/copyToClipboard";
-import { EMAIL_PATTERN, getLinkIconName } from "@/utils/profileLinkIcon";
+import { EMAIL_PATTERN, getLinkLogoIconName } from "@/utils/profileLinkIcon";
 
 import styles from "./ProfileDetails.module.scss";
 
@@ -66,6 +66,7 @@ export default function ProfileDetails({
         {userData.links.slice(0, MAX_VISIBLE_LINKS).map(({ linkName, link }, index) => (
           <div key={link} className={styles.linkWrapper}>
             <Link
+              className={styles.link}
               title={link}
               href={link}
               target="_blank"
@@ -78,8 +79,10 @@ export default function ProfileDetails({
               }}
             >
               <UserItem
-                type="link"
-                brandIcon={<Icon name={getLinkIconName(linkName)} size={20} />}
+                type="linkMain"
+                brandIcon={
+                  <Icon name={getLinkLogoIconName(linkName)} size={20} color="gray-normal" />
+                }
                 siteName={displayName(linkName, link)}
               />
             </Link>
