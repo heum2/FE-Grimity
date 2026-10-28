@@ -255,7 +255,11 @@ export default function PostDetail({ id }: PostDetailProps) {
                 />
                 <UserInfo
                   type="default"
-                  nickname={posts.author.name}
+                  nickname={
+                    <Link href={`/${posts.author.url}`} className={styles.authorLink}>
+                      {posts.author.name}
+                    </Link>
+                  }
                   showView
                   viewCount={formatCurrency(posts.viewCount)}
                   showTime

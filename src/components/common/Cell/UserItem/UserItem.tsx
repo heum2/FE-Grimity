@@ -194,17 +194,35 @@ export default function UserItem({
   // ------------------------------------------
   if (type === "follow") {
     return (
-      <div className={clsx(styles.follow, className)} onClick={onClick}>
+      <div className={clsx(styles.follow, className)}>
         <div className={styles.followLeft}>
-          <Avatar size="md" src={profileImage} alt="profile" />
-          <div className={styles.followInfo}>
-            <span className={clsx(styles.followNickname, nicknameClassName)}>{nickname}</span>
-            <UserInfo
-              type="follow"
-              followerCount={followerCount}
-              showFollowing={!!followingCount}
-              followingCount={followingCount}
-            />
+          {/* 클릭/커서 영역을 프로필 이미지+닉네임으로 한정(빈 공간 오작동 방지) */}
+          <div
+            className={clsx(styles.followProfile, onClick && styles.followProfileClickable)}
+            onClick={onClick}
+            onKeyDown={
+              onClick
+                ? (e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      onClick();
+                    }
+                  }
+                : undefined
+            }
+            role={onClick ? "link" : undefined}
+            tabIndex={onClick ? 0 : undefined}
+          >
+            <Avatar size="md" src={profileImage} alt="profile" />
+            <div className={styles.followInfo}>
+              <span className={clsx(styles.followNickname, nicknameClassName)}>{nickname}</span>
+              <UserInfo
+                type="follow"
+                followerCount={followerCount}
+                showFollowing={!!followingCount}
+                followingCount={followingCount}
+              />
+            </div>
           </div>
         </div>
         {children && <div className={styles.followRight}>{children}</div>}
