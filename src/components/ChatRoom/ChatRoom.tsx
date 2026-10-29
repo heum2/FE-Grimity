@@ -27,6 +27,8 @@ import type { NewChatMessageEventResponse } from "@grimity/dto";
 
 import styles from "./ChatRoom.module.scss";
 
+const BOTTOM_THRESHOLD = 80;
+
 interface ChatRoomProps {
   chatId: string;
 }
@@ -71,12 +73,41 @@ const ChatRoom = ({ chatId }: ChatRoomProps) => {
     clearReply,
   } = useMessageActions({ chatId });
 
+  const isAtBottomRef = useRef(true);
+
   const scrollToBottom = useCallback(() => {
     const container = messagesContainerRef.current;
     if (container) {
       container.scrollTop = container.scrollHeight;
     }
   }, []);
+
+  const handleMessagesScroll = useCallback(
+    (e: React.UIEvent<HTMLDivElement>) => {
+      const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+      isAtBottomRef.current = scrollHeight - scrollTop - clientHeight <= BOTTOM_THRESHOLD;
+      onScroll(e);
+    },
+    [onScroll],
+  );
+
+  useEffect(() => {
+    isAtBottomRef.current = true;
+  }, [chatId]);
+
+  useEffect(() => {
+    const container = messagesContainerRef.current;
+    if (!container) return;
+
+    const handleImageLoad = (e: Event) => {
+      if (e.target instanceof HTMLImageElement && isAtBottomRef.current) {
+        scrollToBottom();
+      }
+    };
+
+    container.addEventListener("load", handleImageLoad, true);
+    return () => container.removeEventListener("load", handleImageLoad, true);
+  }, [scrollToBottom]);
 
   const handleReplyAndFocus = useCallback(
     (messageId: string) => {
@@ -247,7 +278,7 @@ const ChatRoom = ({ chatId }: ChatRoomProps) => {
         userData={userData}
         hoveredMessageId={hoveredMessageId}
         containerRef={messagesContainerRef}
-        onScroll={onScroll}
+        onScroll={handleMessagesScroll}
         onMouseEnterMessage={handleMouseEnterMessage}
         onMouseLeaveMessage={handleMouseLeaveMessage}
         onLikeMessage={handleLikeMessage}
